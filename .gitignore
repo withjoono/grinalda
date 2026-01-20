@@ -1,0 +1,85 @@
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+*/dist/
+**/dist/
+build/
+.next/
+
+# Environment files
+.env
+.env.*
+.env.local
+.env.*.local
+*.env
+app.yaml
+.env.cloudrun.yaml
+.env.planner
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+tmpclaude-*
+nul
+
+# Database files
+*.sqlite
+*.db
+
+# Keys and secrets
+*-key.json
+*-service-account*.json
+token.json
+firebase-service-account-key.json
+gcs-service-account-key.json
+
+# Uploads
+uploads/
+Uploads/
+
+# Test outputs
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Backup files
+*.backup
+*.sql
+backup_*
+
+# Cloud SQL Proxy
+cloud-sql-proxy.exe
+cloud-sql-proxy.log
+
+# PM2
+ecosystem.config.js
+server.pid
