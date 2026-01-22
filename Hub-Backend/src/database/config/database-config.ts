@@ -37,12 +37,37 @@ export default registerAs<DatabaseConfig>('database', () => {
   // DATABASE_URL이 존재하면 (운영 환경), 파싱하여 사용
   if (process.env.DATABASE_URL) {
     try {
-      // PostgreSQL URL 파싱: postgresql://user:password@host:port/database
-      const url = new URL(process.env.DATABASE_URL);
+      const databaseUrl = process.env.DATABASE_URL;
 
-      console.log('🔗 DATABASE_URL 파싱 성공:', {
+      // Cloud SQL Unix Socket 연결 형식 체크
+      // postgresql://user:password@/database?host=/cloudsql/PROJECT:REGION:INSTANCE
+      if (databaseUrl.includes('?host=/cloudsql/')) {
+        const url = new URL(databaseUrl);
+        const socketPath = url.searchParams.get('host');
+
+        console.log('🔗 Cloud SQL Unix Socket 연결:', {
+          socket: socketPath,
+          database: url.pathname.slice(1),
+          username: url.username,
+        });
+
+        return {
+          type: 'postgres',
+          host: socketPath, // Unix 소켓 경로
+          port: undefined, // Unix 소켓은 포트 불필요
+          password: decodeURIComponent(url.password),
+          name: url.pathname.slice(1),
+          username: decodeURIComponent(url.username),
+          synchronize: false,
+        };
+      }
+
+      // 일반 PostgreSQL URL: postgresql://user:password@host:port/database
+      const url = new URL(databaseUrl);
+
+      console.log('🔗 PostgreSQL 일반 연결:', {
         host: url.hostname,
-        port: url.port,
+        port: url.port || 5432,
         database: url.pathname.slice(1),
       });
 
@@ -51,9 +76,9 @@ export default registerAs<DatabaseConfig>('database', () => {
         host: url.hostname,
         port: url.port ? parseInt(url.port, 10) : 5432,
         password: decodeURIComponent(url.password),
-        name: url.pathname.slice(1), // Remove leading '/'
+        name: url.pathname.slice(1),
         username: decodeURIComponent(url.username),
-        synchronize: false, // 프로덕션에서는 항상 false
+        synchronize: false,
       };
     } catch (error) {
       console.error('❌ DATABASE_URL 파싱 실패:', error);
