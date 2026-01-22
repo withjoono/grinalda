@@ -163,10 +163,11 @@ export const Header = () => {
                       <Bell className="h-4 w-4" />
                       알림 설정
                     </Link>
-                    <Link to="/account-linkage" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
+                    {/* 계정연동 (독립 앱으로 분리) */}
+                    {/* <Link to="/account-linkage" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
                       <Users className="h-4 w-4" />
                       계정연동
-                    </Link>
+                    </Link> */}
                     {user ? (
                       <>
                         <Link to="/users/profile" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start px-1")} onClick={() => setIsOpen(false)}>마이 페이지</Link>
@@ -225,14 +226,14 @@ export const Header = () => {
                 <Bell className="h-5 w-5" />
                 <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
               </Link>
-              {/* 계정연동 */}
-              <Link
+              {/* 계정연동 (독립 앱으로 분리) */}
+              {/* <Link
                 to="/account-linkage"
                 className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-gray-600 hover:bg-gray-100 hover:text-gray-900")}
                 title="계정연동"
               >
                 <Users className="h-5 w-5" />
-              </Link>
+              </Link> */}
             </div>
             {user ? (
               <Popover>
