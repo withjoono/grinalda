@@ -46,22 +46,28 @@ export default registerAs<DatabaseConfig>('database', () => {
       // Cloud SQL Unix Socket 연결 형식 체크
       // postgresql://user:password@/database?host=/cloudsql/PROJECT:REGION:INSTANCE
       if (databaseUrl.includes('?host=/cloudsql/')) {
-        const url = new URL(databaseUrl);
-        const socketPath = url.searchParams.get('host');
+        // 수동 파싱 (@/ 형식을 new URL()이 처리 못함)
+        const match = databaseUrl.match(/^postgresql:\/\/([^:]+):([^@]+)@\/([^?]+)\?host=(.+)$/);
+
+        if (!match) {
+          throw new Error('Cloud SQL URL 형식 불일치');
+        }
+
+        const [, username, password, database, socketPath] = match;
 
         console.log('✅ Cloud SQL Unix Socket 연결:', {
           socket: socketPath,
-          database: url.pathname.slice(1),
-          username: url.username,
+          database,
+          username,
         });
 
         return {
           type: 'postgres',
           host: socketPath, // Unix 소켓 경로
           port: undefined, // Unix 소켓은 포트 불필요
-          password: decodeURIComponent(url.password),
-          name: url.pathname.slice(1),
-          username: decodeURIComponent(url.username),
+          password: decodeURIComponent(password),
+          name: database,
+          username: decodeURIComponent(username),
           synchronize: false,
         };
       }
