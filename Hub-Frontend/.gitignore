@@ -48,5 +48,8 @@ mentoring/
 planner/
 docs/
 *.png
+# Allow asset images
+!src/assets/**/*.png
+!public/**/*.png
 
 
