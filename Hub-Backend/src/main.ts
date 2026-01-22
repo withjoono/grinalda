@@ -211,9 +211,10 @@ async function bootstrap() {
   });
 
   const appPort = process.env.PORT || configService.getOrThrow('app', { infer: true }).port;
-  await app.listen(appPort, '127.0.0.1');
+  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1';
+  await app.listen(appPort, host);
 
-  console.log(`Application is running on: http://localhost:${appPort}`);
+  console.log(`Application is running on: http://${host}:${appPort}`);
   console.log(`Swagger documentation: http://localhost:${appPort}/swagger`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Sentry DSN configured: ${!!process.env.SENTRY_DSN}`);
