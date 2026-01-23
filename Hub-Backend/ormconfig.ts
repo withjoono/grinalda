@@ -21,25 +21,64 @@ const envFile = process.env.NODE_ENV === 'production'
 
 config({ path: join(__dirname, envFile) });
 
-// 환경 변수 검증
-const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
-const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+// DATABASE_URL 파싱 함수
+function parseDatabaseUrl(url: string) {
+  try {
+    // PostgreSQL URL 파싱: postgresql://user:password@host:port/database
+    const parsed = new URL(url);
+    return {
+      host: parsed.hostname,
+      port: parseInt(parsed.port || '5432', 10),
+      username: decodeURIComponent(parsed.username),
+      password: decodeURIComponent(parsed.password),
+      database: parsed.pathname.slice(1),
+    };
+  } catch (error) {
+    throw new Error(`Invalid DATABASE_URL format: ${error.message}`);
+  }
+}
 
-if (missingEnvVars.length > 0) {
-  throw new Error(
-    `Missing required environment variables: ${missingEnvVars.join(', ')}\n` +
-    `Please check your ${envFile} file.\n` +
-    `Run: node scripts/validate-env.js`
-  );
+// DATABASE_URL 우선, 없으면 개별 변수 사용
+let dbConfig: {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+};
+
+if (process.env.DATABASE_URL) {
+  console.log('Using DATABASE_URL for TypeORM CLI');
+  dbConfig = parseDatabaseUrl(process.env.DATABASE_URL);
+} else {
+  // 환경 변수 검증
+  const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+  const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+  if (missingEnvVars.length > 0) {
+    throw new Error(
+      `Missing required environment variables: ${missingEnvVars.join(', ')}\n` +
+      `Please set DATABASE_URL or individual DB_* variables.\n` +
+      `Check your ${envFile} file or run: node scripts/validate-env.js`
+    );
+  }
+
+  dbConfig = {
+    host: process.env.DB_HOST!,
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    username: process.env.DB_USER!,
+    password: process.env.DB_PASSWORD!,
+    database: process.env.DB_NAME!,
+  };
 }
 
 export default new DataSource({
   type: 'postgres',
-  host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: dbConfig.host,
+  port: dbConfig.port,
+  username: dbConfig.username,
+  password: dbConfig.password,
+  database: dbConfig.database,
 
   // 엔티티 파일 경로 (모든 엔티티 자동 로드)
   entities: [

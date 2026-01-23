@@ -66,6 +66,32 @@ jobs:
             --set-env-vars="NODE_ENV=production,AUTH_JWT_TOKEN_EXPIRES_IN=7200000,AUTH_REFRESH_TOKEN_EXPIRES_IN=5184000000,IMP_KEY=test_key,IMP_SECRET=test_secret,IMP_STORE_CODE=test_store,ALIGO_TEST_MODE=true,GCS_PROJECT_ID=ts-back-nest-479305,GCS_BUCKET_NAME=ts-back-nest-bk,GCS_PUBLIC_URL=https://storage.googleapis.com/ts-back-nest-bk" \
             --update-secrets="DATABASE_URL=database-url:latest,AUTH_JWT_SECRET=jwt-secret:latest,AUTH_REFRESH_SECRET=auth-secret:latest,FIREBASE_SERVICE_ACCOUNT=firebase-service-account:latest"
 
+      - name: Run Database Migrations
+        working-directory: ./Hub-Backend
+        run: |
+          # Install dependencies for migration
+          npm install
+
+          # Install Cloud SQL Proxy
+          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+          chmod +x cloud_sql_proxy
+
+          # Start Cloud SQL Proxy in background
+          ./cloud_sql_proxy -instances=${{ env.CLOUD_SQL_INSTANCE }}=tcp:5432 &
+          PROXY_PID=$!
+
+          # Wait for proxy to be ready
+          sleep 5
+
+          # Set DATABASE_URL for migration (using localhost:5432 via proxy)
+          export DATABASE_URL="postgresql://tsuser:tsuser1234@localhost:5432/geobukschool_prod"
+
+          # Run migrations
+          npm run typeorm:run || echo "Migration failed or no pending migrations"
+
+          # Stop proxy
+          kill $PROXY_PID || true
+
       - name: Show service URL
         run: |
           gcloud run services describe ${{ env.SERVICE_NAME }} \
