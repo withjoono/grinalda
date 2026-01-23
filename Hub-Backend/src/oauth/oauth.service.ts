@@ -221,8 +221,8 @@ export class OAuthService {
       phone: member.phone,
     };
 
-    // ID Token은 Access Token과 동일한 방식으로 서명
-    return this.jwtService.createAccessToken(memberId);
+    // ID Token을 커스텀 payload로 서명하여 반환
+    return this.jwtService.createIdToken(payload);
   }
 
   /**

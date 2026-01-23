@@ -20,6 +20,7 @@ import { Public } from '../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentMemberId } from '../auth/decorators/current-member_id.decorator';
 import { ConfigService } from '@nestjs/config';
+import { SkipSuccessResponse } from '../common/decorators/skip-success-response.decorator';
 import { CookieService } from '../auth/services/cookie.service';
 import { JwtService as CustomJwtService } from '../common/jwt/jwt.service';
 import { AllConfigType } from 'src/config/config.type';
@@ -136,7 +137,6 @@ export class OAuthController {
   async consent(
     @Body() body: ConsentDto,
     @CurrentMemberId() memberId: string,
-    @Res() res: Response,
   ) {
     if (!memberId) {
       throw new UnauthorizedException('로그인이 필요합니다.');
@@ -153,12 +153,13 @@ export class OAuthController {
         codeChallengeMethod: body.code_challenge_method,
       });
 
-      // 2. 클라이언트 콜백 URL로 리다이렉트 (code + state)
+      // 2. 클라이언트 콜백 URL 생성 (code + state)
+      // JSON 응답으로 반환하여 프론트엔드에서 리다이렉트 처리
       const callbackUrl = new URL(body.redirect_uri);
       callbackUrl.searchParams.set('code', code);
       callbackUrl.searchParams.set('state', body.state);
 
-      return res.redirect(callbackUrl.toString());
+      return { redirectUrl: callbackUrl.toString() };
     } catch (error) {
       // 에러 발생 시 클라이언트에 에러 정보 전달
       const errorUrl = new URL(body.redirect_uri);
@@ -169,7 +170,7 @@ export class OAuthController {
       );
       errorUrl.searchParams.set('state', body.state);
 
-      return res.redirect(errorUrl.toString());
+      return { redirectUrl: errorUrl.toString() };
     }
   }
 
@@ -179,6 +180,7 @@ export class OAuthController {
    * 또는 Refresh Token으로 새 Access Token 발급
    */
   @Public()
+  @SkipSuccessResponse()
   @Post('token')
   @ApiOperation({
     summary: 'OAuth Token 발급',

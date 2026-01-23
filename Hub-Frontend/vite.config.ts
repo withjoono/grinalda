@@ -16,6 +16,20 @@ export default defineConfig(() => {
       port: 3000,
       cors: true, // CORS 활성화
       proxy: {
+        // OAuth API 엔드포인트만 Hub Backend로 프록시 (authorize, token 등)
+        // /oauth/consent는 프론트엔드 페이지이므로 제외
+        "/oauth/authorize": {
+          target: "http://localhost:4000",
+          changeOrigin: true,
+        },
+        "/oauth/token": {
+          target: "http://localhost:4000",
+          changeOrigin: true,
+        },
+        "/oauth/logout": {
+          target: "http://localhost:4000",
+          changeOrigin: true,
+        },
         // Hub 중앙 인증 서버 (GB-Back-Nest)
         // 로그인/회원가입 등 인증 관련 API 호출
         "/api-hub": {

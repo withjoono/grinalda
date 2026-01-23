@@ -124,21 +124,17 @@ function OAuthConsent() {
         }),
       });
 
-      if (response.redirected) {
-        // 백엔드가 리다이렉트했으면 따라가기
-        window.location.href = response.url;
-        return;
-      }
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "동의 처리 중 오류가 발생했습니다.");
       }
 
-      // 백엔드가 리다이렉트하지 않은 경우 (에러)
+      // JSON 응답에서 리다이렉트 URL 추출
+      // 응답 형식: { success: true, data: { redirectUrl: "..." } }
       const result = await response.json();
-      if (result.redirectUrl) {
-        window.location.href = result.redirectUrl;
+      const redirectUrl = result.data?.redirectUrl || result.redirectUrl;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
       } else {
         throw new Error("리다이렉트 URL을 받지 못했습니다.");
       }

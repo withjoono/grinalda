@@ -92,4 +92,15 @@ export class JwtService {
       algorithms: [this.HASH_ALGORITHM],
     }) as jwt.JwtPayload;
   }
+
+  /**
+   * OIDC ID Token 생성 (커스텀 payload)
+   * @param payload ID Token payload (sub, aud, iss, email, nickname 등)
+   * @returns 서명된 ID Token JWT
+   */
+  createIdToken(payload: Record<string, any>): string {
+    return jwt.sign(payload, this.getSigningKey(this.SECRET_KEY), {
+      algorithm: this.HASH_ALGORITHM,
+    });
+  }
 }
