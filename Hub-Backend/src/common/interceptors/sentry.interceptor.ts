@@ -8,16 +8,12 @@ import {
   Inject,
 } from '@nestjs/common';
 import * as Sentry from '@sentry/nestjs';
-import { IncomingWebhook } from '@slack/client';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Logger } from 'winston';
 
 @Injectable()
 export class SentryInterceptor implements NestInterceptor {
-  private lastNotificationTime: number = 0;
-  private errorCount: { [key: string]: number } = {};
-
   constructor(@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -25,9 +21,6 @@ export class SentryInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       catchError((error) => {
-        const errorKey = `${error.name}:${error.message}`;
-        this.errorCount[errorKey] = (this.errorCount[errorKey] || 0) + 1;
-
         // Sentry에 컨텍스트와 함께 에러 전송
         Sentry.withScope((scope) => {
           // 요청 정보 추가
@@ -53,8 +46,7 @@ export class SentryInterceptor implements NestInterceptor {
             });
           }
 
-          // 에러 발생 횟수
-          scope.setTag('errorCount', this.errorCount[errorKey]);
+          // 에러 타입 태그
           scope.setTag('errorType', error.name);
 
           // HTTP 상태 코드
@@ -73,7 +65,6 @@ export class SentryInterceptor implements NestInterceptor {
           params: request.params,
           query: request.query,
           headers: this.sanitizeHeaders(request.headers),
-          errorCount: this.errorCount[errorKey],
         };
 
         // 로그 메시지 생성
@@ -82,7 +73,6 @@ export class SentryInterceptor implements NestInterceptor {
         // HTTP 예외가 아니거나 500 에러인 경우
         if (!(error instanceof HttpException) || error instanceof InternalServerErrorException) {
           this.logger.error(logMessage, logContext);
-          this.sendSlackNotification(error, logContext);
         } else {
           // 400대 에러는 경고 로그로 기록
           this.logger.warn(logMessage, logContext);
@@ -122,57 +112,5 @@ export class SentryInterceptor implements NestInterceptor {
     }
 
     return sanitized;
-  }
-
-  private sendSlackNotification(error: Error, logContext: any): void {
-    const currentTime = Date.now();
-    const errorKey = `${error.name}:${error.message}`;
-
-    // 마지막 알림으로부터 5분이 지났거나, 같은 에러가 5번 이상 발생했을 때만 알림을 보냄
-    if (currentTime - this.lastNotificationTime > 5 * 60 * 1000 || this.errorCount[errorKey] >= 5) {
-      const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
-      webhook.send({
-        attachments: [
-          {
-            color: 'danger',
-            text: `🚨${process.env.APP_NAME} API 서버 심각한 에러발생🚨`,
-            fields: [
-              {
-                title: '에러 유형',
-                value: error.name,
-                short: false,
-              },
-              {
-                title: '에러 메시지',
-                value: error.message,
-                short: false,
-              },
-              {
-                title: '스택 트레이스',
-                value: error.stack,
-                short: false,
-              },
-              {
-                title: '발생 횟수',
-                value: this.errorCount[errorKey].toString(),
-                short: true,
-              },
-              {
-                title: '요청 정보',
-                value: JSON.stringify(logContext, null, 2),
-                short: false,
-              },
-            ],
-            ts: Math.floor(currentTime / 1000).toString(),
-          },
-        ],
-      });
-
-      // Slack notification sent (logger.info removed due to compatibility issues)
-
-      // 알림을 보낸 후 타임스탬프와 에러 카운트를 초기화
-      this.lastNotificationTime = currentTime;
-      this.errorCount[errorKey] = 0;
-    }
   }
 }
