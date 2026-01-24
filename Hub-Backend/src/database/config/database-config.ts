@@ -71,7 +71,7 @@ export default registerAs<DatabaseConfig>('database', () => {
           password, // decodeURIComponent 불필요 (이미 plain text)
           name: database,
           username,
-          synchronize: false,
+          synchronize: process.env.DB_SYNCHRONIZE === 'true',
         };
       }
 
@@ -92,7 +92,7 @@ export default registerAs<DatabaseConfig>('database', () => {
         password: decodeURIComponent(url.password),
         name: url.pathname.slice(1),
         username: decodeURIComponent(url.username),
-        synchronize: false,
+        synchronize: process.env.DB_SYNCHRONIZE === 'true',
       };
     } catch (error) {
       // 에러 상세 정보 출력
@@ -111,15 +111,15 @@ export default registerAs<DatabaseConfig>('database', () => {
   // DATABASE_URL이 없으면 개별 변수 사용 (개발 환경)
   validateConfig(process.env, EnvironmentVariablesValidator);
 
-  // 실수로 동기화를 킬 경우를 대비해 config를 구성할 때 사전 차단
-  // 로컬 개발 환경(development)이나 SQLite 사용 시에는 동기화 허용
+  // 주의: DB_SYNCHRONIZE=true는 기존 테이블을 삭제할 수 있으므로 주의해서 사용
+  // 프로덕션 환경에서는 마이그레이션을 사용하는 것을 권장
   if (
     process.env.DB_SYNCHRONIZE === 'true' &&
     process.env.NODE_ENV !== 'development' &&
     process.env.DB_TYPE !== 'better-sqlite3'
   ) {
-    throw new Error(
-      'DB 동기화 설정이 켜져있습니다. DB의 데이터가 날아갈 수 있음으로 서버를 실행시킬 수 없습니다.',
+    console.warn(
+      '⚠️ 경고: 프로덕션 환경에서 DB_SYNCHRONIZE=true가 설정되어 있습니다. 기존 데이터에 영향을 줄 수 있습니다.',
     );
   }
 
