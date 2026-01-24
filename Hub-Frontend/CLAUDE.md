@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-GeobukSchool Frontend - 이중 백엔드 아키텍처(Spring + NestJS)를 사용하는 React 기반 대학 입시 컨설팅 플랫폼. 수시 및 정시 전략에 대한 종합 분석 기능 제공.
+GeobukSchool Frontend - NestJS 백엔드를 사용하는 React 기반 대학 입시 컨설팅 플랫폼. 수시 및 정시 전략에 대한 종합 분석 기능 제공.
+
+**Note**: Spring 백엔드는 2024-12에 완전히 제거되었으며, 모든 기능이 NestJS로 마이그레이션되었습니다.
 
 ## 기술 스택
 
@@ -18,8 +20,9 @@ GeobukSchool Frontend - 이중 백엔드 아키텍처(Spring + NestJS)를 사용
 - **폼**: React Hook Form 7.52.1 + Zod 3.23.8
 - **UI**: Radix UI primitives + Tailwind CSS + shadcn/ui 컴포넌트
 - **백엔드 프록시**:
-  - `/api-spring` → Spring 백엔드 (포트 8080)
+  - `/api-hub` → Hub 중앙 인증 서버 (포트 4000)
   - `/api-nest` → NestJS 백엔드 (포트 4001)
+  - `/api-susi` → Susi 비즈니스 로직 백엔드 (포트 4001)
 
 ## 개발 명령어
 
@@ -39,23 +42,27 @@ npm run deploy:firebase:staging  # 스테이징 환경 배포
 ```
 
 ### 백엔드 요구사항
-프론트엔드는 두 개의 백엔드 서버가 실행되어야 합니다:
-- Spring 백엔드: http://localhost:8080
-- NestJS 백엔드: http://localhost:4001
+프론트엔드는 NestJS 백엔드 서버가 실행되어야 합니다:
+- Hub 중앙 인증 서버 (GB-Back-Nest): http://localhost:4000
+- Susi 비즈니스 로직 백엔드: http://localhost:4001
 
 백엔드 URL 설정은 `.env` 파일 참조.
 
 ## 아키텍처 및 코드 구조
 
-### 이중 백엔드 아키텍처
-이 프로젝트는 두 개의 분리된 백엔드를 사용합니다:
-1. **Spring 백엔드** (`/api-spring`): 파일 업로드, 생기부 파싱, 입학사정관 프로필, 논술 관련 기능 처리
-2. **NestJS 백엔드** (`/api-nest`): 인증, 사용자 관리, 주요 비즈니스 로직 등 나머지 모든 기능 처리
+### NestJS 백엔드 아키텍처
+이 프로젝트는 NestJS 기반 백엔드를 사용합니다:
+1. **Hub 중앙 인증 서버** (`/api-hub`): 로그인, 회원가입, OAuth, 토큰 관리 등 인증 관련 기능
+2. **Susi 비즈니스 로직 백엔드** (`/api-susi`): 수시/정시 전략, 학생부 관리, 대학 정보 등 비즈니스 로직
 
 새로운 API 호출 추가 시:
-- **NestJS 엔드포인트**: `authClient` 또는 `publicClient` (from `@/lib/api`)
-- **Spring 엔드포인트**: `springAuthClient` 또는 `springPublicClient` (from `@/lib/api`)
+- **인증 API**: `publicClient` (로그인/회원가입) 또는 `authClient` (인증 필요한 API)
+- 모든 클라이언트는 `@/lib/api`에서 import
 - 레거시 코드: `src/stores/server/api-client.ts` (단계적 폐기 예정)
+
+**⚠️ Spring 백엔드 제거 완료** (2024-12):
+- 모든 Spring 관련 코드는 주석처리되었습니다
+- `springAuthClient`, `springPublicClient`는 더 이상 사용하지 않습니다
 
 ### 프로젝트 구조
 
@@ -222,13 +229,14 @@ import { authClient } from '@/lib/api'
 ## 주요 규칙
 
 ### API 통합
-- **백엔드 타입 확인**: API 호출 추가 전 Spring vs NestJS 확인 필수
-- **적절한 클라이언트 사용**:
-  - NestJS: `authClient`, `publicClient` (from `@/lib/api`)
-  - Spring: `springAuthClient`, `springPublicClient` (from `@/lib/api`)
-- **환경 변수**: `env.apiUrlNest`, `env.apiUrlSpring` 사용 (from `@/lib/config/env`)
+- **API 클라이언트 사용**:
+  - 인증 불필요: `publicClient` (로그인, 회원가입 등)
+  - 인증 필요: `authClient` (사용자 정보, 비즈니스 로직 등)
+  - 모든 클라이언트는 `@/lib/api`에서 import
+- **환경 변수**: `env.apiUrlHub`, `env.apiUrlNest` 사용 (from `@/lib/config/env`)
 - **기능 기반 구조**: 관련 API 호출을 `stores/server/features/`에 그룹화
 - **에러 처리**: 에러 코드(C401, C999 등)와 `@/lib/errors`의 `handleApiError` 사용
+- **⚠️ Spring 백엔드**: 2024-12에 완전히 제거됨. `springAuthClient`, `springPublicClient`는 더 이상 사용하지 않음
 
 ### 컴포넌트 개발
 - **UI 컴포넌트**: `components/ui/`의 Radix UI primitives 사용
@@ -266,8 +274,8 @@ GitHub Actions를 통한 자동 배포:
 ```typescript
 import { env } from '@/lib/config/env';
 
-const apiUrl = env.apiUrlNest;        // NestJS 백엔드
-const springUrl = env.apiUrlSpring;    // Spring 백엔드
+const hubUrl = env.apiUrlHub;          // Hub 중앙 인증 서버
+const susiUrl = env.apiUrlNest;        // Susi 비즈니스 로직 백엔드
 const firebase = env.firebase;         // Firebase 설정
 ```
 

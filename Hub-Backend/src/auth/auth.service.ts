@@ -84,7 +84,9 @@ export class AuthService {
     if (!member) {
       throw new NotFoundException(STATUS_MESSAGES.MEMBER.ACCOUNT_NOT_FOUND);
     }
-    if (member.provider_type !== null && member.provider_type !== AuthProviderEnum.email) {
+    // hub와 local(email) provider만 이메일/비밀번호 로그인 허용
+    const allowedProviders = [AuthProviderEnum.email, AuthProviderEnum.hub];
+    if (member.provider_type !== null && !allowedProviders.includes(member.provider_type as AuthProviderEnum)) {
       throw new BadRequestException(STATUS_MESSAGES.MEMBER.PROVIDER_MISMATCH);
     }
     if (!member.password) {

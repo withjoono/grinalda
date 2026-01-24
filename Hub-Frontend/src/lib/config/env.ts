@@ -34,6 +34,9 @@ interface EnvConfig {
   // apiUrlSpring: string;
   apiUrlNest: string;
 
+  // Hub OAuth 클라이언트 ID
+  hubOAuthClientId: string;
+
   // 소셜 로그인
   naverLoginClientId: string;
   googleClientId: string;
@@ -74,7 +77,10 @@ export const env: EnvConfig = {
   // Spring 백엔드는 더 이상 사용하지 않음 (2024-12 NestJS로 완전 마이그레이션)
   // apiUrlSpring: isDev ? '/api-spring' : getEnvVar('VITE_API_URL_SPRING', 'http://localhost:8080'),
   apiUrlNest: isDev ? '/api-susi' : getEnvVar('VITE_API_URL_SUSI', 'http://localhost:4002'),
-  
+
+  // Hub OAuth 클라이언트 ID
+  hubOAuthClientId: getEnvVar('VITE_HUB_OAUTH_CLIENT_ID', 'geobukschool-frontend'),
+
   // 소셜 로그인
   naverLoginClientId: getEnvVar('VITE_NAVER_LOGIN_CLIENT_ID'),
   googleClientId: getEnvVar('VITE_GOOGLE_CLIENT_ID'),
