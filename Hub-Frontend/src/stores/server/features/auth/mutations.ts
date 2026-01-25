@@ -12,6 +12,7 @@ import { BaseResponse } from "../../common-interface";
 import { createMutation } from "../../common-utils";
 import { useMutation } from "@tanstack/react-query";
 import { hubApiClient } from "../../hub-api-client";
+import { toast } from "sonner";
 
 // 로그인/회원가입 후 인증토큰 처리
 const authSuccessHandler = (data: BaseResponse<ILoginResponse>) => {
@@ -45,8 +46,10 @@ export const useLoginWithEmail = () => {
       return res.data;
     },
     onSuccess: authSuccessHandler,
-    onError: (e) => {
+    onError: (e: any) => {
       console.error("로그인 에러", e);
+      const errorMessage = e.response?.data?.message || "로그인 중 오류가 발생했습니다.";
+      toast.error(errorMessage);
     },
   });
 };
@@ -73,8 +76,10 @@ export const useRegisterWithEmail = () => {
       return res.data;
     },
     onSuccess: authSuccessHandler,
-    onError: (e) => {
+    onError: (e: any) => {
       console.error("회원가입 에러", e);
+      const errorMessage = e.response?.data?.message || "회원가입 중 오류가 발생했습니다.";
+      toast.error(errorMessage);
     },
   });
 };
