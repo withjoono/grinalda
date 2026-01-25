@@ -40,29 +40,54 @@ export function LoginForm({ className }: Props) {
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     if (loginWithEmail.isPending) return;
-    const result = await loginWithEmail.mutateAsync({
-      email: values.email,
-      password: values.password,
-    });
 
-    if (result.success) {
-      toast.success("환영합니다. 거북스쿨입니다. 😄");
+    try {
+      const result = await loginWithEmail.mutateAsync({
+        email: values.email,
+        password: values.password,
+      });
 
-      // 사용자 정보를 가져와서 memberType에 따라 리다이렉트
-      try {
-        const user = await USER_API.fetchCurrentUserAPI();
-        if (user?.memberType === 'teacher') {
-          navigate({ to: "/mentoring/admin" });
-        } else if (user?.memberType === 'parent') {
-          navigate({ to: "/mentoring/parent" });
-        } else {
+      if (result.success) {
+        toast.success("환영합니다. 거북스쿨입니다. 😄");
+
+        // 사용자 정보를 가져와서 memberType에 따라 리다이렉트
+        try {
+          const user = await USER_API.fetchCurrentUserAPI();
+          if (user?.memberType === 'teacher') {
+            navigate({ to: "/mentoring/admin" });
+          } else if (user?.memberType === 'parent') {
+            navigate({ to: "/mentoring/parent" });
+          } else {
+            navigate({ to: "/" });
+          }
+        } catch {
           navigate({ to: "/" });
         }
-      } catch {
-        navigate({ to: "/" });
+      } else {
+        toast.error(result.error);
       }
-    } else {
-      toast.error(result.error);
+    } catch (error: any) {
+      // 에러 메시지에서 필드 판단
+      const errorMessage = error.response?.data?.message || "로그인 중 오류가 발생했습니다.";
+
+      // 이메일 관련 에러
+      if (errorMessage.includes("이메일") || errorMessage.includes("email")) {
+        form.setError("email", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+      // 비밀번호 관련 에러
+      else if (errorMessage.includes("비밀번호") || errorMessage.includes("password")) {
+        form.setError("password", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
+      // 기타 에러는 toast로 표시 (5초 동안)
+      else {
+        toast.error(errorMessage, { duration: 5000 });
+      }
     }
   }
 
