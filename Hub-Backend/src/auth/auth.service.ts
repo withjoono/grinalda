@@ -86,7 +86,10 @@ export class AuthService {
     }
     // hub와 local(email) provider만 이메일/비밀번호 로그인 허용
     const allowedProviders = [AuthProviderEnum.email, AuthProviderEnum.hub];
-    if (member.provider_type !== null && !allowedProviders.includes(member.provider_type as AuthProviderEnum)) {
+    if (
+      member.provider_type !== null &&
+      !allowedProviders.includes(member.provider_type as AuthProviderEnum)
+    ) {
       throw new BadRequestException(STATUS_MESSAGES.MEMBER.PROVIDER_MISMATCH);
     }
     if (!member.password) {
@@ -345,6 +348,8 @@ export class AuthService {
   }
 
   async getProfileWithNaver(accessToken: string): Promise<SocialUser> {
+    const TIMEOUT_MS = 10000; // 10초 타임아웃
+
     try {
       const response = await firstValueFrom(
         this.httpService
@@ -352,10 +357,16 @@ export class AuthService {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
+            timeout: TIMEOUT_MS,
           })
           .pipe(
             catchError((error: AxiosError) => {
-              throw new Error(`유저 프로필 정보 가져오기 실패: ${error.message}`);
+              if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                this.logger.error(`[Naver 로그인] 타임아웃 발생: ${TIMEOUT_MS}ms 초과`);
+                throw new Error('네이버 서버 응답 시간 초과');
+              }
+              this.logger.error(`[Naver 로그인] API 에러: ${error.message}`);
+              throw new Error(`네이버 프로필 정보 가져오기 실패: ${error.message}`);
             }),
           ),
       );
@@ -369,18 +380,28 @@ export class AuthService {
         profile_image,
       };
     } catch (err) {
-      throw new Error('Failed to fetch NaverUserProfile');
+      this.logger.error(`[Naver 로그인] 프로필 조회 실패: ${err.message}`);
+      throw new Error(`네이버 프로필 조회 실패: ${err.message}`);
     }
   }
 
   async getProfileWithGoogle(accessToken: string): Promise<SocialUser> {
+    const TIMEOUT_MS = 10000; // 10초 타임아웃
+
     try {
       const response = await firstValueFrom(
         this.httpService
-          .get(`https://oauth2.googleapis.com/tokeninfo?id_token=${accessToken}`)
+          .get(`https://oauth2.googleapis.com/tokeninfo?id_token=${accessToken}`, {
+            timeout: TIMEOUT_MS,
+          })
           .pipe(
             catchError((error: AxiosError) => {
-              throw new Error(`유저 프로필 정보 가져오기 실패: ${error.message}`);
+              if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                this.logger.error(`[Google 로그인] 타임아웃 발생: ${TIMEOUT_MS}ms 초과`);
+                throw new Error('구글 서버 응답 시간 초과');
+              }
+              this.logger.error(`[Google 로그인] API 에러: ${error.message}`);
+              throw new Error(`구글 프로필 정보 가져오기 실패: ${error.message}`);
             }),
           ),
       );
@@ -394,7 +415,8 @@ export class AuthService {
         profile_image: picture,
       };
     } catch (err) {
-      throw new Error('Failed to fetch NaverUserProfile');
+      this.logger.error(`[Google 로그인] 프로필 조회 실패: ${err.message}`);
+      throw new Error(`구글 프로필 조회 실패: ${err.message}`);
     }
   }
 

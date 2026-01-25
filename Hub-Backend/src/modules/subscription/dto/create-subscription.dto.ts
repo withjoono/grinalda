@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsDateString, IsArray, IsBoolean, IsIn } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsDateString,
+  IsArray,
+  IsBoolean,
+  IsIn,
+} from 'class-validator';
 
 export class CreateSubscriptionDto {
   @ApiProperty({ example: 1, description: '회원 ID' })
@@ -24,7 +32,11 @@ export class CreateSubscriptionDto {
   @IsNumber()
   paymentOrderId?: number;
 
-  @ApiProperty({ example: ['prediction', 'analytics'], description: '활성화할 기능 목록', required: false })
+  @ApiProperty({
+    example: ['prediction', 'analytics'],
+    description: '활성화할 기능 목록',
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   features?: string[];
@@ -56,7 +68,11 @@ export class UpdateSubscriptionDto {
   @IsDateString()
   expiresAt?: string;
 
-  @ApiProperty({ example: ['prediction', 'analytics'], description: '활성화할 기능 목록', required: false })
+  @ApiProperty({
+    example: ['prediction', 'analytics'],
+    description: '활성화할 기능 목록',
+    required: false,
+  })
   @IsOptional()
   @IsArray()
   features?: string[];

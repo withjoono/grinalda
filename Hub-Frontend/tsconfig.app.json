@@ -26,8 +26,9 @@
     /* Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared/*": ["./fe-shared-packages/packages/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "fe-shared-packages/packages"]
 }

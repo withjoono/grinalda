@@ -10,7 +10,11 @@ export class AppPermissionDto {
   @ApiProperty({ example: '2025-12-31T23:59:59Z', description: '만료일', required: false })
   expires?: string;
 
-  @ApiProperty({ example: ['prediction', 'analytics', 'export'], description: '사용 가능 기능', required: false })
+  @ApiProperty({
+    example: ['prediction', 'analytics', 'export'],
+    description: '사용 가능 기능',
+    required: false,
+  })
   features?: string[];
 }
 

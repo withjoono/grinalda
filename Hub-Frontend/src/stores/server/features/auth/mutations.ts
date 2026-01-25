@@ -9,31 +9,23 @@ import {
   IVerifyCodeBody,
 } from "./interfaces";
 import { BaseResponse } from "../../common-interface";
-import { createMutation } from "../../common-utils";
 import { useMutation } from "@tanstack/react-query";
 import { hubApiClient } from "../../hub-api-client";
 
 // 로그인/회원가입 후 인증토큰 처리
+// ⚠️ 토큰은 useAuthStore.setTokens()에서 localStorage와 동기화됨
+//    중복 저장 하지 않음 (single source of truth)
 const authSuccessHandler = (data: BaseResponse<ILoginResponse>) => {
   const { setTokens, clearTokens } = useAuthStore.getState();
   if (data.success) {
     const { accessToken, refreshToken, tokenExpiry } = data.data;
+    // useAuthStore.setTokens()가 내부적으로 localStorage에도 저장함
     setTokens(accessToken, refreshToken, tokenExpiry);
-    
-    // localStorage에도 저장 (makeApiCall에서 사용)
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    
-    console.log('✅ 로그인 성공! 토큰 저장됨:', {
-      accessToken: accessToken.substring(0, 20) + '...',
-      refreshToken: refreshToken.substring(0, 20) + '...',
-      tokenExpiry
-    });
+
+    console.log('✅ 로그인 성공! 토큰 저장됨');
   } else {
+    // useAuthStore.clearTokens()가 내부적으로 localStorage에서도 제거함
     clearTokens();
-    // localStorage에서도 제거
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
   }
 };
 

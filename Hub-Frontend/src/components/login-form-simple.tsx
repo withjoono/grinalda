@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./custom/button";
 import { loginFormSchema } from "@/lib/validations/auth";
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useLoginWithEmail } from "@/stores/server/features/auth/mutations";

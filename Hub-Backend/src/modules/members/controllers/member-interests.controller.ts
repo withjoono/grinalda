@@ -10,9 +10,15 @@ import {
 import { MemberInterestsService } from '../services/member-interests.service';
 import { AddInterestDto } from '../dtos/add-interest.dto';
 import { RemoveInterestDto } from '../dtos/remove-interest.dto';
-import { InterestSusiSubjectResponseDto, InterestSusiSubjectResponse } from '../dtos/interest-susi-subject-response';
+import {
+  InterestSusiSubjectResponseDto,
+  InterestSusiSubjectResponse,
+} from '../dtos/interest-susi-subject-response';
 import { MemberPermissionGuard } from '../guards/user-permission.guard';
-import { InterestSusiComprehensiveResponseDto, InterestSusiComprehensiveResponse } from '../dtos/interest-susi-comprehensive-response';
+import {
+  InterestSusiComprehensiveResponseDto,
+  InterestSusiComprehensiveResponse,
+} from '../dtos/interest-susi-comprehensive-response';
 
 @ApiTags('members')
 @Controller('members/:memberId/interests')

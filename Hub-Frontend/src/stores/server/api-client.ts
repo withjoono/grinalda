@@ -131,10 +131,12 @@ const createNestApiInterceptors = (apiClientInstance) => {
         if (refreshToken) {
           try {
             // 토큰 갱신 시도 (환경에 따른 URL 사용)
+            // 타임아웃 10초 설정 (네트워크 지연 시 무한 대기 방지)
             const response = await axios.get(getBaseUrl('nest') + '/auth/refresh', {
               headers: {
                 refreshToken: `Bearer ${refreshToken}`
-              }
+              },
+              timeout: 10000, // 10초 타임아웃
             });
 
             const { accessToken, refreshToken: newRefreshToken } = response.data.data;

@@ -13,6 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Shield, Mail, User, CheckCircle2 } from "lucide-react";
+// 공유 SSO 라이브러리 사용
+import { isAllowedOrigin } from "@shared/sso-client";
 
 export const Route = createFileRoute("/oauth/consent")({
   component: OAuthConsent,
@@ -133,11 +135,18 @@ function OAuthConsent() {
       // 응답 형식: { success: true, data: { redirectUrl: "..." } }
       const result = await response.json();
       const redirectUrl = result.data?.redirectUrl || result.redirectUrl;
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
+
+      if (!redirectUrl) {
         throw new Error("리다이렉트 URL을 받지 못했습니다.");
       }
+
+      // 보안: Open Redirect 방지를 위한 URL 검증 (공유 라이브러리 사용)
+      if (!isAllowedOrigin(redirectUrl)) {
+        console.error("❌ 허용되지 않은 리다이렉트 URL:", redirectUrl);
+        throw new Error("허용되지 않은 리다이렉트 URL입니다.");
+      }
+
+      window.location.href = redirectUrl;
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다."

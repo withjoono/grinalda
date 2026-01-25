@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 import { AppEntity } from 'src/database/entities/subscription/app.entity';
 import { AppSubscriptionEntity } from 'src/database/entities/subscription/app-subscription.entity';
 import { ProductPermissionMappingEntity } from 'src/database/entities/subscription/product-permission-mapping.entity';
-import { AppPermissionDto, LicenseCheckResponseDto, PermissionsDto } from './dto/app-permission.dto';
+import {
+  AppPermissionDto,
+  LicenseCheckResponseDto,
+  PermissionsDto,
+} from './dto/app-permission.dto';
 import { CreateSubscriptionDto, UpdateSubscriptionDto } from './dto/create-subscription.dto';
 import { CreateProductMappingDto, UpdateProductMappingDto } from './dto/product-mapping.dto';
 
@@ -69,7 +73,10 @@ export class SubscriptionService {
   /**
    * 특정 앱에 대한 사용자 구독 정보 조회
    */
-  async getMemberAppSubscription(memberId: number, appId: string): Promise<AppSubscriptionEntity | null> {
+  async getMemberAppSubscription(
+    memberId: number,
+    appId: string,
+  ): Promise<AppSubscriptionEntity | null> {
     return this.subscriptionRepository.findOne({
       where: { member_id: memberId, app_id: appId },
       relations: ['app'],
@@ -121,7 +128,11 @@ export class SubscriptionService {
   /**
    * 구독 상태 업데이트
    */
-  async updateSubscription(memberId: number, appId: string, dto: UpdateSubscriptionDto): Promise<AppSubscriptionEntity> {
+  async updateSubscription(
+    memberId: number,
+    appId: string,
+    dto: UpdateSubscriptionDto,
+  ): Promise<AppSubscriptionEntity> {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
     if (!subscription) {
       throw new NotFoundException(`구독 정보를 찾을 수 없습니다`);
@@ -157,7 +168,7 @@ export class SubscriptionService {
 
     // 모든 활성 앱에 대해 권한 정보 생성
     for (const app of apps) {
-      const subscription = subscriptions.find(s => s.app_id === app.id);
+      const subscription = subscriptions.find((s) => s.app_id === app.id);
 
       if (subscription && subscription.isValid()) {
         permissions[app.id] = {
@@ -292,7 +303,9 @@ export class SubscriptionService {
   /**
    * 상품-권한 매핑 생성
    */
-  async createProductMapping(dto: CreateProductMappingDto): Promise<ProductPermissionMappingEntity> {
+  async createProductMapping(
+    dto: CreateProductMappingDto,
+  ): Promise<ProductPermissionMappingEntity> {
     // 앱 존재 확인
     await this.getAppById(dto.appId);
 
@@ -306,7 +319,7 @@ export class SubscriptionService {
 
     if (existing) {
       throw new ConflictException(
-        `이미 존재하는 상품 매핑입니다: ${dto.appId}/${dto.externalProductId}`
+        `이미 존재하는 상품 매핑입니다: ${dto.appId}/${dto.externalProductId}`,
       );
     }
 

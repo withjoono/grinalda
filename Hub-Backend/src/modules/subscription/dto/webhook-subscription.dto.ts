@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsDateString, IsArray, IsIn, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsDateString,
+  IsArray,
+  IsIn,
+  IsEnum,
+} from 'class-validator';
 
 /**
  * Webhook으로 구독 정보를 받을 때 사용하는 DTO
@@ -24,22 +32,38 @@ export class WebhookSubscriptionDto {
   @IsString()
   appId: string;
 
-  @ApiProperty({ example: '1', description: '외부 앱의 상품 ID (권장: DB 매핑 사용)', required: false })
+  @ApiProperty({
+    example: '1',
+    description: '외부 앱의 상품 ID (권장: DB 매핑 사용)',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   externalProductId?: string;
 
-  @ApiProperty({ example: 'premium', description: '구독 플랜 (externalProductId 없을 때 필수)', required: false })
+  @ApiProperty({
+    example: 'premium',
+    description: '구독 플랜 (externalProductId 없을 때 필수)',
+    required: false,
+  })
   @IsOptional()
   @IsIn(['free', 'basic', 'premium'])
   plan?: 'free' | 'basic' | 'premium';
 
-  @ApiProperty({ example: '2026-11-30T23:59:59Z', description: '만료일 (선택: DB 매핑의 duration_days 우선)', required: false })
+  @ApiProperty({
+    example: '2026-11-30T23:59:59Z',
+    description: '만료일 (선택: DB 매핑의 duration_days 우선)',
+    required: false,
+  })
   @IsOptional()
   @IsDateString()
   expiresAt?: string;
 
-  @ApiProperty({ example: 123, description: '결제 주문 ID (Susi의 payment_order_id)', required: false })
+  @ApiProperty({
+    example: 123,
+    description: '결제 주문 ID (Susi의 payment_order_id)',
+    required: false,
+  })
   @IsOptional()
   @IsNumber()
   paymentOrderId?: number;
@@ -47,7 +71,7 @@ export class WebhookSubscriptionDto {
   @ApiProperty({
     example: ['prediction', 'analytics', 'export', 'ai-evaluation'],
     description: '활성화할 기능 목록 (externalProductId 없을 때 필수)',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsArray()
@@ -68,7 +92,11 @@ export class WebhookSubscriptionDto {
   @IsString()
   eventType?: string;
 
-  @ApiProperty({ example: '2027 수시 예측 분석 서비스', description: '상품명 (로깅용)', required: false })
+  @ApiProperty({
+    example: '2027 수시 예측 분석 서비스',
+    description: '상품명 (로깅용)',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   productName?: string;

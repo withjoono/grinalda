@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { generateSSOUrl, isSSOService } from "@/lib/utils/sso-helper";
-import { useAuthStore } from "@/stores/client/use-auth-store";
+import { useSSOProvider } from "@/hooks/use-sso-provider";
 import {
   Calendar,
   Users,
@@ -179,7 +178,8 @@ interface ServiceSectionProps {
 function ServiceSection({ title, subtitle, icon, services, badgeColor, bgColor }: ServiceSectionProps) {
   // 개발 환경에서는 disabled 무시 (로컬에서 모든 서비스 접근 가능)
   const isDev = import.meta.env.DEV;
-  const { accessToken } = useAuthStore();
+  // postMessage 기반 SSO Provider 사용
+  const { openSSOService, isSSOService, getTokens } = useSSOProvider();
 
   return (
     <div className={cn("py-12", bgColor)}>
@@ -287,14 +287,15 @@ function ServiceSection({ title, subtitle, icon, services, badgeColor, bgColor }
               "hover:shadow-xl hover:-translate-y-1 cursor-pointer"
             );
 
-            // 외부 링크인 경우 <a> 태그 사용
+            // 외부 링크인 경우
             if (service.isExternal) {
-              // SSO 지원 서비스인 경우 토큰과 함께 이동
+              // SSO 지원 서비스인 경우 postMessage로 토큰 전달
               const handleExternalClick = (e: React.MouseEvent) => {
-                if (isSSOService(service.href) && accessToken) {
+                const tokens = getTokens();
+                if (isSSOService(service.href) && tokens) {
                   e.preventDefault();
-                  const ssoUrl = generateSSOUrl(service.href);
-                  window.open(ssoUrl, '_blank', 'noopener,noreferrer');
+                  // postMessage 방식으로 새 창 열기 (URL에 토큰 노출 없음)
+                  openSSOService(service.href);
                 }
                 // SSO 서비스가 아니거나 비로그인 상태면 기본 동작 (일반 링크)
               };

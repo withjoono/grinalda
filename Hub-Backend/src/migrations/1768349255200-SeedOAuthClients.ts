@@ -82,6 +82,8 @@ export class SeedOAuthClients1768349255200 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE FROM "oauth_clients" WHERE "clientId" IN ('susi-app', 'jungsi-app', 'examhub-app', 'studyplanner-app')`);
+    await queryRunner.query(
+      `DELETE FROM "oauth_clients" WHERE "clientId" IN ('susi-app', 'jungsi-app', 'examhub-app', 'studyplanner-app')`,
+    );
   }
 }

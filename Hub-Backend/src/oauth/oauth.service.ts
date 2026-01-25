@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThan } from 'typeorm';
+import { Repository, LessThan, MoreThan } from 'typeorm';
 import { OAuthClientEntity } from '../database/entities/oauth/oauth-client.entity';
 import { OAuthAuthorizationCodeEntity } from '../database/entities/oauth/oauth-authorization-code.entity';
 import { JwtService } from '../common/jwt/jwt.service';
@@ -66,14 +66,10 @@ export class OAuthService {
    * @param requestedScopes 요청된 스코프 배열
    */
   validateScopes(client: OAuthClientEntity, requestedScopes: string[]): void {
-    const invalidScopes = requestedScopes.filter(
-      (scope) => !client.allowedScopes.includes(scope),
-    );
+    const invalidScopes = requestedScopes.filter((scope) => !client.allowedScopes.includes(scope));
 
     if (invalidScopes.length > 0) {
-      throw new BadRequestException(
-        `허용되지 않은 scope: ${invalidScopes.join(', ')}`,
-      );
+      throw new BadRequestException(`허용되지 않은 scope: ${invalidScopes.join(', ')}`);
     }
   }
 
@@ -128,9 +124,7 @@ export class OAuthService {
    * @param code Authorization Code
    * @returns OAuthAuthorizationCodeEntity
    */
-  async validateAuthorizationCode(
-    code: string,
-  ): Promise<OAuthAuthorizationCodeEntity> {
+  async validateAuthorizationCode(code: string): Promise<OAuthAuthorizationCodeEntity> {
     const authCode = await this.authCodeRepository.findOne({
       where: { code },
       relations: ['client', 'member'],
@@ -142,9 +136,7 @@ export class OAuthService {
 
     // 이미 사용된 코드 확인
     if (authCode.isUsed) {
-      throw new UnauthorizedException(
-        'Authorization code가 이미 사용되었습니다.',
-      );
+      throw new UnauthorizedException('Authorization code가 이미 사용되었습니다.');
     }
 
     // 만료 확인
@@ -171,10 +163,7 @@ export class OAuthService {
    */
   verifyPKCE(codeVerifier: string, codeChallenge: string): boolean {
     // SHA-256 해시 후 base64url 인코딩
-    const hash = crypto
-      .createHash('sha256')
-      .update(codeVerifier)
-      .digest('base64url');
+    const hash = crypto.createHash('sha256').update(codeVerifier).digest('base64url');
 
     return hash === codeChallenge;
   }
@@ -247,24 +236,21 @@ export class OAuthService {
    * @param memberId 사용자 ID
    * @param clientId 클라이언트 ID
    */
-  async revokeCodesByClient(
-    memberId: number,
-    clientId: string,
-  ): Promise<void> {
+  async revokeCodesByClient(memberId: number, clientId: string): Promise<void> {
     await this.authCodeRepository.delete({ memberId, clientId });
   }
 
   /**
    * Authorization Code 사용 여부 확인
    * @param memberId 사용자 ID
-   * @returns 활성 코드 개수
+   * @returns 활성 코드 개수 (미사용 + 미만료)
    */
   async countActiveCodes(memberId: number): Promise<number> {
     return await this.authCodeRepository.count({
       where: {
         memberId,
         isUsed: false,
-        expiresAt: LessThan(new Date()),
+        expiresAt: MoreThan(new Date()), // 아직 만료되지 않은 코드만 카운트
       },
     });
   }

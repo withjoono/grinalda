@@ -63,7 +63,11 @@ import {
 } from './entities/myclass';
 import { OAuthClientEntity } from './entities/oauth/oauth-client.entity';
 import { OAuthAuthorizationCodeEntity } from './entities/oauth/oauth-authorization-code.entity';
-import { AppEntity, AppSubscriptionEntity, ProductPermissionMappingEntity } from './entities/subscription';
+import {
+  AppEntity,
+  AppSubscriptionEntity,
+  ProductPermissionMappingEntity,
+} from './entities/subscription';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

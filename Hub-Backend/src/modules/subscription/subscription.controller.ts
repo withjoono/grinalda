@@ -1,9 +1,33 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Request, UnauthorizedException, BadRequestException } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { SubscriptionService } from './subscription.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { AppPermissionDto, LicenseCheckResponseDto, PermissionsDto } from './dto/app-permission.dto';
+import {
+  AppPermissionDto,
+  LicenseCheckResponseDto,
+  PermissionsDto,
+} from './dto/app-permission.dto';
 import { CreateSubscriptionDto, UpdateSubscriptionDto } from './dto/create-subscription.dto';
 import { WebhookSubscriptionDto } from './dto/webhook-subscription.dto';
 import { CreateProductMappingDto, UpdateProductMappingDto } from './dto/product-mapping.dto';
@@ -80,7 +104,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: '라이선스 확인 API',
-    description: '각 독립 앱에서 사용자의 앱 접근 권한을 확인할 때 호출'
+    description: '각 독립 앱에서 사용자의 앱 접근 권한을 확인할 때 호출',
   })
   @ApiQuery({ name: 'appId', example: 'examhub', description: '확인할 앱 ID' })
   @ApiResponse({ status: 200, type: LicenseCheckResponseDto })
@@ -96,14 +120,11 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: '사용 횟수 증가 (티켓제)',
-    description: '티켓제 구독에서 사용 시 호출하여 사용 횟수 차감'
+    description: '티켓제 구독에서 사용 시 호출하여 사용 횟수 차감',
   })
   @ApiQuery({ name: 'appId', example: 'examhub' })
   @ApiResponse({ status: 200, description: '사용 성공 여부' })
-  async useTicket(
-    @Request() req,
-    @Query('appId') appId: string,
-  ): Promise<{ success: boolean }> {
+  async useTicket(@Request() req, @Query('appId') appId: string): Promise<{ success: boolean }> {
     const success = await this.subscriptionService.incrementUsage(req.user.memberId, appId);
     return { success };
   }
@@ -114,12 +135,17 @@ export class SubscriptionController {
   @Public()
   @ApiOperation({
     summary: 'Webhook: 외부 앱 결제 완료 알림',
-    description: 'Susi 등 외부 앱에서 결제 완료 시 Hub에 구독 정보를 등록/갱신. externalProductId로 DB 매핑 자동 적용 (권장)'
+    description:
+      'Susi 등 외부 앱에서 결제 완료 시 Hub에 구독 정보를 등록/갱신. externalProductId로 DB 매핑 자동 적용 (권장)',
   })
   @ApiResponse({ status: 201, description: '구독 생성/갱신 성공' })
   @ApiResponse({ status: 401, description: 'API Key 인증 실패' })
   @ApiResponse({ status: 400, description: '잘못된 요청 데이터' })
-  async handleWebhook(@Body() dto: WebhookSubscriptionDto): Promise<{ success: boolean; subscription: AppSubscriptionEntity; mapping?: ProductPermissionMappingEntity }> {
+  async handleWebhook(@Body() dto: WebhookSubscriptionDto): Promise<{
+    success: boolean;
+    subscription: AppSubscriptionEntity;
+    mapping?: ProductPermissionMappingEntity;
+  }> {
     // API Key 검증
     const authConfig = this.configService.get('auth', { infer: true });
     const webhookApiKey = authConfig?.webhookApiKey;
@@ -138,7 +164,7 @@ export class SubscriptionController {
       if (dto.externalProductId) {
         mapping = await this.subscriptionService.getProductMappingByExternalId(
           dto.appId,
-          dto.externalProductId
+          dto.externalProductId,
         );
 
         if (mapping) {
@@ -155,7 +181,7 @@ export class SubscriptionController {
         } else {
           throw new BadRequestException(
             `상품 매핑을 찾을 수 없습니다: ${dto.appId}/${dto.externalProductId}. ` +
-            `관리자 페이지에서 상품-권한 매핑을 먼저 등록해주세요.`
+              `관리자 페이지에서 상품-권한 매핑을 먼저 등록해주세요.`,
           );
         }
       }
@@ -163,7 +189,7 @@ export class SubscriptionController {
       // 방법 2: plan + features 직접 제공 (fallback)
       if (!plan || !features) {
         throw new BadRequestException(
-          'externalProductId 또는 (plan + features)를 제공해야 합니다.'
+          'externalProductId 또는 (plan + features)를 제공해야 합니다.',
         );
       }
 
@@ -237,7 +263,9 @@ export class SubscriptionController {
   @ApiOperation({ summary: '모든 상품-권한 매핑 조회 (관리자용)' })
   @ApiQuery({ name: 'appId', example: 'susi', required: false, description: '특정 앱으로 필터링' })
   @ApiResponse({ status: 200, description: '상품-권한 매핑 목록' })
-  async getAllProductMappings(@Query('appId') appId?: string): Promise<ProductPermissionMappingEntity[]> {
+  async getAllProductMappings(
+    @Query('appId') appId?: string,
+  ): Promise<ProductPermissionMappingEntity[]> {
     return this.subscriptionService.getAllProductMappings(appId);
   }
 
@@ -256,10 +284,12 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: '상품-권한 매핑 생성 (관리자용)',
-    description: '새 상품의 권한 매핑을 등록합니다. Webhook에서 자동으로 참조됩니다.'
+    description: '새 상품의 권한 매핑을 등록합니다. Webhook에서 자동으로 참조됩니다.',
   })
   @ApiResponse({ status: 201, description: '상품-권한 매핑 생성됨' })
-  async createProductMapping(@Body() dto: CreateProductMappingDto): Promise<ProductPermissionMappingEntity> {
+  async createProductMapping(
+    @Body() dto: CreateProductMappingDto,
+  ): Promise<ProductPermissionMappingEntity> {
     return this.subscriptionService.createProductMapping(dto);
   }
 

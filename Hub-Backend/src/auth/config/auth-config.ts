@@ -19,6 +19,9 @@ class EnvironmentVariablesValidator {
   @IsOptional()
   @IsString()
   AUTH_WEBHOOK_API_KEY?: string; // Webhook API Key (외부 앱에서 결제 완료 알림용)
+
+  @IsString()
+  FRONTEND_URL: string; // 프론트엔드 URL (OAuth 리다이렉트용, 필수)
 }
 
 export default registerAs<AuthConfig>('auth', () => {
@@ -30,5 +33,6 @@ export default registerAs<AuthConfig>('auth', () => {
     refreshSecret: process.env.AUTH_REFRESH_SECRET,
     refreshExpires: parseInt(process.env.AUTH_REFRESH_TOKEN_EXPIRES_IN, 10),
     webhookApiKey: process.env.AUTH_WEBHOOK_API_KEY,
+    frontendUrl: process.env.FRONTEND_URL,
   };
 });

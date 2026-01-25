@@ -1,5 +1,5 @@
 import { IconChevronDown } from "@tabler/icons-react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Button, buttonVariants } from "./custom/button";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -48,7 +48,6 @@ import { logoutFetch } from "@/stores/server/features/auth/apis";
  */
 export const GradeAnalysisHeader = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const isLoginPage = window.location.pathname === "/auth/login";
   const isTestPage = window.location.pathname === "/test/auth-me";

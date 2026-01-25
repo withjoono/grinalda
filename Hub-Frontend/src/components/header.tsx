@@ -26,7 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Menu, Bell, Users } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 import { WonCircle } from "./icons";
 import { clearTokens as clearTokenManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";

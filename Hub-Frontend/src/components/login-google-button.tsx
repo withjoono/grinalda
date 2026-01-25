@@ -68,7 +68,24 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Google 로그인 에러:", err);
+
+        // 사용자 친화적 에러 메시지
+        let errorMessage = "구글 로그인 중 오류가 발생했습니다.";
+
+        if (err.code === "auth/popup-closed-by-user") {
+          // 사용자가 팝업을 닫은 경우 - 에러 토스트 표시하지 않음
+          return;
+        } else if (err.code === "auth/popup-blocked") {
+          errorMessage = "팝업이 차단되었습니다. 팝업 차단을 해제해주세요.";
+        } else if (err.code === "auth/network-request-failed") {
+          errorMessage = "네트워크 연결을 확인해주세요.";
+        } else if (err.code === "auth/cancelled-popup-request") {
+          // 이전 팝업 요청 취소 - 에러 토스트 표시하지 않음
+          return;
+        }
+
+        toast.error(errorMessage);
       });
   };
 

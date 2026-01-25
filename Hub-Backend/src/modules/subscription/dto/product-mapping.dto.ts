@@ -23,7 +23,7 @@ export class CreateProductMappingDto {
 
   @ApiProperty({
     example: ['prediction', 'analytics', 'export', 'ai-evaluation'],
-    description: '활성화할 기능 목록'
+    description: '활성화할 기능 목록',
   })
   @IsArray()
   @IsString({ each: true })
@@ -44,7 +44,11 @@ export class CreateProductMappingDto {
   @IsBoolean()
   isActive?: boolean;
 
-  @ApiProperty({ example: '2027학년도 수시 전용 상품', description: '관리자 메모', required: false })
+  @ApiProperty({
+    example: '2027학년도 수시 전용 상품',
+    description: '관리자 메모',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   memo?: string;
@@ -67,7 +71,7 @@ export class UpdateProductMappingDto {
   @ApiProperty({
     example: ['prediction', 'analytics', 'export', 'ai-evaluation'],
     description: '활성화할 기능 목록',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsArray()
@@ -89,7 +93,11 @@ export class UpdateProductMappingDto {
   @IsBoolean()
   isActive?: boolean;
 
-  @ApiProperty({ example: '2027학년도 수시 전용 상품', description: '관리자 메모', required: false })
+  @ApiProperty({
+    example: '2027학년도 수시 전용 상품',
+    description: '관리자 메모',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   memo?: string;

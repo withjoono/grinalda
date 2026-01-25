@@ -100,7 +100,7 @@ export class CoreRegularAdmissionService {
       for (let i = 2; i < data.length; i++) {
         const row = data[i];
         // const universityCode = row['CG'];  // 구버전 (84번 컬럼)
-        const universityCode = row['CI'];    // 2024-12-19 수정: 대학코드는 CI(86번)에 있음
+        const universityCode = row['CI']; // 2024-12-19 수정: 대학코드는 CI(86번)에 있음
         const universityRegion = row['A'];
         const universityName = row['B'];
         const year = YEAR;

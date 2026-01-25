@@ -222,7 +222,8 @@ export class ChatbotService {
         const searchTerm = match[1].trim();
         this.logger.debug(`패턴 매칭 시도: "${searchTerm}"`);
         const found = this.glossary.find(
-          (g) => g.term === searchTerm || g.term.includes(searchTerm) || searchTerm.includes(g.term),
+          (g) =>
+            g.term === searchTerm || g.term.includes(searchTerm) || searchTerm.includes(g.term),
         );
         if (found) {
           this.logger.debug(`용어사전 패턴 매칭: "${found.term}"`);
@@ -253,7 +254,9 @@ export class ChatbotService {
   ): { filename: string; pagePath: string; excerpt: string } | null {
     // 현재 페이지 우선 검색
     if (currentPage) {
-      const pageManual = this.manuals.find((m) => m.pagePath.includes(currentPage.split('/').pop() || ''));
+      const pageManual = this.manuals.find((m) =>
+        m.pagePath.includes(currentPage.split('/').pop() || ''),
+      );
       if (pageManual) {
         const excerpt = this.extractRelevantSection(pageManual.content, question);
         if (excerpt) {

@@ -76,9 +76,7 @@ export class MockExamService {
         return {
           code: score.subject_code,
           grade: score.grade,
-          standard_score: isGradeBasedSubject
-            ? '0'
-            : (score.standard_score ?? 0).toString(),
+          standard_score: isGradeBasedSubject ? '0' : (score.standard_score ?? 0).toString(),
           percentile: isGradeBasedSubject ? 0 : (score.percentile ?? 0),
         };
       });
@@ -132,8 +130,13 @@ export class MockExamService {
     const standardScoreSum = this.calculateStandardScoreSum(scores);
 
     // 디버깅 로그
-    console.log(`[MockExam] memberId=${memberId}, scoresCount=${scores.length}, standardScoreSum=${standardScoreSum}`);
-    console.log(`[MockExam] scores:`, JSON.stringify(scores.map(s => ({ code: s.code, std: s.standard_score }))));
+    console.log(
+      `[MockExam] memberId=${memberId}, scoresCount=${scores.length}, standardScoreSum=${standardScoreSum}`,
+    );
+    console.log(
+      `[MockExam] scores:`,
+      JSON.stringify(scores.map((s) => ({ code: s.code, std: s.standard_score }))),
+    );
 
     // 나의 누적백분위 조회 (항상 조회 - get누적백분위에서 외삽 처리)
     // TODO: 독립 앱으로 분리 - Jungsi 서비스

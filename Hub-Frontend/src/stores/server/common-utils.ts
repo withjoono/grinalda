@@ -2,7 +2,7 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import { BaseResponse } from "./common-interface";
 import { nestApiClient } from "./api-client"; // Spring은 더 이상 사용하지 않음
 import { useMutation } from "@tanstack/react-query";
-import { getAccessToken, clearTokens } from "@/lib/api/token-manager";
+import { clearTokens } from "@/lib/api/token-manager";
 
 // API 클라이언트 타입 상수
 // Note: Spring 백엔드는 더 이상 사용하지 않음 (2024-12 NestJS로 완전 마이그레이션)

@@ -47,7 +47,7 @@ export function getSusiProductMapping(productId: number): SusiProductMapping | u
  */
 export function getSusiProductMappingByName(productName: string): SusiProductMapping | undefined {
   return Object.values(SUSI_PRODUCT_MAPPINGS).find(
-    mapping => mapping.productName === productName
+    (mapping) => mapping.productName === productName,
   );
 }
 

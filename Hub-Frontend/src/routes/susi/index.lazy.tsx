@@ -14,7 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 import { USER_API } from "@/stores/server/features/me/apis";
 import {
   IconUser,
-  IconFileText,
   IconSettings,
   IconSearch,
   IconHeart,
@@ -25,8 +24,6 @@ import {
 export const Route = createLazyFileRoute("/susi/")({
   component: SusiHome,
 });
-
-const primaryColor = "#84cc16"; // olive-500
 
 // ==========================================
 // 로그인 후 대시보드 컴포넌트

@@ -51,11 +51,7 @@ export class OAuthController {
   })
   @ApiResponse({ status: 302, description: '로그인 페이지 또는 동의 화면으로 리다이렉트' })
   @ApiResponse({ status: 400, description: '잘못된 요청 파라미터' })
-  async authorize(
-    @Query() query: AuthorizeDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async authorize(@Query() query: AuthorizeDto, @Req() req: Request, @Res() res: Response) {
     try {
       // 1. 클라이언트 검증
       const client = await this.oauthService.validateClient(query.client_id);
@@ -84,7 +80,7 @@ export class OAuthController {
 
       if (!memberId) {
         // 로그인하지 않은 경우 → 프론트엔드 로그인 페이지로 리다이렉트 (현재 URL 저장)
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        const frontendUrl = this.configService.getOrThrow('auth', { infer: true }).frontendUrl;
         const returnUrl = encodeURIComponent(req.originalUrl);
         return res.redirect(`${frontendUrl}/auth/login?return_url=${returnUrl}`);
       }
@@ -102,16 +98,13 @@ export class OAuthController {
         }),
       });
 
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+      const frontendUrl = this.configService.getOrThrow('auth', { infer: true }).frontendUrl;
       return res.redirect(`${frontendUrl}/oauth/consent?${consentParams.toString()}`);
     } catch (error) {
       // 에러 발생 시 클라이언트에 에러 정보 전달
       const errorUrl = new URL(query.redirect_uri);
       errorUrl.searchParams.set('error', 'invalid_request');
-      errorUrl.searchParams.set(
-        'error_description',
-        error.message || 'Unknown error',
-      );
+      errorUrl.searchParams.set('error_description', error.message || 'Unknown error');
       errorUrl.searchParams.set('state', query.state);
 
       return res.redirect(errorUrl.toString());
@@ -134,10 +127,7 @@ export class OAuthController {
     description: '클라이언트 콜백 URL로 리다이렉트 (code + state 포함)',
   })
   @ApiResponse({ status: 401, description: '인증되지 않은 사용자' })
-  async consent(
-    @Body() body: ConsentDto,
-    @CurrentMemberId() memberId: string,
-  ) {
+  async consent(@Body() body: ConsentDto, @CurrentMemberId() memberId: string) {
     if (!memberId) {
       throw new UnauthorizedException('로그인이 필요합니다.');
     }
@@ -164,10 +154,7 @@ export class OAuthController {
       // 에러 발생 시 클라이언트에 에러 정보 전달
       const errorUrl = new URL(body.redirect_uri);
       errorUrl.searchParams.set('error', 'server_error');
-      errorUrl.searchParams.set(
-        'error_description',
-        error.message || 'Unknown error',
-      );
+      errorUrl.searchParams.set('error_description', error.message || 'Unknown error');
       errorUrl.searchParams.set('state', body.state);
 
       return { redirectUrl: errorUrl.toString() };
@@ -215,8 +202,7 @@ export class OAuthController {
       }
 
       // 1. Authorization Code 검증
-      const authCode =
-        await this.oauthService.validateAuthorizationCode(body.code);
+      const authCode = await this.oauthService.validateAuthorizationCode(body.code);
 
       // 2. Client ID 일치 확인
       if (authCode.clientId !== body.client_id) {
@@ -259,10 +245,7 @@ export class OAuthController {
       const tokens = this.oauthService.generateTokens(authCode.memberId);
 
       // 8. ID Token 생성 (OIDC)
-      const idToken = await this.oauthService.generateIdToken(
-        authCode.memberId,
-        body.client_id,
-      );
+      const idToken = await this.oauthService.generateIdToken(authCode.memberId, body.client_id);
 
       return {
         access_token: tokens.accessToken,
@@ -339,10 +322,7 @@ export class OAuthController {
     },
   })
   @ApiResponse({ status: 401, description: '인증 실패 (JWT 토큰 없음 또는 유효하지 않음)' })
-  async logout(
-    @CurrentMemberId() memberId: string,
-    @Body() body?: { client_id?: string },
-  ) {
+  async logout(@CurrentMemberId() memberId: string, @Body() body?: { client_id?: string }) {
     const memberIdNum = Number(memberId);
 
     // 로그아웃 전 활성 코드 수 확인

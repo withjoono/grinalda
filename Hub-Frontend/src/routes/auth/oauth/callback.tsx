@@ -1,7 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/stores/client/use-auth-store";
+import { useTokenStore } from "@/stores/atoms/tokens";
+import { setTokens as setTokensToManager } from "@/lib/api/token-manager";
 import { toast } from "sonner";
+// 공유 SSO 라이브러리 사용
+import { extractTokensFromUrl, validateToken } from "@shared/sso-client";
 
 export const Route = createFileRoute("/auth/oauth/callback")({
   component: OAuthCallback,
@@ -9,40 +13,59 @@ export const Route = createFileRoute("/auth/oauth/callback")({
 
 function OAuthCallback() {
   const navigate = useNavigate();
-  const { setTokens } = useAuthStore();
+  const { setTokens: setAuthStoreTokens } = useAuthStore();
+  const { setTokens: setTokenStoreTokens } = useTokenStore();
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
-    // URL에서 토큰 추출
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get('access_token');
-    const refreshToken = params.get('refresh_token');
-    const tokenExpiry = params.get('token_expiry');
+    // StrictMode에서 중복 실행 방지
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
 
-    if (!accessToken || !refreshToken || !tokenExpiry) {
-      console.error('❌ OAuth 콜백: 토큰 정보 누락', { accessToken, refreshToken, tokenExpiry });
+    // 공유 라이브러리로 URL에서 토큰 추출 (자동으로 URL에서 제거됨)
+    const tokens = extractTokensFromUrl({
+      removeFromUrl: true,
+      debug: true,
+    });
+
+    if (!tokens) {
+      console.error('❌ OAuth 콜백: 토큰 정보 누락');
       toast.error('로그인에 실패했습니다. 다시 시도해주세요.');
       navigate({ to: '/auth/login' });
       return;
     }
 
-    console.log('✅ OAuth 콜백: 토큰 받음', {
-      accessTokenLength: accessToken.length,
-      refreshTokenLength: refreshToken.length,
-      tokenExpiry,
+    // 토큰 검증
+    const validation = validateToken(tokens.accessToken);
+    if (!validation.isValid) {
+      console.error(`❌ OAuth 콜백: 토큰 검증 실패 - ${validation.error}`);
+      toast.error('유효하지 않은 토큰입니다. 다시 로그인해주세요.');
+      navigate({ to: '/auth/login' });
+      return;
+    }
+
+    console.log('✅ OAuth 콜백: 토큰 검증 성공', {
+      accessTokenLength: tokens.accessToken.length,
+      refreshTokenLength: tokens.refreshToken.length,
+      tokenExpiry: tokens.tokenExpiry,
     });
 
-    // Zustand 스토어에 토큰 저장 (localStorage에 자동 persist)
-    setTokens(accessToken, refreshToken, parseInt(tokenExpiry, 10));
+    // token-manager에 저장 (single source of truth)
+    setTokensToManager(tokens.accessToken, tokens.refreshToken);
 
-    // localStorage에도 직접 저장 (SSO에서 사용)
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    // Zustand 스토어들 동기화
+    setTokenStoreTokens(tokens.accessToken, tokens.refreshToken);
+    setAuthStoreTokens(
+      tokens.accessToken,
+      tokens.refreshToken,
+      tokens.tokenExpiry ?? Math.floor(Date.now() / 1000) + 7200
+    );
 
     toast.success('환영합니다. 거북스쿨입니다.');
 
     // 메인 페이지로 리다이렉트
     navigate({ to: '/' });
-  }, [navigate, setTokens]);
+  }, [navigate, setAuthStoreTokens, setTokenStoreTokens]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

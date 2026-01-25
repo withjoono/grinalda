@@ -98,7 +98,9 @@ import { SubscriptionModule } from './modules/subscription/subscription.module';
             keyPrefix: 'hub-',
             ttl: 300000, // 5분
           });
-          console.log(`✅ Redis 연결 성공 (${redisHost || 'localhost'}:${process.env.REDIS_PORT || '6379'})`);
+          console.log(
+            `✅ Redis 연결 성공 (${redisHost || 'localhost'}:${process.env.REDIS_PORT || '6379'})`,
+          );
           return { store, ttl: 300000 };
         } catch (error) {
           console.warn('⚠️  Redis 연결 실패 - 메모리 캐시로 폴백:', error.message);
