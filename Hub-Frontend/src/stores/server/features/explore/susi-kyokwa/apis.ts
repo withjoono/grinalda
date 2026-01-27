@@ -17,7 +17,7 @@ const fetchExploreSusiKyokwaStep1API = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaStep1Response>(
     "GET",
-    `/explore/susi/kyokwa/step-1`,
+    `/explore/early/subject/step-1`,
     undefined,
     {
       params: { year, basic_type: basicType },
@@ -32,7 +32,7 @@ const fetchExploreSusiKyokwaStep1API = async ({
 const fetchExploreSusiKyokwaStep2API = async ({ ids }: { ids: number[] }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaStep2Response>(
     "GET",
-    `/explore/susi/kyokwa/step-2`,
+    `/explore/early/subject/step-2`,
     undefined,
     { params: { ids } },
   );
@@ -46,7 +46,7 @@ const fetchExploreSusiKyokwaStep2API = async ({ ids }: { ids: number[] }) => {
 const fetchExploreSusiKyokwaStep3API = async ({ ids }: { ids: number[] }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaStep3Response>(
     "GET",
-    `/explore/susi/kyokwa/step-3`,
+    `/explore/early/subject/step-3`,
     undefined,
     { params: { ids } },
   );
@@ -60,7 +60,7 @@ const fetchExploreSusiKyokwaStep3API = async ({ ids }: { ids: number[] }) => {
 const fetchExploreSusiKyokwaStep4API = async ({ ids }: { ids: number[] }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaStep4Response>(
     "GET",
-    `/explore/susi/kyokwa/step-4`,
+    `/explore/early/subject/step-4`,
     undefined,
     { params: { ids } },
   );
@@ -74,7 +74,7 @@ const fetchExploreSusiKyokwaStep4API = async ({ ids }: { ids: number[] }) => {
 const fetchExploreSusiKyokwaStep5API = async ({ ids }: { ids: number[] }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaStep5Response>(
     "GET",
-    `/explore/susi/kyokwa/step-5`,
+    `/explore/early/subject/step-5`,
     undefined,
     { params: { ids } },
   );
@@ -88,7 +88,7 @@ const fetchExploreSusiKyokwaStep5API = async ({ ids }: { ids: number[] }) => {
 const fetchExploreSusiKyokwaDetailAPI = async ({ id }: { id: number }) => {
   const res = await makeApiCall<void, IExploreSusiKyokwaDetailResponse>(
     "GET",
-    `/explore/susi/kyokwa/detail/${id}`,
+    `/explore/early/subject/detail/${id}`,
     undefined,
   );
 

@@ -106,7 +106,6 @@ const AnalysisPerformanceLazyRouteImport = createFileRoute(
 const AnalysisComparisonLazyRouteImport = createFileRoute(
   '/analysis/comparison',
 )()
-const naverRedirectLazyRouteImport = createFileRoute('/(naver)/redirect')()
 const OfficialNoticeIndexLazyRouteImport =
   createFileRoute('/official/notice/')()
 const UsersLayoutSchoolRecordLazyRouteImport = createFileRoute(
@@ -538,13 +537,6 @@ const AnalysisComparisonLazyRoute = AnalysisComparisonLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/analysis/comparison.lazy').then((d) => d.Route),
 )
-const naverRedirectLazyRoute = naverRedirectLazyRouteImport
-  .update({
-    id: '/(naver)/redirect',
-    path: '/redirect',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-  .lazy(() => import('./routes/(naver)/redirect.lazy').then((d) => d.Route))
 const UsersLayoutRoute = UsersLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => UsersRoute,
@@ -1091,7 +1083,6 @@ export interface FileRoutesByFullPath {
   '/test/auth-me': typeof TestAuthMeRoute
   '/test/login-debug': typeof TestLoginDebugRoute
   '/users': typeof UsersLayoutRouteWithChildren
-  '/redirect': typeof naverRedirectLazyRoute
   '/analysis/comparison': typeof AnalysisComparisonLazyRoute
   '/analysis/performance': typeof AnalysisPerformanceLazyRoute
   '/explain/privacy': typeof ExplainPrivacyLazyRoute
@@ -1204,7 +1195,6 @@ export interface FileRoutesByTo {
   '/test/auth-me': typeof TestAuthMeRoute
   '/test/login-debug': typeof TestLoginDebugRoute
   '/users': typeof UsersLayoutRouteWithChildren
-  '/redirect': typeof naverRedirectLazyRoute
   '/analysis/comparison': typeof AnalysisComparisonLazyRoute
   '/analysis/performance': typeof AnalysisPerformanceLazyRoute
   '/explain/privacy': typeof ExplainPrivacyLazyRoute
@@ -1323,7 +1313,6 @@ export interface FileRoutesById {
   '/test/login-debug': typeof TestLoginDebugRoute
   '/users': typeof UsersRouteWithChildren
   '/users/_layout': typeof UsersLayoutRouteWithChildren
-  '/(naver)/redirect': typeof naverRedirectLazyRoute
   '/analysis/comparison': typeof AnalysisComparisonLazyRoute
   '/analysis/performance': typeof AnalysisPerformanceLazyRoute
   '/explain/privacy': typeof ExplainPrivacyLazyRoute
@@ -1442,7 +1431,6 @@ export interface FileRouteTypes {
     | '/test/auth-me'
     | '/test/login-debug'
     | '/users'
-    | '/redirect'
     | '/analysis/comparison'
     | '/analysis/performance'
     | '/explain/privacy'
@@ -1555,7 +1543,6 @@ export interface FileRouteTypes {
     | '/test/auth-me'
     | '/test/login-debug'
     | '/users'
-    | '/redirect'
     | '/analysis/comparison'
     | '/analysis/performance'
     | '/explain/privacy'
@@ -1673,7 +1660,6 @@ export interface FileRouteTypes {
     | '/test/login-debug'
     | '/users'
     | '/users/_layout'
-    | '/(naver)/redirect'
     | '/analysis/comparison'
     | '/analysis/performance'
     | '/explain/privacy'
@@ -1791,7 +1777,6 @@ export interface RootRouteChildren {
   TestAuthMeRoute: typeof TestAuthMeRoute
   TestLoginDebugRoute: typeof TestLoginDebugRoute
   UsersRoute: typeof UsersRouteWithChildren
-  naverRedirectLazyRoute: typeof naverRedirectLazyRoute
   AnalysisComparisonLazyRoute: typeof AnalysisComparisonLazyRoute
   AnalysisPerformanceLazyRoute: typeof AnalysisPerformanceLazyRoute
   ExplainPrivacyLazyRoute: typeof ExplainPrivacyLazyRoute
@@ -2153,13 +2138,6 @@ declare module '@tanstack/react-router' {
       path: '/analysis/comparison'
       fullPath: '/analysis/comparison'
       preLoaderRoute: typeof AnalysisComparisonLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(naver)/redirect': {
-      id: '/(naver)/redirect'
-      path: '/redirect'
-      fullPath: '/redirect'
-      preLoaderRoute: typeof naverRedirectLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/users/_layout': {
@@ -3040,7 +3018,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestAuthMeRoute: TestAuthMeRoute,
   TestLoginDebugRoute: TestLoginDebugRoute,
   UsersRoute: UsersRouteWithChildren,
-  naverRedirectLazyRoute: naverRedirectLazyRoute,
   AnalysisComparisonLazyRoute: AnalysisComparisonLazyRoute,
   AnalysisPerformanceLazyRoute: AnalysisPerformanceLazyRoute,
   ExplainPrivacyLazyRoute: ExplainPrivacyLazyRoute,

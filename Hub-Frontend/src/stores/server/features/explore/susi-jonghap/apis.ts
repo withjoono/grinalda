@@ -18,7 +18,7 @@ const fetchExploreSusiJonghapStep1API = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiJonghapStep1Response>(
     "GET",
-    `/explore/susi/jonghap/step-1`,
+    `/explore/early/comprehensive/step-1`,
     undefined,
     {
       params: { year, basic_type: basicType, minorFieldId },
@@ -37,7 +37,7 @@ const fetchExploreSusiJonghapStep2API = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiJonghapStep2Response>(
     "GET",
-    `/explore/susi/jonghap/step-2`,
+    `/explore/early/comprehensive/step-2`,
     undefined,
     { params: { ids } },
   );
@@ -55,7 +55,7 @@ const fetchExploreSusiJonghapStep3API = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiJonghapStep3Response>(
     "GET",
-    `/explore/susi/jonghap/step-3`,
+    `/explore/early/comprehensive/step-3`,
     undefined,
     { params: { ids } },
   );
@@ -73,7 +73,7 @@ const fetchExploreSusiJonghapStep4API = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiJonghapStep4Response>(
     "GET",
-    `/explore/susi/jonghap/step-4`,
+    `/explore/early/comprehensive/step-4`,
     undefined,
     { params: { ids } },
   );
@@ -91,7 +91,7 @@ const fetchExploreSusiJonghapDetailAPI = async ({
 }) => {
   const res = await makeApiCall<void, IExploreSusiJonghapDetailResponse>(
     "GET",
-    `/explore/susi/jonghap/detail/${id}`,
+    `/explore/early/comprehensive/detail/${id}`,
     undefined,
   );
 
