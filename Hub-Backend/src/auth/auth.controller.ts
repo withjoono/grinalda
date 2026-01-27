@@ -637,7 +637,7 @@ export class AuthController {
     @Body() dto: FirebaseRegisterDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<LoginResponseType> {
-    const result = await this.service.registerWithFirebase(dto.idToken);
+    const result = await this.service.registerWithFirebase(dto);
 
     // HttpOnly 쿠키로 토큰 설정 (XSS 공격 방지)
     this.cookieService.setAuthCookies(

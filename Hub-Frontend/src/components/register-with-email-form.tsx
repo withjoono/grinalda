@@ -2,6 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import debounce from "lodash/debounce";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/utils/firebase/firebase";
 
 import {
   Form,
@@ -29,8 +31,6 @@ import {
 import { Checkbox } from "./ui/checkbox";
 import { HIGH_SCHOOL_LIST } from "@/constants/high-school";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useRegisterWithEmail } from "@/stores/server/features/auth/mutations";
-import { emailLoginFetch } from "@/stores/server/features/auth/apis";
 import {
   CheckIcon,
   GraduationCapIcon,
@@ -39,6 +39,9 @@ import {
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { meQueryKeys } from "@/stores/server/features/me/queries";
+import { hubApiClient } from "@/stores/server/hub-api-client";
+import { useAuthStore } from "@/stores/client/use-auth-store";
+import { setTokens as setTokensInStorage } from "@/lib/api/token-manager";
 
 interface Props {
   className?: string;
@@ -50,14 +53,15 @@ export function RegisterWithEmailForm({ className }: Props) {
   const [memberType, setMemberType] = useState<
     "student" | "teacher" | "parent"
   >("student");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  // Mutations
-  const registerWithEmail = useRegisterWithEmail();
+  const { setTokens } = useAuthStore();
 
   const form = useForm<z.infer<typeof registerWithEmailFormSchema>>({
     resolver: zodResolver(registerWithEmailFormSchema),
+    mode: "onBlur", // 필드에서 포커스가 벗어날 때 검증
+    reValidateMode: "onChange", // 첫 검증 후에는 입력할 때마다 재검증
     defaultValues: {
       name: "",
       email: "",
@@ -130,6 +134,8 @@ export function RegisterWithEmailForm({ className }: Props) {
 
   // 회원가입 버튼 클릭
   async function onSubmit(values: z.infer<typeof registerWithEmailFormSchema>) {
+    if (isLoading) return;
+
     const school = HIGH_SCHOOL_LIST.find(
       (n) => n.highschoolName === values.school,
     );
@@ -142,11 +148,23 @@ export function RegisterWithEmailForm({ className }: Props) {
       return;
     }
 
+    setIsLoading(true);
+
     try {
+      // 1. Firebase Auth로 계정 생성
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+
+      // 2. ID 토큰 가져오기
+      const idToken = await userCredential.user.getIdToken();
+
+      // 3. 백엔드에 회원가입 정보 전송
       const formattedPhone = values.phone?.replace(/-/g, "") || "";
-      const result = await registerWithEmail.mutateAsync({
-        email: values.email,
-        password: values.password,
+      const res = await hubApiClient.post('/auth/firebase/register', {
+        idToken,
         nickname: values.name,
         hstTypeId: school?.id,
         isMajor: String(values.major),
@@ -156,56 +174,69 @@ export function RegisterWithEmailForm({ className }: Props) {
         memberType: memberType,
       });
 
-      // 스프링 시큐리티에 로그인 등록
-      await emailLoginFetch({
-        email: values.email,
-        password: values.password,
-      });
+      if (res.data.success) {
+        const { accessToken, refreshToken, tokenExpiry } = res.data.data;
 
-      if (result.success) {
+        // 토큰 저장 (Zustand store + localStorage)
+        setTokens(accessToken, refreshToken, tokenExpiry);
+        setTokensInStorage(accessToken, refreshToken);
+
         // 회원가입 성공 후 me 쿼리 캐시 무효화
         await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
         toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
         navigate({ to: "/" });
       } else {
-        toast.error(result.error);
+        toast.error(res.data.error || "회원가입에 실패했습니다.");
       }
     } catch (error: any) {
-      // 에러 메시지에서 필드 판단
-      const errorMessage = error.response?.data?.message || "회원가입 중 오류가 발생했습니다.";
+      console.error("회원가입 에러:", error);
 
-      // 이메일 관련 에러
-      if (errorMessage.includes("이메일") || errorMessage.includes("email")) {
-        form.setError("email", {
-          type: "manual",
-          message: errorMessage,
-        });
+      // Firebase 에러 처리
+      if (error.code) {
+        if (error.code === "auth/email-already-in-use") {
+          form.setError("email", {
+            type: "manual",
+            message: "이미 사용 중인 이메일입니다.",
+          });
+        } else if (error.code === "auth/weak-password") {
+          form.setError("password", {
+            type: "manual",
+            message: "비밀번호는 최소 6자 이상이어야 합니다.",
+          });
+        } else if (error.code === "auth/invalid-email") {
+          form.setError("email", {
+            type: "manual",
+            message: "유효하지 않은 이메일 형식입니다.",
+          });
+        } else {
+          toast.error("회원가입 중 오류가 발생했습니다.");
+        }
       }
-      // 전화번호 관련 에러
-      else if (errorMessage.includes("전화") || errorMessage.includes("phone") || errorMessage.includes("휴대폰")) {
-        form.setError("phone", {
-          type: "manual",
-          message: errorMessage,
-        });
-      }
-      // 비밀번호 관련 에러
-      else if (errorMessage.includes("비밀번호") || errorMessage.includes("password")) {
-        form.setError("password", {
-          type: "manual",
-          message: errorMessage,
-        });
-      }
-      // 닉네임/이름 관련 에러
-      else if (errorMessage.includes("이름") || errorMessage.includes("닉네임") || errorMessage.includes("nickname")) {
-        form.setError("name", {
-          type: "manual",
-          message: errorMessage,
-        });
-      }
-      // 기타 에러는 toast로 표시 (5초 동안)
+      // 백엔드 에러 처리
       else {
-        toast.error(errorMessage, { duration: 5000 });
+        const errorMessage = error.response?.data?.message || "회원가입 중 오류가 발생했습니다.";
+
+        // 이메일 관련 에러
+        if (errorMessage.includes("이메일") || errorMessage.includes("email")) {
+          form.setError("email", {
+            type: "manual",
+            message: errorMessage,
+          });
+        }
+        // 전화번호 관련 에러
+        else if (errorMessage.includes("전화") || errorMessage.includes("phone") || errorMessage.includes("휴대폰")) {
+          form.setError("phone", {
+            type: "manual",
+            message: errorMessage,
+          });
+        }
+        // 기타 에러는 toast로 표시
+        else {
+          toast.error(errorMessage, { duration: 5000 });
+        }
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -501,8 +532,9 @@ export function RegisterWithEmailForm({ className }: Props) {
           <Button
             type="submit"
             className="w-full"
+            loading={isLoading}
             disabled={
-              registerWithEmail.isPending ||
+              isLoading ||
               !agreeToTerms[0] ||
               !agreeToTerms[1] ||
               !agreeToTerms[2]

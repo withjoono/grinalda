@@ -25,6 +25,7 @@ import { SocialUser } from './types/social-user.type';
 import { RegisterWithEmailDto } from './dtos/register-with-email.dto';
 import { loginWithEmailDto } from './dtos/login-with-email.dto';
 import { RegisterWithSocialDto } from './dtos/register-with-social';
+import { FirebaseRegisterDto } from './dtos/firebase-auth.dto';
 import { SmsService } from 'src/modules/sms/sms.service';
 import { MentoringService } from 'src/modules/mentoring/mentoring.service';
 import { Logger } from 'winston';
@@ -567,14 +568,14 @@ export class AuthService {
    * Firebase ID 토큰으로 회원가입
    * Firebase Auth에서 인증된 사용자의 ID 토큰을 검증하고 새 회원을 생성합니다.
    */
-  async registerWithFirebase(idToken: string): Promise<LoginResponseType> {
+  async registerWithFirebase(dto: FirebaseRegisterDto): Promise<LoginResponseType> {
     if (!this.firebaseAdminService) {
       throw new BadRequestException('Firebase 인증이 설정되지 않았습니다.');
     }
 
     try {
       // Firebase ID 토큰 검증
-      const decodedToken = await this.firebaseAdminService.verifyIdToken(idToken);
+      const decodedToken = await this.firebaseAdminService.verifyIdToken(dto.idToken);
 
       // 이미 가입된 사용자인지 확인
       const existingByUid = await this.membersService.findOneByFirebaseUid(decodedToken.uid);
@@ -589,13 +590,27 @@ export class AuthService {
         }
       }
 
-      // 새 회원 생성
+      // 전화번호 중복 확인
+      if (dto.phone) {
+        const existingByPhone = await this.membersService.findOneByPhone(dto.phone);
+        if (existingByPhone) {
+          throw new BadRequestException('이미 사용 중인 전화번호입니다.');
+        }
+      }
+
+      // 새 회원 생성 (추가 정보 포함)
       const member = await this.membersService.saveMemberByFirebase({
         firebaseUid: decodedToken.uid,
         email: decodedToken.email,
-        name: decodedToken.name || decodedToken.email?.split('@')[0] || 'User',
+        name: dto.nickname || decodedToken.name || decodedToken.email?.split('@')[0] || 'User',
         photoUrl: decodedToken.picture,
         provider: decodedToken.firebase?.sign_in_provider || 'firebase',
+        phone: dto.phone,
+        hstTypeId: dto.hstTypeId,
+        isMajor: dto.isMajor,
+        graduateYear: dto.graduateYear,
+        ckSmsAgree: dto.ckSmsAgree,
+        memberType: dto.memberType,
       });
 
       // 앱별 권한 정보 조회

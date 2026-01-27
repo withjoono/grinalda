@@ -221,6 +221,12 @@ export class MembersService {
     name: string;
     photoUrl?: string;
     provider: string;
+    phone?: string;
+    hstTypeId?: number;
+    isMajor?: string;
+    graduateYear?: string;
+    ckSmsAgree?: boolean;
+    memberType?: string;
   }): Promise<MemberEntity> {
     const member = this.membersRepository.create({
       email: data.email || `${data.firebaseUid}@firebase.local`,
@@ -228,12 +234,15 @@ export class MembersService {
       firebase_uid: data.firebaseUid,
       profile_image_url: data.photoUrl || null,
       role_type: 'ROLE_USER',
-      phone: '', // Firebase 인증에서는 phone 없이 가입 허용
+      phone: data.phone || '',
       ck_sms: false,
-      ck_sms_agree: false,
+      ck_sms_agree: data.ckSmsAgree || false,
       account_stop_yn: 'N',
       provider_type: data.provider === 'google.com' ? 'google' : 'firebase',
-      member_type: 'student',
+      member_type: data.memberType || 'student',
+      hst_type_id: data.hstTypeId || null,
+      major: data.isMajor || '0',
+      graduate_year: data.graduateYear || null,
       create_dt: new Date(),
       update_dt: new Date(),
     });
