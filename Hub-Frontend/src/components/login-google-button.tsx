@@ -35,11 +35,26 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         body: JSON.stringify({ idToken }),
       });
 
-      if (!response.ok) {
-        throw new Error('로그인 실패');
+      const loginData = await response.json();
+
+      // 404: 신규 사용자 (회원가입 필요)
+      if (response.status === 404) {
+        // Google 로그인 정보를 저장하고 회원가입 페이지로 이동
+        setData({
+          socialType: 'google',
+          token: idToken,
+          email: result.user.email || '',
+          name: result.user.displayName || '',
+          profileImage: result.user.photoURL || '',
+        });
+        toast.info("회원가입이 필요합니다. 추가 정보를 입력해주세요.");
+        navigate({ to: "/auth/register" });
+        return;
       }
 
-      const loginData = await response.json();
+      if (!response.ok) {
+        throw new Error(loginData.error || '로그인 실패');
+      }
 
       if (loginData.success) {
         // 토큰을 localStorage에 저장 (쿠키는 포트 간 공유 안 됨)
