@@ -42,6 +42,7 @@ import { meQueryKeys } from "@/stores/server/features/me/queries";
 import { hubApiClient } from "@/stores/server/hub-api-client";
 import { useAuthStore } from "@/stores/client/use-auth-store";
 import { setTokens as setTokensInStorage } from "@/lib/api/token-manager";
+import { GoogleLoginButton } from "@/components/login-google-button";
 
 interface Props {
   className?: string;
@@ -543,11 +544,23 @@ export function RegisterWithEmailForm({ className }: Props) {
             회원가입
           </Button>
         </form>
-        {/* TODO: 소셜 로그인 기능 복구 시 아래 주석 해제 */}
-        {/* <div className="space-y-2 pt-4">
-          <GoogleLoginButton isPending={registerWithEmail.isPending} buttonText="구글 회원가입" />
-          <NaverLoginButton isPending={registerWithEmail.isPending} buttonText="네이버 회원가입" />
-        </div> */}
+
+        {/* 구분선 */}
+        <div className="relative pt-4">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              또는
+            </span>
+          </div>
+        </div>
+
+        {/* 소셜 로그인 */}
+        <div className="space-y-2 pt-4">
+          <GoogleLoginButton isPending={isLoading} buttonText="구글 회원가입" />
+        </div>
 
         <div className="flex justify-center pt-4">
           <Link
