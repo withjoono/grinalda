@@ -12,6 +12,7 @@ export default defineConfig(() => {
         "@": path.resolve(__dirname, "./src"),
         "@shared": path.resolve(__dirname, "./fe-shared-packages/packages"),
       },
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     },
     server: {
       port: 3000,
