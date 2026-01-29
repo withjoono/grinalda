@@ -63,7 +63,7 @@ jobs:
             --port 8080 \
             --timeout 300 \
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
-            --set-env-vars="NODE_ENV=production,AUTH_JWT_TOKEN_EXPIRES_IN=7200000,AUTH_REFRESH_TOKEN_EXPIRES_IN=5184000000,IMP_KEY=test_key,IMP_SECRET=test_secret,IMP_STORE_CODE=test_store,ALIGO_TEST_MODE=true,GCS_PROJECT_ID=ts-back-nest-479305,GCS_BUCKET_NAME=ts-back-nest-bk,GCS_PUBLIC_URL=https://storage.googleapis.com/ts-back-nest-bk" \
+            --set-env-vars="NODE_ENV=production,FRONTEND_URL=https://www.geobukschool.kr,AUTH_JWT_TOKEN_EXPIRES_IN=7200000,AUTH_REFRESH_TOKEN_EXPIRES_IN=5184000000,IMP_KEY=test_key,IMP_SECRET=test_secret,IMP_STORE_CODE=test_store,ALIGO_TEST_MODE=true,GCS_PROJECT_ID=ts-back-nest-479305,GCS_BUCKET_NAME=ts-back-nest-bk,GCS_PUBLIC_URL=https://storage.googleapis.com/ts-back-nest-bk" \
             --update-secrets="DATABASE_URL=database-url:latest,AUTH_JWT_SECRET=jwt-secret:latest,AUTH_REFRESH_SECRET=auth-secret:latest,FIREBASE_SERVICE_ACCOUNT=firebase-service-account:latest"
 
       - name: Run Database Migrations
