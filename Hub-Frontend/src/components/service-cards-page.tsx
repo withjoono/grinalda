@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { generateSSOUrl, getSSOServiceId } from "@/lib/utils/sso-helper";
 import {
   Calendar,
   Users,
@@ -284,18 +285,33 @@ function ServiceSection({ title, subtitle, icon, services, badgeColor, bgColor }
               "hover:shadow-xl hover:-translate-y-1 cursor-pointer"
             );
 
-            // 외부 링크인 경우 (Firebase Auth SSO - 동일한 Firebase 프로젝트 사용으로 자동 SSO)
+            // 외부 링크인 경우 (SSO 코드를 URL에 포함하여 안전하게 자동 로그인)
             if (service.isExternal) {
+              const handleSSOClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+                e.preventDefault();
+                const serviceId = getSSOServiceId(service.href);
+                if (!serviceId) {
+                  window.open(service.href, '_blank');
+                  return;
+                }
+
+                try {
+                  const ssoUrl = await generateSSOUrl(service.href, serviceId);
+                  window.open(ssoUrl, '_blank');
+                } catch (error) {
+                  console.error('SSO URL 생성 실패:', error);
+                  window.open(service.href, '_blank');
+                }
+              };
+
               return (
-                <a
+                <div
                   key={service.id}
-                  href={service.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={handleSSOClick}
                   className={cardClassName}
                 >
                   {cardContent}
-                </a>
+                </div>
               );
             }
 
