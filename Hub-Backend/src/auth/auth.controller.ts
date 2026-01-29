@@ -37,6 +37,8 @@ import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { CookieService } from './services/cookie.service';
 import { VerifyTokenDto } from './dtos/verify-token.dto';
 import { FirebaseLoginDto, FirebaseRegisterDto } from './dtos/firebase-auth.dto';
+import { SsoGenerateCodeDto } from './dtos/sso-generate-code.dto';
+import { SsoVerifyCodeDto } from './dtos/sso-verify-code.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -649,5 +651,68 @@ export class AuthController {
     );
 
     return result;
+  }
+
+  // ==========================================
+  // SSO (Single Sign-On) Backend Token Exchange
+  // ==========================================
+
+  @ApiOperation({
+    summary: 'SSO 코드 생성 (Backend Token Exchange)',
+    description:
+      'Hub에서 다른 서비스로 이동 시 일회용 SSO 코드를 생성합니다. 생성된 코드는 5분간 유효하며 1회만 사용 가능합니다. 이 코드를 다른 서비스 백엔드에서 /auth/sso/verify-code로 검증하여 토큰을 받을 수 있습니다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'SSO 코드 생성 성공',
+    schema: {
+      example: {
+        code: 'SSO_abc123def456...',
+        expiresIn: 300,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: '인증 실패 (로그인 필요)',
+  })
+  @ApiBearerAuth('access-token')
+  @Post('sso/generate-code')
+  public async generateSsoCode(
+    @CurrentMemberId() memberId: string,
+    @Body() dto: SsoGenerateCodeDto,
+  ): Promise<{ code: string; expiresIn: number }> {
+    const code = await this.service.generateSsoCode(Number(memberId), dto.targetService);
+
+    return {
+      code,
+      expiresIn: 300, // 5분 (초 단위)
+    };
+  }
+
+  @ApiOperation({
+    summary: 'SSO 코드 검증 및 토큰 교환 (Backend Token Exchange)',
+    description:
+      '다른 서비스 백엔드에서 Hub로 SSO 코드를 검증하고 토큰을 받습니다. 이 엔드포인트는 백엔드 간 통신에만 사용됩니다. 코드는 1회만 사용 가능하며, 사용 즉시 삭제됩니다.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'SSO 코드 검증 성공 및 토큰 발급',
+    schema: {
+      example: {
+        accessToken: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9...',
+        refreshToken: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9...',
+        tokenExpiry: 7200,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'SSO 코드 유효하지 않거나 만료됨',
+  })
+  @Public()
+  @Post('sso/verify-code')
+  public async verifySsoCode(@Body() dto: SsoVerifyCodeDto): Promise<LoginResponseType> {
+    return this.service.verifySsoCode(dto.code, dto.serviceId);
   }
 }

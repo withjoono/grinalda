@@ -637,4 +637,94 @@ export class AuthService {
       throw new UnauthorizedException('Firebase 인증에 실패했습니다.');
     }
   }
+
+  // ==========================================
+  // SSO (Single Sign-On) 코드 기반 인증
+  // Backend Token Exchange 방식으로 안전하게 구현
+  // ==========================================
+
+  /**
+   * SSO 코드 생성
+   * Hub에서 다른 서비스로 이동 시 일회용 코드 발급
+   *
+   * @param memberId 현재 로그인한 사용자 ID
+   * @param targetService 대상 서비스 식별자 (susi, jungsi 등)
+   * @returns SSO 일회용 코드 (5분 유효)
+   */
+  async generateSsoCode(memberId: number, targetService: string): Promise<string> {
+    // 1. 32바이트 랜덤 코드 생성
+    const crypto = require('crypto');
+    const code = `SSO_${crypto.randomBytes(32).toString('base64url')}`;
+
+    // 2. 사용자의 토큰 조회
+    const permissions = await this.getMemberPermissions(memberId);
+    const accessToken = this.jwtService.createAccessToken(memberId, permissions);
+    const refreshToken = this.jwtService.createRefreshToken(memberId);
+    const tokenExpiry = this.jwtService.getTokenExpiryTime();
+
+    // 3. Redis에 코드와 토큰 매핑 저장 (5분 TTL)
+    const cacheKey = `sso_code:${code}`;
+    const cacheValue = JSON.stringify({
+      memberId,
+      targetService,
+      accessToken,
+      refreshToken,
+      tokenExpiry,
+      createdAt: Date.now(),
+    });
+
+    await this.cacheManager.set(
+      cacheKey,
+      cacheValue,
+      5 * 60 * 1000, // 5분 (밀리초)
+    );
+
+    this.logger.info(`[SSO 코드 생성] memberId=${memberId}, targetService=${targetService}, code=${code.substring(0, 20)}...`);
+
+    return code;
+  }
+
+  /**
+   * SSO 코드 검증 및 토큰 발급
+   * 다른 서비스에서 Hub로 코드 검증 요청
+   *
+   * @param code SSO 일회용 코드
+   * @param serviceId 요청 서비스 식별자 (보안 검증용)
+   * @returns 토큰 정보
+   */
+  async verifySsoCode(code: string, serviceId: string): Promise<LoginResponseType> {
+    const cacheKey = `sso_code:${code}`;
+
+    // 1. Redis에서 코드 조회
+    const cacheValue = await this.cacheManager.get<string>(cacheKey);
+
+    if (!cacheValue) {
+      this.logger.warn(`[SSO 코드 검증 실패] code=${code.substring(0, 20)}... - 코드 없음 또는 만료`);
+      throw new UnauthorizedException('SSO 코드가 유효하지 않거나 만료되었습니다.');
+    }
+
+    // 2. 코드 파싱
+    const ssoData = JSON.parse(cacheValue);
+
+    // 3. 서비스 검증 (보안: 요청한 서비스와 코드에 저장된 대상 서비스가 일치하는지)
+    if (ssoData.targetService !== serviceId) {
+      this.logger.warn(`[SSO 코드 검증 실패] 서비스 불일치: 요청=${serviceId}, 저장=${ssoData.targetService}`);
+      throw new UnauthorizedException('잘못된 서비스에서의 SSO 요청입니다.');
+    }
+
+    // 4. 즉시 코드 삭제 (일회용)
+    await this.cacheManager.del(cacheKey);
+
+    // 5. 활성 서비스 조회
+    const activeServices = await this.membersService.findActiveServicesById(ssoData.memberId);
+
+    this.logger.info(`[SSO 코드 검증 성공] memberId=${ssoData.memberId}, serviceId=${serviceId}`);
+
+    return {
+      accessToken: ssoData.accessToken,
+      refreshToken: ssoData.refreshToken,
+      tokenExpiry: ssoData.tokenExpiry,
+      activeServices,
+    };
+  }
 }
