@@ -44,58 +44,58 @@ export class AddUpdateTimestampTriggers1732512100000 implements MigrationInterfa
 
     console.log('✅ Trigger function created successfully');
 
-    // 2. comment_tb 테이블에 트리거 적용
-    console.log('🔧 Adding trigger to comment_tb...');
+    // 2. board_comment 테이블에 트리거 적용
+    console.log('🔧 Adding trigger to board_comment...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_comment_timestamp ON comment_tb;
+      DROP TRIGGER IF EXISTS update_comment_timestamp ON board_comment;
     `);
     await queryRunner.query(`
       CREATE TRIGGER update_comment_timestamp
-        BEFORE UPDATE ON comment_tb
+        BEFORE UPDATE ON board_comment
         FOR EACH ROW
         EXECUTE FUNCTION update_timestamp_trigger();
     `);
-    console.log('✅ comment_tb trigger added');
+    console.log('✅ board_comment trigger added');
 
-    // 3. member_regular_combination 테이블에 트리거 적용
-    console.log('🔧 Adding trigger to member_regular_combination...');
+    // 3. js_user_application_combination 테이블에 트리거 적용
+    console.log('🔧 Adding trigger to js_user_application_combination...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_member_regular_combination_timestamp ON member_regular_combination;
+      DROP TRIGGER IF EXISTS update_js_user_application_combination_timestamp ON js_user_application_combination;
     `);
     await queryRunner.query(`
-      CREATE TRIGGER update_member_regular_combination_timestamp
-        BEFORE UPDATE ON member_regular_combination
+      CREATE TRIGGER update_js_user_application_combination_timestamp
+        BEFORE UPDATE ON js_user_application_combination
         FOR EACH ROW
         EXECUTE FUNCTION update_timestamp_trigger();
     `);
     console.log('✅ member_regular_combination trigger added');
 
-    // 4. member_recruitment_unit_combination 테이블에 트리거 적용
-    console.log('🔧 Adding trigger to member_recruitment_unit_combination...');
+    // 4. ss_user_application_combination 테이블에 트리거 적용
+    console.log('🔧 Adding trigger to ss_user_application_combination...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_member_recruitment_unit_combination_timestamp
-        ON member_recruitment_unit_combination;
+      DROP TRIGGER IF EXISTS update_ss_user_application_combination_timestamp
+        ON ss_user_application_combination;
     `);
     await queryRunner.query(`
-      CREATE TRIGGER update_member_recruitment_unit_combination_timestamp
-        BEFORE UPDATE ON member_recruitment_unit_combination
+      CREATE TRIGGER update_ss_user_application_combination_timestamp
+        BEFORE UPDATE ON ss_user_application_combination
         FOR EACH ROW
         EXECUTE FUNCTION update_timestamp_trigger();
     `);
     console.log('✅ member_recruitment_unit_combination trigger added');
 
-    // 5. post_tb 테이블에 트리거 적용
-    console.log('🔧 Adding trigger to post_tb...');
+    // 5. board_post 테이블에 트리거 적용
+    console.log('🔧 Adding trigger to board_post...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_post_timestamp ON post_tb;
+      DROP TRIGGER IF EXISTS update_post_timestamp ON board_post;
     `);
     await queryRunner.query(`
       CREATE TRIGGER update_post_timestamp
-        BEFORE UPDATE ON post_tb
+        BEFORE UPDATE ON board_post
         FOR EACH ROW
         EXECUTE FUNCTION update_timestamp_trigger();
     `);
-    console.log('✅ post_tb trigger added');
+    console.log('✅ board_post trigger added');
 
     console.log('🎉 All update timestamp triggers created successfully!');
   }
@@ -104,26 +104,26 @@ export class AddUpdateTimestampTriggers1732512100000 implements MigrationInterfa
     console.log('🔄 Rolling back update timestamp triggers...');
 
     // 트리거 삭제 (역순)
-    console.log('🗑️  Dropping trigger from post_tb...');
+    console.log('🗑️  Dropping trigger from board_post...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_post_timestamp ON post_tb;
+      DROP TRIGGER IF EXISTS update_post_timestamp ON board_post;
     `);
 
-    console.log('🗑️  Dropping trigger from member_recruitment_unit_combination...');
+    console.log('🗑️  Dropping trigger from ss_user_application_combination...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_member_recruitment_unit_combination_timestamp
-        ON member_recruitment_unit_combination;
+      DROP TRIGGER IF EXISTS update_ss_user_application_combination_timestamp
+        ON ss_user_application_combination;
     `);
 
-    console.log('🗑️  Dropping trigger from member_regular_combination...');
+    console.log('🗑️  Dropping trigger from js_user_application_combination...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_member_regular_combination_timestamp
-        ON member_regular_combination;
+      DROP TRIGGER IF EXISTS update_js_user_application_combination_timestamp
+        ON js_user_application_combination;
     `);
 
-    console.log('🗑️  Dropping trigger from comment_tb...');
+    console.log('🗑️  Dropping trigger from board_comment...');
     await queryRunner.query(`
-      DROP TRIGGER IF EXISTS update_comment_timestamp ON comment_tb;
+      DROP TRIGGER IF EXISTS update_comment_timestamp ON board_comment;
     `);
 
     // 트리거 함수 삭제

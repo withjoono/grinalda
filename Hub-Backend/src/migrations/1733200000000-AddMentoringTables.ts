@@ -36,7 +36,7 @@ export class AddMentoringTables1733200000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -89,13 +89,13 @@ export class AddMentoringTables1733200000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
           {
             columnNames: ['linked_member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -175,13 +175,13 @@ export class AddMentoringTables1733200000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
           {
             columnNames: ['target_member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },

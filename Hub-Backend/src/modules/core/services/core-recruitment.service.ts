@@ -373,7 +373,6 @@ export class CoreRecruitmentUnitService {
         result2024.result_criteria = row['EP'] || '정보 없음';
         result2024.grade_cut = parseFloatWithPrecision(row['EQ']);
         result2024.converted_score_cut = parseFloatWithPrecision(row['ER']);
-        result2024.competition_ratio = parseFloatWithPrecision(row['ES']);
         result2024.recruitment_number = parseInt(row['ET']) || null;
         recruitmentUnit.previous_results.push(result2024);
 
@@ -383,7 +382,6 @@ export class CoreRecruitmentUnitService {
         result2023.result_criteria = row['EU'] || '정보 없음';
         result2023.grade_cut = parseFloatWithPrecision(row['EV']);
         result2023.converted_score_cut = parseFloatWithPrecision(row['EW']);
-        result2023.competition_ratio = parseFloatWithPrecision(row['EX']);
         result2023.recruitment_number = parseInt(row['EY']) || null;
         recruitmentUnit.previous_results.push(result2023);
 
@@ -392,7 +390,6 @@ export class CoreRecruitmentUnitService {
         result2022.year = 2022;
         result2022.result_criteria = '정보 없음';
         result2022.grade_cut = parseFloatWithPrecision(row['EZ']);
-        result2022.competition_ratio = parseFloatWithPrecision(row['FA']);
         result2022.recruitment_number = parseInt(row['FB']) || null;
         recruitmentUnit.previous_results.push(result2022);
 
@@ -670,7 +667,6 @@ export class CoreRecruitmentUnitService {
         result2024.result_criteria = row['BO'] || '정보 없음';
         result2024.grade_cut = parseFloatWithPrecision(row['BP']);
         result2024.converted_score_cut = parseFloatWithPrecision(row['BQ']);
-        result2024.competition_ratio = parseFloatWithPrecision(row['BR']);
         result2024.recruitment_number = parseInt(row['BS']) || null;
         recruitmentUnit.previous_results.push(result2024);
 
@@ -680,7 +676,6 @@ export class CoreRecruitmentUnitService {
         result2023.result_criteria = row['BT'] || '정보 없음';
         result2023.grade_cut = parseFloatWithPrecision(row['BU']);
         result2023.converted_score_cut = parseFloatWithPrecision(row['BV']);
-        result2023.competition_ratio = parseFloatWithPrecision(row['BW']);
         result2023.recruitment_number = parseInt(row['BX']) || null;
         recruitmentUnit.previous_results.push(result2023);
 
@@ -689,7 +684,6 @@ export class CoreRecruitmentUnitService {
         result2022.year = 2022;
         result2022.result_criteria = '정보 없음';
         result2022.grade_cut = parseFloatWithPrecision(row['BY']);
-        result2022.competition_ratio = parseFloatWithPrecision(row['BZ']);
         result2022.recruitment_number = parseInt(row['CA']) || null;
         recruitmentUnit.previous_results.push(result2022);
 

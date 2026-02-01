@@ -81,13 +81,13 @@ export class AddMemberCalculatedScores1733000000000 implements MigrationInterfac
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
           {
             columnNames: ['university_id'],
-            referencedTableName: 'ts_universities',
+            referencedTableName: 'ss_university',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },

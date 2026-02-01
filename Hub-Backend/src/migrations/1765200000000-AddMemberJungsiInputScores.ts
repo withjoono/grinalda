@@ -197,7 +197,7 @@ export class AddMemberJungsiInputScores1765200000000 implements MigrationInterfa
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },

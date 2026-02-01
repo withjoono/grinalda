@@ -121,10 +121,6 @@ export class CreateRecruitmentUnitPreviousResultDto {
 
   @IsOptional()
   @IsNumber()
-  competition_ratio?: number;
-
-  @IsOptional()
-  @IsNumber()
   recruitment_number?: number;
 }
 

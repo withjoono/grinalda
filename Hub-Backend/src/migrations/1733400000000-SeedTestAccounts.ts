@@ -7,7 +7,7 @@ export class SeedTestAccounts1733400000000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Check if accounts already exist before inserting
     const existingAccounts = await queryRunner.query(`
-      SELECT email FROM member_tb WHERE email IN ('test@test.com', 'test2@test.com', 'test3@test.com')
+      SELECT email FROM auth_member WHERE email IN ('test@test.com', 'test2@test.com', 'test3@test.com')
     `);
 
     const existingEmails = existingAccounts.map((row: any) => row.email);
@@ -22,7 +22,7 @@ export class SeedTestAccounts1733400000000 implements MigrationInterface {
     if (!existingEmails.includes('test@test.com')) {
       await queryRunner.query(
         `
-        INSERT INTO member_tb (
+        INSERT INTO auth_member (
           email, password, role_type, phone, ck_sms, ck_sms_agree,
           member_type, nickname, account_stop_yn, create_dt, update_dt
         ) VALUES (
@@ -50,7 +50,7 @@ export class SeedTestAccounts1733400000000 implements MigrationInterface {
     if (!existingEmails.includes('test2@test.com')) {
       await queryRunner.query(
         `
-        INSERT INTO member_tb (
+        INSERT INTO auth_member (
           email, password, role_type, phone, ck_sms, ck_sms_agree,
           member_type, nickname, account_stop_yn, create_dt, update_dt
         ) VALUES (
@@ -78,7 +78,7 @@ export class SeedTestAccounts1733400000000 implements MigrationInterface {
     if (!existingEmails.includes('test3@test.com')) {
       await queryRunner.query(
         `
-        INSERT INTO member_tb (
+        INSERT INTO auth_member (
           email, password, role_type, phone, ck_sms, ck_sms_agree,
           member_type, nickname, account_stop_yn, create_dt, update_dt
         ) VALUES (
@@ -106,7 +106,7 @@ export class SeedTestAccounts1733400000000 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Remove test accounts (only if they exist)
     await queryRunner.query(`
-      DELETE FROM member_tb
+      DELETE FROM auth_member
       WHERE email IN ('test@test.com', 'test2@test.com', 'test3@test.com')
     `);
     console.log('Removed test accounts');

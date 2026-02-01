@@ -90,7 +90,6 @@ export class ExploreRegularService {
       year: result.year,
       // 기존 필드 유지
       recruitment_number: result.recruitment_number,
-      competition_ratio: result.competition_ratio,
       min_cut: result.min_cut,
       max_cut: result.max_cut,
       percent: result.percent,

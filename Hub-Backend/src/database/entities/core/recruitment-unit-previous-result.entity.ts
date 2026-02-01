@@ -46,15 +46,6 @@ export class RecruitmentUnitPreviousResultEntity {
   converted_score_cut: number;
 
   @Column({
-    type: 'decimal',
-    precision: 10,
-    scale: 5,
-    nullable: true,
-    comment: '경쟁률',
-  })
-  competition_ratio: number;
-
-  @Column({
     type: 'int',
     nullable: true,
     comment: '모집인원',

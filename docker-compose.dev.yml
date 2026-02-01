@@ -1,0 +1,56 @@
+# 개발 환경용 Docker Compose 오버라이드
+# 사용법: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+version: '3.8'
+
+services:
+  postgres:
+    # 개발용 추가 설정
+    environment:
+      # 상세 로깅
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+    # 개발용 포트 노출 (필요시)
+    # ports:
+    #   - "5432:5432"
+
+  redis:
+    # 개발용 Redis 설정
+    command: redis-server --appendonly yes --loglevel verbose
+    # Redis Commander (선택사항 - Redis GUI)
+    # ports:
+    #   - "6379:6379"
+
+  # Redis Commander - Redis 관리 GUI (선택사항)
+  # redis-commander:
+  #   image: rediscommander/redis-commander:latest
+  #   container_name: hub-redis-commander
+  #   restart: unless-stopped
+  #   environment:
+  #     - REDIS_HOSTS=redis:redis:6379
+  #   ports:
+  #     - "8081:8081"
+  #   networks:
+  #     - hub-network
+  #   depends_on:
+  #     - redis
+
+  # pgAdmin - PostgreSQL 관리 GUI (선택사항)
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: hub-pgadmin
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@hub.local
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #   ports:
+  #     - "5050:80"
+  #   volumes:
+  #     - pgadmin_data:/var/lib/pgadmin
+  #   networks:
+  #     - hub-network
+  #   depends_on:
+  #     - postgres
+
+# volumes:
+#   pgadmin_data:

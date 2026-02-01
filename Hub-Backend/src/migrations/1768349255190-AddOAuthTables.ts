@@ -28,16 +28,16 @@ export class AddOAuthTables1768349255190 implements MigrationInterface {
     await queryRunner.query(
       `CREATE INDEX "IDX_53633640066bfdd28a3c8d6171" ON "mentoring_invite_tb" ("expire_at") `,
     );
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms" SET DEFAULT b'0'`);
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms_agree" SET DEFAULT b'0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms" SET DEFAULT b'0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms_agree" SET DEFAULT b'0'`);
     await queryRunner.query(
       `ALTER TABLE "oauth_authorization_codes" ADD CONSTRAINT "FK_64d965bd072ea24fb6da55468cd" FOREIGN KEY ("clientId") REFERENCES "oauth_clients"("clientId") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "oauth_authorization_codes" ADD CONSTRAINT "FK_bb52972ac16d079e6a01bd8a0d9" FOREIGN KEY ("memberId") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "oauth_authorization_codes" ADD CONSTRAINT "FK_bb52972ac16d079e6a01bd8a0d9" FOREIGN KEY ("memberId") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_invite_tb" ADD CONSTRAINT "FK_80cb5f7e2ae06aada8c52f06e41" FOREIGN KEY ("teacher_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_invite_tb" ADD CONSTRAINT "FK_80cb5f7e2ae06aada8c52f06e41" FOREIGN KEY ("teacher_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
   }
 
@@ -51,8 +51,8 @@ export class AddOAuthTables1768349255190 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "oauth_authorization_codes" DROP CONSTRAINT "FK_64d965bd072ea24fb6da55468cd"`,
     );
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms_agree" SET DEFAULT '0'`);
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms" SET DEFAULT '0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms_agree" SET DEFAULT '0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms" SET DEFAULT '0'`);
     await queryRunner.query(`DROP INDEX "public"."IDX_53633640066bfdd28a3c8d6171"`);
     await queryRunner.query(`DROP INDEX "public"."IDX_bd98d837af95941091b26a262b"`);
     await queryRunner.query(`DROP INDEX "public"."IDX_80cb5f7e2ae06aada8c52f06e4"`);

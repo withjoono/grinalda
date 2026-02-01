@@ -146,7 +146,6 @@ export class ChatbotService {
       suggestedQuestions: [
         '환산점수가 뭔가요?',
         '가군/나군/다군이 뭔가요?',
-        '경쟁률은 어디서 확인하나요?',
       ],
     };
   }

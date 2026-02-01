@@ -7,7 +7,7 @@ echo ==========================================
 echo.
 
 REM 사전 검증 실행
-call check-dev-env.bat
+call "%~dp0check-dev-env.bat"
 if errorlevel 1 (
     echo.
     echo X Pre-flight checks failed

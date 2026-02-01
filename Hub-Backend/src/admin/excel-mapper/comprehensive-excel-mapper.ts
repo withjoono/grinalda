@@ -72,26 +72,21 @@ export const susiComprehensiveExcelMapper = {
   '2024년입결기준': 'admission_criteria_2024',
   '2024학년도입결(등급)': 'admission_2024_grade',
   '2024학년도입결(환산점수)': 'admission_2024_converted_score',
-  '2024학년도경쟁률': 'competition_rate_2024',
   '2024충원': 'replenishment_2024',
 
   '2023학년도기준': 'admission_criteria_2023',
   '2023학년도입결(등급)': 'admission_2023_grade',
   '2023학년도입결(환산점수)': 'admission_2023_converted_score',
-  '2023학년도경쟁률': 'competition_rate_2023',
   '2023충원': 'replenishment_2023',
 
   '2022학년도기준': 'admission_criteria_2022',
   '2022학년도입결': 'admission_2022_grade',
-  '2022학년도경쟁률': 'competition_rate_2022',
   '2022충원': 'replenishment_2022',
 
   '2021학년도입결': 'admission_2021_grade',
-  '2021학년도경쟁률': 'competition_rate_2021',
   '2021충원': 'replenishment_2021',
 
   '2020학년도입결': 'admission_2020_grade',
-  '2020학년도경쟁률': 'competition_rate_2020',
   '2020충원': 'replenishment_2020',
 
   지원시유의사항: 'application_notes',

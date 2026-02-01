@@ -1,0 +1,14 @@
+[INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/chunk-UPELNCPK.js?v=f9deb56f:21550
+[LOG] Environment Configuration: {mode: development, apiUrlHub: /api-hub, apiUrlNest: /api-susi, frontUrl: http://localhost:3000} @ http://localhost:3000/src/lib/config/env.ts:45
+[ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3000/api-nest/auth/me:0
+[WARNING] 🌐 공개 API에서 401 에러 발생 (리다이렉트 안 함): /auth/me @ http://localhost:3000/src/stores/server/api-client.ts:62
+[WARNING] 🌐 공개 API에서 401 에러 발생 (리다이렉트 안 함): /auth/me @ http://localhost:3000/src/stores/server/common-utils.ts:89
+[ERROR] API Error: AxiosError @ http://localhost:3000/src/stores/server/common-utils.ts:46
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://identitytoolkit.googleapis.com/v1/projects?key=AIzaSyA_KEbqKtu-pWHWkiumSpodjefrw0VDjXo:0
+[ERROR] Google 로그인 에러: FirebaseError: Firebase: Error (auth/api-key-not-valid.-please-pass-a-valid-api-key.).
+    at createErrorInternal (http://localhost:3000/node_modules/.vite/deps/firebase_auth.js?v=b4c34e38:689:37)
+    at _fail (http://localhost:3000/node_modules/.vite/deps/firebase_auth.js?v=b4c34e38:654:9)
+    at _performFetchWithErrorHandling (http://localhost:3000/node_modules/.vite/deps/firebase_auth.js?v=b4c34e38:1112:9)
+    at async _validateOrigin (http://localhost:3000/node_modules/.vite/deps/firebase_auth.js?v=b4c34e38:6878:33) @ http://localhost:3000/src/components/login-google-button.tsx:74
+[ERROR] Failed to load resource: the server responded with a status of 400 () @ https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key=AIzaSyA_KEbqKtu-pWHWkiumSpodjefrw0VDjXo&cb=1769432219638:0
+[WARNING] {"error":{"code":400,"message":"API key not valid. Please pass a valid API key.","errors":[{"message":"API key not valid. Please pass a valid API key.","domain":"global","reason":"badRequest"}],"status":"INVALID_ARGUMENT","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"API_KEY_INVALID","domain":"googleapis.com","metadata":{"service":"identitytoolkit.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"API key not valid. Please pass a valid API key."}]}} @ https://ts-front-479305.firebaseapp.com/__/auth/iframe.js:310

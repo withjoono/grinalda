@@ -291,7 +291,6 @@ export class CoreRegularAdmissionService {
             // 2025 입결 (컬럼 87-94: CJ~CQ)
             year: 2025,
             recruitment_number: parseInt(row['CJ']) || null, // 87: 모집인원(최종)
-            competition_ratio: parseFloat(row['CK'] || '0') || null, // 88: 경쟁률
             additional_pass_rank: parseInt(row['CL']) || null, // 89: 충원합격순위
             min_cut: parseFloat(row['CM'] || '0') || null, // 90: 환산점수 50%컷
             max_cut: parseFloat(row['CN'] || '0') || null, // 91: 환산점수 70%컷
@@ -304,7 +303,6 @@ export class CoreRegularAdmissionService {
             // 2024 입결 (컬럼 95-102: CR~CY)
             year: 2024,
             recruitment_number: parseInt(row['CR']) || null, // 95: 모집인원(최종)
-            competition_ratio: parseFloat(row['CS'] || '0') || null, // 96: 경쟁률
             additional_pass_rank: parseInt(row['CT']) || null, // 97: 충원합격순위
             min_cut: parseFloat(row['CU'] || '0') || null, // 98: 환산점수 50%컷
             max_cut: parseFloat(row['CV'] || '0') || null, // 99: 환산점수 70%컷
@@ -317,7 +315,6 @@ export class CoreRegularAdmissionService {
             // 2023 입결 (컬럼 103-110: CZ~DG)
             year: 2023,
             recruitment_number: parseInt(row['CZ']) || null, // 103: 모집인원(최종)
-            competition_ratio: parseFloat(row['DA'] || '0') || null, // 104: 경쟁률
             additional_pass_rank: parseInt(row['DB']) || null, // 105: 충원합격순위
             min_cut: parseFloat(row['DC'] || '0') || null, // 106: 환산점수 50%컷
             max_cut: parseFloat(row['DD'] || '0') || null, // 107: 환산점수 70%컷

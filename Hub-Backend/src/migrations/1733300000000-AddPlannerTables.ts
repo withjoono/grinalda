@@ -127,7 +127,7 @@ export class AddPlannerTables1733300000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -356,7 +356,7 @@ export class AddPlannerTables1733300000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -508,7 +508,7 @@ export class AddPlannerTables1733300000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -580,7 +580,7 @@ export class AddPlannerTables1733300000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['planner_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
@@ -662,13 +662,13 @@ export class AddPlannerTables1733300000000 implements MigrationInterface {
         foreignKeys: [
           {
             columnNames: ['member_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },
           {
             columnNames: ['planner_id'],
-            referencedTableName: 'member_tb',
+            referencedTableName: 'auth_member',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
           },

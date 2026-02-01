@@ -1,0 +1,117 @@
+- generic [ref=e2]:
+  - generic [ref=e46]:
+    - heading "회원가입" [level=2] [ref=e48]
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - text: 이름*
+            - textbox "이름*" [ref=e53]:
+              - /placeholder: 이름
+          - generic [ref=e54]:
+            - text: 이메일*
+            - textbox "이메일*" [ref=e55]:
+              - /placeholder: 이메일 주소
+              - text: test-firebase-20260127-184300@geobukschool.com
+          - generic [ref=e56]:
+            - text: 패스워드*
+            - textbox "패스워드*" [ref=e57]:
+              - /placeholder: 패스워드
+              - text: Junho@46852
+          - generic [ref=e58]:
+            - text: 패스워드 확인*
+            - textbox "패스워드 확인*" [ref=e59]:
+              - /placeholder: 패스워드 확인
+          - generic [ref=e60]:
+            - text: 학교
+            - textbox "학교" [ref=e62]:
+              - /placeholder: 학교 검색(목록에 없으면 비워주세요)
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - text: 전공*
+              - combobox "전공*" [ref=e65] [cursor=pointer]:
+                - generic: 문과
+                - img [ref=e66]
+              - combobox [ref=e68]
+            - generic [ref=e69]:
+              - text: 졸업예정연도*
+              - spinbutton "졸업예정연도*" [ref=e70]: "2025"
+          - generic [ref=e71]:
+            - paragraph [ref=e72]: 회원유형
+            - generic [ref=e73]:
+              - button "학생" [ref=e74] [cursor=pointer]:
+                - img [ref=e75]
+                - img [ref=e77]
+                - generic [ref=e80]: 학생
+              - button "선생님" [ref=e81] [cursor=pointer]:
+                - img [ref=e82]
+                - generic [ref=e85]: 선생님
+              - button "학부모" [ref=e86] [cursor=pointer]:
+                - img [ref=e87]
+                - generic [ref=e92]: 학부모
+          - generic [ref=e93]:
+            - text: 휴대폰 번호
+            - textbox "휴대폰 번호" [ref=e94]:
+              - /placeholder: "01012345678"
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - checkbox "전체 동의" [ref=e97] [cursor=pointer]
+            - checkbox
+            - generic [ref=e98]: 전체 동의
+          - generic [ref=e99]:
+            - checkbox "이용약관 동의 (필수)" [ref=e100] [cursor=pointer]
+            - checkbox
+            - generic [ref=e101]:
+              - generic [ref=e102]: 이용약관 동의 (필수)
+              - paragraph [ref=e103]:
+                - link "더보기" [ref=e104] [cursor=pointer]:
+                  - /url: /
+          - generic [ref=e105]:
+            - checkbox "개인정보 수집 및 이용 동의 (필수)" [ref=e106] [cursor=pointer]
+            - checkbox
+            - generic [ref=e107]:
+              - generic [ref=e108]: 개인정보 수집 및 이용 동의 (필수)
+              - paragraph [ref=e109]:
+                - link "더보기" [ref=e110] [cursor=pointer]:
+                  - /url: /
+          - generic [ref=e111]:
+            - checkbox "만 14세 이상 사용자 (필수)" [ref=e112] [cursor=pointer]
+            - checkbox
+            - generic [ref=e114]: 만 14세 이상 사용자 (필수)
+          - generic [ref=e115]:
+            - checkbox "SMS 광고성 수신동의 (선택)" [ref=e116] [cursor=pointer]
+            - checkbox
+            - generic [ref=e118]: SMS 광고성 수신동의 (선택)
+        - button "회원가입" [disabled]
+      - link "로그인" [ref=e120] [cursor=pointer]:
+        - /url: /auth/login
+  - region "Notifications alt+T"
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e21]:
+        - img [ref=e22]
+        - generic [ref=e23]: (주)거북스쿨
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: 사업체명 (주)거북스쿨
+          - generic [ref=e27]: 대표 강준호
+          - generic [ref=e28]: 사업자등록번호 772-87-02782
+          - generic [ref=e29]: 연락처 042-484-3356
+        - generic [ref=e30]:
+          - generic [ref=e31]: 서울시 성북구 화랑로 211 성북구 기술창업센터 105호
+          - generic [ref=e32]: 해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - link "이용약관" [ref=e35] [cursor=pointer]:
+          - /url: /explain/service
+        - link "환불규정" [ref=e36] [cursor=pointer]:
+          - /url: /explain/refund
+        - link "개인정보처리방침" [ref=e37] [cursor=pointer]:
+          - /url: /explain/privacy
+      - generic [ref=e38]:
+        - link [ref=e39] [cursor=pointer]:
+          - /url: https://www.youtube.com/@turtleschool_official
+          - img [ref=e40]
+        - link [ref=e41] [cursor=pointer]:
+          - /url: https://cafe.naver.com/turtlecorp
+          - img [ref=e42]

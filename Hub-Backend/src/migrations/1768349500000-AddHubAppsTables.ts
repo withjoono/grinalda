@@ -164,7 +164,7 @@ export class AddHubAppsTables1768349500000 implements MigrationInterface {
       'app_subscriptions',
       new TableForeignKey({
         columnNames: ['member_id'],
-        referencedTableName: 'member_tb',
+        referencedTableName: 'auth_member',
         referencedColumnNames: ['id'],
         onDelete: 'CASCADE',
       }),

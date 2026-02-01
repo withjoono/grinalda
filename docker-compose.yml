@@ -1,0 +1,56 @@
+services:
+  # PostgreSQL 데이터베이스
+  postgres:
+    image: postgres:14
+    container_name: hub-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tsuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tsuser1234}
+      POSTGRES_DB: ${POSTGRES_DB:-geobukschool_dev}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./Hub-Backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - hub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tsuser} -d ${POSTGRES_DB:-geobukschool_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 캐시
+  redis:
+    image: redis:7-alpine
+    container_name: hub-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - hub-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
+
+# 데이터 영속성을 위한 볼륨
+volumes:
+  postgres_data:
+    name: hub_postgres_data
+    driver: local
+  redis_data:
+    name: hub_redis_data
+    driver: local
+
+# 서비스 간 통신을 위한 네트워크
+networks:
+  hub-network:
+    name: hub-network
+    driver: bridge

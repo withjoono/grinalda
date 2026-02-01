@@ -34,15 +34,6 @@ export class RegularAdmissionPreviousResultEntity {
     precision: 10,
     scale: 5,
     nullable: true,
-    comment: '경쟁률',
-  })
-  competition_ratio: number | null;
-
-  @Column({
-    type: 'decimal',
-    precision: 10,
-    scale: 5,
-    nullable: true,
     comment: '누백',
   })
   percent: number | null;

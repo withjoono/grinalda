@@ -40,41 +40,41 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
       `CREATE TABLE "myclass_attendance_tb" ("id" BIGSERIAL NOT NULL, "member_id" bigint NOT NULL, "date" date NOT NULL, "check_in" TIME, "check_out" TIME, "status" character varying(20) NOT NULL DEFAULT 'present', "note" text, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ab647cab6815585e4103bc1bd21" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" ADD "additional_pass_rank" integer`,
+      `ALTER TABLE "js_admission_previous_result" ADD "additional_pass_rank" integer`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."additional_pass_rank" IS '충원합격순위'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."additional_pass_rank" IS '충원합격순위'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" ADD "converted_score_total" numeric(10,5)`,
+      `ALTER TABLE "js_admission_previous_result" ADD "converted_score_total" numeric(10,5)`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."converted_score_total" IS '환산점수총점'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."converted_score_total" IS '환산점수총점'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" ADD "percentile_50" numeric(10,5)`,
+      `ALTER TABLE "js_admission_previous_result" ADD "percentile_50" numeric(10,5)`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."percentile_50" IS '백분위 50%컷'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."percentile_50" IS '백분위 50%컷'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" ADD "percentile_70" numeric(10,5)`,
+      `ALTER TABLE "js_admission_previous_result" ADD "percentile_70" numeric(10,5)`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."percentile_70" IS '백분위 70%컷'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."percentile_70" IS '백분위 70%컷'`,
     );
-    await queryRunner.query(`ALTER TABLE "post_tb" ALTER COLUMN "updated_at" SET DEFAULT now()`);
+    await queryRunner.query(`ALTER TABLE "board_post" ALTER COLUMN "updated_at" SET DEFAULT now()`);
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."min_cut" IS '환산점수 50%컷 (구: 최초컷)'`,
-    );
-    await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."max_cut" IS '환산점수 70%컷 (구: 추합컷)'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."min_cut" IS '환산점수 50%컷 (구: 최초컷)'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."recruitment_number" IS '모집인원(최종)'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."max_cut" IS '환산점수 70%컷 (구: 추합컷)'`,
     );
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms" SET DEFAULT b'0'`);
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms_agree" SET DEFAULT b'0'`);
+    await queryRunner.query(
+      `COMMENT ON COLUMN "js_admission_previous_result"."recruitment_number" IS '모집인원(최종)'`,
+    );
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms" SET DEFAULT b'0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms_agree" SET DEFAULT b'0'`);
     await queryRunner.query(
       `ALTER TABLE "planner_routine_tb" DROP CONSTRAINT "FK_21a86f60a9a1f12d2e3e3aae75b"`,
     );
@@ -290,55 +290,55 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
       `CREATE UNIQUE INDEX "IDX_4beaa840b8efded4bb94bbfd54" ON "ts_member_calculated_scores" ("member_id", "university_id", "score_calculation") `,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_routine_tb" ADD CONSTRAINT "FK_21a86f60a9a1f12d2e3e3aae75b" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_routine_tb" ADD CONSTRAINT "FK_21a86f60a9a1f12d2e3e3aae75b" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_notice_tb" ADD CONSTRAINT "FK_d68944e8e8602c0260aaf7da9dd" FOREIGN KEY ("planner_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_notice_tb" ADD CONSTRAINT "FK_d68944e8e8602c0260aaf7da9dd" FOREIGN KEY ("planner_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_ba79d55f73b21f9d52df34cca8f" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_ba79d55f73b21f9d52df34cca8f" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_eb3592df2d6a9db28e0c51e1bd4" FOREIGN KEY ("planner_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_eb3592df2d6a9db28e0c51e1bd4" FOREIGN KEY ("planner_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_item_tb" ADD CONSTRAINT "FK_5bb76f190da4945bcec21670289" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_item_tb" ADD CONSTRAINT "FK_5bb76f190da4945bcec21670289" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_plan_tb" ADD CONSTRAINT "FK_a614930dabfe6ed9b3c0761ebc9" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_plan_tb" ADD CONSTRAINT "FK_a614930dabfe6ed9b3c0761ebc9" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_class_tb" ADD CONSTRAINT "FK_2982a83834ec597bfaade6bf9c8" FOREIGN KEY ("planner_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_class_tb" ADD CONSTRAINT "FK_2982a83834ec597bfaade6bf9c8" FOREIGN KEY ("planner_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "myclass_test_tb" ADD CONSTRAINT "FK_a53786c6c72e6662f2aac293822" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "myclass_test_tb" ADD CONSTRAINT "FK_a53786c6c72e6662f2aac293822" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "myclass_health_record_tb" ADD CONSTRAINT "FK_cd876689377ca4514a0ed0863f6" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "myclass_health_record_tb" ADD CONSTRAINT "FK_cd876689377ca4514a0ed0863f6" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "myclass_consultation_tb" ADD CONSTRAINT "FK_bc02c6a2ccb95ac82d27d9210f5" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "myclass_consultation_tb" ADD CONSTRAINT "FK_bc02c6a2ccb95ac82d27d9210f5" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "myclass_consultation_tb" ADD CONSTRAINT "FK_851df29b45c7b271d1b900e86e4" FOREIGN KEY ("mentor_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "myclass_consultation_tb" ADD CONSTRAINT "FK_851df29b45c7b271d1b900e86e4" FOREIGN KEY ("mentor_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "myclass_attendance_tb" ADD CONSTRAINT "FK_335151ad44a489317519569d21f" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "myclass_attendance_tb" ADD CONSTRAINT "FK_335151ad44a489317519569d21f" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_temp_code_tb" ADD CONSTRAINT "FK_411fa24a35489953c7acc6e1509" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_temp_code_tb" ADD CONSTRAINT "FK_411fa24a35489953c7acc6e1509" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_2259e1cf92677550bbfbf52970f" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_2259e1cf92677550bbfbf52970f" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_08099f9807ed5747074c570ebe3" FOREIGN KEY ("target_member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_08099f9807ed5747074c570ebe3" FOREIGN KEY ("target_member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_ccb23a36423ce085f87e8c0af80" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_ccb23a36423ce085f87e8c0af80" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_5a91bf520e8c2b5ff83817fe824" FOREIGN KEY ("linked_member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_5a91bf520e8c2b5ff83817fe824" FOREIGN KEY ("linked_member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
   }
 
@@ -427,10 +427,10 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
       `COMMENT ON COLUMN "mentoring_account_link_tb"."member_id" IS '회원 ID'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_5a91bf520e8c2b5ff83817fe824" FOREIGN KEY ("linked_member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_5a91bf520e8c2b5ff83817fe824" FOREIGN KEY ("linked_member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_ccb23a36423ce085f87e8c0af80" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_account_link_tb" ADD CONSTRAINT "FK_ccb23a36423ce085f87e8c0af80" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `COMMENT ON COLUMN "mentoring_admin_class_tb"."group_name" IS '그룹명'`,
@@ -450,10 +450,10 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
       `COMMENT ON COLUMN "mentoring_admin_class_tb"."member_id" IS '회원 ID'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_08099f9807ed5747074c570ebe3" FOREIGN KEY ("target_member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_08099f9807ed5747074c570ebe3" FOREIGN KEY ("target_member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_2259e1cf92677550bbfbf52970f" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_admin_class_tb" ADD CONSTRAINT "FK_2259e1cf92677550bbfbf52970f" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "mentoring_temp_code_tb" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP`,
@@ -471,7 +471,7 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
       `COMMENT ON COLUMN "mentoring_temp_code_tb"."member_id" IS '회원 ID (PK)'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "mentoring_temp_code_tb" ADD CONSTRAINT "FK_411fa24a35489953c7acc6e1509" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "mentoring_temp_code_tb" ADD CONSTRAINT "FK_411fa24a35489953c7acc6e1509" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(`COMMENT ON COLUMN "planner_class_tb"."use_yn" IS '사용 여부'`);
     await queryRunner.query(
@@ -487,7 +487,7 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
     );
     await queryRunner.query(`COMMENT ON COLUMN "planner_class_tb"."id" IS '클래스 ID'`);
     await queryRunner.query(
-      `ALTER TABLE "planner_class_tb" ADD CONSTRAINT "FK_2982a83834ec597bfaade6bf9c8" FOREIGN KEY ("planner_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_class_tb" ADD CONSTRAINT "FK_2982a83834ec597bfaade6bf9c8" FOREIGN KEY ("planner_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "planner_plan_tb" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP`,
@@ -518,7 +518,7 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
     await queryRunner.query(`COMMENT ON COLUMN "planner_plan_tb"."member_id" IS '회원 ID'`);
     await queryRunner.query(`COMMENT ON COLUMN "planner_plan_tb"."id" IS '계획 ID'`);
     await queryRunner.query(
-      `ALTER TABLE "planner_plan_tb" ADD CONSTRAINT "FK_a614930dabfe6ed9b3c0761ebc9" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_plan_tb" ADD CONSTRAINT "FK_a614930dabfe6ed9b3c0761ebc9" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "planner_item_tb" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP`,
@@ -568,7 +568,7 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
     await queryRunner.query(`COMMENT ON COLUMN "planner_item_tb"."member_id" IS '회원 ID'`);
     await queryRunner.query(`COMMENT ON COLUMN "planner_item_tb"."id" IS '일정 ID'`);
     await queryRunner.query(
-      `ALTER TABLE "planner_item_tb" ADD CONSTRAINT "FK_5bb76f190da4945bcec21670289" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_item_tb" ADD CONSTRAINT "FK_5bb76f190da4945bcec21670289" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(`COMMENT ON COLUMN "planner_management_tb"."use_yn" IS '사용 여부'`);
     await queryRunner.query(
@@ -585,10 +585,10 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
     );
     await queryRunner.query(`COMMENT ON COLUMN "planner_management_tb"."member_id" IS '학생 ID'`);
     await queryRunner.query(
-      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_eb3592df2d6a9db28e0c51e1bd4" FOREIGN KEY ("planner_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_eb3592df2d6a9db28e0c51e1bd4" FOREIGN KEY ("planner_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_ba79d55f73b21f9d52df34cca8f" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_management_tb" ADD CONSTRAINT "FK_ba79d55f73b21f9d52df34cca8f" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "planner_routine_tb" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP`,
@@ -616,45 +616,45 @@ export class AddPreviousResultColumns1765003406925 implements MigrationInterface
     await queryRunner.query(`COMMENT ON COLUMN "planner_routine_tb"."member_id" IS '회원 ID'`);
     await queryRunner.query(`COMMENT ON COLUMN "planner_routine_tb"."id" IS '루틴 ID'`);
     await queryRunner.query(
-      `ALTER TABLE "planner_routine_tb" ADD CONSTRAINT "FK_21a86f60a9a1f12d2e3e3aae75b" FOREIGN KEY ("member_id") REFERENCES "member_tb"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+      `ALTER TABLE "planner_routine_tb" ADD CONSTRAINT "FK_21a86f60a9a1f12d2e3e3aae75b" FOREIGN KEY ("member_id") REFERENCES "auth_member"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms_agree" SET DEFAULT '0'`);
-    await queryRunner.query(`ALTER TABLE "member_tb" ALTER COLUMN "ck_sms" SET DEFAULT '0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms_agree" SET DEFAULT '0'`);
+    await queryRunner.query(`ALTER TABLE "auth_member" ALTER COLUMN "ck_sms" SET DEFAULT '0'`);
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."recruitment_number" IS '모집인원'`,
-    );
-    await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."max_cut" IS '추합컷'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."recruitment_number" IS '모집인원'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."min_cut" IS '최초컷'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."max_cut" IS '추합컷'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "post_tb" ALTER COLUMN "updated_at" SET DEFAULT '2025-12-01 11:16:18.987647'`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."min_cut" IS '최초컷'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."percentile_70" IS '백분위 70%컷'`,
+      `ALTER TABLE "board_post" ALTER COLUMN "updated_at" SET DEFAULT '2025-12-01 11:16:18.987647'`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" DROP COLUMN "percentile_70"`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."percentile_70" IS '백분위 70%컷'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."percentile_50" IS '백분위 50%컷'`,
+      `ALTER TABLE "js_admission_previous_result" DROP COLUMN "percentile_70"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" DROP COLUMN "percentile_50"`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."percentile_50" IS '백분위 50%컷'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."converted_score_total" IS '환산점수총점'`,
+      `ALTER TABLE "js_admission_previous_result" DROP COLUMN "percentile_50"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" DROP COLUMN "converted_score_total"`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."converted_score_total" IS '환산점수총점'`,
     );
     await queryRunner.query(
-      `COMMENT ON COLUMN "ts_regular_admission_previous_results"."additional_pass_rank" IS '충원합격순위'`,
+      `ALTER TABLE "js_admission_previous_result" DROP COLUMN "converted_score_total"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "ts_regular_admission_previous_results" DROP COLUMN "additional_pass_rank"`,
+      `COMMENT ON COLUMN "js_admission_previous_result"."additional_pass_rank" IS '충원합격순위'`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "js_admission_previous_result" DROP COLUMN "additional_pass_rank"`,
     );
     await queryRunner.query(`DROP TABLE "myclass_attendance_tb"`);
     await queryRunner.query(`DROP TABLE "myclass_consultation_tb"`);
