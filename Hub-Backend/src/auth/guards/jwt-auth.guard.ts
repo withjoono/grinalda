@@ -78,6 +78,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     firebaseUid?: string;
   }> {
     try {
+      // 0. 토큰 타입 사전 검사 (Optimization)
+      // HS 알고리즘(Hub JWT)인 경우 Firebase 검증 스킵
+      const decoded = this.jwtService.decode(token);
+      if (decoded && decoded.header && decoded.header.alg && decoded.header.alg.startsWith('HS')) {
+        return { success: false };
+      }
+
       // Firebase ID Token 검증
       const decodedToken = await this.firebaseAdminService.verifyIdToken(token);
 

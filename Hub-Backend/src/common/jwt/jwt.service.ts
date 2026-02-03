@@ -103,4 +103,12 @@ export class JwtService {
       algorithm: this.HASH_ALGORITHM,
     });
   }
+
+  /**
+   * 토큰 디코딩 (검증 없음)
+   * 헤더 정보를 확인하기 위해 사용
+   */
+  decode(token: string): jwt.Jwt | null {
+    return jwt.decode(token, { complete: true }) as jwt.Jwt;
+  }
 }
