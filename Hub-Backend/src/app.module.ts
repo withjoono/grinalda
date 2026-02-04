@@ -28,7 +28,6 @@ import { EncryptionModule } from './common/encryption/encryption.module';
 import { SchoolRecordModule } from './modules/schoolrecord/schoolrecord.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
-import { MockexamModule } from './modules/mock-exam/mock-exam.module';
 import { StoreModule } from './modules/store/store.module';
 import payConfig from './modules/pay/config/pay-config';
 import { PaymentModule } from './modules/pay/pay.module';
@@ -40,12 +39,10 @@ import { BoardModule } from './modules/board/board.module';
 // import { AwsUploadModule } from './aws-upload/aws-upload.module';
 import gcsUploadConfig from './gcs-upload/config/gcs-upload-config';
 import { GcsUploadModule } from './gcs-upload/gcs-upload.module';
-import { CoreModule } from './modules/core/core.module';
-import { StaticDataModule } from './modules/static-data/static-data.module';
-import { ExplorationModule } from './modules/exploration/exploration.module';
-import { MentoringModule } from './modules/mentoring/mentoring.module';
-import { PlannerModule } from './modules/planner/planner.module';
-import { MyclassModule } from './modules/myclass/myclass.module';
+// import { CoreModule } from './modules/core/core.module'; // REMOVED: 독립 앱
+// import { StaticDataModule } from './modules/static-data/static-data.module'; // REMOVED: 독립 앱
+// import { ExplorationModule } from './modules/exploration/exploration.module'; // REMOVED: 독립 앱
+// import { MyclassModule } from './modules/myclass/myclass.module'; // REMOVED: 독립 앱
 import { ChatbotModule } from './modules/chatbot/chatbot.module';
 import { winstonConfig } from './common/utils/winston.utils';
 import { WinstonModule } from 'nest-winston';
@@ -136,19 +133,16 @@ import { FirebaseModule } from './firebase/firebase.module';
     AdminModule, // 어드민 모듈
     CommonCodeModule, // 공통코드 모듈
     SchoolRecordModule, // 생기부 모듈
-    MockexamModule, // 모의고사 모듈
     StoreModule, // 상점 모듈
     PaymentModule, // 결제 모듈 (SSO)
     SmsModule, // SMS 모듈(Aligo 사용중)
     BoardModule, // 게시판 모듈 (게시판, 게시글, 댓글)
     // AwsUploadModule, // aws 업로드 모듈
     GcsUploadModule, // GCS 파일 업로드 모듈
-    CoreModule,
-    StaticDataModule, // 정적데이터 모듈(교과 코드, 계열 등)
-    ExplorationModule,
-    MentoringModule, // 멘토링 모듈 (계정 연동)
-    PlannerModule, // 플래너 모듈 (학습계획, 일정, 루틴)
-    MyclassModule, // 마이클래스 모듈 (건강관리, 상담, 출결, 시험)
+    // CoreModule, // REMOVED: 독립 앱
+    // StaticDataModule, // REMOVED: 독립 앱
+    // ExplorationModule, // REMOVED: 독립 앱
+    // MyclassModule, // REMOVED: 독립 앱
     ChatbotModule, // 챗봇 모듈 (FAQ, 용어사전, 매뉴얼 기반 Q&A)
     SubscriptionModule, // 앱 구독/권한 관리 모듈 (JWT에 앱별 권한 포함)
   ],

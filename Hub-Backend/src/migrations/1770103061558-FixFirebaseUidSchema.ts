@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddFirebaseUidToMember1769513366700 implements MigrationInterface {
-    name = 'AddFirebaseUidToMember1769513366700'
+export class FixFirebaseUidSchema1770103061558 implements MigrationInterface {
+    name = 'FixFirebaseUidSchema1770103061558'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "auth_member" ADD "firebase_uid" character varying(128)`);

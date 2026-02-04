@@ -7,7 +7,8 @@ import { InterestSusiSubjectResponse } from '../dtos/interest-susi-subject-respo
 // import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 // import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import { InterestSusiComprehensiveResponse } from '../dtos/interest-susi-comprehensive-response';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
+// REMOVED: 독립 앱으로 분리
+// import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
 
 @Injectable()
 export class MemberInterestsService {
@@ -19,8 +20,9 @@ export class MemberInterestsService {
     // private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
     // @InjectRepository(SusiComprehensiveEntity)
     // private readonly susiComprehensiveRepository: Repository<SusiComprehensiveEntity>,
-    @InjectRepository(RecruitmentUnitEntity)
-    private readonly recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
+    // REMOVED: 독립 앱으로 분리
+    // @InjectRepository(RecruitmentUnitEntity)
+    // private readonly recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
   ) {}
 
   async addInterest(
@@ -129,97 +131,98 @@ export class MemberInterestsService {
     }) as InterestSusiComprehensiveResponse[]; */
   }
 
+  // REMOVED: 독립 앱으로 분리 - RecruitmentUnit 사용
   // 관심목록 조회
-  async getIntersetRecruitmentUnits(
-    memberId: number,
-    admissionType:
-      | 'susi_subject_tb'
-      | 'susi_comprehensive_tb'
-      | 'early_subject'
-      | 'early_comprehensive',
-  ) {
-    const interestItems = await this.memberInterestsRepository.find({
-      where: { member_id: memberId, target_table: admissionType },
-    });
+  // async getIntersetRecruitmentUnits(
+  //   memberId: number,
+  //   admissionType:
+  //     | 'susi_subject_tb'
+  //     | 'susi_comprehensive_tb'
+  //     | 'early_subject'
+  //     | 'early_comprehensive',
+  // ) {
+  //   const interestItems = await this.memberInterestsRepository.find({
+  //     where: { member_id: memberId, target_table: admissionType },
+  //   });
 
-    const recruitmentUnits = await this.recruitmentUnitRepository.find({
-      where: { id: In(interestItems.map((n) => Number(n.target_id))) },
-      relations: [
-        'admission',
-        'admission.university',
-        'admission.method',
-        'general_field',
-        'minor_field',
-        'minor_field.mid_field',
-        'minor_field.mid_field.major_field',
-        'scores',
-      ],
-    });
+  //   const recruitmentUnits = await this.recruitmentUnitRepository.find({
+  //     where: { id: In(interestItems.map((n) => Number(n.target_id))) },
+  //     relations: [
+  //       'admission',
+  //       'admission.university',
+  //       'admission.method',
+  //       'general_field',
+  //       'minor_field',
+  //       'minor_field.mid_field',
+  //       'minor_field.mid_field.major_field',
+  //       'scores',
+  //     ],
+  //   });
 
-    return recruitmentUnits.map((unit) => {
-      const interestItem = interestItems.find((item) => Number(item.target_id) === unit.id);
+  //   return recruitmentUnits.map((unit) => {
+  //     const interestItem = interestItems.find((item) => Number(item.target_id) === unit.id);
 
-      return {
-        evaluation_id: interestItem?.evaluation_id,
-        recruitmentUnit: {
-          id: unit.id,
-          name: unit.name,
-          recruitment_number: unit.recruitment_number,
-          general_field: unit.general_field,
-          fields: {
-            major: unit?.minor_field?.mid_field?.major_field,
-            mid: unit?.minor_field?.mid_field,
-            minor: unit?.minor_field,
-          },
-          university: {
-            id: unit.admission.university.id,
-            name: unit.admission.university.name,
-            region: unit.admission.university.region,
-            code: unit.admission.university.code,
-            establishment_type: unit.admission.university.establishment_type,
-          },
-          admission: {
-            id: unit.admission.id,
-            name: unit.admission.name,
-            year: unit.admission.year,
-            basic_type: unit.admission.basic_type,
-          },
-          admission_method: {
-            method_description: unit.admission.method.method_description,
-            subject_ratio: unit.admission.method.subject_ratio,
-            document_ratio: unit.admission.method.document_ratio,
-            interview_ratio: unit.admission.method.interview_ratio,
-            practical_ratio: unit.admission.method.practical_ratio,
-            other_details: unit.admission.method.other_details,
-            second_stage_first_ratio: unit.admission.method.second_stage_first_ratio,
-            second_stage_interview_ratio: unit.admission.method.second_stage_interview_ratio,
-            second_stage_other_ratio: unit.admission.method.second_stage_other_ratio,
-            second_stage_other_details: unit.admission.method.second_stage_other_details,
-            eligibility: unit.admission.method.eligibility,
-            school_record_evaluation_score: unit.admission.method.school_record_evaluation_score,
-            school_record_evaluation_elements:
-              unit.admission.method.school_record_evaluation_elements,
-          },
-          scores: unit.scores
-            ? {
-                grade_50_cut: unit.scores.grade_50_cut,
-                grade_70_cut: unit.scores.grade_70_cut,
-                convert_50_cut: unit.scores.convert_50_cut,
-                convert_70_cut: unit.scores.convert_70_cut,
-                risk_plus_5: unit.scores.risk_plus_5,
-                risk_plus_4: unit.scores.risk_plus_4,
-                risk_plus_3: unit.scores.risk_plus_3,
-                risk_plus_2: unit.scores.risk_plus_2,
-                risk_plus_1: unit.scores.risk_plus_1,
-                risk_minus_1: unit.scores.risk_minus_1,
-                risk_minus_2: unit.scores.risk_minus_2,
-                risk_minus_3: unit.scores.risk_minus_3,
-                risk_minus_4: unit.scores.risk_minus_4,
-                risk_minus_5: unit.scores.risk_minus_5,
-              }
-            : null,
-        },
-      };
-    });
-  }
+  //     return {
+  //       evaluation_id: interestItem?.evaluation_id,
+  //       recruitmentUnit: {
+  //         id: unit.id,
+  //         name: unit.name,
+  //         recruitment_number: unit.recruitment_number,
+  //         general_field: unit.general_field,
+  //         fields: {
+  //           major: unit?.minor_field?.mid_field?.major_field,
+  //           mid: unit?.minor_field?.mid_field,
+  //           minor: unit?.minor_field,
+  //         },
+  //         university: {
+  //           id: unit.admission.university.id,
+  //           name: unit.admission.university.name,
+  //           region: unit.admission.university.region,
+  //           code: unit.admission.university.code,
+  //           establishment_type: unit.admission.university.establishment_type,
+  //         },
+  //         admission: {
+  //           id: unit.admission.id,
+  //           name: unit.admission.name,
+  //           year: unit.admission.year,
+  //           basic_type: unit.admission.basic_type,
+  //         },
+  //         admission_method: {
+  //           method_description: unit.admission.method.method_description,
+  //           subject_ratio: unit.admission.method.subject_ratio,
+  //           document_ratio: unit.admission.method.document_ratio,
+  //           interview_ratio: unit.admission.method.interview_ratio,
+  //           practical_ratio: unit.admission.method.practical_ratio,
+  //           other_details: unit.admission.method.other_details,
+  //           second_stage_first_ratio: unit.admission.method.second_stage_first_ratio,
+  //           second_stage_interview_ratio: unit.admission.method.second_stage_interview_ratio,
+  //           second_stage_other_ratio: unit.admission.method.second_stage_other_ratio,
+  //           second_stage_other_details: unit.admission.method.second_stage_other_details,
+  //           eligibility: unit.admission.method.eligibility,
+  //           school_record_evaluation_score: unit.admission.method.school_record_evaluation_score,
+  //           school_record_evaluation_elements:
+  //             unit.admission.method.school_record_evaluation_elements,
+  //         },
+  //         scores: unit.scores
+  //           ? {
+  //               grade_50_cut: unit.scores.grade_50_cut,
+  //               grade_70_cut: unit.scores.grade_70_cut,
+  //               convert_50_cut: unit.scores.convert_50_cut,
+  //               convert_70_cut: unit.scores.convert_70_cut,
+  //               risk_plus_5: unit.scores.risk_plus_5,
+  //               risk_plus_4: unit.scores.risk_plus_4,
+  //               risk_plus_3: unit.scores.risk_plus_3,
+  //               risk_plus_2: unit.scores.risk_plus_2,
+  //               risk_plus_1: unit.scores.risk_plus_1,
+  //               risk_minus_1: unit.scores.risk_minus_1,
+  //               risk_minus_2: unit.scores.risk_minus_2,
+  //               risk_minus_3: unit.scores.risk_minus_3,
+  //               risk_minus_4: unit.scores.risk_minus_4,
+  //               risk_minus_5: unit.scores.risk_minus_5,
+  //             }
+  //           : null,
+  //       },
+  //     };
+  //   });
+  // }
 }

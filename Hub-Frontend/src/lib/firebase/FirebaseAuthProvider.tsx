@@ -14,7 +14,7 @@ import {
   getFirebaseIdToken,
   sendPasswordReset,
 } from './auth';
-import { authClient } from '@/lib/api';
+import { publicClient } from '@/lib/api';
 
 interface FirebaseAuthContextType {
   // 상태
@@ -226,8 +226,18 @@ export function useFirebaseAuthContext(): FirebaseAuthContextType {
 async function syncUserWithBackend(idToken: string, isNewUser = false) {
   try {
     // Firebase ID 토큰을 백엔드로 전송하여 사용자 정보 동기화
+    // 🔥 중요: publicClient 사용! authClient는 JWT를 자동으로 추가하므로 사용 금지
     const endpoint = isNewUser ? '/auth/firebase/register' : '/auth/firebase/login';
-    await authClient.post(endpoint, { idToken });
+    const response = await publicClient.post(endpoint, { idToken });
+
+    // 백엔드에서 받은 JWT 토큰 저장
+    if (response.data?.data) {
+      const { accessToken, refreshToken } = response.data.data;
+      if (accessToken && refreshToken) {
+        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem('refresh_token', refreshToken);
+      }
+    }
   } catch (err) {
     console.error('Failed to sync user with backend:', err);
     // 백엔드 동기화 실패해도 Firebase 인증은 유지

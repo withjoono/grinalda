@@ -13,7 +13,7 @@ import {
 import { AdmissionCategoryEntity } from './admission-category.entity';
 import { AdmissionSubtypeEntity } from './admission-subtype.entity';
 import { AdmissionMethodEntity } from './admission-method.entity';
-import { RecruitmentUnitEntity } from './recruitment-unit.entity';
+// // import { RecruitmentUnitEntity } from './recruitment-unit.entity';
 import { UniversityEntity } from './university.entity';
 
 @Entity('ss_admission', { comment: '대학 입학전형 정보 테이블' })
@@ -69,6 +69,6 @@ export class AdmissionEntity {
   })
   subtypes: AdmissionSubtypeEntity[];
 
-  @OneToMany(() => RecruitmentUnitEntity, (unit) => unit.admission)
-  recruitment_units: RecruitmentUnitEntity[];
+//   @OneToMany(() => RecruitmentUnitEntity, (unit) => unit.admission)
+//   recruitment_units: RecruitmentUnitEntity[];
 }

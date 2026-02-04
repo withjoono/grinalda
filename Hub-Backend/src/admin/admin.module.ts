@@ -16,9 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { AdminStatisticController } from './controllers/admin-statistic.controller';
 import { AdminStatisticService } from './services/admin-statistic.service';
-import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity';
-import { AdminMockExamController } from './controllers/admin-mock-exam.controller';
-import { AdminMockExamService } from './services/admin-mock-exam.service';
+// import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity'; // REMOVED
+// import { AdminMockExamController } from './controllers/admin-mock-exam.controller'; // REMOVED
+// import { AdminMockExamService } from './services/admin-mock-exam.service'; // REMOVED
 import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
 import { AdminPaymentController } from './controllers/admin-pay.controller';
 import { AdminPaymentService } from './services/admin-pay.service';
@@ -40,7 +40,7 @@ import { AdminProductManagementService } from './services/admin-product-manageme
     TypeOrmModule.forFeature([
       // SusiPassRecordEntity, // TODO: 독립 앱으로 분리
       MemberEntity,
-      MockexamRawToStandardEntity,
+      // MockexamRawToStandardEntity, // REMOVED
       PayOrderEntity,
       PayContractEntity,
       PayProductEntity,
@@ -56,7 +56,7 @@ import { AdminProductManagementService } from './services/admin-product-manageme
     // AdminSusiSubjectController,
     // AdminSusiPassRecordController,
     AdminStatisticController,
-    AdminMockExamController,
+    // AdminMockExamController, // REMOVED
     AdminPaymentController,
     AdminMemberController,
     AdminProductManagementController,
@@ -68,7 +68,7 @@ import { AdminProductManagementService } from './services/admin-product-manageme
     // AdminSusiSubjectService,
     // AdminSusiPassRecordService,
     AdminStatisticService,
-    AdminMockExamService,
+    // AdminMockExamService, // REMOVED
     AdminPaymentService,
     AdminMemberService,
     AdminProductManagementService,

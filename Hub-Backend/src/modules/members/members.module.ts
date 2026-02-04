@@ -12,17 +12,18 @@ import { SchoolRecordModule } from '../schoolrecord/schoolrecord.module';
 // import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 // import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import { BcryptModule } from 'src/common/bcrypt/bcrypt.module';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
-import { MemberRecruitmentUnitCombinationEntity } from 'src/database/entities/member/member-recruitment-unit-combination.entity';
-import { MemberRecruitmentUnitCombinationService } from './services/member-combination.service';
-import { MemberCombinationController } from './controllers/member-combination.controller';
-import { MemberRegularInterestsEntity } from 'src/database/entities/member/member-regular-interests';
-import { MemberRegularCombinationEntity } from 'src/database/entities/member/member-regular-combination.entity';
-import { MemberRegularInterestsService } from './services/member-regular-interests.service';
-import { MemberRegularInterestsController } from './controllers/memeber-regular-interests.controller';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
-import { MemberRegularCombinationService } from './services/member-regular-combination.service';
-import { MemberRegularCombinationController } from './controllers/member-regular-combination.controller';
+// REMOVED: 독립 앱으로 분리 - Regular/Recruitment 관련
+// import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
+// import { MemberRecruitmentUnitCombinationEntity } from 'src/database/entities/member/member-recruitment-unit-combination.entity';
+// import { MemberRecruitmentUnitCombinationService } from './services/member-combination.service';
+// import { MemberCombinationController } from './controllers/member-combination.controller';
+// import { MemberRegularInterestsEntity } from 'src/database/entities/member/member-regular-interests';
+// import { MemberRegularCombinationEntity } from 'src/database/entities/member/member-regular-combination.entity';
+// import { MemberRegularInterestsService } from './services/member-regular-interests.service';
+// import { MemberRegularInterestsController } from './controllers/memeber-regular-interests.controller';
+// import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
+// import { MemberRegularCombinationService } from './services/member-regular-combination.service';
+// import { MemberRegularCombinationController } from './controllers/member-regular-combination.controller';
 
 @Module({
   imports: [
@@ -32,11 +33,12 @@ import { MemberRegularCombinationController } from './controllers/member-regular
       // TODO: 독립 앱으로 분리 - Susi 엔티티
       // SuSiSubjectEntity,
       // SusiComprehensiveEntity,
-      RecruitmentUnitEntity,
-      MemberRecruitmentUnitCombinationEntity,
-      MemberRegularInterestsEntity,
-      MemberRegularCombinationEntity,
-      RegularAdmissionEntity,
+      // REMOVED: 독립 앱으로 분리
+      // RecruitmentUnitEntity,
+      // MemberRecruitmentUnitCombinationEntity,
+      // MemberRegularInterestsEntity,
+      // MemberRegularCombinationEntity,
+      // RegularAdmissionEntity,
     ]),
     SchoolRecordModule,
     BcryptModule,
@@ -44,17 +46,19 @@ import { MemberRegularCombinationController } from './controllers/member-regular
   providers: [
     MembersService,
     MemberInterestsService,
-    MemberRecruitmentUnitCombinationService,
-    MemberRegularInterestsService,
-    MemberRegularCombinationService,
+    // REMOVED: 독립 앱으로 분리
+    // MemberRecruitmentUnitCombinationService,
+    // MemberRegularInterestsService,
+    // MemberRegularCombinationService,
   ],
   controllers: [
     MembersController,
     MemberInterestsController,
     MemberSchoolRecordController,
-    MemberCombinationController,
-    MemberRegularInterestsController,
-    MemberRegularCombinationController,
+    // REMOVED: 독립 앱으로 분리
+    // MemberCombinationController,
+    // MemberRegularInterestsController,
+    // MemberRegularCombinationController,
   ],
   exports: [MembersService, MemberInterestsService],
 })

@@ -8,10 +8,6 @@ import { SchoolRecordAttendanceDetailEntity } from './entities/schoolrecord/scho
 import { SchoolRecordSelectSubjectEntity } from './entities/schoolrecord/schoolrecord-select-subject.entity';
 import { SchoolRecordSubjectLearningEntity } from './entities/schoolrecord/schoolrecord-subject-learning.entity';
 import { SchoolRecordVolunteerEntity } from './entities/schoolrecord/schoolrecord-volunteer.entity';
-import { MockexamScoreEntity } from './entities/mock-exam/mockexam-score.entity';
-import { MockexamRawScoreEntity } from './entities/mock-exam/mockexam-raw-score.entity';
-import { MockexamScheduleEntity } from './entities/mock-exam/mockexam-schedule.entity';
-import { MockexamRawToStandardEntity } from './entities/mock-exam/mockexam-raw-to-standard.entity';
 import { PayServiceEntity } from './entities/pay/pay-service.entity';
 import { PayCouponEntity } from './entities/pay/pay-coupon.entity';
 import { PayContractEntity } from './entities/pay/pay-contract.entity';
@@ -31,30 +27,9 @@ import { GeneralFieldEntity } from './entities/core/general-field.entity';
 import { MajorFieldEntity } from './entities/core/major-field.entity';
 import { MidFieldEntity } from './entities/core/mid-field.entity';
 import { MinorFieldEntity } from './entities/core/minor-field.entity';
-import { RecruitmentUnitEntity } from './entities/core/recruitment-unit.entity';
-import { RecruitmentUnitScoreEntity } from './entities/core/recruitment-unit-score.entity';
-import { RecruitmentUnitInterviewEntity } from './entities/core/recruitment-unit-interview.entity';
-import { RecruitmentUnitMinimumGradeEntity } from './entities/core/recruitment-unit-minimum_grade.entity';
-import { RecruitmentUnitPreviousResultEntity } from './entities/core/recruitment-unit-previous-result.entity';
 import { UniversityEntity } from './entities/core/university.entity';
 import { MemberUploadFileListEntity } from './entities/member/member-file';
 import { SubjectCodeListEntity } from './entities/common-code/subject-code-list-entity';
-import { RecruitmentUnitPassFailRecordsEntity } from './entities/core/recruitment-unit-pass-fail-record.entity';
-import { MemberRecruitmentUnitCombinationEntity } from './entities/member/member-recruitment-unit-combination.entity';
-import { RegularAdmissionEntity } from './entities/core/regular-admission.entity';
-import { RegularAdmissionPreviousResultEntity } from './entities/core/regular-admission-previous-result.entity';
-import { MemberRegularInterestsEntity } from './entities/member/member-regular-interests';
-import { MemberRegularCombinationEntity } from './entities/member/member-regular-combination.entity';
-import { MockexamStandardScoreEntity } from './entities/mock-exam/mockexam-standard-score.entity';
-import { TempCodeEntity, AccountLinkEntity, AdminClassEntity } from './entities/mentoring';
-import {
-  PlanEntity,
-  PlannerItemEntity,
-  RoutineEntity,
-  PlannerClassEntity,
-  PlannerManagementEntity,
-  PlannerNoticeEntity,
-} from './entities/planner';
 import {
   HealthRecordEntity,
   ConsultationEntity,
@@ -124,13 +99,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         SchoolRecordVolunteerEntity, // 학생부 봉사
         SchoolrecordSportsArtEntity, // 학생부 체육
 
-        // 모의고사 관련
-        MockexamScoreEntity, // 표준점수(안씀)
-        MockexamRawScoreEntity, // 유저 원점수
-        MockexamScheduleEntity, // 일정
-        MockexamRawToStandardEntity, // 원점수 -> 표준점수 테이블
-        MockexamStandardScoreEntity, // 유저 표준점수
-
         // 결제 관련
         PayServiceEntity, // 서비스 (판매 상품)
         PayCouponEntity, // 쿠폰
@@ -157,33 +125,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         MajorFieldEntity, // 대계열
         MidFieldEntity, // 중계열
         MinorFieldEntity, // 소계열
-        RecruitmentUnitEntity, // 모집단위
-        RecruitmentUnitScoreEntity, // 모집단위 점수 (등급컷, 위험도)
-        RecruitmentUnitInterviewEntity, // 모집단위 면접 정보
-        RecruitmentUnitMinimumGradeEntity, // 모집단위 최저등급 정보
-        RecruitmentUnitPreviousResultEntity, // 모집단위 과거 입결 정보
-        RecruitmentUnitPassFailRecordsEntity, // 모집단위 합불 데이터
         UniversityEntity, // 대학 정보
-        MemberRecruitmentUnitCombinationEntity, // 조합 테이블
-
-        // 정시 테이블
-        RegularAdmissionEntity,
-        RegularAdmissionPreviousResultEntity,
-        MemberRegularInterestsEntity, // 정시 관심대학
-        MemberRegularCombinationEntity, // 정시 조합
-
-        // 멘토링 관련
-        TempCodeEntity, // 임시 연계 코드
-        AccountLinkEntity, // 계정 연동 관계
-        AdminClassEntity, // 관리자 클래스 (양방향 관계)
-
-        // 플래너 관련
-        PlanEntity, // 장기 학습계획
-        PlannerItemEntity, // 일정 아이템
-        RoutineEntity, // 루틴
-        PlannerClassEntity, // 플래너 클래스
-        PlannerManagementEntity, // 플래너 멤버십
-        PlannerNoticeEntity, // 플래너 공지사항
 
         // 마이클래스 관련
         HealthRecordEntity, // 건강 기록

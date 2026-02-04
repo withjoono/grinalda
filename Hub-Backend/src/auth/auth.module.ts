@@ -8,7 +8,7 @@ import { MembersModule } from 'src/modules/members/members.module';
 import { BcryptModule } from 'src/common/bcrypt/bcrypt.module';
 import { HttpModule } from '@nestjs/axios';
 import { SmsModule } from 'src/modules/sms/sms.module';
-import { MentoringModule } from 'src/modules/mentoring/mentoring.module';
+// import { MentoringModule } from 'src/modules/mentoring/mentoring.module'; // REMOVED: mentoring module deleted
 import { LoginAttemptService } from './services/login-attempt.service';
 import { CookieService } from './services/cookie.service';
 import { SubscriptionModule } from 'src/modules/subscription/subscription.module';
@@ -21,7 +21,7 @@ import { SubscriptionModule } from 'src/modules/subscription/subscription.module
     PassportModule,
     HttpModule,
     SmsModule,
-    MentoringModule,
+    // MentoringModule, // REMOVED: mentoring module deleted
     forwardRef(() => SubscriptionModule), // 앱별 권한 정보를 JWT에 포함하기 위해
   ],
   providers: [AuthService, JwtStrategy, LoginAttemptService, CookieService],

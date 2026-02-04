@@ -143,41 +143,42 @@ export class MemberInterestsController {
     return this.memberInterestsService.getSusiComprehensive(memberId);
   }
 
-  @ApiOperation({
-    summary: '전형별 관심 모집단위 조회',
-    description: '전형 타입에 따라 사용자의 관심 모집단위 목록을 조회합니다.',
-  })
-  @ApiParam({ name: 'memberId', description: '회원 ID', example: 1 })
-  @ApiQuery({
-    name: 'admissionType',
-    description: '전형 타입',
-    enum: ['susi_subject_tb', 'susi_comprehensive_tb', 'early_subject', 'early_comprehensive'],
-    example: 'susi_subject_tb',
-  })
-  @ApiResponse({
-    status: 200,
-    description: '관심 모집단위 목록 조회 성공',
-  })
-  @ApiResponse({
-    status: 401,
-    description: '인증 실패',
-  })
-  @ApiResponse({
-    status: 403,
-    description: '권한 없음',
-  })
-  @ApiBearerAuth('access-token')
-  @Get('')
-  @UseGuards(MemberPermissionGuard)
-  async getIntersetRecruitmentUnits(
-    @Param('memberId') memberId: number,
-    @Query('admissionType')
-    admissionType:
-      | 'susi_subject_tb'
-      | 'susi_comprehensive_tb'
-      | 'early_subject'
-      | 'early_comprehensive',
-  ) {
-    return this.memberInterestsService.getIntersetRecruitmentUnits(memberId, admissionType);
-  }
+  // REMOVED: 독립 앱으로 분리 - RecruitmentUnit 사용
+  // @ApiOperation({
+  //   summary: '전형별 관심 모집단위 조회',
+  //   description: '전형 타입에 따라 사용자의 관심 모집단위 목록을 조회합니다.',
+  // })
+  // @ApiParam({ name: 'memberId', description: '회원 ID', example: 1 })
+  // @ApiQuery({
+  //   name: 'admissionType',
+  //   description: '전형 타입',
+  //   enum: ['susi_subject_tb', 'susi_comprehensive_tb', 'early_subject', 'early_comprehensive'],
+  //   example: 'susi_subject_tb',
+  // })
+  // @ApiResponse({
+  //   status: 200,
+  //   description: '관심 모집단위 목록 조회 성공',
+  // })
+  // @ApiResponse({
+  //   status: 401,
+  //   description: '인증 실패',
+  // })
+  // @ApiResponse({
+  //   status: 403,
+  //   description: '권한 없음',
+  // })
+  // @ApiBearerAuth('access-token')
+  // @Get('')
+  // @UseGuards(MemberPermissionGuard)
+  // async getIntersetRecruitmentUnits(
+  //   @Param('memberId') memberId: number,
+  //   @Query('admissionType')
+  //   admissionType:
+  //     | 'susi_subject_tb'
+  //     | 'susi_comprehensive_tb'
+  //     | 'early_subject'
+  //     | 'early_comprehensive',
+  // ) {
+  //   return this.memberInterestsService.getIntersetRecruitmentUnits(memberId, admissionType);
+  // }
 }

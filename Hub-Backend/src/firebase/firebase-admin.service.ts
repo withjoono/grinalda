@@ -63,6 +63,32 @@ export class FirebaseAdminService implements OnModuleInit {
    */
   async verifyIdToken(idToken: string): Promise<DecodedIdToken> {
     try {
+      // 토큰 형식 간단 검증
+      if (!idToken || typeof idToken !== 'string') {
+        throw new Error('Invalid token format: token must be a non-empty string');
+      }
+
+      // JWT 구조 확인 (header.payload.signature)
+      const parts = idToken.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid token format: token must have 3 parts (header.payload.signature)');
+      }
+
+      // 헤더 디코딩하여 kid 존재 여부 확인
+      try {
+        const header = JSON.parse(Buffer.from(parts[0], 'base64').toString());
+        if (!header.kid) {
+          this.logger.warn('Token missing "kid" claim - this might be a JWT Access Token instead of Firebase ID Token', {
+            algorithm: header.alg,
+            tokenType: header.typ,
+          });
+          throw new Error('Invalid Firebase ID Token: missing "kid" claim. You may be using a JWT Access Token instead of a Firebase ID Token.');
+        }
+      } catch (parseError) {
+        this.logger.error('Failed to parse token header', parseError);
+        throw new Error('Invalid token format: unable to parse token header');
+      }
+
       return await this.auth.verifyIdToken(idToken);
     } catch (error) {
       this.logger.error('Failed to verify Firebase ID token', error);

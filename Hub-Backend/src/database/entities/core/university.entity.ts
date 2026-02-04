@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { AdmissionEntity } from './admission.entity';
-import { RegularAdmissionEntity } from './regular-admission.entity';
+// // import { RegularAdmissionEntity } from './regular-admission.entity';
 
 @Entity('ss_university', { comment: '대학 정보 테이블' })
 export class UniversityEntity {
@@ -26,8 +26,8 @@ export class UniversityEntity {
   @OneToMany(() => AdmissionEntity, (admission) => admission.university)
   admissions: AdmissionEntity[];
 
-  @OneToMany(() => RegularAdmissionEntity, (regularAdmission) => regularAdmission.university, {
-    cascade: true,
-  })
-  regular_admissions: RegularAdmissionEntity[];
+//   @OneToMany(() => RegularAdmissionEntity, (regularAdmission) => regularAdmission.university, {
+//     cascade: true,
+//   })
+//   regular_admissions: RegularAdmissionEntity[];
 }

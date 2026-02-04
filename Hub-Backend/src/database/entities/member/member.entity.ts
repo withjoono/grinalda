@@ -4,15 +4,15 @@ import { SchoolRecordAttendanceDetailEntity } from '../schoolrecord/schoolrecord
 import { SchoolRecordSelectSubjectEntity } from '../schoolrecord/schoolrecord-select-subject.entity';
 import { SchoolRecordSubjectLearningEntity } from '../schoolrecord/schoolrecord-subject-learning.entity';
 import { SchoolRecordVolunteerEntity } from '../schoolrecord/schoolrecord-volunteer.entity';
-import { MockexamScoreEntity } from '../mock-exam/mockexam-score.entity';
-import { MockexamRawScoreEntity } from '../mock-exam/mockexam-raw-score.entity';
+// // import { MockexamScoreEntity } from '../mock-exam/mockexam-score.entity';
+// // import { MockexamRawScoreEntity } from '../mock-exam/mockexam-raw-score.entity';
 import { Exclude, Expose } from 'class-transformer';
 import { SchoolrecordSportsArtEntity } from '../schoolrecord/schoolrecord-sport-art.entity';
 import { PostEntity } from '../boards/post.entity';
 import { CommentEntity } from '../boards/comment.entity';
-import { MemberRecruitmentUnitCombinationEntity } from './member-recruitment-unit-combination.entity';
-import { MemberRegularInterestsEntity } from './member-regular-interests';
-import { MockexamStandardScoreEntity } from '../mock-exam/mockexam-standard-score.entity';
+// // import { MemberRecruitmentUnitCombinationEntity } from './member-recruitment-unit-combination.entity';
+// // import { MemberRegularInterestsEntity } from './member-regular-interests';
+// import { MockexamStandardScoreEntity } from '../mock-exam/mockexam-standard-score.entity';
 
 @Entity('auth_member')
 @Unique(['email', 'phone', 'oauth_id'])
@@ -118,8 +118,8 @@ export class MemberEntity {
   interests: MemberInterestsEntity[];
 
   // 정시 관심 목록(가, 나, 다 군)
-  @OneToMany(() => MemberRegularInterestsEntity, (interest) => interest.member)
-  regular_interests: MemberRegularInterestsEntity[];
+//   @OneToMany(() => MemberRegularInterestsEntity, (interest) => interest.member)
+//   regular_interests: MemberRegularInterestsEntity[];
 
   // 학생부 출결 데이터
   @OneToMany(
@@ -148,19 +148,19 @@ export class MemberEntity {
   sportArts: SchoolrecordSportsArtEntity[];
 
   // 모의고사 표준점수(안씀)
-  @OneToMany(() => MockexamScoreEntity, (mockexamMarks) => mockexamMarks.member)
-  mockexam_scores: MockexamScoreEntity[];
+//   @OneToMany(() => MockexamScoreEntity, (mockexamMarks) => mockexamMarks.member)
+//   mockexam_scores: MockexamScoreEntity[];
 
   // 모의고사 원점수
-  @OneToMany(() => MockexamRawScoreEntity, (mockexamRawScore) => mockexamRawScore.member)
-  mockexam_row_scores: MockexamRawScoreEntity[];
+//   @OneToMany(() => MockexamRawScoreEntity, (mockexamRawScore) => mockexamRawScore.member)
+//   mockexam_row_scores: MockexamRawScoreEntity[];
 
   // 모의고사 표준점수
-  @OneToMany(
-    () => MockexamStandardScoreEntity,
-    (mockexamStandardScore) => mockexamStandardScore.member,
-  )
-  mockexam_standard_scores: MockexamStandardScoreEntity[];
+//   @OneToMany(
+//     () => MockexamStandardScoreEntity,
+//     (mockexamStandardScore) => mockexamStandardScore.member,
+//   )
+//   mockexam_standard_scores: MockexamStandardScoreEntity[];
 
   @OneToMany(() => PostEntity, (post) => post.member)
   posts: PostEntity[];
@@ -168,6 +168,6 @@ export class MemberEntity {
   @OneToMany(() => CommentEntity, (comment) => comment.member)
   comments: CommentEntity[];
 
-  @OneToMany(() => MemberRecruitmentUnitCombinationEntity, (combination) => combination.member)
-  combinations: MemberRecruitmentUnitCombinationEntity[];
+//   @OneToMany(() => MemberRecruitmentUnitCombinationEntity, (combination) => combination.member)
+//   combinations: MemberRecruitmentUnitCombinationEntity[];
 }

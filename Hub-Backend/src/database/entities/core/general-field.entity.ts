@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { RecruitmentUnitEntity } from './recruitment-unit.entity';
+// // import { RecruitmentUnitEntity } from './recruitment-unit.entity';
 
 @Entity('ss_general_field', {
   comment: '대학 입학전형의 일반 계열 정보 테이블',
@@ -16,6 +16,6 @@ export class GeneralFieldEntity {
   })
   name: string;
 
-  @OneToMany(() => RecruitmentUnitEntity, (unit) => unit.general_field)
-  recruitment_units: RecruitmentUnitEntity[];
+//   @OneToMany(() => RecruitmentUnitEntity, (unit) => unit.general_field)
+//   recruitment_units: RecruitmentUnitEntity[];
 }
