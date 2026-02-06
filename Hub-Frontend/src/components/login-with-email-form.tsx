@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "./custom/button";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,11 @@ export function LoginWithEmailForm({ className }: Props) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setTokens } = useAuthStore();
+
+  // URL에서 redirect 파라미터 확인 (SSO용)
+  // redirect 또는 redirect_uri 둘 다 지원 (ExamHub은 redirect_uri 사용)
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectUrl = searchParams.get("redirect") || searchParams.get("redirect_uri");
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -94,6 +99,44 @@ export function LoginWithEmailForm({ className }: Props) {
 
         // 로그인 성공 후 me 쿼리 캐시 무효화
         await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
+
+        // SSO 리다이렉트 처리: redirect URL이 있으면 SSO 코드 생성 후 리다이렉트
+        if (redirectUrl) {
+          try {
+            console.log("🔄 SSO 리다이렉트 처리 시작:", redirectUrl);
+
+            // SSO 코드 생성 요청
+            const ssoResponse = await fetch('/api-hub/auth/sso/generate-code', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ targetService: 'examhub' }),
+            });
+
+            const ssoData = await ssoResponse.json();
+
+            if (ssoResponse.ok && ssoData.success) {
+              const ssoCode = ssoData.data?.code || ssoData.code;
+              console.log("✅ SSO 코드 생성 성공");
+
+              // redirect URL에 sso_code 파라미터 추가하여 리다이렉트
+              const targetUrl = new URL(redirectUrl);
+              targetUrl.searchParams.set('sso_code', ssoCode);
+
+              toast.success("로그인 성공! 앱으로 이동합니다...");
+              window.location.href = targetUrl.toString();
+              return;
+            } else {
+              console.error("❌ SSO 코드 생성 실패:", ssoData);
+              // SSO 실패해도 Hub 홈으로 이동
+            }
+          } catch (ssoError) {
+            console.error("❌ SSO 리다이렉트 에러:", ssoError);
+            // SSO 실패해도 Hub 홈으로 이동
+          }
+        }
 
         toast.success("환영합니다. 거북스쿨입니다. 😄");
         navigate({ to: "/" });
