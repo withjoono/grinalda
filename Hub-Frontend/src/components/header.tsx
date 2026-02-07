@@ -164,7 +164,7 @@ export const Header = () => {
                       알림 설정
                     </Link>
                     {/* 계정연동 */}
-                    <Link to="/users/profile" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
+                    <Link to="/account-linkage" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
                       <Users className="h-4 w-4" />
                       계정연동
                     </Link>
@@ -228,7 +228,7 @@ export const Header = () => {
               </Link>
               {/* 계정연동 */}
               <Link
-                to="/users/profile"
+                to="/account-linkage"
                 className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-gray-600 hover:bg-gray-100 hover:text-gray-900")}
                 title="계정연동"
               >
