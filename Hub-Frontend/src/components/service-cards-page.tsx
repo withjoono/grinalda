@@ -29,6 +29,7 @@ const SUSI_URL = import.meta.env.VITE_SUSI_URL || "http://localhost:3001";
 const JUNGSI_URL = import.meta.env.VITE_JUNGSI_URL || "http://localhost:3002";
 const MYEXAM_URL = import.meta.env.VITE_MYEXAM_URL || "http://localhost:3003";
 const STUDYPLANNER_URL = import.meta.env.VITE_STUDYPLANNER_URL || "http://localhost:3004";
+const TUTORBOARD_URL = import.meta.env.VITE_TUTORBOARD_URL || "http://localhost:3005";
 
 // 모든 서비스 (카테고리 없이 플랫하게)
 const allServices: ServiceCard[] = [
@@ -85,11 +86,11 @@ const allServices: ServiceCard[] = [
   },
   {
     id: "class-status",
-    title: "수업 현황",
+    title: "수업현황앱(TutorBoard)",
     price: "무료",
     description: "학원 수업이든 학교 수업이든 모든 수업 계획과 현황을 이곳에!",
     icon: <BookOpen className="w-6 h-6" />,
-    href: "/class-status",
+    href: TUTORBOARD_URL,
     color: "text-inferno-500",
     bgGradient: "from-inferno-500 to-inferno-600",
     features: [
@@ -97,7 +98,7 @@ const allServices: ServiceCard[] = [
       "수업 진도",
       "과제 현황"
     ],
-    disabled: true,
+    isExternal: true,
   },
   {
     id: "susi-2027",
@@ -303,6 +304,53 @@ export function ServiceCardsPage() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* 학부모/선생님용 앱 */}
+      <div className="container mx-auto px-4 pb-8">
+        <div className="border-t border-gray-200 pt-8 mb-5">
+          <p className="text-sm font-semibold text-gray-500 mb-1">🏠 가정 연계 앱</p>
+          <p className="text-xs text-gray-400">학부모와 선생님을 위한 전용 앱</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+          {/* 학부모용 앱 */}
+          <div
+            className="group relative overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 via-white to-rose-50 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => window.open('http://localhost:3019', '_blank')}
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center shadow-md">
+                <span className="text-xl text-white">👨‍👩‍👧</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-base font-bold text-gray-800">학부모용 앱</p>
+                <p className="text-xs text-gray-500 mt-0.5">자녀 학습 현황 · 수업 알림</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-pink-300 group-hover:text-pink-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            </div>
+            {/* 장식 원 */}
+            <div className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full bg-pink-100/50 group-hover:scale-110 transition-transform" />
+          </div>
+
+          {/* 선생님용 앱 */}
+          <div
+            className="group relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => window.open('http://localhost:3020', '_blank')}
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-md">
+                <span className="text-xl text-white">👨‍🏫</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-base font-bold text-gray-800">선생님용 앱</p>
+                <p className="text-xs text-gray-500 mt-0.5">수업 관리 · 학생 현황</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-emerald-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            </div>
+            {/* 장식 원 */}
+            <div className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full bg-emerald-100/50 group-hover:scale-110 transition-transform" />
+          </div>
         </div>
       </div>
 

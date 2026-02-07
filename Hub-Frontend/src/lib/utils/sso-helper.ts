@@ -58,6 +58,7 @@ const SSO_SERVICE_MAP: Record<string, string> = {
   'http://localhost:3002': 'jungsi',
   'http://localhost:3003': 'examhub',
   'http://localhost:3004': 'studyplanner',
+  'http://localhost:3005': 'tutorboard',
 };
 
 /**
@@ -71,11 +72,13 @@ export function getSSOServiceId(href: string): string | null {
   const jungsiUrl = import.meta.env.VITE_JUNGSI_URL || 'http://localhost:3002';
   const myexamUrl = import.meta.env.VITE_MYEXAM_URL || 'http://localhost:3003';
   const studyplannerUrl = import.meta.env.VITE_STUDYPLANNER_URL || 'http://localhost:3004';
+  const tutorboardUrl = import.meta.env.VITE_TUTORBOARD_URL || 'http://localhost:3005';
 
   if (href.startsWith(susiUrl)) return 'susi';
   if (href.startsWith(jungsiUrl)) return 'jungsi';
   if (href.startsWith(myexamUrl)) return 'examhub';
   if (href.startsWith(studyplannerUrl)) return 'studyplanner';
+  if (href.startsWith(tutorboardUrl)) return 'tutorboard';
 
   return null;
 }
