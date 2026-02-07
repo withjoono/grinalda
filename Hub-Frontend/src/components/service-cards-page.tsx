@@ -2,12 +2,10 @@ import { cn } from "@/lib/utils";
 import { generateSSOUrl, getSSOServiceId } from "@/lib/utils/sso-helper";
 import {
   Calendar,
-  Users,
   BookOpen,
   GraduationCap,
   BarChart3,
   ClipboardList,
-  Bell,
   Zap,
   ArrowRight
 } from "lucide-react";
@@ -118,20 +116,6 @@ const allServices: ServiceCard[] = [
       "계정연동 선생님 상담"
     ],
     isExternal: true,
-  },
-  {
-    id: "account-link",
-    title: "계정 연동",
-    price: "무료",
-    description: "조회하고 싶은 사람들 여기 다 부르자!",
-    icon: <Users className="w-6 h-6" />,
-    href: "/users/profile",
-    color: "text-amethyst-500",
-    bgGradient: "from-amethyst-500 to-amethyst-600",
-    features: [
-      "학부모와 연동",
-      "선생님과 연동"
-    ],
   },
 ];
 
