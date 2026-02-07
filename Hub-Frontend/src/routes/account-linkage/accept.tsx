@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { authClient } from '@/lib/api'
+import { hubApiClient } from '@/stores/server/hub-api-client'
 import { Users, Check, X, Loader2, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -38,7 +38,7 @@ function AcceptInvitePage() {
 
     const fetchInvite = async () => {
       try {
-        const { data } = await authClient.get(`/mentoring/invite/${code}`)
+        const { data } = await hubApiClient.get(`/mentoring/invite/${code}`)
         setInviteInfo(data)
       } catch (err: any) {
         const message = err?.response?.data?.message || '초대 링크가 유효하지 않습니다.'
@@ -55,7 +55,7 @@ function AcceptInvitePage() {
     if (!code) return
     setAccepting(true)
     try {
-      const { data } = await authClient.post(`/mentoring/invite/${code}/accept`)
+      const { data } = await hubApiClient.post(`/mentoring/invite/${code}/accept`)
       toast.success('계정 연동이 완료되었습니다!')
 
       if (data.returnUrl) {

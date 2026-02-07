@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect, useMemo } from 'react'
-import { authClient } from '@/lib/api'
+import { hubApiClient } from '@/stores/server/hub-api-client'
 import { Copy, Check, Link2, UserPlus, Users, Trash2, Loader2, GraduationCap, Heart, BookOpen } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -36,10 +36,12 @@ function AccountLinkagePage() {
     const fetchLinkedAccounts = async () => {
         try {
             setLinksLoading(true)
-            const { data } = await authClient.get('/mentoring/links')
-            setLinkedAccounts(Array.isArray(data) ? data : [])
-        } catch {
-            console.error('연동 목록 조회 실패')
+            const response = await hubApiClient.get('/mentoring/links')
+            console.log('[계정연동] 연동 목록 응답:', response.data)
+            const result = response.data?.data || response.data
+            setLinkedAccounts(Array.isArray(result) ? result : [])
+        } catch (err) {
+            console.error('[계정연동] 연동 목록 조회 실패:', err)
         } finally {
             setLinksLoading(false)
         }
@@ -71,10 +73,14 @@ function AccountLinkagePage() {
     const handleCreateInvite = async () => {
         setInviteLoading(true)
         try {
-            const { data } = await authClient.post('/mentoring/invite')
-            setInviteCode(data.code)
+            const response = await hubApiClient.post('/mentoring/invite')
+            console.log('[계정연동] 초대 생성 응답:', response.data)
+            // Hub Backend SuccessResponseInterceptor가 { success, data } 로 래핑
+            const result = response.data?.data || response.data
+            setInviteCode(result.code)
             setCopied(false)
-        } catch {
+        } catch (err) {
+            console.error('[계정연동] 초대 생성 실패:', err)
             toast.error('초대 링크 생성에 실패했습니다.')
         } finally {
             setInviteLoading(false)
@@ -95,7 +101,7 @@ function AccountLinkagePage() {
         if (!confirm('정말 연동을 해제하시겠습니까?')) return
         setUnlinkingId(linkId)
         try {
-            await authClient.delete(`/mentoring/links/${linkId}`)
+            await hubApiClient.delete(`/mentoring/links/${linkId}`)
             toast.success('연동이 해제되었습니다.')
             fetchLinkedAccounts()
         } catch {
@@ -156,12 +162,13 @@ function AccountLinkagePage() {
                     </button>
                 ) : (
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2 rounded-xl border border-gray-300 bg-gray-100 px-4 py-3">
-                            <Link2 className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                            <span className="flex-1 truncate text-sm font-mono text-gray-700">
-                                {inviteLink}
-                            </span>
-                        </div>
+                        <input
+                            type="text"
+                            readOnly
+                            value={inviteLink}
+                            onClick={(e) => (e.target as HTMLInputElement).select()}
+                            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-4 py-3 text-sm font-mono text-gray-700 cursor-text select-all focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        />
                         <div className="flex gap-2">
                             <button
                                 onClick={handleCopy}

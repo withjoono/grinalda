@@ -43,10 +43,12 @@ import {
   AppSubscriptionEntity,
   ProductPermissionMappingEntity,
 } from './entities/subscription';
+import { MentoringInviteEntity } from './entities/mentoring/mentoring-invite.entity';
+import { MentoringLinkEntity } from './entities/mentoring/mentoring-link.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  constructor(private configService: ConfigService<AllConfigType>) {}
+  constructor(private configService: ConfigService<AllConfigType>) { }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const dbConfig = this.configService.getOrThrow('database', { infer: true });
@@ -79,12 +81,12 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const connectionOptions = isSqlite
       ? baseOptions
       : {
-          ...baseOptions,
-          host: dbConfig.host,
-          port: dbConfig.port,
-          username: dbConfig.username,
-          password: dbConfig.password,
-        };
+        ...baseOptions,
+        host: dbConfig.host,
+        port: dbConfig.port,
+        username: dbConfig.username,
+        password: dbConfig.password,
+      };
 
     return {
       ...connectionOptions,
@@ -141,6 +143,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         AppEntity, // 앱 정의 (examhub, susi 등)
         AppSubscriptionEntity, // 사용자별 앱 구독 정보
         ProductPermissionMappingEntity, // 상품-권한 매핑 (관리자가 동적 관리)
+
+        // 멘토링 계정 연동
+        MentoringInviteEntity, // 초대 코드
+        MentoringLinkEntity, // 계정 연동 관계
       ],
     } as TypeOrmModuleOptions;
   }

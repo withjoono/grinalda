@@ -24,7 +24,13 @@ export class MentoringController {
         @CurrentMemberId() memberId: number,
         @Body() body: { return_url?: string },
     ) {
-        return this.mentoringService.createInvite(memberId, body.return_url);
+        try {
+            console.log('[Mentoring] createInvite called, memberId:', memberId, typeof memberId);
+            return await this.mentoringService.createInvite(Number(memberId), body.return_url);
+        } catch (e) {
+            console.error('[Mentoring] createInvite error:', e);
+            throw e;
+        }
     }
 
     /**

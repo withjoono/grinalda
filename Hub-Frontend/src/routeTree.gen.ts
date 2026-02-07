@@ -25,6 +25,7 @@ import { Route as JungsiRouteRouteImport } from './routes/jungsi/route'
 import { Route as GradeAnalysisRouteRouteImport } from './routes/grade-analysis/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as AccountLinkageIndexRouteImport } from './routes/account-linkage/index'
 import { Route as UsersLayoutRouteImport } from './routes/users/_layout'
 import { Route as TestLoginDebugRouteImport } from './routes/test/login-debug'
 import { Route as TestAuthMeRouteImport } from './routes/test/auth-me'
@@ -42,6 +43,7 @@ import { Route as EvaluationLayoutRouteImport } from './routes/evaluation/_layou
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AccountLinkageAcceptRouteImport } from './routes/account-linkage/accept'
 import { Route as MembersMyGroupRouteRouteImport } from './routes/members/my-group/route'
 import { Route as MembersMyGroupLayoutRouteImport } from './routes/members/my-group/_layout'
 import { Route as AuthOauthCallbackRouteImport } from './routes/auth/oauth/callback'
@@ -382,6 +384,11 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountLinkageIndexRoute = AccountLinkageIndexRouteImport.update({
+  id: '/account-linkage/',
+  path: '/account-linkage/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TryJungsiPredictionLazyRoute = TryJungsiPredictionLazyRouteImport.update({
   id: '/jungsi-prediction',
   path: '/jungsi-prediction',
@@ -613,6 +620,11 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountLinkageAcceptRoute = AccountLinkageAcceptRouteImport.update({
+  id: '/account-linkage/accept',
+  path: '/account-linkage/accept',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MembersMyGroupRouteRoute = MembersMyGroupRouteRouteImport.update({
@@ -1070,6 +1082,7 @@ export interface FileRoutesByFullPath {
   '/h4': typeof H4Route
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupLayoutRouteWithChildren
+  '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1107,6 +1120,7 @@ export interface FileRoutesByFullPath {
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
+  '/account-linkage': typeof AccountLinkageIndexRoute
   '/products': typeof ProductsIndexRoute
   '/analysis': typeof AnalysisIndexLazyRoute
   '/evaluation/': typeof EvaluationIndexLazyRoute
@@ -1179,6 +1193,7 @@ export interface FileRoutesByTo {
   '/h4': typeof H4Route
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupLayoutIndexRoute
+  '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1219,6 +1234,7 @@ export interface FileRoutesByTo {
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
+  '/account-linkage': typeof AccountLinkageIndexRoute
   '/products': typeof ProductsIndexRoute
   '/analysis': typeof AnalysisIndexLazyRoute
   '/mock-apply': typeof MockApplyIndexLazyRoute
@@ -1293,6 +1309,7 @@ export interface FileRoutesById {
   '/h4': typeof H4Route
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupRouteRouteWithChildren
+  '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1337,6 +1354,7 @@ export interface FileRoutesById {
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
+  '/account-linkage/': typeof AccountLinkageIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/analysis/': typeof AnalysisIndexLazyRoute
   '/evaluation/': typeof EvaluationIndexLazyRoute
@@ -1418,6 +1436,7 @@ export interface FileRouteTypes {
     | '/h4'
     | '/j'
     | '/members/my-group'
+    | '/account-linkage/accept'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1455,6 +1474,7 @@ export interface FileRouteTypes {
     | '/official/faq'
     | '/official/guide'
     | '/try/jungsi-prediction'
+    | '/account-linkage'
     | '/products'
     | '/analysis'
     | '/evaluation/'
@@ -1527,6 +1547,7 @@ export interface FileRouteTypes {
     | '/h4'
     | '/j'
     | '/members/my-group'
+    | '/account-linkage/accept'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1567,6 +1588,7 @@ export interface FileRouteTypes {
     | '/official/faq'
     | '/official/guide'
     | '/try/jungsi-prediction'
+    | '/account-linkage'
     | '/products'
     | '/analysis'
     | '/mock-apply'
@@ -1640,6 +1662,7 @@ export interface FileRouteTypes {
     | '/h4'
     | '/j'
     | '/members/my-group'
+    | '/account-linkage/accept'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1684,6 +1707,7 @@ export interface FileRouteTypes {
     | '/official/faq'
     | '/official/guide'
     | '/try/jungsi-prediction'
+    | '/account-linkage/'
     | '/products/'
     | '/analysis/'
     | '/evaluation/'
@@ -1764,6 +1788,7 @@ export interface RootRouteChildren {
   H4Route: typeof H4Route
   JRoute: typeof JRoute
   MembersMyGroupRouteRoute: typeof MembersMyGroupRouteRouteWithChildren
+  AccountLinkageAcceptRoute: typeof AccountLinkageAcceptRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
@@ -1786,6 +1811,7 @@ export interface RootRouteChildren {
   ExploreSusiKyokwaLazyRoute: typeof ExploreSusiKyokwaLazyRoute
   OfficialFaqLazyRoute: typeof OfficialFaqLazyRoute
   OfficialGuideLazyRoute: typeof OfficialGuideLazyRoute
+  AccountLinkageIndexRoute: typeof AccountLinkageIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   AnalysisIndexLazyRoute: typeof AnalysisIndexLazyRoute
   AuthOauthCallbackRoute: typeof AuthOauthCallbackRoute
@@ -1970,6 +1996,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account-linkage/': {
+      id: '/account-linkage/'
+      path: '/account-linkage'
+      fullPath: '/account-linkage'
+      preLoaderRoute: typeof AccountLinkageIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/try/jungsi-prediction': {
@@ -2257,6 +2290,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account-linkage/accept': {
+      id: '/account-linkage/accept'
+      path: '/account-linkage/accept'
+      fullPath: '/account-linkage/accept'
+      preLoaderRoute: typeof AccountLinkageAcceptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/members/my-group': {
@@ -3005,6 +3045,7 @@ const rootRouteChildren: RootRouteChildren = {
   H4Route: H4Route,
   JRoute: JRoute,
   MembersMyGroupRouteRoute: MembersMyGroupRouteRouteWithChildren,
+  AccountLinkageAcceptRoute: AccountLinkageAcceptRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
@@ -3027,6 +3068,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExploreSusiKyokwaLazyRoute: ExploreSusiKyokwaLazyRoute,
   OfficialFaqLazyRoute: OfficialFaqLazyRoute,
   OfficialGuideLazyRoute: OfficialGuideLazyRoute,
+  AccountLinkageIndexRoute: AccountLinkageIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   AnalysisIndexLazyRoute: AnalysisIndexLazyRoute,
   AuthOauthCallbackRoute: AuthOauthCallbackRoute,
