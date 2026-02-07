@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { LinkagePage } from '@/components/services/mentoring/LinkagePage'
 
 export const Route = createFileRoute('/account-linkage')({
-  component: RouteComponent,
+    component: AccountLinkagePage,
 })
 
-function RouteComponent() {
-  return <div>Hello "/account-linkage"!</div>
+function AccountLinkagePage() {
+    return <LinkagePage />
 }
