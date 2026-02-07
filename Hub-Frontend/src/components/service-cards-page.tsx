@@ -8,8 +8,6 @@ import {
   BarChart3,
   ClipboardList,
   Bell,
-  Snowflake,
-  Sprout,
   Zap,
   ArrowRight
 } from "lucide-react";
@@ -28,20 +26,14 @@ interface ServiceCard {
   isExternal?: boolean;
 }
 
-// Susi 외부 서비스 URL (수시)
+// 외부 서비스 URL
 const SUSI_URL = import.meta.env.VITE_SUSI_URL || "http://localhost:3001";
-
-// Jungsi 외부 서비스 URL (정시)
 const JUNGSI_URL = import.meta.env.VITE_JUNGSI_URL || "http://localhost:3002";
-
-// MyExam 외부 서비스 URL (ExamHub)
 const MYEXAM_URL = import.meta.env.VITE_MYEXAM_URL || "http://localhost:3003";
-
-// StudyPlanner 외부 서비스 URL
 const STUDYPLANNER_URL = import.meta.env.VITE_STUDYPLANNER_URL || "http://localhost:3004";
 
-// 현재 서비스 중
-const currentServices: ServiceCard[] = [
+// 모든 서비스 (카테고리 없이 플랫하게)
+const allServices: ServiceCard[] = [
   {
     id: "jungsi",
     title: "정시 예측 분석",
@@ -60,10 +52,6 @@ const currentServices: ServiceCard[] = [
     ],
     isExternal: true,
   },
-];
-
-// 겨울방학부터 서비스
-const winterServices: ServiceCard[] = [
   {
     id: "mock-exam",
     title: "Exam Hub",
@@ -147,55 +135,56 @@ const winterServices: ServiceCard[] = [
   },
 ];
 
-// 3월 신학기부터 서비스
-const springServices: ServiceCard[] = [
-  {
-    id: "admission-delivery",
-    title: "맞춤 입시 정보 딜리버리",
-    price: "Members",
-    description: "이제 입시 정보를 찾으려고 시간 낭비하실 필요없습니다. 나에게 맞는 정보만 배달 서비스!",
-    icon: <Bell className="w-6 h-6" />,
-    href: "/admission-info",
-    color: "text-golden-500",
-    bgGradient: "from-golden-500 to-golden-600",
-    features: [
-      "맞춤형 입시 정보 제공",
-      "개인화된 알림 서비스"
-    ],
-    disabled: true,
-  },
-];
-
-interface ServiceSectionProps {
-  title: string;
-  subtitle: string;
-  icon: React.ReactNode;
-  services: ServiceCard[];
-  badgeColor: string;
-  bgColor: string;
-}
-
-function ServiceSection({ title, subtitle, icon, services, badgeColor, bgColor }: ServiceSectionProps) {
+export function ServiceCardsPage() {
   // 개발 환경에서는 disabled 무시 (로컬에서 모든 서비스 접근 가능)
   const isDev = import.meta.env.DEV;
 
   return (
-    <div className={cn("py-12", bgColor)}>
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className={cn("p-3 rounded-xl", badgeColor)}>
-            {icon}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 pt-12 pb-6">
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-600 text-sm font-medium ">
+            <Zap className="w-4 h-4" />
+            거북스쿨의 AI 앱 서비스
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-            <p className="text-gray-500 text-sm">{subtitle}</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 ">
+            입시의 모든 것을 거북스쿨에서!
+          </h1>
+        </div>
+      </div>
+
+      {/* 거북쌤 소개 섹션 */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
+          {/* 거북쌤 이미지 */}
+          <div className="flex-shrink-0">
+            <img
+              src="/images/geobuk-ssam.png"
+              alt="거북쌤"
+              className="w-32 h-32 md:w-40 md:h-40 object-contain"
+            />
+          </div>
+
+          {/* 말풍선 */}
+          <div className="relative bg-white rounded-2xl shadow-lg p-6 border border-gray-100 max-w-xl">
+            {/* 말풍선 꼬리 (모바일: 위쪽, 데스크탑: 왼쪽) */}
+            <div className="hidden md:block absolute left-0 top-1/2 -translate-x-2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white drop-shadow-sm" />
+            <div className="md:hidden absolute top-0 left-1/2 -translate-y-2 -translate-x-1/2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white drop-shadow-sm" />
+
+            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
+              <span className="font-bold text-blue-600">입시전문가 겸 AI 개발자</span>, 거북쌤이 만든 앱은 다릅니다!
+              사용해 보시면 기존의 것과는 많이 다르다는 것을 느끼실 것입니다.
+              아래 앱들은 <span className="font-semibold">거북쌤이 직접, 나홀로 만든 AI 앱들</span>입니다.
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Service Cards Grid */}
+      {/* Service Cards Grid - 카테고리 없이 플랫하게 */}
+      <div className="container mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {services.map((service) => {
+          {allServices.map((service) => {
             // 프로덕션에서만 disabled 적용, 개발 환경에서는 모두 활성화
             const isDisabled = service.disabled && !isDev;
 
@@ -332,82 +321,6 @@ function ServiceSection({ title, subtitle, icon, services, badgeColor, bgColor }
           })}
         </div>
       </div>
-    </div>
-  );
-}
-
-export function ServiceCardsPage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 pt-12 pb-6">
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-600 text-sm font-medium ">
-            <Zap className="w-4 h-4" />
-            거북스쿨의 AI 앱 서비스
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 ">
-            입시의 모든 것을 거북스쿨에서!
-          </h1>
-        </div>
-      </div>
-
-      {/* 거북쌤 소개 섹션 */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
-          {/* 거북쌤 이미지 */}
-          <div className="flex-shrink-0">
-            <img
-              src="/images/geobuk-ssam.png"
-              alt="거북쌤"
-              className="w-32 h-32 md:w-40 md:h-40 object-contain"
-            />
-          </div>
-
-          {/* 말풍선 */}
-          <div className="relative bg-white rounded-2xl shadow-lg p-6 border border-gray-100 max-w-xl">
-            {/* 말풍선 꼬리 (모바일: 위쪽, 데스크탑: 왼쪽) */}
-            <div className="hidden md:block absolute left-0 top-1/2 -translate-x-2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white drop-shadow-sm" />
-            <div className="md:hidden absolute top-0 left-1/2 -translate-y-2 -translate-x-1/2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white drop-shadow-sm" />
-
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-              <span className="font-bold text-blue-600">입시전문가 겸 AI 개발자</span>, 거북쌤이 만든 앱은 다릅니다!
-              사용해 보시면 기존의 것과는 많이 다르다는 것을 느끼실 것입니다.
-              아래 앱들은 <span className="font-semibold">거북쌤이 직접, 나홀로 만든 AI 앱들</span>입니다.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* 현재 서비스 중 */}
-      <ServiceSection
-        title="현재 서비스 중"
-        subtitle="지금 바로 이용 가능한 서비스"
-        icon={<Zap className="w-6 h-6 text-blue-600" />}
-        services={currentServices}
-        badgeColor="bg-blue-100"
-        bgColor="bg-white"
-      />
-
-      {/* 겨울방학부터 서비스 */}
-      <ServiceSection
-        title="겨울방학부터 서비스"
-        subtitle="2025년 겨울방학부터 만나볼 수 있어요"
-        icon={<Snowflake className="w-6 h-6 text-sky-600" />}
-        services={winterServices}
-        badgeColor="bg-sky-100"
-        bgColor="bg-slate-50"
-      />
-
-      {/* 3월 신학기부터 서비스 */}
-      <ServiceSection
-        title="3월 신학기부터 서비스"
-        subtitle="2026년 3월 새학기부터 만나볼 수 있어요"
-        icon={<Sprout className="w-6 h-6 text-green-600" />}
-        services={springServices}
-        badgeColor="bg-green-100"
-        bgColor="bg-white"
-      />
 
       {/* Footer padding */}
       <div className="pb-16" />
