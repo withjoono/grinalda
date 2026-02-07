@@ -48,6 +48,7 @@ import { winstonConfig } from './common/utils/winston.utils';
 import { WinstonModule } from 'nest-winston';
 import { OAuthModule } from './oauth/oauth.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
+import { MentoringModule } from './modules/mentoring/mentoring.module';
 import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
@@ -145,6 +146,7 @@ import { FirebaseModule } from './firebase/firebase.module';
     // MyclassModule, // REMOVED: 독립 앱
     ChatbotModule, // 챗봇 모듈 (FAQ, 용어사전, 매뉴얼 기반 Q&A)
     SubscriptionModule, // 앱 구독/권한 관리 모듈 (JWT에 앱별 권한 포함)
+    MentoringModule, // 멘토링 계정연동 모듈 (초대 링크 기반)
   ],
   controllers: [AppController],
   providers: [
@@ -188,4 +190,4 @@ import { FirebaseModule } from './firebase/firebase.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
