@@ -21,7 +21,7 @@ export class SubscriptionService {
     private readonly subscriptionRepository: Repository<AppSubscriptionEntity>,
     @InjectRepository(ProductPermissionMappingEntity)
     private readonly productMappingRepository: Repository<ProductPermissionMappingEntity>,
-  ) {}
+  ) { }
 
   // ==================== 앱 관리 ====================
 
@@ -63,7 +63,7 @@ export class SubscriptionService {
   /**
    * 사용자의 모든 구독 정보 조회
    */
-  async getMemberSubscriptions(memberId: number): Promise<AppSubscriptionEntity[]> {
+  async getMemberSubscriptions(memberId: string): Promise<AppSubscriptionEntity[]> {
     return this.subscriptionRepository.find({
       where: { member_id: memberId },
       relations: ['app'],
@@ -74,7 +74,7 @@ export class SubscriptionService {
    * 특정 앱에 대한 사용자 구독 정보 조회
    */
   async getMemberAppSubscription(
-    memberId: number,
+    memberId: string,
     appId: string,
   ): Promise<AppSubscriptionEntity | null> {
     return this.subscriptionRepository.findOne({
@@ -129,7 +129,7 @@ export class SubscriptionService {
    * 구독 상태 업데이트
    */
   async updateSubscription(
-    memberId: number,
+    memberId: string,
     appId: string,
     dto: UpdateSubscriptionDto,
   ): Promise<AppSubscriptionEntity> {
@@ -150,7 +150,7 @@ export class SubscriptionService {
   /**
    * 구독 취소
    */
-  async cancelSubscription(memberId: number, appId: string): Promise<AppSubscriptionEntity> {
+  async cancelSubscription(memberId: string, appId: string): Promise<AppSubscriptionEntity> {
     return this.updateSubscription(memberId, appId, { status: 'cancelled' });
   }
 
@@ -160,7 +160,7 @@ export class SubscriptionService {
    * JWT 토큰에 포함할 권한 정보 생성
    * 모든 앱에 대한 사용자의 구독 상태를 반환
    */
-  async getMemberPermissions(memberId: number): Promise<PermissionsDto> {
+  async getMemberPermissions(memberId: string): Promise<PermissionsDto> {
     const subscriptions = await this.getMemberSubscriptions(memberId);
     const apps = await this.getAllApps();
 
@@ -194,7 +194,7 @@ export class SubscriptionService {
    * 특정 앱에 대한 라이선스 확인
    * 각 독립 앱에서 호출하여 사용자 권한 확인
    */
-  async checkLicense(memberId: number, appId: string): Promise<LicenseCheckResponseDto> {
+  async checkLicense(memberId: string, appId: string): Promise<LicenseCheckResponseDto> {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
     const app = await this.getAppById(appId);
 
@@ -226,7 +226,7 @@ export class SubscriptionService {
   /**
    * 사용 횟수 증가 (티켓제)
    */
-  async incrementUsage(memberId: number, appId: string): Promise<boolean> {
+  async incrementUsage(memberId: string, appId: string): Promise<boolean> {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
     if (!subscription || !subscription.isValid()) {
       return false;

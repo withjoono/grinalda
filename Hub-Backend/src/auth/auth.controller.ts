@@ -48,7 +48,7 @@ export class AuthController {
     private readonly smsService: SmsService,
     private readonly membersService: MembersService,
     private readonly cookieService: CookieService,
-  ) {}
+  ) { }
 
   @ApiOperation({
     summary: '내 정보 조회',
@@ -69,7 +69,7 @@ export class AuthController {
   })
   @Get('me')
   public getCurrentMember(@CurrentMemberId() memberId: string): Promise<MemberEntity> {
-    return this.membersService.findMeById(Number(memberId));
+    return this.membersService.findMeById(memberId);
   }
 
   @ApiOperation({
@@ -92,7 +92,7 @@ export class AuthController {
   })
   @Get('me/active')
   public getCurrentMemberActiveService(@CurrentMemberId() memberId: string): Promise<string[]> {
-    return this.membersService.findActiveServicesById(Number(memberId));
+    return this.membersService.findActiveServicesById(memberId);
   }
 
   @ApiOperation({
@@ -555,7 +555,7 @@ export class AuthController {
   @Post('verify-token')
   async verifyToken(
     @Body() dto: VerifyTokenDto,
-  ): Promise<{ valid: boolean; memberId?: number; email?: string; name?: string }> {
+  ): Promise<{ valid: boolean; memberId?: string; email?: string; name?: string }> {
     return this.service.verifyToken(dto.accessToken);
   }
 
@@ -682,7 +682,7 @@ export class AuthController {
     @CurrentMemberId() memberId: string,
     @Body() dto: SsoGenerateCodeDto,
   ): Promise<{ code: string; expiresIn: number }> {
-    const code = await this.service.generateSsoCode(Number(memberId), dto.targetService);
+    const code = await this.service.generateSsoCode(memberId, dto.targetService);
 
     return {
       code,

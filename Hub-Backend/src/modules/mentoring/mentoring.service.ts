@@ -25,7 +25,7 @@ export class MentoringService {
     /**
      * 초대 링크 생성 (24시간 유효)
      */
-    async createInvite(memberId: number, returnUrl?: string) {
+    async createInvite(memberId: string, returnUrl?: string) {
         const code = uuidv4();
         const expireAt = new Date();
         expireAt.setHours(expireAt.getHours() + 24);
@@ -87,7 +87,7 @@ export class MentoringService {
     /**
      * 초대 수락 → 양방향 연동 생성
      */
-    async acceptInvite(code: string, acceptorId: number) {
+    async acceptInvite(code: string, acceptorId: string) {
         const invite = await this.inviteRepo.findOne({
             where: { code },
         });
@@ -141,7 +141,7 @@ export class MentoringService {
     /**
      * 연동된 계정 목록 조회
      */
-    async getLinkedAccounts(memberId: number) {
+    async getLinkedAccounts(memberId: string) {
         const links = await this.linkRepo.find({
             where: [
                 { member_id: memberId },
@@ -166,7 +166,7 @@ export class MentoringService {
     /**
      * 연동 해제
      */
-    async unlinkAccount(linkId: number, memberId: number) {
+    async unlinkAccount(linkId: number, memberId: string) {
         const link = await this.linkRepo.findOne({
             where: { id: linkId },
         });

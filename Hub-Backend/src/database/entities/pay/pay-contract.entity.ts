@@ -27,8 +27,8 @@ export class PayContractEntity {
   @Column({ type: 'timestamp', nullable: true })
   update_dt: Date | null;
 
-  @Column({ type: 'bigint', nullable: true })
-  member_id: number | null;
+  @Column({ type: 'varchar', length: 30, nullable: true })
+  member_id: string | null;
 
   @Column({ type: 'int', nullable: true })
   order_id: number | null; // 주문 id

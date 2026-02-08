@@ -43,7 +43,7 @@ export class SubscriptionController {
   constructor(
     private readonly subscriptionService: SubscriptionService,
     private readonly configService: ConfigService<AllConfigType>,
-  ) {}
+  ) { }
 
   // ==================== 앱 관련 ====================
 
@@ -181,7 +181,7 @@ export class SubscriptionController {
         } else {
           throw new BadRequestException(
             `상품 매핑을 찾을 수 없습니다: ${dto.appId}/${dto.externalProductId}. ` +
-              `관리자 페이지에서 상품-권한 매핑을 먼저 등록해주세요.`,
+            `관리자 페이지에서 상품-권한 매핑을 먼저 등록해주세요.`,
           );
         }
       }
@@ -234,7 +234,7 @@ export class SubscriptionController {
   @ApiParam({ name: 'appId', example: 'examhub' })
   @ApiResponse({ status: 200, description: '구독 업데이트됨' })
   async updateSubscription(
-    @Param('memberId') memberId: number,
+    @Param('memberId') memberId: string,
     @Param('appId') appId: string,
     @Body() dto: UpdateSubscriptionDto,
   ): Promise<AppSubscriptionEntity> {
@@ -249,7 +249,7 @@ export class SubscriptionController {
   @ApiParam({ name: 'appId', example: 'examhub' })
   @ApiResponse({ status: 200, description: '구독 취소됨' })
   async cancelSubscription(
-    @Param('memberId') memberId: number,
+    @Param('memberId') memberId: string,
     @Param('appId') appId: string,
   ): Promise<AppSubscriptionEntity> {
     return this.subscriptionService.cancelSubscription(memberId, appId);

@@ -33,7 +33,7 @@ export class OAuthController {
     private readonly configService: ConfigService<AllConfigType>,
     private readonly cookieService: CookieService,
     private readonly jwtService: CustomJwtService,
-  ) {}
+  ) { }
 
   /**
    * GET /oauth/authorize
@@ -64,14 +64,13 @@ export class OAuthController {
       this.oauthService.validateScopes(client, scopes);
 
       // 4. 로그인 확인 (쿠키 또는 Authorization 헤더에서 토큰 추출)
-      let memberId: number | null = null;
+      let memberId: string | null = null;
 
       try {
         const accessToken = this.cookieService.extractAccessToken(req);
         if (accessToken) {
           const jwtSecret = this.configService.getOrThrow('auth', { infer: true }).secret;
-          const memberIdStr = this.jwtService.getMemberIdFromToken(accessToken, jwtSecret);
-          memberId = Number(memberIdStr);
+          memberId = this.jwtService.getMemberIdFromToken(accessToken, jwtSecret);
         }
       } catch (error) {
         // 토큰이 유효하지 않거나 만료된 경우 로그인 필요
@@ -136,7 +135,7 @@ export class OAuthController {
       // 1. Authorization Code 생성 (10분 유효)
       const code = await this.oauthService.generateAuthorizationCode({
         clientId: body.client_id,
-        memberId: Number(memberId),
+        memberId: memberId,
         redirectUri: body.redirect_uri,
         scope: body.scope.split(' '), // 문자열을 배열로 변환
         codeChallenge: body.code_challenge,
@@ -271,8 +270,7 @@ export class OAuthController {
       try {
         // Refresh Token에서 memberId 추출
         const jwtSecret = this.configService.getOrThrow('auth', { infer: true }).refreshSecret;
-        const memberIdStr = this.jwtService.getMemberIdFromToken(body.refresh_token, jwtSecret);
-        const memberId = Number(memberIdStr);
+        const memberId = this.jwtService.getMemberIdFromToken(body.refresh_token, jwtSecret);
 
         // 새 토큰 생성
         const tokens = this.oauthService.generateTokens(memberId);
@@ -323,14 +321,12 @@ export class OAuthController {
   })
   @ApiResponse({ status: 401, description: '인증 실패 (JWT 토큰 없음 또는 유효하지 않음)' })
   async logout(@CurrentMemberId() memberId: string, @Body() body?: { client_id?: string }) {
-    const memberIdNum = Number(memberId);
-
     // 로그아웃 전 활성 코드 수 확인
-    const activeCodesCount = await this.oauthService.countActiveCodes(memberIdNum);
+    const activeCodesCount = await this.oauthService.countActiveCodes(memberId);
 
     // 특정 클라이언트만 로그아웃
     if (body?.client_id) {
-      await this.oauthService.revokeCodesByClient(memberIdNum, body.client_id);
+      await this.oauthService.revokeCodesByClient(memberId, body.client_id);
       return {
         success: true,
         revokedCodes: activeCodesCount,
@@ -339,7 +335,7 @@ export class OAuthController {
     }
 
     // 모든 클라이언트 로그아웃
-    await this.oauthService.revokeAllCodes(memberIdNum);
+    await this.oauthService.revokeAllCodes(memberId);
 
     return {
       success: true,

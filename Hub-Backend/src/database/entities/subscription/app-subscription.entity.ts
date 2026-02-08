@@ -24,8 +24,8 @@ export class AppSubscriptionEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ type: 'bigint' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 30 })
+  member_id: string;
 
   @Column({ type: 'varchar', length: 50 })
   app_id: string;

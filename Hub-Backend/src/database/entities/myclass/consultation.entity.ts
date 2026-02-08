@@ -19,8 +19,8 @@ export class ConsultationEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
-  @Column({ type: 'bigint', name: 'member_id' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 30, name: 'member_id' })
+  member_id: string;
 
   @Column({ type: 'date' })
   date: Date;
@@ -31,8 +31,8 @@ export class ConsultationEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   mentor: string | null;
 
-  @Column({ type: 'bigint', name: 'mentor_id', nullable: true })
-  mentor_id: number | null;
+  @Column({ type: 'varchar', length: 30, name: 'mentor_id', nullable: true })
+  mentor_id: string | null;
 
   @Column({ type: 'text', nullable: true })
   summary: string | null;

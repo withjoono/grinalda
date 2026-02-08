@@ -16,6 +16,10 @@ export default defineConfig(() => {
     },
     server: {
       port: 3000,
+      headers: {
+        "Cross-Origin-Opener-Policy": "unsafe-none",
+        "Cross-Origin-Embedder-Policy": "unsafe-none",
+      },
       cors: true, // CORS 활성화
       proxy: {
         // OAuth API 엔드포인트만 Hub Backend로 프록시 (authorize, token 등)

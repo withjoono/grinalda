@@ -35,7 +35,7 @@ export class PaymentController {
     private readonly paymentService: PaymentService,
     private readonly couponService: CouponService,
     private configService: ConfigService<AllConfigType>,
-  ) {}
+  ) { }
 
   @ApiOperation({
     summary: '결제 내역 목록 조회',
@@ -53,7 +53,7 @@ export class PaymentController {
   @ApiBearerAuth('access-token')
   @Get('history')
   async getMemberPaymentHistories(@CurrentMemberId() memberId: string): Promise<PayHistoryDto[]> {
-    const history = await this.paymentService.getMemberPaymentHistories(Number(memberId));
+    const history = await this.paymentService.getMemberPaymentHistories(memberId);
 
     return history;
   }
@@ -82,7 +82,7 @@ export class PaymentController {
     @CurrentMemberId() memberId: string,
     @Param('id', ParseIntPipe) orderId: number,
   ): Promise<PayHistoryDto> {
-    const history = await this.paymentService.getMemberPaymentHistory(Number(memberId), orderId);
+    const history = await this.paymentService.getMemberPaymentHistory(memberId, orderId);
 
     return history;
   }
@@ -117,7 +117,7 @@ export class PaymentController {
     const { couponNumber, productId } = body;
     const payOrder = await this.paymentService.preRegisterPayment(
       Number(productId),
-      Number(memberId),
+      memberId,
       couponNumber,
     );
     return payOrder;
@@ -236,7 +236,7 @@ export class PaymentController {
         coupon_number: body.coupon_number || body.couponNumber,
         product_id: Number(body.product_id || body.productId),
       },
-      Number(memberId),
+      memberId,
     );
 
     return paymentInfo;

@@ -31,7 +31,7 @@ export class SchoolRecordService {
     private memberUploadFileListRepository: Repository<MemberUploadFileListEntity>,
     private readonly dataSource: DataSource,
     // private readonly awsUploadService: AwsUploadService,
-  ) {}
+  ) { }
 
   async getMemberUploadFiles(
     skip: number,
@@ -94,31 +94,31 @@ export class SchoolRecordService {
 
     return [files, total];
   }
-  async getAttendanceDetails(memberId: number): Promise<SchoolRecordAttendanceDetailEntity[]> {
+  async getAttendanceDetails(memberId: string): Promise<SchoolRecordAttendanceDetailEntity[]> {
     return await this.attendanceRepository.find({
       where: { member: { id: memberId } },
     });
   }
 
-  async getSelectSubjects(memberId: number): Promise<SchoolRecordSelectSubjectEntity[]> {
+  async getSelectSubjects(memberId: string): Promise<SchoolRecordSelectSubjectEntity[]> {
     return await this.selectSubjectRepository.find({
       where: { member: { id: memberId } },
     });
   }
 
-  async getSubjectLearnings(memberId: number): Promise<SchoolRecordSubjectLearningEntity[]> {
+  async getSubjectLearnings(memberId: string): Promise<SchoolRecordSubjectLearningEntity[]> {
     return await this.subjectLearningRepository.find({
       where: { member: { id: memberId } },
     });
   }
 
-  async getVolunteers(memberId: number): Promise<SchoolRecordVolunteerEntity[]> {
+  async getVolunteers(memberId: string): Promise<SchoolRecordVolunteerEntity[]> {
     return await this.volunteerRepository.find({
       where: { member: { id: memberId } },
     });
   }
 
-  async getSportArts(memberId: number): Promise<SchoolrecordSportsArtEntity[]> {
+  async getSportArts(memberId: string): Promise<SchoolrecordSportsArtEntity[]> {
     return await this.sportArtRepository.find({
       where: { member: { id: memberId } },
     });
@@ -128,7 +128,7 @@ export class SchoolRecordService {
     const { attendances, subjects, selectSubjects } = editLifeRecordDto;
 
     const member = await this.memberRepository.findOne({
-      where: { id: Number(memberId) },
+      where: { id: memberId },
     });
     if (!member) {
       throw new NotFoundException(`유저를 찾을 수 없습니다.`);
@@ -235,7 +235,7 @@ export class SchoolRecordService {
       file_path: filename,
       file_size: file.size,
       file_type: 'school-record-pdf',
-      member_id: Number(memberId),
+      member_id: memberId,
     });
     await queryRunner.manager.save(MemberUploadFileListEntity, uploadInfo);
   }

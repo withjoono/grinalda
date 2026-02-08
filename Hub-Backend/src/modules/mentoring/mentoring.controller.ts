@@ -21,12 +21,12 @@ export class MentoringController {
      */
     @Post('invite')
     async createInvite(
-        @CurrentMemberId() memberId: number,
+        @CurrentMemberId() memberId: string,
         @Body() body: { return_url?: string },
     ) {
         try {
             console.log('[Mentoring] createInvite called, memberId:', memberId, typeof memberId);
-            return await this.mentoringService.createInvite(Number(memberId), body.return_url);
+            return await this.mentoringService.createInvite(memberId, body.return_url);
         } catch (e) {
             console.error('[Mentoring] createInvite error:', e);
             throw e;
@@ -50,7 +50,7 @@ export class MentoringController {
     @Post('invite/:code/accept')
     async acceptInvite(
         @Param('code') code: string,
-        @CurrentMemberId() memberId: number,
+        @CurrentMemberId() memberId: string,
     ) {
         return this.mentoringService.acceptInvite(code, memberId);
     }
@@ -60,7 +60,7 @@ export class MentoringController {
      * GET /mentoring/links
      */
     @Get('links')
-    async getLinkedAccounts(@CurrentMemberId() memberId: number) {
+    async getLinkedAccounts(@CurrentMemberId() memberId: string) {
         return this.mentoringService.getLinkedAccounts(memberId);
     }
 
@@ -71,7 +71,7 @@ export class MentoringController {
     @Delete('links/:linkId')
     async unlinkAccount(
         @Param('linkId') linkId: number,
-        @CurrentMemberId() memberId: number,
+        @CurrentMemberId() memberId: string,
     ) {
         return this.mentoringService.unlinkAccount(linkId, memberId);
     }

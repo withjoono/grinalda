@@ -15,12 +15,12 @@ export class ContractService {
     @InjectRepository(PayServiceEntity)
     private readonly payServiceRepository: Repository<PayServiceEntity>,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-  ) {}
+  ) { }
 
   async handleProductSpecificLogic(
     queryRunner: any,
     productId: number,
-    memberId: number,
+    memberId: string,
     orderId: number,
   ) {
     this.logger.warn(
@@ -67,7 +67,7 @@ export class ContractService {
   private async contractFixedTermService(
     queryRunner: any,
     service: PayServiceEntity,
-    memberId: number,
+    memberId: string,
     orderId: number,
   ) {
     // service.term이 null인 경우 기본 1개월 계약
@@ -90,7 +90,7 @@ export class ContractService {
   private async contractOfficerTicket(
     queryRunner: any,
     service: PayServiceEntity,
-    memberId: number,
+    memberId: string,
     orderId: number,
   ) {
     const endDate = new Date();
@@ -108,7 +108,7 @@ export class ContractService {
   private async contractSusiPackage(
     queryRunner: any,
     service: PayServiceEntity,
-    memberId: number,
+    memberId: string,
     orderId: number,
   ) {
     // service.term이 null인 경우 기본 1개월 계약
@@ -132,7 +132,7 @@ export class ContractService {
   private async contractSusiConsulting(
     queryRunner: any,
     service: PayServiceEntity,
-    memberId: number,
+    memberId: string,
     orderId: number,
   ) {
     // service.term이 null인 경우 기본 1개월 계약
@@ -155,7 +155,7 @@ export class ContractService {
   // 계약객체 생성
   private createPayContractEntity(
     service: PayServiceEntity,
-    memberId: number,
+    memberId: string,
     orderId: number,
     endDate: Date,
   ): PayContractEntity {
@@ -201,7 +201,7 @@ export class ContractService {
   async handleFailedPayment(
     queryRunner: any,
     payServiceId: number,
-    memberId: number,
+    memberId: string,
   ): Promise<void> {
     this.logger.warn(`결제 실패 처리 시작: 회원 ID ${memberId}, 상품 ID ${payServiceId}`);
     try {
@@ -238,7 +238,7 @@ export class ContractService {
   async handleCancelledPayment(
     queryRunner: any,
     payOrderId: number,
-    memberId: number,
+    memberId: string,
   ): Promise<void> {
     this.logger.warn(`결제 취소 처리 시작: 회원 ID ${memberId}, 주문 ID ${payOrderId}`);
     try {
@@ -273,7 +273,7 @@ export class ContractService {
     }
   }
 
-  private async cancelContract(queryRunner: any, orderId: number, memberId: number): Promise<void> {
+  private async cancelContract(queryRunner: any, orderId: number, memberId: string): Promise<void> {
     const contract = await queryRunner.manager.findOne(PayContractEntity, {
       where: { order_id: orderId, member_id: memberId },
     });

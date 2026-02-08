@@ -27,8 +27,8 @@ export class OAuthAuthorizationCodeEntity {
   clientId: string;
 
   @ApiProperty({ description: '사용자 ID' })
-  @Column({ type: 'int' })
-  memberId: number;
+  @Column({ type: 'varchar', length: 30 })
+  memberId: string;
 
   @ApiProperty({ description: '리다이렉트 URI', example: 'http://localhost:3001/auth/callback' })
   @Column({ type: 'text' })

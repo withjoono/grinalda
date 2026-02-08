@@ -20,8 +20,8 @@ export class HealthRecordEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
-  @Column({ type: 'bigint', name: 'member_id' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 30, name: 'member_id' })
+  member_id: string;
 
   @Column({ type: 'date' })
   date: Date;

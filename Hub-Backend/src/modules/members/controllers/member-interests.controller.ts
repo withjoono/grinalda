@@ -23,7 +23,7 @@ import {
 @ApiTags('members')
 @Controller('members/:memberId/interests')
 export class MemberInterestsController {
-  constructor(private readonly memberInterestsService: MemberInterestsService) {}
+  constructor(private readonly memberInterestsService: MemberInterestsService) { }
 
   @ApiOperation({
     summary: '수시 관심 대학 추가',
@@ -50,7 +50,7 @@ export class MemberInterestsController {
   @ApiBearerAuth('access-token')
   @Post()
   @UseGuards(MemberPermissionGuard)
-  async addInterest(@Body() body: AddInterestDto, @Param('memberId') memberId: number) {
+  async addInterest(@Body() body: AddInterestDto, @Param('memberId') memberId: string) {
     await this.memberInterestsService.addInterest(
       memberId,
       body.targetTable,
@@ -84,7 +84,7 @@ export class MemberInterestsController {
   @ApiBearerAuth('access-token')
   @Delete()
   @UseGuards(MemberPermissionGuard)
-  async removeInterest(@Body() body: RemoveInterestDto, @Param('memberId') memberId: number) {
+  async removeInterest(@Body() body: RemoveInterestDto, @Param('memberId') memberId: string) {
     await this.memberInterestsService.removeInterest(memberId, body.targetTable, body.targetIds);
     return null;
   }
@@ -111,7 +111,7 @@ export class MemberInterestsController {
   @Get('/susi-subject')
   @UseGuards(MemberPermissionGuard)
   async getInterestsSusiSubject(
-    @Param('memberId') memberId: number,
+    @Param('memberId') memberId: string,
   ): Promise<InterestSusiSubjectResponse[]> {
     return this.memberInterestsService.getSusiSubject(memberId);
   }
@@ -138,7 +138,7 @@ export class MemberInterestsController {
   @Get('/susi-comprehensive')
   @UseGuards(MemberPermissionGuard)
   async getInterestsSusiComprehensive(
-    @Param('memberId') memberId: number,
+    @Param('memberId') memberId: string,
   ): Promise<InterestSusiComprehensiveResponse[]> {
     return this.memberInterestsService.getSusiComprehensive(memberId);
   }

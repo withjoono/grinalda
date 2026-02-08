@@ -96,6 +96,8 @@ export function RegisterWithEmailForm({ className }: Props) {
   const [searchHighSchool, setSearchHighSchool] = useState(""); // 학교 검색어 (필터링때문에 form 외에 추가로 만듬)
   const [isFocused, setIsFocused] = useState(false); // 학교검색 포커스
   const [memberType, setMemberType] = useState<"student" | "teacher" | "parent">("student");
+  const [teacherSubject, setTeacherSubject] = useState("");
+  const [parentType, setParentType] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const navigate = useNavigate();
@@ -268,6 +270,14 @@ export function RegisterWithEmailForm({ className }: Props) {
         phone: formattedPhone,
         ckSmsAgree: agreeToTerms[3],
         memberType: memberType,
+        // 선생님 전용
+        ...(memberType === "teacher" && {
+          subject: teacherSubject,
+        }),
+        // 학부모 전용
+        ...(memberType === "parent" && {
+          parentType: parentType,
+        }),
       });
 
       if (res.data.success) {
@@ -341,97 +351,103 @@ export function RegisterWithEmailForm({ className }: Props) {
       <div className={cn("space-y-2", className)}>
         {/* 구글 본인인증 섹션 */}
         <div className={cn(
-          "rounded-lg border-2 p-4 transition-colors",
+          "rounded-xl border p-5 transition-all duration-300",
           googleVerification.verified
-            ? "border-green-500 bg-green-50"
-            : "border-amber-400 bg-amber-50"
+            ? "border-emerald-200 bg-emerald-50/30"
+            : "border-slate-200 bg-slate-50/50"
         )}>
-          <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck className={cn(
-              "w-5 h-5",
-              googleVerification.verified ? "text-green-600" : "text-amber-600"
-            )} />
-            <span className={cn(
-              "text-sm font-semibold",
-              googleVerification.verified ? "text-green-700" : "text-amber-700"
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-full",
+              googleVerification.verified ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-500"
             )}>
-              {googleVerification.verified ? "본인인증 완료" : "본인인증 필수"}
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <span className={cn(
+              "text-sm font-semibold tracking-tight",
+              googleVerification.verified ? "text-emerald-900" : "text-slate-700"
+            )}>
+              {googleVerification.verified ? "본인인증 완료" : "본인인증 (필수)"}
             </span>
           </div>
 
           {googleVerification.verified ? (
-            <div className="flex items-center gap-3">
-              {googleVerification.photoURL && (
+            <div className="flex items-center gap-3 pl-1">
+              {googleVerification.photoURL ? (
                 <img
                   src={googleVerification.photoURL}
                   alt="프로필"
-                  className="w-8 h-8 rounded-full"
+                  className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
                 />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 border-2 border-white shadow-sm">
+                  <UserIcon className="w-5 h-5" />
+                </div>
               )}
               <div className="text-sm">
-                <p className="font-medium text-green-800">{googleVerification.name}</p>
-                <p className="text-green-600">{googleVerification.email}</p>
+                <p className="font-semibold text-slate-900">{googleVerification.name}</p>
+                <p className="text-slate-500 text-xs">{googleVerification.email}</p>
               </div>
             </div>
           ) : (
             <>
-              <p className="text-xs text-amber-700 mb-3">
-                허수 가입 방지를 위해 구글 계정으로 본인인증이 필요합니다.
+              <p className="text-sm text-slate-500 mb-4 pl-1 leading-relaxed">
+                안전한 서비스 이용을 위해 구글 계정으로 본인인증을 진행해주세요.
               </p>
               <Button
                 type="button"
                 variant="outline"
-                className="w-full h-auto space-x-2 py-2.5 bg-white hover:bg-gray-50"
+                className="w-full h-11 space-x-2 bg-white hover:bg-slate-50 border-slate-200 text-slate-700 font-medium shadow-sm transition-all hover:shadow hover:border-slate-300"
                 onClick={handleGoogleVerification}
                 loading={isVerifying}
                 disabled={isVerifying}
               >
-                <img src={googleIcon} className="size-4" />
-                <span>구글로 본인인증하기</span>
+                <img src={googleIcon} className="w-5 h-5" />
+                <span>구글로 간편 인증하기</span>
               </Button>
             </>
           )}
         </div>
 
         {/* 회원유형 탭 */}
-        <div className="grid grid-cols-3 gap-1 rounded-lg bg-muted p-1">
+        <div className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100/80 p-1.5 mb-6">
           <button
             type="button"
             onClick={() => setMemberType("student")}
             className={cn(
-              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
               memberType === "student"
-                ? "bg-background text-primary shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
             )}
           >
-            <UserIcon className="w-4 h-4" />
+            <UserIcon className={cn("w-4 h-4", memberType === "student" ? "text-blue-500" : "text-slate-400")} />
             학생
           </button>
           <button
             type="button"
             onClick={() => setMemberType("teacher")}
             className={cn(
-              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
               memberType === "teacher"
-                ? "bg-background text-primary shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
             )}
           >
-            <GraduationCapIcon className="w-4 h-4" />
+            <GraduationCapIcon className={cn("w-4 h-4", memberType === "teacher" ? "text-emerald-500" : "text-slate-400")} />
             선생님
           </button>
           <button
             type="button"
             onClick={() => setMemberType("parent")}
             className={cn(
-              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
               memberType === "parent"
-                ? "bg-background text-primary shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
             )}
           >
-            <UsersIcon className="w-4 h-4" />
+            <UsersIcon className={cn("w-4 h-4", memberType === "parent" ? "text-orange-500" : "text-slate-400")} />
             학부모
           </button>
         </div>
@@ -447,17 +463,17 @@ export function RegisterWithEmailForm({ className }: Props) {
           )}
 
           <fieldset disabled={!googleVerification.verified} className={cn(
-            "space-y-2 transition-opacity",
-            !googleVerification.verified && "opacity-50"
+            "space-y-5 transition-all duration-300 ease-in-out",
+            !googleVerification.verified && "opacity-40 grayscale-[0.5]"
           )}>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이름*</FormLabel>
+                  <FormLabel className="text-slate-600 font-medium">이름*</FormLabel>
                   <FormControl>
-                    <Input placeholder="이름" {...field} />
+                    <Input className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all" placeholder="이름" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -468,9 +484,10 @@ export function RegisterWithEmailForm({ className }: Props) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이메일*</FormLabel>
+                  <FormLabel className="text-slate-600 font-medium">이메일*</FormLabel>
                   <FormControl>
                     <Input
+                      className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                       placeholder="이메일 주소"
                       type="email"
                       {...field}
@@ -480,53 +497,59 @@ export function RegisterWithEmailForm({ className }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>패스워드*</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="패스워드"
-                      autoComplete="off"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="checkPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>패스워드 확인*</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="패스워드 확인"
-                      type="password"
-                      autoComplete="off"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">패스워드*</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                        placeholder="패스워드"
+                        autoComplete="off"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="checkPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">패스워드 확인*</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                        placeholder="패스워드 확인"
+                        type="password"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             {memberType === "student" && (
-              <>
+              <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
                 <FormField
                   control={form.control}
                   name="school"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>학교</FormLabel>
+                      <FormLabel className="text-slate-600 font-medium">학교</FormLabel>
                       <div className="relative">
                         <FormControl>
                           <Input
+                            className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                             placeholder="학교 검색(목록에 없으면 비워주세요)"
                             {...field}
                             onFocus={() => setIsFocused(true)}
@@ -541,8 +564,8 @@ export function RegisterWithEmailForm({ className }: Props) {
                           <div
                             ref={parentRef}
                             className={cn(
-                              "absolute left-0 top-10 z-40 max-h-[400px] w-full overflow-y-auto rounded-b-md border bg-gray-100",
-                              "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-300 scrollbar-thumb-primary",
+                              "absolute left-0 top-12 z-40 max-h-[300px] w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl",
+                              "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300",
                             )}
                           >
                             <div
@@ -555,7 +578,7 @@ export function RegisterWithEmailForm({ className }: Props) {
                                 return (
                                   <div
                                     key={virtualItem.key}
-                                    className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-2 text-sm hover:bg-gray-200"
+                                    className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-4 py-2 text-sm hover:bg-slate-50 text-slate-700 transition-colors"
                                     style={{
                                       height: `${virtualItem.size}px`,
                                       transform: `translateY(${virtualItem.start}px)`,
@@ -570,8 +593,8 @@ export function RegisterWithEmailForm({ className }: Props) {
                                       setIsFocused(false); // 선택 후 드롭다운 닫기
                                     }}
                                   >
-                                    {school.highschoolName} (
-                                    {school.highschoolRegion})
+                                    <span className="font-medium text-slate-900">{school.highschoolName}</span>
+                                    <span className="ml-2 text-slate-400 text-xs">({school.highschoolRegion})</span>
                                   </div>
                                 );
                               })}
@@ -583,13 +606,13 @@ export function RegisterWithEmailForm({ className }: Props) {
                     </FormItem>
                   )}
                 />
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="schoolLevel"
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>초/중/고*</FormLabel>
+                        <FormLabel className="text-slate-600 font-medium">초/중/고*</FormLabel>
                         <Select
                           value={field.value}
                           onValueChange={(value) => {
@@ -606,7 +629,7 @@ export function RegisterWithEmailForm({ className }: Props) {
                           disabled={!googleVerification.verified}
                         >
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
                               <SelectValue placeholder="선택" />
                             </SelectTrigger>
                           </FormControl>
@@ -630,15 +653,15 @@ export function RegisterWithEmailForm({ className }: Props) {
                       const gradeOptions = selectedLevel ? GRADE_OPTIONS[selectedLevel] || [] : [];
                       return (
                         <FormItem className="w-full">
-                          <FormLabel>학년*</FormLabel>
+                          <FormLabel className="text-slate-600 font-medium">학년*</FormLabel>
                           <Select
                             value={field.value}
                             onValueChange={field.onChange}
                             disabled={!selectedLevel || !googleVerification.verified}
                           >
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder={selectedLevel ? "선택" : "학교/대상 먼저 선택"} />
+                              <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                                <SelectValue placeholder={selectedLevel ? "선택" : "-"} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -655,20 +678,15 @@ export function RegisterWithEmailForm({ className }: Props) {
                     }}
                   />
                 </div>
-              </>
-            )}
-
-            {/* 학생 전용 필드 */}
-            {memberType === "student" && (
-              <>
                 <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>휴대폰 번호</FormLabel>
+                      <FormLabel className="text-slate-600 font-medium">휴대폰 번호</FormLabel>
                       <FormControl>
                         <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                           placeholder="01012345678"
                           {...field}
                         />
@@ -677,22 +695,65 @@ export function RegisterWithEmailForm({ className }: Props) {
                     </FormItem>
                   )}
                 />
-              </>
+              </div>
             )}
 
             {/* 선생님 전용 필드 */}
             {memberType === "teacher" && (
-              <div className="rounded-lg border border-dashed border-muted-foreground/30 p-6 text-center">
-                <GraduationCapIcon className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
-                <p className="text-sm text-muted-foreground">선생님 전용 가입 필드는 준비 중입니다.</p>
+              <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
+                <FormField
+                  control={form.control}
+                  name="schoolLevel"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-slate-600 font-medium">담당 학교급</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        disabled={!googleVerification.verified}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                            <SelectValue placeholder="선택" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="초등">초등</SelectItem>
+                          <SelectItem value="중등">중등</SelectItem>
+                          <SelectItem value="고등">고등</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
-                    <FormItem className="mt-4">
-                      <FormLabel>휴대폰 번호</FormLabel>
+                    <FormItem>
+                      <FormLabel className="text-slate-600 font-medium">담당 과목</FormLabel>
                       <FormControl>
                         <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                          placeholder="예: 수학, 영어, 국어"
+                          value={teacherSubject}
+                          onChange={(e) => setTeacherSubject(e.target.value)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-slate-600 font-medium">휴대폰 번호</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                           placeholder="01012345678"
                           {...field}
                         />
@@ -706,17 +767,42 @@ export function RegisterWithEmailForm({ className }: Props) {
 
             {/* 학부모 전용 필드 */}
             {memberType === "parent" && (
-              <div className="rounded-lg border border-dashed border-muted-foreground/30 p-6 text-center">
-                <UsersIcon className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
-                <p className="text-sm text-muted-foreground">학부모 전용 가입 필드는 준비 중입니다.</p>
+              <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel className="text-slate-600 font-medium">학부모 유형</FormLabel>
+                      <Select
+                        value={parentType}
+                        onValueChange={setParentType}
+                        disabled={!googleVerification.verified}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                            <SelectValue placeholder="선택" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="아버지">아버지</SelectItem>
+                          <SelectItem value="어머니">어머니</SelectItem>
+                          <SelectItem value="기타">기타</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
-                    <FormItem className="mt-4">
-                      <FormLabel>휴대폰 번호</FormLabel>
+                    <FormItem>
+                      <FormLabel className="text-slate-600 font-medium">휴대폰 번호</FormLabel>
                       <FormControl>
                         <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                           placeholder="01012345678"
                           {...field}
                         />
@@ -729,10 +815,10 @@ export function RegisterWithEmailForm({ className }: Props) {
             )}
           </fieldset>
           <div className={cn(
-            "space-y-2 transition-opacity",
+            "space-y-4 pt-2 transition-all duration-300",
             !googleVerification.verified && "opacity-50 pointer-events-none"
           )}>
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
               <FormControl>
                 <Checkbox
                   checked={
@@ -743,45 +829,47 @@ export function RegisterWithEmailForm({ className }: Props) {
                   }
                   onCheckedChange={handleAllAgreeClick}
                   disabled={!googleVerification.verified}
+                  className="data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 w-5 h-5 rounded"
                 />
               </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>전체 동의</FormLabel>
+              <div className="space-y-1 leading-none py-1">
+                <FormLabel className="text-base font-semibold text-slate-800 cursor-pointer">전체 동의</FormLabel>
               </div>
             </FormItem>
-            {[
-              { text: "이용약관 동의 (필수)", link: "/" },
-              { text: "개인정보 수집 및 이용 동의 (필수)", link: "/" },
-              { text: "만 14세 이상 사용자 (필수)", link: "" },
-              { text: "SMS 광고성 수신동의 (선택)", link: "" },
-            ].map((item, idx) => (
-              <FormItem
-                key={item.text}
-                className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"
-              >
-                <FormControl>
-                  <Checkbox
-                    checked={agreeToTerms[idx]}
-                    onCheckedChange={() => handleAgreeClick(idx)}
-                    disabled={!googleVerification.verified}
-                  />
-                </FormControl>
-                <div className="flex w-full justify-between space-y-1 leading-none">
-                  <FormLabel>{item.text}</FormLabel>
-                  {item.link && (
-                    <FormDescription>
-                      <a href={item.link} target="_blank">
-                        더보기
+            <div className="space-y-2 px-1">
+              {[
+                { text: "이용약관 동의 (필수)", link: "/" },
+                { text: "개인정보 수집 및 이용 동의 (필수)", link: "/" },
+                { text: "만 14세 이상 사용자 (필수)", link: "" },
+                { text: "SMS 광고성 수신동의 (선택)", link: "" },
+              ].map((item, idx) => (
+                <FormItem
+                  key={item.text}
+                  className="flex flex-row items-center space-x-3 space-y-0 p-2"
+                >
+                  <FormControl>
+                    <Checkbox
+                      checked={agreeToTerms[idx]}
+                      onCheckedChange={() => handleAgreeClick(idx)}
+                      disabled={!googleVerification.verified}
+                      className="w-4 h-4 rounded-sm"
+                    />
+                  </FormControl>
+                  <div className="flex w-full justify-between items-center leading-none">
+                    <FormLabel className="font-normal text-slate-600 text-sm cursor-pointer">{item.text}</FormLabel>
+                    {item.link && (
+                      <a href={item.link} target="_blank" className="text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">
+                        보기
                       </a>
-                    </FormDescription>
-                  )}
-                </div>
-              </FormItem>
-            ))}
+                    )}
+                  </div>
+                </FormItem>
+              ))}
+            </div>
           </div>
           <Button
             type="submit"
-            className="w-full"
+            className="w-full h-12 mt-6 text-base font-bold bg-slate-900 hover:bg-slate-800 shadow-xl shadow-slate-900/10 rounded-xl transition-all active:scale-[0.98]"
             loading={isLoading}
             disabled={
               isLoading ||
@@ -791,14 +879,15 @@ export function RegisterWithEmailForm({ className }: Props) {
               !agreeToTerms[2]
             }
           >
-            회원가입
+            회원가입 완료
           </Button>
         </form>
 
-        <div className="flex justify-center pt-4">
+        <div className="flex items-center justify-center gap-2 pt-6">
+          <span className="text-sm text-slate-500">이미 계정이 있으신가요?</span>
           <Link
             to="/auth/login"
-            className="text-sm text-blue-500 hover:underline"
+            className="text-sm font-semibold text-slate-900 hover:text-slate-700 underline underline-offset-4"
           >
             로그인
           </Link>

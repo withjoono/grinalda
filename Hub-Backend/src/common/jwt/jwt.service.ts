@@ -36,7 +36,7 @@ export class JwtService {
    * @param memberId 사용자 ID
    * @param permissions 앱별 권한 정보 (선택적)
    */
-  createAccessToken(memberId: number, permissions?: PermissionsPayload): string {
+  createAccessToken(memberId: string, permissions?: PermissionsPayload): string {
     const payload: Record<string, any> = {
       sub: 'ATK',
       jti: memberId,
@@ -53,7 +53,7 @@ export class JwtService {
     });
   }
 
-  createRefreshToken(memberId: number): string {
+  createRefreshToken(memberId: string): string {
     const payload = {
       sub: 'RTK',
       jti: memberId,

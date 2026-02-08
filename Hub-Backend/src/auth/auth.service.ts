@@ -57,7 +57,7 @@ export class AuthService {
    * 사용자의 앱별 권한 정보를 가져옵니다.
    * SubscriptionService가 없으면 빈 객체 반환
    */
-  private async getMemberPermissions(memberId: number): Promise<PermissionsPayload | undefined> {
+  private async getMemberPermissions(memberId: string): Promise<PermissionsPayload | undefined> {
     if (!this.subscriptionService) {
       return undefined;
     }
@@ -288,7 +288,7 @@ export class AuthService {
         dto.refreshToken,
         this.configService.getOrThrow('auth', { infer: true }).refreshSecret,
       );
-      const member = await this.membersService.findOneById(Number(memberId));
+      const member = await this.membersService.findOneById(memberId);
 
       if (!member) {
         throw new NotFoundException(STATUS_MESSAGES.MEMBER.ACCOUNT_NOT_FOUND);
@@ -456,7 +456,7 @@ export class AuthService {
         this.configService.getOrThrow('auth', { infer: true }).secret,
       );
 
-      const member = await this.membersService.findOneById(Number(memberId));
+      const member = await this.membersService.findOneById(memberId);
       if (!member) {
         throw new NotFoundException('회원을 찾을 수 없습니다.');
       }
@@ -475,7 +475,7 @@ export class AuthService {
    */
   async verifyToken(
     accessToken: string,
-  ): Promise<{ valid: boolean; memberId?: number; email?: string; name?: string }> {
+  ): Promise<{ valid: boolean; memberId?: string; email?: string; name?: string }> {
     try {
       // 토큰 블랙리스트 체크
       const isBlacklisted = await this.isTokenBlacklisted(accessToken);
@@ -490,7 +490,7 @@ export class AuthService {
       );
 
       // 사용자 정보 조회
-      const member = await this.membersService.findOneById(Number(memberId));
+      const member = await this.membersService.findOneById(memberId);
 
       if (!member) {
         return { valid: false };
@@ -615,9 +615,8 @@ export class AuthService {
         photoUrl: decodedToken.picture,
         provider: decodedToken.firebase?.sign_in_provider || 'firebase',
         phone: dto.phone,
-        hstTypeId: dto.hstTypeId,
         schoolLevel: dto.schoolLevel,
-        userTypeCode: dto.userTypeCode,
+        userTypeDetailCode: dto.userTypeCode,
         ckSmsAgree: dto.ckSmsAgree,
         memberType: dto.memberType,
       });
@@ -660,7 +659,7 @@ export class AuthService {
    * @param targetService 대상 서비스 식별자 (susi, jungsi 등)
    * @returns SSO 일회용 코드 (5분 유효)
    */
-  async generateSsoCode(memberId: number, targetService: string): Promise<string> {
+  async generateSsoCode(memberId: string, targetService: string): Promise<string> {
     // 1. 32바이트 랜덤 코드 생성
     const crypto = require('crypto');
     const code = `SSO_${crypto.randomBytes(32).toString('base64url')}`;

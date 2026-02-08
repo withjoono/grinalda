@@ -6,8 +6,8 @@ import {
   GraduationCap,
   BarChart3,
   ClipboardList,
-  Zap,
-  ArrowRight
+  ArrowRight,
+  Share2
 } from "lucide-react";
 
 interface ServiceCard {
@@ -126,18 +126,7 @@ export function ServiceCardsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 pt-12 pb-6">
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-600 text-sm font-medium ">
-            <Zap className="w-4 h-4" />
-            거북스쿨의 AI 앱 서비스
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 ">
-            입시의 모든 것을 거북스쿨에서!
-          </h1>
-        </div>
-      </div>
+
 
       {/* 거북쌤 소개 섹션 */}
       <div className="container mx-auto px-4 py-16">
@@ -157,10 +146,28 @@ export function ServiceCardsPage() {
             <div className="hidden md:block absolute left-0 top-1/2 -translate-x-2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white drop-shadow-sm" />
             <div className="md:hidden absolute top-0 left-1/2 -translate-y-2 -translate-x-1/2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white drop-shadow-sm" />
 
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-              <span className="font-bold text-blue-600">입시전문가 겸 AI 개발자</span>, 거북쌤이 만든 앱은 다릅니다!
-              사용해 보시면 기존의 것과는 많이 다르다는 것을 느끼실 것입니다.
-              아래 앱들은 <span className="font-semibold">거북쌤이 직접, 나홀로 만든 AI 앱들</span>입니다.
+            <p className="text-gray-700 text-sm md:text-base leading-loose">
+              입시전문가이자, 1인 AI / IT 개발자 <span className="font-bold text-blue-600">'거북쌤'</span> 입니다.
+              <br /><br />
+              학생마다의 디비인 RAG와 AI 학습을 통해(파인튜닝),
+              <br />
+              그 어떤 선생님, 그 어떤 학원보다
+              <br />
+              <span className="font-semibold">상상이상의 도움을 줄 수 있는 것</span>이,
+              <br />
+              현재 무섭게 발전하는 <span className="font-bold text-blue-600">'AI'</span> 입니다.
+              <br /><br />
+              이런 AI의 도움을 받기 위해서는
+              <br />
+              학생에 대한 데이터가 필요합니다.
+              <br /><br />
+              아래 앱들은 당장 유용하고 필요한 기능도 제공하지만,
+              <br />
+              아래 앱들을 이용할수록,
+              <br />
+              아래 앱들의 본연의 기능 뿐만 아니라,
+              <br /><br />
+              향후, <span className="font-semibold">'상상 그 이상의 유익한 도움'</span>을 제공드림을 약속드립니다.
             </p>
           </div>
         </div>
@@ -310,7 +317,7 @@ export function ServiceCardsPage() {
       {/* 학부모/선생님용 앱 */}
       <div className="container mx-auto px-4 pb-8">
         <div className="border-t border-gray-200 pt-8 mb-5">
-          <p className="text-sm font-semibold text-gray-500 mb-1">🏠 가정 연계 앱</p>
+          <p className="text-sm font-semibold text-gray-500 mb-1 flex items-center gap-1"><Share2 className="w-4 h-4" /> 계정 연계 앱</p>
           <p className="text-xs text-gray-400">학부모와 선생님을 위한 전용 앱</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">

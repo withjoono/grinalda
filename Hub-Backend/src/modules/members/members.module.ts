@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MembersService } from './services/members.service';
+import { MemberIdGeneratorService } from './services/member-id-generator.service';
 import { MembersController } from './controllers/members.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
+import { MemberStudentEntity } from 'src/database/entities/member/member-student.entity';
+import { MemberTeacherEntity } from 'src/database/entities/member/member-teacher.entity';
+import { MemberParentEntity } from 'src/database/entities/member/member-parent.entity';
 import { MemberInterestsController } from './controllers/member-interests.controller';
 import { MemberInterestsEntity } from 'src/database/entities/member/member-interests';
 import { MemberInterestsService } from './services/member-interests.service';
@@ -29,6 +33,9 @@ import { BcryptModule } from 'src/common/bcrypt/bcrypt.module';
   imports: [
     TypeOrmModule.forFeature([
       MemberEntity,
+      MemberStudentEntity,
+      MemberTeacherEntity,
+      MemberParentEntity,
       MemberInterestsEntity,
       // TODO: 독립 앱으로 분리 - Susi 엔티티
       // SuSiSubjectEntity,
@@ -45,6 +52,7 @@ import { BcryptModule } from 'src/common/bcrypt/bcrypt.module';
   ],
   providers: [
     MembersService,
+    MemberIdGeneratorService,
     MemberInterestsService,
     // REMOVED: 독립 앱으로 분리
     // MemberRecruitmentUnitCombinationService,
@@ -60,6 +68,6 @@ import { BcryptModule } from 'src/common/bcrypt/bcrypt.module';
     // MemberRegularInterestsController,
     // MemberRegularCombinationController,
   ],
-  exports: [MembersService, MemberInterestsService],
+  exports: [MembersService, MemberIdGeneratorService, MemberInterestsService],
 })
-export class MembersModule {}
+export class MembersModule { }

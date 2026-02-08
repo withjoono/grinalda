@@ -32,9 +32,9 @@ export class PaymentService {
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     @Inject(forwardRef(() => MembersService))
     private readonly membersService: MembersService,
-  ) {}
+  ) { }
 
-  async getMemberPaymentHistories(memberId: number): Promise<PayOrderEntity[]> {
+  async getMemberPaymentHistories(memberId: string): Promise<PayOrderEntity[]> {
     this.logger.debug('회원 결제 내역 조회 시작', { memberId });
 
     const orders = await this.payOrderRepository.find({
@@ -65,7 +65,7 @@ export class PaymentService {
     return orders;
   }
 
-  async getMemberPaymentHistory(memberId: number, orderId: number): Promise<PayOrderEntity> {
+  async getMemberPaymentHistory(memberId: string, orderId: number): Promise<PayOrderEntity> {
     this.logger.debug('회원 주문 상세 조회 시작', { memberId, orderId });
 
     const orders = await this.payOrderRepository.findOne({
@@ -114,7 +114,7 @@ export class PaymentService {
 
   async preRegisterPayment(
     productId: number,
-    memberId: number,
+    memberId: string,
     couponNumber?: string,
   ): Promise<PayOrderEntity> {
     this.logger.warn(
@@ -225,7 +225,7 @@ export class PaymentService {
 
   async contractFreeService(
     { coupon_number, product_id }: { coupon_number: string; product_id: number },
-    memberId: number,
+    memberId: string,
   ): Promise<{ activeServices: string[] }> {
     await this.executeInTransaction(async (queryRunner) => {
       const coupon = await this.couponService.useCoupon(queryRunner, coupon_number);

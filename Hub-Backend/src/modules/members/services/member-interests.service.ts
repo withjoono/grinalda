@@ -23,10 +23,10 @@ export class MemberInterestsService {
     // REMOVED: 독립 앱으로 분리
     // @InjectRepository(RecruitmentUnitEntity)
     // private readonly recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-  ) {}
+  ) { }
 
   async addInterest(
-    memberId: number,
+    memberId: string,
     targetTable:
       | 'susi_comprehensive_tb'
       | 'susi_subject_tb'
@@ -59,7 +59,7 @@ export class MemberInterestsService {
   }
 
   async removeInterest(
-    memberId: number,
+    memberId: string,
     targetTable:
       | 'susi_comprehensive_tb'
       | 'susi_subject_tb'
@@ -76,7 +76,7 @@ export class MemberInterestsService {
 
   // 수시교과 관심목록 조회
   // TODO: 독립 앱으로 분리 - Susi 기능
-  async getSusiSubject(memberId: number): Promise<InterestSusiSubjectResponse[]> {
+  async getSusiSubject(memberId: string): Promise<InterestSusiSubjectResponse[]> {
     // const interestItems = await this.memberInterestsRepository.find({
     //   where: { member_id: memberId, target_table: 'early_subject' },
     // });
@@ -113,7 +113,7 @@ export class MemberInterestsService {
 
   // 수시학종 관심목록 조회
   // TODO: 독립 앱으로 분리 - Susi 기능
-  async getSusiComprehensive(memberId: number): Promise<InterestSusiComprehensiveResponse[]> {
+  async getSusiComprehensive(memberId: string): Promise<InterestSusiComprehensiveResponse[]> {
     // const interestItems = await this.memberInterestsRepository.find({
     //   where: { member_id: memberId, target_table: 'susi_comprehensive_tb' },
     // });

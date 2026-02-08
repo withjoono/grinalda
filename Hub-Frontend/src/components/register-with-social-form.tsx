@@ -63,6 +63,9 @@ export function RegisterWithSocialForm({ className }: Props) {
   // 휴대폰 번호
   const [isAuthedPhone, setIsAuthedPhone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [teacherSubject, setTeacherSubject] = useState("");
+  const [parentType, setParentType] = useState("");
+  const [teacherSchoolLevel, setTeacherSchoolLevel] = useState("");
 
   // Mutations
   const sendRegisterCode = useSendRegisterCode();
@@ -176,6 +179,15 @@ export function RegisterWithSocialForm({ className }: Props) {
         phone: formattedPhone,
         ckSmsAgree: agreeToTerms[3],
         memberType: memberType,
+        schoolLevel: teacherSchoolLevel || undefined,
+        // 선생님 전용
+        ...(memberType === "teacher" && {
+          subject: teacherSubject,
+        }),
+        // 학부모 전용
+        ...(memberType === "parent" && {
+          parentType: parentType,
+        }),
       }),
     });
 
@@ -252,103 +264,202 @@ export function RegisterWithSocialForm({ className }: Props) {
 
   return (
     <Form {...form}>
-      <div className={cn("space-y-2", className)}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <div className={cn("space-y-6", className)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-2">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이름*</FormLabel>
+                  <FormLabel className="text-slate-600 font-medium">이름*</FormLabel>
                   <FormControl>
-                    <Input placeholder="이름" {...field} />
+                    <Input className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all" placeholder="이름" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="school"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>학교</FormLabel>
-                  <div className="relative">
-                    <FormControl>
-                      <Input
-                        placeholder="학교 검색(목록에 없으면 비워주세요)"
-                        {...field}
-                        onFocus={() => setIsFocused(true)}
-                        onChange={handleSearchInputChange}
-                        autoComplete="off"
-                        onBlur={() =>
-                          setTimeout(() => setIsFocused(false), 100)
-                        }
-                      />
-                    </FormControl>
-                    {isFocused && (
-                      <div
-                        ref={parentRef}
-                        className={cn(
-                          "absolute left-0 top-10 z-40 max-h-[400px] w-full overflow-y-auto rounded-b-md border bg-gray-100",
-                          "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-300 scrollbar-thumb-primary",
-                        )}
-                      >
-                        <div
-                          className="relative w-full"
-                          style={{ height: `${totalSize}px` }}
-                        >
-                          {virtualItems.map((virtualItem) => {
-                            const school =
-                              filteredHighSchools[virtualItem.index];
-                            return (
-                              <div
-                                key={virtualItem.key}
-                                className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-2 text-sm hover:bg-gray-200"
-                                style={{
-                                  height: `${virtualItem.size}px`,
-                                  transform: `translateY(${virtualItem.start}px)`,
-                                }}
-                                onMouseDown={(e) => {
-                                  e.preventDefault(); // blur 이벤트 방지
-                                  setSearchHighSchool(school.highschoolName);
-                                  form.setValue(
-                                    "school",
-                                    school.highschoolName,
-                                  );
-                                  setIsFocused(false); // 선택 후 드롭다운 닫기
-                                }}
-                              >
-                                {school.highschoolName} (
-                                {school.highschoolRegion})
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <FormMessage />
-                </FormItem>
+          </div>
+
+          {/* 회원유형 탭 */}
+          <div className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100/80 p-1.5 mb-6">
+            <button
+              type="button"
+              onClick={() => setMemberType("student")}
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                memberType === "student"
+                  ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                  : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
               )}
-            />
-            <div className="flex gap-2">
+            >
+              <UserIcon className={cn("w-4 h-4", memberType === "student" ? "text-blue-500" : "text-slate-400")} />
+              학생
+            </button>
+            <button
+              type="button"
+              onClick={() => setMemberType("teacher")}
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                memberType === "teacher"
+                  ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                  : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
+              )}
+            >
+              <GraduationCapIcon className={cn("w-4 h-4", memberType === "teacher" ? "text-emerald-500" : "text-slate-400")} />
+              선생님
+            </button>
+            <button
+              type="button"
+              onClick={() => setMemberType("parent")}
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                memberType === "parent"
+                  ? "bg-white text-slate-900 shadow-sm ring-1 ring-black/5"
+                  : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
+              )}
+            >
+              <UsersIcon className={cn("w-4 h-4", memberType === "parent" ? "text-orange-500" : "text-slate-400")} />
+              학부모
+            </button>
+          </div>
+
+          {/* 학생 전용 필드 */}
+          {memberType === "student" && (
+            <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
               <FormField
                 control={form.control}
-                name="major"
+                name="school"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>전공*</FormLabel>
-                    <Select defaultValue={"0"} onValueChange={field.onChange}>
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">학교</FormLabel>
+                    <div className="relative">
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
+                        <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                          placeholder="학교 검색(목록에 없으면 비워주세요)"
+                          {...field}
+                          onFocus={() => setIsFocused(true)}
+                          onChange={handleSearchInputChange}
+                          autoComplete="off"
+                          onBlur={() =>
+                            setTimeout(() => setIsFocused(false), 100)
+                          }
+                        />
+                      </FormControl>
+                      {isFocused && (
+                        <div
+                          ref={parentRef}
+                          className={cn(
+                            "absolute left-0 top-12 z-40 max-h-[300px] w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl",
+                            "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300",
+                          )}
+                        >
+                          <div
+                            className="relative w-full"
+                            style={{ height: `${totalSize}px` }}
+                          >
+                            {virtualItems.map((virtualItem) => {
+                              const school =
+                                filteredHighSchools[virtualItem.index];
+                              return (
+                                <div
+                                  key={virtualItem.key}
+                                  className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-4 py-2 text-sm hover:bg-slate-50 text-slate-700 transition-colors"
+                                  style={{
+                                    height: `${virtualItem.size}px`,
+                                    transform: `translateY(${virtualItem.start}px)`,
+                                  }}
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    setSearchHighSchool(school.highschoolName);
+                                    form.setValue(
+                                      "school",
+                                      school.highschoolName,
+                                    );
+                                    setIsFocused(false);
+                                  }}
+                                >
+                                  <span className="font-medium text-slate-900">{school.highschoolName}</span>
+                                  <span className="ml-2 text-slate-400 text-xs">({school.highschoolRegion})</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="major"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-slate-600 font-medium">전공*</FormLabel>
+                      <Select defaultValue={"0"} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="0">문과</SelectItem>
+                          <SelectItem value="1">이과</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="graduateYear"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-slate-600 font-medium">졸업예정연도*</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                          placeholder="예) 2025"
+                          type="number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* 선생님 전용 필드 */}
+          {memberType === "teacher" && (
+            <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">담당 학교급</FormLabel>
+                    <Select
+                      value={teacherSchoolLevel}
+                      onValueChange={setTeacherSchoolLevel}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                          <SelectValue placeholder="선택" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="0">문과</SelectItem>
-                        <SelectItem value="1">이과</SelectItem>
+                        <SelectItem value="초등">초등</SelectItem>
+                        <SelectItem value="중등">중등</SelectItem>
+                        <SelectItem value="고등">고등</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -357,80 +468,67 @@ export function RegisterWithSocialForm({ className }: Props) {
               />
               <FormField
                 control={form.control}
-                name="graduateYear"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>졸업예정연도*</FormLabel>
+                name="phone"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">담당 과목</FormLabel>
                     <FormControl>
-                      <Input placeholder="예) 2025" type="number" {...field} />
+                      <Input
+                        className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
+                        placeholder="예: 수학, 영어, 국어"
+                        value={teacherSubject}
+                        onChange={(e) => setTeacherSubject(e.target.value)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium">회원유형</p>
-              <div className="grid grid-cols-3 gap-2">
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("student")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "student" &&
-                      "text-primary hover:text-primary",
-                  )}
-                >
-                  {memberType === "student" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
-                  )}
-                  <UserIcon className="size-6" />
-                  <span>학생</span>
-                </Button>
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("teacher")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "teacher" &&
-                      "text-primary hover:text-primary",
-                  )}
-                >
-                  {memberType === "teacher" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
-                  )}
-                  <GraduationCapIcon className="size-6" />
-                  <span>선생님</span>
-                </Button>
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("parent")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "parent" &&
-                      "text-primary hover:text-primary",
-                  )}
-                >
-                  {memberType === "parent" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
-                  )}
-                  <UsersIcon className="size-6" />
-                  <span>학부모</span>
-                </Button>
-              </div>
+          )}
+
+          {/* 학부모 전용 필드 */}
+          {memberType === "parent" && (
+            <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="text-slate-600 font-medium">학부모 유형</FormLabel>
+                    <Select
+                      value={parentType}
+                      onValueChange={setParentType}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all">
+                          <SelectValue placeholder="선택" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="아버지">아버지</SelectItem>
+                        <SelectItem value="어머니">어머니</SelectItem>
+                        <SelectItem value="기타">기타</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className="flex items-end gap-2">
+          )}
+
+          <div className="space-y-5 pt-2 border-t border-slate-100 mt-6">
+            <div className="flex items-end gap-3">
               <FormField
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>휴대폰 번호*</FormLabel>
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-slate-600 font-medium">휴대폰 번호*</FormLabel>
                     <FormControl>
                       <Input
+                        className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                         disabled={isAuthedPhone}
                         placeholder="01012345678"
                         {...field}
@@ -442,22 +540,23 @@ export function RegisterWithSocialForm({ className }: Props) {
               />
               <Button
                 type="button"
-                variant={"outline"}
+                className="h-11 px-5 whitespace-nowrap bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm"
                 onClick={handleSendCodeClick}
                 disabled={isAuthedPhone}
               >
                 인증번호 발송
               </Button>
             </div>
-            <div className="flex items-end gap-2">
+            <div className="flex items-end gap-3">
               <FormField
                 control={form.control}
                 name="phoneToken"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>인증번호*</FormLabel>
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-slate-600 font-medium">인증번호*</FormLabel>
                     <FormControl>
                       <Input
+                        className="h-11 bg-slate-50 border-slate-200 focus:bg-white transition-all"
                         disabled={isAuthedPhone}
                         placeholder="인증번호"
                         {...field}
@@ -469,7 +568,7 @@ export function RegisterWithSocialForm({ className }: Props) {
               />
               <Button
                 type="button"
-                variant={"outline"}
+                className="h-11 px-5 whitespace-nowrap bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm"
                 onClick={handleVerifyCodeClick}
                 disabled={isAuthedPhone}
               >
@@ -477,8 +576,9 @@ export function RegisterWithSocialForm({ className }: Props) {
               </Button>
             </div>
           </div>
-          <div className="space-y-2">
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+
+          <div className="space-y-4 pt-4 border-t border-slate-100">
+            <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
               <FormControl>
                 <Checkbox
                   checked={
@@ -488,44 +588,46 @@ export function RegisterWithSocialForm({ className }: Props) {
                     agreeToTerms[3]
                   }
                   onCheckedChange={handleAllAgreeClick}
+                  className="data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 w-5 h-5 rounded"
                 />
               </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>전체 동의</FormLabel>
+              <div className="space-y-1 leading-none py-1">
+                <FormLabel className="text-base font-semibold text-slate-800 cursor-pointer">전체 동의</FormLabel>
               </div>
             </FormItem>
-            {[
-              { text: "이용약관 동의 (필수)", link: "/" },
-              { text: "개인정보 수집 및 이용 동의 (필수)", link: "/" },
-              { text: "만 14세 이상 사용자 (필수)", link: "" },
-              { text: "SMS 광고성 수신동의 (선택)", link: "" },
-            ].map((item, idx) => (
-              <FormItem
-                key={item.text}
-                className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"
-              >
-                <FormControl>
-                  <Checkbox
-                    checked={agreeToTerms[idx]}
-                    onCheckedChange={() => handleAgreeClick(idx)}
-                  />
-                </FormControl>
-                <div className="flex w-full justify-between space-y-1 leading-none">
-                  <FormLabel>{item.text}</FormLabel>
-                  {item.link && (
-                    <FormDescription>
-                      <a href={item.link} target="_blank">
-                        더보기
+            <div className="space-y-2 px-1">
+              {[
+                { text: "이용약관 동의 (필수)", link: "/" },
+                { text: "개인정보 수집 및 이용 동의 (필수)", link: "/" },
+                { text: "만 14세 이상 사용자 (필수)", link: "" },
+                { text: "SMS 광고성 수신동의 (선택)", link: "" },
+              ].map((item, idx) => (
+                <FormItem
+                  key={item.text}
+                  className="flex flex-row items-center space-x-3 space-y-0 p-2"
+                >
+                  <FormControl>
+                    <Checkbox
+                      checked={agreeToTerms[idx]}
+                      onCheckedChange={() => handleAgreeClick(idx)}
+                      className="w-4 h-4 rounded-sm"
+                    />
+                  </FormControl>
+                  <div className="flex w-full justify-between items-center leading-none">
+                    <FormLabel className="font-normal text-slate-600 text-sm cursor-pointer">{item.text}</FormLabel>
+                    {item.link && (
+                      <a href={item.link} target="_blank" className="text-xs text-slate-400 hover:text-slate-600 underline underline-offset-2">
+                        보기
                       </a>
-                    </FormDescription>
-                  )}
-                </div>
-              </FormItem>
-            ))}
+                    )}
+                  </div>
+                </FormItem>
+              ))}
+            </div>
           </div>
           <Button
             type="submit"
-            className="w-full"
+            className="w-full h-12 mt-6 text-base font-bold bg-slate-900 hover:bg-slate-800 shadow-xl shadow-slate-900/10 rounded-xl transition-all active:scale-[0.98]"
             disabled={
               isLoading ||
               !agreeToTerms[0] ||
@@ -533,13 +635,13 @@ export function RegisterWithSocialForm({ className }: Props) {
               !agreeToTerms[2]
             }
           >
-            회원가입
+            회원가입 완료
           </Button>
         </form>
-        <div className="flex justify-center pt-2">
+        <div className="flex items-center justify-center gap-2 pt-6">
           <Link
             to="/auth/login"
-            className="text-sm text-blue-500 hover:underline"
+            className="text-sm font-semibold text-slate-900 hover:text-slate-700 underline underline-offset-4"
           >
             이미 계정이 있으신가요? (간편 로그인)
           </Link>

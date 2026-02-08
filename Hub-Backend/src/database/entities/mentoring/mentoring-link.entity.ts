@@ -15,12 +15,12 @@ export class MentoringLinkEntity {
     id: number;
 
     @Index('IDX_mentoring_account_link_member_id')
-    @Column({ type: 'bigint', name: 'member_id' })
-    member_id: number;
+    @Column({ type: 'varchar', length: 30, name: 'member_id' })
+    member_id: string;
 
     @Index('IDX_mentoring_account_link_linked_member_id')
-    @Column({ type: 'bigint', name: 'linked_member_id' })
-    linked_member_id: number;
+    @Column({ type: 'varchar', length: 30, name: 'linked_member_id' })
+    linked_member_id: string;
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'now()' })
     created_at: Date;

@@ -14,7 +14,7 @@ import * as crypto from 'crypto';
 
 interface GenerateAuthCodeData {
   clientId: string;
-  memberId: number;
+  memberId: string;
   redirectUri: string;
   scope: string[];
   codeChallenge?: string;
@@ -30,7 +30,7 @@ export class OAuthService {
     private readonly authCodeRepository: Repository<OAuthAuthorizationCodeEntity>,
     private readonly jwtService: JwtService,
     private readonly membersService: MembersService,
-  ) {}
+  ) { }
 
   /**
    * OAuth 클라이언트 검증
@@ -173,7 +173,7 @@ export class OAuthService {
    * @param memberId 사용자 ID
    * @returns { accessToken, refreshToken, tokenExpiry }
    */
-  generateTokens(memberId: number) {
+  generateTokens(memberId: string) {
     const accessToken = this.jwtService.createAccessToken(memberId);
     const refreshToken = this.jwtService.createRefreshToken(memberId);
     const tokenExpiry = this.jwtService.getTokenExpiryTime();
@@ -191,7 +191,7 @@ export class OAuthService {
    * @param clientId 클라이언트 ID
    * @returns ID Token (JWT)
    */
-  async generateIdToken(memberId: number, clientId: string): Promise<string> {
+  async generateIdToken(memberId: string, clientId: string): Promise<string> {
     const member = await this.membersService.findOneById(memberId);
 
     if (!member) {
@@ -200,7 +200,7 @@ export class OAuthService {
 
     // OIDC ID Token payload
     const payload = {
-      sub: memberId.toString(), // Subject (사용자 식별자)
+      sub: memberId, // Subject (사용자 식별자)
       aud: clientId, // Audience (클라이언트 ID)
       iss: 'Hub', // Issuer (발급자)
       iat: Math.floor(Date.now() / 1000), // Issued At
@@ -227,7 +227,7 @@ export class OAuthService {
    * 특정 사용자의 모든 Authorization Codes 삭제 (OAuth 로그아웃)
    * @param memberId 사용자 ID
    */
-  async revokeAllCodes(memberId: number): Promise<void> {
+  async revokeAllCodes(memberId: string): Promise<void> {
     await this.authCodeRepository.delete({ memberId });
   }
 
@@ -236,7 +236,7 @@ export class OAuthService {
    * @param memberId 사용자 ID
    * @param clientId 클라이언트 ID
    */
-  async revokeCodesByClient(memberId: number, clientId: string): Promise<void> {
+  async revokeCodesByClient(memberId: string, clientId: string): Promise<void> {
     await this.authCodeRepository.delete({ memberId, clientId });
   }
 
@@ -245,7 +245,7 @@ export class OAuthService {
    * @param memberId 사용자 ID
    * @returns 활성 코드 개수 (미사용 + 미만료)
    */
-  async countActiveCodes(memberId: number): Promise<number> {
+  async countActiveCodes(memberId: string): Promise<number> {
     return await this.authCodeRepository.count({
       where: {
         memberId,

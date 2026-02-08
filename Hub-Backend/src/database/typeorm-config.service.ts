@@ -3,6 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { AllConfigType } from '../config/config.type';
 import { MemberEntity } from './entities/member/member.entity';
+import { MemberStudentEntity } from './entities/member/member-student.entity';
+import { MemberTeacherEntity } from './entities/member/member-teacher.entity';
+import { MemberParentEntity } from './entities/member/member-parent.entity';
 import { MemberInterestsEntity } from './entities/member/member-interests';
 import { SchoolRecordAttendanceDetailEntity } from './entities/schoolrecord/schoolrecord-attendance-detail.entity';
 import { SchoolRecordSelectSubjectEntity } from './entities/schoolrecord/schoolrecord-select-subject.entity';
@@ -92,6 +95,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       ...connectionOptions,
       entities: [
         MemberEntity,
+        MemberStudentEntity,
+        MemberTeacherEntity,
+        MemberParentEntity,
         MemberInterestsEntity, // 유저 관심목록(수시 교과, 수시 학종, 논술)
         MemberUploadFileListEntity, // 유저 업로드 파일
 

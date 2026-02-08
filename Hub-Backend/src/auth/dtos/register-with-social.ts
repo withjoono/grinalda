@@ -34,7 +34,7 @@ export class RegisterWithSocialDto {
   })
   @IsString()
   @IsNotEmpty()
-  nickname: string; // 이름
+  nickname: string;
 
   @ApiProperty({
     description: '휴대폰 번호 (하이픈 포함 가능)',
@@ -42,46 +42,17 @@ export class RegisterWithSocialDto {
   })
   @IsString()
   @IsNotEmpty()
-  phone: string; // 휴대폰 번호 (인증 없이 필수 입력)
+  phone: string;
 
   @ApiProperty({
-    description: 'SMS 수신 동의 여부 (선택, 기본값 false)',
+    description: 'SMS 수신 동의 여부',
     example: true,
     type: Boolean,
     required: false,
   })
   @IsBoolean()
   @IsOptional()
-  ckSmsAgree?: boolean; // sms 수신 동의 (선택)
-
-  @ApiProperty({
-    description: '전공 계열 (문과: 0, 이과: 1)',
-    example: '1',
-    enum: ['0', '1'],
-  })
-  @IsString()
-  @IsNotEmpty()
-  @IsIn(['0', '1'], {
-    message: '전공 코드가 잘못되었습니다. (문과: 0, 이과: 1)',
-  })
-  isMajor: string; // 문과(0), 이과(1)
-
-  @ApiProperty({
-    description: '고등학교 타입 ID (선택)',
-    example: 1,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  hstTypeId: number; // 고등학교 코드
-
-  @ApiProperty({
-    description: '졸업 또는 졸업 예정 연도 (YYYY)',
-    example: '2024',
-  })
-  @IsString()
-  @IsNotEmpty()
-  graduateYear: string; // 졸업(예정)년도
+  ckSmsAgree?: boolean;
 
   @ApiProperty({
     description: '회원 유형 (학생/교사/학부모)',
@@ -92,10 +63,91 @@ export class RegisterWithSocialDto {
   @IsString()
   @IsOptional()
   @IsIn(['student', 'teacher', 'parent'])
-  memberType?: string; // student, teacher, parent
+  memberType?: string;
 
   @ApiProperty({
-    description: '초대 코드 (선생님이 생성한 초대 링크 코드, 회원가입 후 자동 연동)',
+    description: '세부 사용자 타입 코드 (H2, HM, FA 등)',
+    example: 'H2',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  userTypeDetailCode?: string;
+
+  @ApiProperty({
+    description: '초/중/고',
+    example: '고',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  schoolLevel?: string;
+
+  @ApiProperty({
+    description: '학년',
+    example: 2,
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  grade?: number;
+
+  @ApiProperty({
+    description: '학교코드',
+    example: 'H324',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  schoolCode?: string;
+
+  @ApiProperty({
+    description: '학교명',
+    example: '경기고',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  schoolName?: string;
+
+  @ApiProperty({
+    description: '학교소재지',
+    example: '서울',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  schoolLocation?: string;
+
+  @ApiProperty({
+    description: '학교타입',
+    example: '일반고',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  schoolType?: string;
+
+  @ApiProperty({
+    description: '과목 (선생님 전용)',
+    example: '수학',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  subject?: string;
+
+  @ApiProperty({
+    description: '학부모 타입',
+    example: '아버지',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  parentType?: string;
+
+  @ApiProperty({
+    description: '초대 코드',
     example: 'ABC123XYZ789',
     required: false,
   })

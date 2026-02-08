@@ -5,16 +5,27 @@ import { RegisterWithSocialDto } from 'src/auth/dtos/register-with-social';
 import { SocialUser } from 'src/auth/types/social-user.type';
 import { BcryptService } from 'src/common/bcrypt/bcrypt.service';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
+import { MemberStudentEntity } from 'src/database/entities/member/member-student.entity';
+import { MemberTeacherEntity } from 'src/database/entities/member/member-teacher.entity';
+import { MemberParentEntity } from 'src/database/entities/member/member-parent.entity';
 import { DataSource, Repository } from 'typeorm';
 import { EditProfileDto } from '../dtos/edit-profile.dto';
+import { MemberIdGeneratorService } from './member-id-generator.service';
 
 @Injectable()
 export class MembersService {
   constructor(
     @InjectRepository(MemberEntity)
     private membersRepository: Repository<MemberEntity>,
+    @InjectRepository(MemberStudentEntity)
+    private studentRepository: Repository<MemberStudentEntity>,
+    @InjectRepository(MemberTeacherEntity)
+    private teacherRepository: Repository<MemberTeacherEntity>,
+    @InjectRepository(MemberParentEntity)
+    private parentRepository: Repository<MemberParentEntity>,
     private readonly dataSource: DataSource,
     private bcryptService: BcryptService,
+    private memberIdGenerator: MemberIdGeneratorService,
   ) { }
 
   findOneByEmail(email: string): Promise<MemberEntity | null> {
@@ -33,13 +44,13 @@ export class MembersService {
     });
   }
 
-  findOneById(id: number): Promise<MemberEntity | null> {
+  findOneById(id: string): Promise<MemberEntity | null> {
     return this.membersRepository.findOneBy({
       id,
     });
   }
 
-  findMeById(id: number): Promise<MemberEntity | null> {
+  findMeById(id: string): Promise<MemberEntity | null> {
     return this.membersRepository.findOne({
       where: { id },
       select: {
@@ -49,17 +60,15 @@ export class MembersService {
         phone: true,
         ck_sms_agree: true,
         nickname: true,
-        s_type_id: true,
-        hst_type_id: true,
-        g_type_id: true,
-        graduate_year: true,
-        major: true,
         member_type: true,
+        user_type_code: true,
+        user_type_detail_code: true,
       },
+      relations: ['studentProfile', 'teacherProfile', 'parentProfile'],
     });
   }
 
-  async findActiveServicesById(memberId: number): Promise<string[]> {
+  async findActiveServicesById(memberId: string): Promise<string[]> {
     // 테스트 계정은 모든 서비스 이용 가능
     const testAccountEmails = ['test@test.com', 'admin@test.com'];
     const member = await this.membersRepository.findOne({
@@ -99,81 +108,116 @@ export class MembersService {
 
   async saveMemberByEmail(data: RegisterWithEmailDto): Promise<MemberEntity | null> {
     const hashedPassword = await this.bcryptService.hashPassword(data.password);
+
+    const memberType = data.memberType || 'student';
+    const userTypeCode = MemberIdGeneratorService.getTypeCode(memberType);
+    const detailCode = data.userTypeDetailCode || this.getDefaultDetailCode(memberType);
+
+    const id = await this.memberIdGenerator.generateId(userTypeCode, detailCode);
+
     const member = this.membersRepository.create({
+      id,
       nickname: data.nickname,
       email: data.email,
       password: hashedPassword,
       role_type: 'ROLE_USER',
-      phone: data.phone?.replaceAll('-', '') || '', // [임시] phone 선택적 처리
+      phone: data.phone?.replaceAll('-', '') || '',
       ck_sms: true,
       ck_sms_agree: data.ckSmsAgree,
-      graduate_year: data.graduateYear,
-      hst_type_id: data.hstTypeId,
-      major: data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences',
       account_stop_yn: 'N',
       provider_type: 'local',
-      member_type: data.memberType || 'student',
+      member_type: memberType,
+      user_type_code: userTypeCode,
+      user_type_detail_code: detailCode,
+      reg_year: Number(new Date().getFullYear().toString().slice(-2)),
+      reg_month: String(new Date().getMonth() + 1).padStart(2, '0'),
+      reg_day: String(new Date().getDate()).padStart(2, '0'),
       create_dt: new Date(),
       update_dt: new Date(),
     });
 
-    return this.membersRepository.save(member);
+    const savedMember = await this.membersRepository.save(member);
+
+    // 타입별 서브 테이블에 프로필 저장
+    await this.saveTypeProfile(savedMember.id, memberType, data);
+
+    return savedMember;
   }
 
   async saveMemberBySocial(
     data: RegisterWithSocialDto,
     socialUser: SocialUser,
   ): Promise<MemberEntity | null> {
+    const memberType = data.memberType || 'student';
+    const userTypeCode = MemberIdGeneratorService.getTypeCode(memberType);
+    const detailCode = data.userTypeDetailCode || this.getDefaultDetailCode(memberType);
+
+    const id = await this.memberIdGenerator.generateId(userTypeCode, detailCode);
+
     const member = this.membersRepository.create({
+      id,
       nickname: data.nickname,
       email: socialUser.email,
       profile_image_url: socialUser.profile_image,
       oauth_id: socialUser.id,
       role_type: 'ROLE_USER',
-      phone: data.phone?.replaceAll('-', '') || '', // [임시] phone 선택적 처리
+      phone: data.phone?.replaceAll('-', '') || '',
       ck_sms: true,
       ck_sms_agree: data.ckSmsAgree,
-      graduate_year: data.graduateYear,
-      hst_type_id: data.hstTypeId,
-      major: data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences',
       account_stop_yn: 'N',
-      member_type: data.memberType || 'student',
+      member_type: memberType,
+      user_type_code: userTypeCode,
+      user_type_detail_code: detailCode,
+      reg_year: Number(new Date().getFullYear().toString().slice(-2)),
+      reg_month: String(new Date().getMonth() + 1).padStart(2, '0'),
+      reg_day: String(new Date().getDate()).padStart(2, '0'),
       provider_type: data.socialType,
       create_dt: new Date(),
       update_dt: new Date(),
     });
 
-    return this.membersRepository.save(member);
+    const savedMember = await this.membersRepository.save(member);
+
+    // 타입별 서브 테이블에 프로필 저장
+    await this.saveTypeProfile(savedMember.id, memberType, data);
+
+    return savedMember;
   }
 
   async editProfile(memberId: string, updateData: EditProfileDto): Promise<MemberEntity> {
-    const member = await this.findOneById(Number(memberId));
+    const member = await this.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
-    }
-    if (updateData.major !== undefined) {
-      if (updateData.major === 0) {
-        member.major = 'LiberalArts';
-      } else {
-        member.major = 'NaturalSciences';
-      }
     }
 
     if (updateData.ck_sms_agree !== undefined) {
       member.ck_sms_agree = updateData.ck_sms_agree;
     }
 
-    if (updateData.graduate_year !== undefined) {
-      member.graduate_year = updateData.graduate_year;
-    }
-
-    if (updateData.hst_type_id !== undefined) {
-      member.hst_type_id = updateData.hst_type_id;
-    }
-
     member.update_dt = new Date();
+    await this.membersRepository.save(member);
 
-    return this.membersRepository.save(member);
+    // 학생 프로필 업데이트 (school_level, grade, school_code, school_name)
+    if (member.member_type === 'student') {
+      const studentProfile = await this.studentRepository.findOneBy({ member_id: memberId });
+      if (studentProfile) {
+        if (updateData.school_level !== undefined) {
+          studentProfile.school_level = updateData.school_level;
+        }
+        if (updateData.grade !== undefined) {
+          studentProfile.grade = updateData.grade;
+        }
+        if (updateData.school_code !== undefined) {
+          studentProfile.school_code = updateData.school_code;
+        }
+        if (updateData.school_name !== undefined) {
+          studentProfile.school_name = updateData.school_name;
+        }
+        await this.studentRepository.save(studentProfile);
+      }
+    }
+
+    return member;
   }
 
   findOneByEmailAndPhone(email: string, phone: string): Promise<MemberEntity | null> {
@@ -182,7 +226,7 @@ export class MembersService {
     });
   }
 
-  async updatePassword(memberId: number, newPassword: string): Promise<void> {
+  async updatePassword(memberId: string, newPassword: string): Promise<void> {
     await this.membersRepository.update(memberId, {
       password: newPassword,
       provider_type: 'local',
@@ -193,28 +237,19 @@ export class MembersService {
   // Firebase Auth 관련 메서드
   // ============================================
 
-  /**
-   * Firebase UID로 회원 조회
-   */
   findOneByFirebaseUid(firebaseUid: string): Promise<MemberEntity | null> {
     return this.membersRepository.findOneBy({
       firebase_uid: firebaseUid,
     });
   }
 
-  /**
-   * 기존 회원에 Firebase UID 연결
-   */
-  async linkFirebaseUid(memberId: number, firebaseUid: string): Promise<void> {
+  async linkFirebaseUid(memberId: string, firebaseUid: string): Promise<void> {
     await this.membersRepository.update(memberId, {
       firebase_uid: firebaseUid,
       update_dt: new Date(),
     });
   }
 
-  /**
-   * Firebase로 회원가입
-   */
   async saveMemberByFirebase(data: {
     firebaseUid: string;
     email?: string;
@@ -222,13 +257,22 @@ export class MembersService {
     photoUrl?: string;
     provider: string;
     phone?: string;
-    hstTypeId?: number;
     schoolLevel?: string;
-    userTypeCode?: string;
+    userTypeDetailCode?: string;
     ckSmsAgree?: boolean;
     memberType?: string;
+    grade?: number;
+    subject?: string;
+    parentType?: string;
   }): Promise<MemberEntity> {
+    const memberType = data.memberType || 'student';
+    const userTypeCode = MemberIdGeneratorService.getTypeCode(memberType);
+    const detailCode = data.userTypeDetailCode || this.getDefaultDetailCode(memberType);
+
+    const id = await this.memberIdGenerator.generateId(userTypeCode, detailCode);
+
     const member = this.membersRepository.create({
+      id,
       email: data.email || `${data.firebaseUid}@firebase.local`,
       nickname: data.name,
       firebase_uid: data.firebaseUid,
@@ -239,14 +283,88 @@ export class MembersService {
       ck_sms_agree: data.ckSmsAgree || false,
       account_stop_yn: 'N',
       provider_type: data.provider === 'google.com' ? 'google' : 'firebase',
-      member_type: data.memberType || 'student',
-      hst_type_id: data.hstTypeId || null,
-      major: data.userTypeCode || null,
-      graduate_year: data.schoolLevel || null,
+      member_type: memberType,
+      user_type_code: userTypeCode,
+      user_type_detail_code: detailCode,
+      reg_year: Number(new Date().getFullYear().toString().slice(-2)),
+      reg_month: String(new Date().getMonth() + 1).padStart(2, '0'),
+      reg_day: String(new Date().getDate()).padStart(2, '0'),
       create_dt: new Date(),
       update_dt: new Date(),
     });
 
-    return this.membersRepository.save(member);
+    const savedMember = await this.membersRepository.save(member);
+
+    // 타입별 서브 테이블에 프로필 저장
+    await this.saveTypeProfile(savedMember.id, memberType, data);
+
+    return savedMember;
+  }
+
+  // ============================================
+  // Private 헬퍼 메서드
+  // ============================================
+
+  /**
+   * member_type에 따라 서브 테이블에 프로필 데이터를 저장합니다.
+   */
+  private async saveTypeProfile(
+    memberId: string,
+    memberType: string,
+    data: {
+      schoolCode?: string;
+      schoolName?: string;
+      schoolLocation?: string;
+      schoolType?: string;
+      schoolLevel?: string;
+      grade?: number;
+      subject?: string;
+      parentType?: string;
+    },
+  ): Promise<void> {
+    switch (memberType) {
+      case 'student': {
+        const profile = this.studentRepository.create({
+          member_id: memberId,
+          school_code: data.schoolCode || null,
+          school_name: data.schoolName || null,
+          school_location: data.schoolLocation || null,
+          school_type: data.schoolType || null,
+          school_level: data.schoolLevel || null,
+          grade: data.grade || null,
+        });
+        await this.studentRepository.save(profile);
+        break;
+      }
+      case 'teacher': {
+        const profile = this.teacherRepository.create({
+          member_id: memberId,
+          school_level: data.schoolLevel || null,
+          subject: data.subject || null,
+        });
+        await this.teacherRepository.save(profile);
+        break;
+      }
+      case 'parent': {
+        const profile = this.parentRepository.create({
+          member_id: memberId,
+          parent_type: data.parentType || null,
+        });
+        await this.parentRepository.save(profile);
+        break;
+      }
+    }
+  }
+
+  /**
+   * member_type에 따른 기본 세부코드 반환
+   */
+  private getDefaultDetailCode(memberType: string): string {
+    switch (memberType) {
+      case 'student': return 'H2'; // 기본: 고2
+      case 'teacher': return 'HM'; // 기본: 고등수학
+      case 'parent': return 'FA'; // 기본: 아버지
+      default: return 'H2';
+    }
   }
 }

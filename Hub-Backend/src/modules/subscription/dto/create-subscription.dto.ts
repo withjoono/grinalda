@@ -12,7 +12,7 @@ import {
 export class CreateSubscriptionDto {
   @ApiProperty({ example: 1, description: '회원 ID' })
   @IsNumber()
-  memberId: number;
+  memberId: string;
 
   @ApiProperty({ example: 'examhub', description: '앱 ID' })
   @IsString()

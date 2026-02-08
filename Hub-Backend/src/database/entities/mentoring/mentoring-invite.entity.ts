@@ -14,8 +14,8 @@ export class MentoringInviteEntity {
     @PrimaryGeneratedColumn('increment', { type: 'bigint' })
     id: number;
 
-    @Column({ type: 'bigint', name: 'member_id' })
-    member_id: number;
+    @Column({ type: 'varchar', length: 30, name: 'member_id' })
+    member_id: string;
 
     @Index('IDX_mentoring_temp_code_code')
     @Column({ type: 'varchar', length: 255 })

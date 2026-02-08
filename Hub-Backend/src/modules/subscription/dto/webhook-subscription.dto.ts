@@ -26,7 +26,7 @@ export class WebhookSubscriptionDto {
 
   @ApiProperty({ example: 1, description: '회원 ID' })
   @IsNumber()
-  memberId: number;
+  memberId: string;
 
   @ApiProperty({ example: 'susi', description: '앱 ID (susi, examhub 등)' })
   @IsString()

@@ -13,8 +13,8 @@ export class MemberInterestsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'bigint' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 30 })
+  member_id: string;
 
   @Column({ type: 'varchar', length: 50 })
   target_table:

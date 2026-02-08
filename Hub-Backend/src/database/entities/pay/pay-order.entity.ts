@@ -30,8 +30,8 @@ export class PayOrderEntity {
   @Column({ type: 'varchar', length: 500, nullable: true })
   imp_uid: string; // 아임포트 uid
 
-  @Column({ type: 'bigint', nullable: true })
-  member_id: number | null; // 유저 아이디
+  @Column({ type: 'varchar', length: 30, nullable: true })
+  member_id: string | null; // 유저 아이디
 
   @ManyToOne(() => MemberEntity, { nullable: true })
   @JoinColumn({ name: 'member_id' })

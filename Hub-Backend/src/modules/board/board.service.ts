@@ -20,7 +20,7 @@ export class BoardService {
     private commentRepository: Repository<CommentEntity>,
 
     private readonly membersService: MembersService,
-  ) {}
+  ) { }
 
   async getAllBoards(): Promise<BoardEntity[]> {
     return this.boardRepository.find();
@@ -158,7 +158,7 @@ export class BoardService {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
-    const member = await this.membersService.findOneById(Number(memberId));
+    const member = await this.membersService.findOneById(memberId);
 
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
@@ -189,7 +189,7 @@ export class BoardService {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
-    const member = await this.membersService.findOneById(Number(memberId));
+    const member = await this.membersService.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
@@ -249,7 +249,7 @@ export class BoardService {
     }
 
     // 현재 사용자 정보 로드
-    const member = await this.membersService.findOneById(Number(memberId));
+    const member = await this.membersService.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
@@ -277,7 +277,7 @@ export class BoardService {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
 
-    const member = await this.membersService.findOneById(Number(memberId));
+    const member = await this.membersService.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
