@@ -1,24 +1,8 @@
 import { Module } from '@nestjs/common';
-// TODO: 독립 앱으로 분리 - Essay 모듈
-// import { EssayModule } from 'src/modules/essay/essay.module';
-// TODO: 독립 앱으로 분리 - Susi 모듈
-// import { SusiModule } from 'src/modules/susi/susi.module';
-// import { AdminSusiSubjectService } from './services/admin-susi-subject.service';
-// import { AdminSusiSubjectController } from './controllers/admin-susi-subject.controller';
-// import { AdminEssayController } from './controllers/admin-essay.controller';
-// import { AdminEssayService } from './services/admin-essay.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { AdminSusiComprehensiveController } from './controllers/admin-susi-comprehensive.controller';
-// import { AdminSusiComprehensiveService } from './services/admin-susi-comprehensive.service';
-// import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
-// import { AdminSusiPassRecordController } from './controllers/admin-susi-pass-record.controller';
-// import { AdminSusiPassRecordService } from './services/admin-susi-pass-record.service';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { AdminStatisticController } from './controllers/admin-statistic.controller';
 import { AdminStatisticService } from './services/admin-statistic.service';
-// import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity'; // REMOVED
-// import { AdminMockExamController } from './controllers/admin-mock-exam.controller'; // REMOVED
-// import { AdminMockExamService } from './services/admin-mock-exam.service'; // REMOVED
 import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
 import { AdminPaymentController } from './controllers/admin-pay.controller';
 import { AdminPaymentService } from './services/admin-pay.service';
@@ -34,13 +18,8 @@ import { AdminProductManagementService } from './services/admin-product-manageme
 
 @Module({
   imports: [
-    // TODO: 독립 앱으로 분리 - Essay/Susi 모듈
-    // EssayModule,
-    // SusiModule,
     TypeOrmModule.forFeature([
-      // SusiPassRecordEntity, // TODO: 독립 앱으로 분리
       MemberEntity,
-      // MockexamRawToStandardEntity, // REMOVED
       PayOrderEntity,
       PayContractEntity,
       PayProductEntity,
@@ -50,28 +29,16 @@ import { AdminProductManagementService } from './services/admin-product-manageme
     ]),
   ],
   controllers: [
-    // TODO: 독립 앱으로 분리 - Essay/Susi Controllers
-    // AdminEssayController,
-    // AdminSusiComprehensiveController,
-    // AdminSusiSubjectController,
-    // AdminSusiPassRecordController,
     AdminStatisticController,
-    // AdminMockExamController, // REMOVED
     AdminPaymentController,
     AdminMemberController,
     AdminProductManagementController,
   ],
   providers: [
-    // TODO: 독립 앱으로 분리 - Essay/Susi Services
-    // AdminEssayService,
-    // AdminSusiComprehensiveService,
-    // AdminSusiSubjectService,
-    // AdminSusiPassRecordService,
     AdminStatisticService,
-    // AdminMockExamService, // REMOVED
     AdminPaymentService,
     AdminMemberService,
     AdminProductManagementService,
   ],
 })
-export class AdminModule {}
+export class AdminModule { }

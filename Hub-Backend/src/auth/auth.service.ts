@@ -27,7 +27,7 @@ import { loginWithEmailDto } from './dtos/login-with-email.dto';
 import { RegisterWithSocialDto } from './dtos/register-with-social';
 import { FirebaseRegisterDto } from './dtos/firebase-auth.dto';
 import { SmsService } from 'src/modules/sms/sms.service';
-// import { MentoringService } from 'src/modules/mentoring/mentoring.service'; // REMOVED: mentoring module deleted
+
 import { Logger } from 'winston';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { SubscriptionService } from 'src/modules/subscription/subscription.service';
@@ -46,7 +46,7 @@ export class AuthService {
     private readonly configService: ConfigService<AllConfigType>,
     private readonly httpService: HttpService,
     private readonly smsService: SmsService,
-    // private readonly mentoringService: MentoringService, // REMOVED: mentoring module deleted
+
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Optional() private readonly subscriptionService?: SubscriptionService,
@@ -129,30 +129,7 @@ export class AuthService {
 
     const member = await this.membersService.saveMemberByEmail(dto);
 
-    // REMOVED: Mentoring module deleted
-    // // 초대 코드가 있으면 처리
-    // if (dto.inviteCode) {
-    //   try {
-    //     const result = await this.mentoringService.processInviteAfterRegister(
-    //       member.id,
-    //       dto.inviteCode,
-    //     );
-    //     if (result.success) {
-    //       this.logger.info(
-    //         `[회원가입] 초대 코드 처리 성공: memberId=${member.id}, inviteCode=${dto.inviteCode}`,
-    //       );
-    //     } else {
-    //       this.logger.warn(
-    //         `[회원가입] 초대 코드 처리 실패: memberId=${member.id}, message=${result.message}`,
-    //       );
-    //     }
-    //   } catch (error) {
-    //     // 초대 코드 처리 실패해도 회원가입은 성공 처리
-    //     this.logger.error(
-    //       `[회원가입] 초대 코드 처리 오류: memberId=${member.id}, error=${error.message}`,
-    //     );
-    //   }
-    // }
+
 
     // 앱별 권한 정보 조회 (신규 가입이므로 기본값)
     const permissions = await this.getMemberPermissions(member.id);
@@ -194,30 +171,7 @@ export class AuthService {
 
     const member = await this.membersService.saveMemberBySocial(dto, profile);
 
-    // REMOVED: Mentoring module deleted
-    // // 초대 코드가 있으면 처리
-    // if (dto.inviteCode) {
-    //   try {
-    //     const result = await this.mentoringService.processInviteAfterRegister(
-    //       member.id,
-    //       dto.inviteCode,
-    //     );
-    //     if (result.success) {
-    //       this.logger.info(
-    //         `[소셜 회원가입] 초대 코드 처리 성공: memberId=${member.id}, inviteCode=${dto.inviteCode}`,
-    //       );
-    //     } else {
-    //       this.logger.warn(
-    //         `[소셜 회원가입] 초대 코드 처리 실패: memberId=${member.id}, message=${result.message}`,
-    //       );
-    //     }
-    //   } catch (error) {
-    //     // 초대 코드 처리 실패해도 회원가입은 성공 처리
-    //     this.logger.error(
-    //       `[소셜 회원가입] 초대 코드 처리 오류: memberId=${member.id}, error=${error.message}`,
-    //     );
-    //   }
-    // }
+
 
     // 앱별 권한 정보 조회 (신규 가입이므로 기본값)
     const permissions = await this.getMemberPermissions(member.id);

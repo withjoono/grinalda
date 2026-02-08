@@ -1,11 +1,6 @@
 import { Column, Entity, PrimaryColumn, Index, OneToMany, OneToOne } from 'typeorm';
 import { MemberInterestsEntity } from './member-interests';
-import { SchoolRecordAttendanceDetailEntity } from '../schoolrecord/schoolrecord-attendance-detail.entity';
-import { SchoolRecordSelectSubjectEntity } from '../schoolrecord/schoolrecord-select-subject.entity';
-import { SchoolRecordSubjectLearningEntity } from '../schoolrecord/schoolrecord-subject-learning.entity';
-import { SchoolRecordVolunteerEntity } from '../schoolrecord/schoolrecord-volunteer.entity';
 import { Exclude, Expose } from 'class-transformer';
-import { SchoolrecordSportsArtEntity } from '../schoolrecord/schoolrecord-sport-art.entity';
 import { PostEntity } from '../boards/post.entity';
 import { CommentEntity } from '../boards/comment.entity';
 import { MemberStudentEntity } from './member-student.entity';
@@ -123,27 +118,6 @@ export class MemberEntity {
 
   @OneToMany(() => MemberInterestsEntity, (interest) => interest.member)
   interests: MemberInterestsEntity[];
-
-  @OneToMany(
-    () => SchoolRecordAttendanceDetailEntity,
-    (attendanceDetail) => attendanceDetail.member,
-  )
-  attendanceDetails: SchoolRecordAttendanceDetailEntity[];
-
-  @OneToMany(() => SchoolRecordSelectSubjectEntity, (selectSubject) => selectSubject.member)
-  selectSubjects: SchoolRecordSelectSubjectEntity[];
-
-  @OneToMany(() => SchoolRecordSubjectLearningEntity, (subjectLearning) => subjectLearning.member)
-  subjectLearnings: SchoolRecordSubjectLearningEntity[];
-
-  @OneToMany(() => SchoolRecordVolunteerEntity, (volunteer) => volunteer.member)
-  volunteers: SchoolRecordVolunteerEntity[];
-
-  @OneToMany(
-    () => SchoolrecordSportsArtEntity,
-    (schoolrecordSportsArtEntity) => schoolrecordSportsArtEntity.member,
-  )
-  sportArts: SchoolrecordSportsArtEntity[];
 
   @OneToMany(() => PostEntity, (post) => post.member)
   posts: PostEntity[];

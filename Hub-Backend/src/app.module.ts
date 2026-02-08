@@ -25,7 +25,7 @@ import { CommonCodeModule } from './modules/common-code/common-code.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { CommonModule } from './common/common.module';
 import { EncryptionModule } from './common/encryption/encryption.module';
-import { SchoolRecordModule } from './modules/schoolrecord/schoolrecord.module';
+
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import { StoreModule } from './modules/store/store.module';
@@ -48,7 +48,6 @@ import { winstonConfig } from './common/utils/winston.utils';
 import { WinstonModule } from 'nest-winston';
 import { OAuthModule } from './oauth/oauth.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
-import { MentoringModule } from './modules/mentoring/mentoring.module';
 import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
@@ -133,7 +132,7 @@ import { FirebaseModule } from './firebase/firebase.module';
     MembersModule, // 유저모듈
     AdminModule, // 어드민 모듈
     CommonCodeModule, // 공통코드 모듈
-    SchoolRecordModule, // 생기부 모듈
+
     StoreModule, // 상점 모듈
     PaymentModule, // 결제 모듈 (SSO)
     SmsModule, // SMS 모듈(Aligo 사용중)
@@ -146,7 +145,6 @@ import { FirebaseModule } from './firebase/firebase.module';
     // MyclassModule, // REMOVED: 독립 앱
     ChatbotModule, // 챗봇 모듈 (FAQ, 용어사전, 매뉴얼 기반 Q&A)
     SubscriptionModule, // 앱 구독/권한 관리 모듈 (JWT에 앱별 권한 포함)
-    MentoringModule, // 멘토링 계정연동 모듈 (초대 링크 기반)
   ],
   controllers: [AppController],
   providers: [
