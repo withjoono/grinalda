@@ -1,12 +1,81 @@
 import { GoogleLoginButton } from "@/components/login-google-button";
 import { LoginWithEmailForm } from "@/components/login-with-email-form";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { hasTokens, getAccessToken } from "@/lib/api/token-manager";
+import { getSSOServiceId } from "@/lib/utils/sso-helper";
 
 export const Route = createFileRoute("/auth/login")({
   component: Login,
 });
 
 function Login() {
+  const [isAutoRedirecting, setIsAutoRedirecting] = useState(false);
+
+  useEffect(() => {
+    // 이미 로그인된 상태에서 redirect_uri가 있으면 자동 SSO 리다이렉트
+    const searchParams = new URLSearchParams(window.location.search);
+    const redirectUrl = searchParams.get("redirect") || searchParams.get("redirect_uri");
+
+    if (!redirectUrl || !hasTokens()) return;
+
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
+
+    setIsAutoRedirecting(true);
+
+    // SSO 코드 생성 후 리다이렉트
+    const autoRedirect = async () => {
+      try {
+        const serviceId = getSSOServiceId(redirectUrl) || 'unknown';
+
+        const response = await fetch('/api-hub/auth/sso/generate-code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ targetService: serviceId }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && (data.success !== false)) {
+          const ssoCode = data.data?.code || data.code;
+          if (ssoCode) {
+            const targetUrl = new URL(redirectUrl);
+            targetUrl.searchParams.set('sso_code', ssoCode);
+            console.log('✅ 자동 SSO 리다이렉트:', targetUrl.origin);
+            window.location.href = targetUrl.toString();
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('❌ 자동 SSO 리다이렉트 실패:', error);
+      }
+
+      // SSO 실패 시 그냥 redirect_uri로 이동
+      setIsAutoRedirecting(false);
+    };
+
+    autoRedirect();
+  }, []);
+
+  // 자동 리다이렉트 중이면 로딩 표시
+  if (isAutoRedirecting) {
+    return (
+      <div className="w-full">
+        <div className="mx-auto w-full max-w-screen-xl px-4">
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="animate-pulse text-muted-foreground">
+              로그인 확인 중...
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       <div className="mx-auto w-full max-w-screen-xl px-4">

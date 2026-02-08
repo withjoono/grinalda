@@ -2,8 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import debounce from "lodash/debounce";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/utils/firebase/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/lib/utils/firebase/firebase";
+import googleIcon from "@/assets/icon/login-google.png";
 
 import {
   Form,
@@ -32,8 +33,8 @@ import { Checkbox } from "./ui/checkbox";
 import { HIGH_SCHOOL_LIST } from "@/constants/high-school";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
-  CheckIcon,
   GraduationCapIcon,
+  ShieldCheck,
   UserIcon,
   UsersIcon,
 } from "lucide-react";
@@ -42,22 +43,72 @@ import { meQueryKeys } from "@/stores/server/features/me/queries";
 import { hubApiClient } from "@/stores/server/hub-api-client";
 import { useAuthStore } from "@/stores/client/use-auth-store";
 import { setTokens as setTokensInStorage } from "@/lib/api/token-manager";
-import { GoogleLoginButton } from "@/components/login-google-button";
 
 interface Props {
   className?: string;
 }
 
+interface GoogleVerification {
+  verified: boolean;
+  email: string;
+  name: string;
+  photoURL: string;
+}
+
+// 학교/대상 유형별 학년 옵션 매핑
+const SCHOOL_LEVEL_OPTIONS = [
+  { value: "초등", label: "초등" },
+  { value: "중등", label: "중등" },
+  { value: "고등", label: "고등" },
+  { value: "검정", label: "검정" },
+  { value: "N수", label: "N수" },
+] as const;
+
+const GRADE_OPTIONS: Record<string, { value: string; label: string }[]> = {
+  "초등": [
+    { value: "E1", label: "1학년" },
+    { value: "E2", label: "2학년" },
+    { value: "E3", label: "3학년" },
+    { value: "E4", label: "4학년" },
+    { value: "E5", label: "5학년" },
+    { value: "E6", label: "6학년" },
+  ],
+  "중등": [
+    { value: "M1", label: "1학년" },
+    { value: "M2", label: "2학년" },
+    { value: "M3", label: "3학년" },
+  ],
+  "고등": [
+    { value: "H1", label: "1학년" },
+    { value: "H2", label: "2학년" },
+    { value: "H3", label: "3학년" },
+  ],
+  "검정": [
+    { value: "M0", label: "중등과정" },
+    { value: "H0", label: "고등과정" },
+  ],
+  "N수": [
+    { value: "HN", label: "해당" },
+  ],
+};
+
 export function RegisterWithEmailForm({ className }: Props) {
   const [searchHighSchool, setSearchHighSchool] = useState(""); // 학교 검색어 (필터링때문에 form 외에 추가로 만듬)
   const [isFocused, setIsFocused] = useState(false); // 학교검색 포커스
-  const [memberType, setMemberType] = useState<
-    "student" | "teacher" | "parent"
-  >("student");
+  const [memberType, setMemberType] = useState<"student" | "teacher" | "parent">("student");
   const [isLoading, setIsLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setTokens } = useAuthStore();
+
+  // 구글 본인인증 상태
+  const [googleVerification, setGoogleVerification] = useState<GoogleVerification>({
+    verified: false,
+    email: "",
+    name: "",
+    photoURL: "",
+  });
 
   const form = useForm<z.infer<typeof registerWithEmailFormSchema>>({
     resolver: zodResolver(registerWithEmailFormSchema),
@@ -69,12 +120,50 @@ export function RegisterWithEmailForm({ className }: Props) {
       password: "",
       checkPassword: "",
       school: "",
-      major: 0,
-      graduateYear: 2025,
+      schoolLevel: "",
+      grade: "",
       phone: "",
       phoneToken: "",
     },
   });
+
+  // 구글 본인인증 핸들러
+  const handleGoogleVerification = async () => {
+    setIsVerifying(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const googleEmail = result.user.email || "";
+      const googleName = result.user.displayName || "";
+      const googlePhoto = result.user.photoURL || "";
+
+      // 인증 상태 저장
+      setGoogleVerification({
+        verified: true,
+        email: googleEmail,
+        name: googleName,
+        photoURL: googlePhoto,
+      });
+
+      // 폼에 이메일, 이름 자동 입력
+      form.setValue("email", googleEmail);
+      if (googleName && !form.getValues("name")) {
+        form.setValue("name", googleName);
+      }
+
+      // Firebase에서 로그아웃 (본인인증 목적이므로 로그인 상태 유지하지 않음)
+      await auth.signOut();
+
+      toast.success("✅ 본인인증이 완료되었습니다!");
+    } catch (err: any) {
+      if (err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") {
+        return; // 사용자가 팝업을 닫은 경우
+      }
+      console.error("구글 본인인증 에러:", err);
+      toast.error("구글 본인인증에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   // 검색어 변경 시 필터링된 학교 목록 업데이트
   const debouncedSetSearchHighSchool = useMemo(
@@ -137,6 +226,12 @@ export function RegisterWithEmailForm({ className }: Props) {
   async function onSubmit(values: z.infer<typeof registerWithEmailFormSchema>) {
     if (isLoading) return;
 
+    // 구글 본인인증 확인
+    if (!googleVerification.verified) {
+      toast.error("구글 본인인증을 먼저 완료해주세요.");
+      return;
+    }
+
     const school = HIGH_SCHOOL_LIST.find(
       (n) => n.highschoolName === values.school,
     );
@@ -168,8 +263,8 @@ export function RegisterWithEmailForm({ className }: Props) {
         idToken,
         nickname: values.name,
         hstTypeId: school?.id,
-        isMajor: String(values.major),
-        graduateYear: String(values.graduateYear),
+        schoolLevel: values.schoolLevel,
+        userTypeCode: values.grade,
         phone: formattedPhone,
         ckSmsAgree: agreeToTerms[3],
         memberType: memberType,
@@ -244,8 +339,117 @@ export function RegisterWithEmailForm({ className }: Props) {
   return (
     <Form {...form}>
       <div className={cn("space-y-2", className)}>
+        {/* 구글 본인인증 섹션 */}
+        <div className={cn(
+          "rounded-lg border-2 p-4 transition-colors",
+          googleVerification.verified
+            ? "border-green-500 bg-green-50"
+            : "border-amber-400 bg-amber-50"
+        )}>
+          <div className="flex items-center gap-2 mb-2">
+            <ShieldCheck className={cn(
+              "w-5 h-5",
+              googleVerification.verified ? "text-green-600" : "text-amber-600"
+            )} />
+            <span className={cn(
+              "text-sm font-semibold",
+              googleVerification.verified ? "text-green-700" : "text-amber-700"
+            )}>
+              {googleVerification.verified ? "본인인증 완료" : "본인인증 필수"}
+            </span>
+          </div>
+
+          {googleVerification.verified ? (
+            <div className="flex items-center gap-3">
+              {googleVerification.photoURL && (
+                <img
+                  src={googleVerification.photoURL}
+                  alt="프로필"
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+              <div className="text-sm">
+                <p className="font-medium text-green-800">{googleVerification.name}</p>
+                <p className="text-green-600">{googleVerification.email}</p>
+              </div>
+            </div>
+          ) : (
+            <>
+              <p className="text-xs text-amber-700 mb-3">
+                허수 가입 방지를 위해 구글 계정으로 본인인증이 필요합니다.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full h-auto space-x-2 py-2.5 bg-white hover:bg-gray-50"
+                onClick={handleGoogleVerification}
+                loading={isVerifying}
+                disabled={isVerifying}
+              >
+                <img src={googleIcon} className="size-4" />
+                <span>구글로 본인인증하기</span>
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* 회원유형 탭 */}
+        <div className="grid grid-cols-3 gap-1 rounded-lg bg-muted p-1">
+          <button
+            type="button"
+            onClick={() => setMemberType("student")}
+            className={cn(
+              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              memberType === "student"
+                ? "bg-background text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <UserIcon className="w-4 h-4" />
+            학생
+          </button>
+          <button
+            type="button"
+            onClick={() => setMemberType("teacher")}
+            className={cn(
+              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              memberType === "teacher"
+                ? "bg-background text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <GraduationCapIcon className="w-4 h-4" />
+            선생님
+          </button>
+          <button
+            type="button"
+            onClick={() => setMemberType("parent")}
+            className={cn(
+              "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-all",
+              memberType === "parent"
+                ? "bg-background text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <UsersIcon className="w-4 h-4" />
+            학부모
+          </button>
+        </div>
+
+        {/* 구글 본인인증 섹션 */}
+
+        {/* 회원가입 폼 */}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-2">
+          {!googleVerification.verified && (
+            <div className="text-center py-4 text-sm text-muted-foreground">
+              위에서 구글 본인인증을 완료하면 회원가입 폼이 활성화됩니다.
+            </div>
+          )}
+
+          <fieldset disabled={!googleVerification.verified} className={cn(
+            "space-y-2 transition-opacity",
+            !googleVerification.verified && "opacity-50"
+          )}>
             <FormField
               control={form.control}
               name="name"
@@ -267,7 +471,6 @@ export function RegisterWithEmailForm({ className }: Props) {
                   <FormLabel>이메일*</FormLabel>
                   <FormControl>
                     <Input
-                      // disabled={isAuthedPhone} // TODO: 핸드폰 인증 기능 복구 시 주석 해제
                       placeholder="이메일 주소"
                       type="email"
                       {...field}
@@ -313,178 +516,222 @@ export function RegisterWithEmailForm({ className }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="school"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>학교</FormLabel>
-                  <div className="relative">
-                    <FormControl>
-                      <Input
-                        placeholder="학교 검색(목록에 없으면 비워주세요)"
-                        {...field}
-                        onFocus={() => setIsFocused(true)}
-                        onChange={handleSearchInputChange}
-                        autoComplete="off"
-                        onBlur={() =>
-                          setTimeout(() => setIsFocused(false), 100)
-                        }
-                      />
-                    </FormControl>
-                    {isFocused && (
-                      <div
-                        ref={parentRef}
-                        className={cn(
-                          "absolute left-0 top-10 z-40 max-h-[400px] w-full overflow-y-auto rounded-b-md border bg-gray-100",
-                          "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-300 scrollbar-thumb-primary",
+            {memberType === "student" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="school"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>학교</FormLabel>
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            placeholder="학교 검색(목록에 없으면 비워주세요)"
+                            {...field}
+                            onFocus={() => setIsFocused(true)}
+                            onChange={handleSearchInputChange}
+                            autoComplete="off"
+                            onBlur={() =>
+                              setTimeout(() => setIsFocused(false), 100)
+                            }
+                          />
+                        </FormControl>
+                        {isFocused && (
+                          <div
+                            ref={parentRef}
+                            className={cn(
+                              "absolute left-0 top-10 z-40 max-h-[400px] w-full overflow-y-auto rounded-b-md border bg-gray-100",
+                              "scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-track-slate-300 scrollbar-thumb-primary",
+                            )}
+                          >
+                            <div
+                              className="relative w-full"
+                              style={{ height: `${totalSize}px` }}
+                            >
+                              {virtualItems.map((virtualItem) => {
+                                const school =
+                                  filteredHighSchools[virtualItem.index];
+                                return (
+                                  <div
+                                    key={virtualItem.key}
+                                    className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-2 text-sm hover:bg-gray-200"
+                                    style={{
+                                      height: `${virtualItem.size}px`,
+                                      transform: `translateY(${virtualItem.start}px)`,
+                                    }}
+                                    onMouseDown={(e) => {
+                                      e.preventDefault(); // blur 이벤트 방지
+                                      setSearchHighSchool(school.highschoolName);
+                                      form.setValue(
+                                        "school",
+                                        school.highschoolName,
+                                      );
+                                      setIsFocused(false); // 선택 후 드롭다운 닫기
+                                    }}
+                                  >
+                                    {school.highschoolName} (
+                                    {school.highschoolRegion})
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
                         )}
-                      >
-                        <div
-                          className="relative w-full"
-                          style={{ height: `${totalSize}px` }}
-                        >
-                          {virtualItems.map((virtualItem) => {
-                            const school =
-                              filteredHighSchools[virtualItem.index];
-                            return (
-                              <div
-                                key={virtualItem.key}
-                                className="absolute left-0 top-0 flex w-full cursor-pointer items-center px-2 text-sm hover:bg-gray-200"
-                                style={{
-                                  height: `${virtualItem.size}px`,
-                                  transform: `translateY(${virtualItem.start}px)`,
-                                }}
-                                onMouseDown={(e) => {
-                                  e.preventDefault(); // blur 이벤트 방지
-                                  setSearchHighSchool(school.highschoolName);
-                                  form.setValue(
-                                    "school",
-                                    school.highschoolName,
-                                  );
-                                  setIsFocused(false); // 선택 후 드롭다운 닫기
-                                }}
-                              >
-                                {school.highschoolName} (
-                                {school.highschoolRegion})
-                              </div>
-                            );
-                          })}
-                        </div>
                       </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name="schoolLevel"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>초/중/고*</FormLabel>
+                        <Select
+                          value={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            // 학교/대상 변경 시 학년 초기화
+                            const grades = GRADE_OPTIONS[value];
+                            if (grades && grades.length === 1) {
+                              // 선택지가 하나면 자동 선택
+                              form.setValue("grade", grades[0].value);
+                            } else {
+                              form.setValue("grade", "");
+                            }
+                          }}
+                          disabled={!googleVerification.verified}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="선택" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {SCHOOL_LEVEL_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-2">
-              <FormField
-                control={form.control}
-                name="major"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>전공*</FormLabel>
-                    <Select defaultValue={"0"} onValueChange={field.onChange}>
+                  />
+                  <FormField
+                    control={form.control}
+                    name="grade"
+                    render={({ field }) => {
+                      const selectedLevel = form.watch("schoolLevel");
+                      const gradeOptions = selectedLevel ? GRADE_OPTIONS[selectedLevel] || [] : [];
+                      return (
+                        <FormItem className="w-full">
+                          <FormLabel>학년*</FormLabel>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            disabled={!selectedLevel || !googleVerification.verified}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder={selectedLevel ? "선택" : "학교/대상 먼저 선택"} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {gradeOptions.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* 학생 전용 필드 */}
+            {memberType === "student" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>휴대폰 번호</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
+                        <Input
+                          placeholder="01012345678"
+                          {...field}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="0">문과</SelectItem>
-                        <SelectItem value="1">이과</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="graduateYear"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>졸업예정연도*</FormLabel>
-                    <FormControl>
-                      <Input placeholder="예) 2025" type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium">회원유형</p>
-              <div className="grid grid-cols-3 gap-2">
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("student")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "student" &&
-                      "text-primary hover:text-primary",
+                      <FormMessage />
+                    </FormItem>
                   )}
-                >
-                  {memberType === "student" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
+                />
+              </>
+            )}
+
+            {/* 선생님 전용 필드 */}
+            {memberType === "teacher" && (
+              <div className="rounded-lg border border-dashed border-muted-foreground/30 p-6 text-center">
+                <GraduationCapIcon className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
+                <p className="text-sm text-muted-foreground">선생님 전용 가입 필드는 준비 중입니다.</p>
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem className="mt-4">
+                      <FormLabel>휴대폰 번호</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="01012345678"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                  <UserIcon className="size-6" />
-                  <span>학생</span>
-                </Button>
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("teacher")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "teacher" &&
-                      "text-primary hover:text-primary",
-                  )}
-                >
-                  {memberType === "teacher" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
-                  )}
-                  <GraduationCapIcon className="size-6" />
-                  <span>선생님</span>
-                </Button>
-                <Button
-                  variant={"outline"}
-                  type="button"
-                  onClick={() => setMemberType("parent")}
-                  className={cn(
-                    "relative flex h-auto flex-col items-center gap-2",
-                    memberType === "parent" &&
-                      "text-primary hover:text-primary",
-                  )}
-                >
-                  {memberType === "parent" && (
-                    <CheckIcon className="absolute right-0 top-0 size-6 text-primary" />
-                  )}
-                  <UsersIcon className="size-6" />
-                  <span>학부모</span>
-                </Button>
+                />
               </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>휴대폰 번호</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="01012345678"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="space-y-2">
+            )}
+
+            {/* 학부모 전용 필드 */}
+            {memberType === "parent" && (
+              <div className="rounded-lg border border-dashed border-muted-foreground/30 p-6 text-center">
+                <UsersIcon className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
+                <p className="text-sm text-muted-foreground">학부모 전용 가입 필드는 준비 중입니다.</p>
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem className="mt-4">
+                      <FormLabel>휴대폰 번호</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="01012345678"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+          </fieldset>
+          <div className={cn(
+            "space-y-2 transition-opacity",
+            !googleVerification.verified && "opacity-50 pointer-events-none"
+          )}>
             <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
               <FormControl>
                 <Checkbox
@@ -495,6 +742,7 @@ export function RegisterWithEmailForm({ className }: Props) {
                     agreeToTerms[3]
                   }
                   onCheckedChange={handleAllAgreeClick}
+                  disabled={!googleVerification.verified}
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
@@ -515,6 +763,7 @@ export function RegisterWithEmailForm({ className }: Props) {
                   <Checkbox
                     checked={agreeToTerms[idx]}
                     onCheckedChange={() => handleAgreeClick(idx)}
+                    disabled={!googleVerification.verified}
                   />
                 </FormControl>
                 <div className="flex w-full justify-between space-y-1 leading-none">
@@ -536,6 +785,7 @@ export function RegisterWithEmailForm({ className }: Props) {
             loading={isLoading}
             disabled={
               isLoading ||
+              !googleVerification.verified ||
               !agreeToTerms[0] ||
               !agreeToTerms[1] ||
               !agreeToTerms[2]
@@ -544,23 +794,6 @@ export function RegisterWithEmailForm({ className }: Props) {
             회원가입
           </Button>
         </form>
-
-        {/* 구분선 */}
-        <div className="relative pt-4">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              또는
-            </span>
-          </div>
-        </div>
-
-        {/* 소셜 로그인 */}
-        <div className="space-y-2 pt-4">
-          <GoogleLoginButton isPending={isLoading} buttonText="구글 회원가입" />
-        </div>
 
         <div className="flex justify-center pt-4">
           <Link
@@ -574,3 +807,4 @@ export function RegisterWithEmailForm({ className }: Props) {
     </Form>
   );
 }
+

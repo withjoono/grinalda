@@ -15,7 +15,7 @@ export class MembersService {
     private membersRepository: Repository<MemberEntity>,
     private readonly dataSource: DataSource,
     private bcryptService: BcryptService,
-  ) {}
+  ) { }
 
   findOneByEmail(email: string): Promise<MemberEntity | null> {
     return this.membersRepository.findOneBy({
@@ -223,8 +223,8 @@ export class MembersService {
     provider: string;
     phone?: string;
     hstTypeId?: number;
-    isMajor?: string;
-    graduateYear?: string;
+    schoolLevel?: string;
+    userTypeCode?: string;
     ckSmsAgree?: boolean;
     memberType?: string;
   }): Promise<MemberEntity> {
@@ -241,8 +241,8 @@ export class MembersService {
       provider_type: data.provider === 'google.com' ? 'google' : 'firebase',
       member_type: data.memberType || 'student',
       hst_type_id: data.hstTypeId || null,
-      major: data.isMajor || '0',
-      graduate_year: data.graduateYear || null,
+      major: data.userTypeCode || null,
+      graduate_year: data.schoolLevel || null,
       create_dt: new Date(),
       update_dt: new Date(),
     });

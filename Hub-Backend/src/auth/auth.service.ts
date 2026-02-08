@@ -616,8 +616,8 @@ export class AuthService {
         provider: decodedToken.firebase?.sign_in_provider || 'firebase',
         phone: dto.phone,
         hstTypeId: dto.hstTypeId,
-        isMajor: dto.isMajor,
-        graduateYear: dto.graduateYear,
+        schoolLevel: dto.schoolLevel,
+        userTypeCode: dto.userTypeCode,
         ckSmsAgree: dto.ckSmsAgree,
         memberType: dto.memberType,
       });

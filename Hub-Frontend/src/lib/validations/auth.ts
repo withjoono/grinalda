@@ -20,11 +20,8 @@ export const registerWithEmailFormSchema = z
       .max(120, "비밀번호는 최대 120자 입니다."),
     checkPassword: z.string().min(1, { message: "비밀번호를 입력해주세요." }),
     school: z.string().optional(),
-    major: z.coerce.number(),
-    graduateYear: z.coerce
-      .number()
-      .min(2016, { message: "졸업연도는 2016~2030 사이어야 합니다." })
-      .max(2030, { message: "졸업연도는 2016~2030 사이어야 합니다." }),
+    schoolLevel: z.string().min(1, { message: "학교/대상을 선택해주세요." }),
+    grade: z.string().min(1, { message: "학년을 선택해주세요." }),
     // TODO: 핸드폰 인증 기능 복구 시 필수로 변경
     phone: z.string().optional(),
     phoneToken: z.string().optional(),
@@ -33,6 +30,7 @@ export const registerWithEmailFormSchema = z
     message: "비밀번호가 일치하지 않습니다.",
     path: ["checkPassword"], // 에러 메시지가 표시될 필드
   });
+
 
 export const registerWithSocialFormSchema = z
   .object({

@@ -40,20 +40,22 @@ export class FirebaseRegisterDto {
   hstTypeId?: number;
 
   @ApiProperty({
-    description: '전공 (0: 문과, 1: 이과)',
-    example: '0',
+    description: '학교/대상 유형 (초등학생, 중학생, 고등학생, 중등검정고시, 대입검정고시, 재수생)',
+    example: '고등학생',
+    required: false,
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  isMajor: string;
+  schoolLevel?: string;
 
   @ApiProperty({
-    description: '졸업예정연도',
-    example: '2025',
+    description: '사용자 타입 코드 (E1~E6, M0~M3, H0~H3, HN)',
+    example: 'H2',
+    required: false,
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  graduateYear: string;
+  userTypeCode?: string;
 
   @ApiProperty({
     description: '휴대폰 번호 (선택)',
