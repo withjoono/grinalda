@@ -1,0 +1,1321 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "logo 2026 수시 거북스쿨" [ref=e6] [cursor=pointer]:
+        - /url: /susi
+        - img "logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: 2026 수시
+          - generic [ref=e10]: 거북스쿨
+      - generic [ref=e11]:
+        - navigation "Main" [ref=e12]:
+          - list [ref=e14]:
+            - listitem [ref=e15]:
+              - link "전체 서비스" [ref=e16] [cursor=pointer]:
+                - /url: http://localhost:3000
+                - img [ref=e17]
+                - text: 전체 서비스
+            - listitem [ref=e19]:
+              - link "수시 홈" [ref=e20] [cursor=pointer]:
+                - /url: /susi
+            - listitem [ref=e21]:
+              - button "입력과분석" [ref=e22] [cursor=pointer]:
+                - text: 입력과분석
+                - img [ref=e23]
+            - listitem [ref=e25]:
+              - button "생기부평가" [ref=e26] [cursor=pointer]:
+                - text: 생기부평가
+                - img [ref=e27]
+            - listitem [ref=e29]:
+              - button "전형탐색" [ref=e30] [cursor=pointer]:
+                - text: 전형탐색
+                - img [ref=e31]
+            - listitem [ref=e33]:
+              - button "전략과지원" [ref=e34] [cursor=pointer]:
+                - text: 전략과지원
+                - img [ref=e35]
+        - generic [ref=e37]:
+          - link "이용권 구매" [ref=e38] [cursor=pointer]:
+            - /url: /products
+            - img [ref=e39]:
+              - generic [ref=e41]: ₩
+          - link "알림 설정" [ref=e42] [cursor=pointer]:
+            - /url: /susi/notifications
+            - img [ref=e43]
+          - link "계정연동" [ref=e47] [cursor=pointer]:
+            - /url: /account-linkage
+            - img [ref=e48]
+          - button "강준호 님" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54]: 강준호 님
+            - img [ref=e55]
+  - generic [ref=e59]:
+    - complementary [ref=e60]:
+      - navigation [ref=e61]:
+        - generic [ref=e62]:
+          - link "1 생기부 입력" [ref=e63] [cursor=pointer]:
+            - /url: /susi/school-record
+            - generic [ref=e64]: "1"
+            - text: 생기부 입력
+          - img [ref=e66]
+        - generic [ref=e68]:
+          - link "2 성적 분석" [ref=e69] [cursor=pointer]:
+            - /url: /susi/performance
+            - generic [ref=e70]: "2"
+            - text: 성적 분석
+          - img [ref=e72]
+        - generic [ref=e74]:
+          - link "3 계열 적합성 진단" [ref=e75] [cursor=pointer]:
+            - /url: /susi/compatibility
+            - generic [ref=e76]: "3"
+            - text: 계열 적합성 진단
+          - img [ref=e78]
+        - generic [ref=e80]:
+          - link "4 평가 신청(AI/사정관)" [ref=e81] [cursor=pointer]:
+            - /url: /susi/request
+            - generic [ref=e82]: "4"
+            - text: 평가 신청(AI/사정관)
+          - img [ref=e84]
+        - generic [ref=e86]:
+          - link "5 생기부 평가 내역" [ref=e87] [cursor=pointer]:
+            - /url: /susi/evaluation-list
+            - generic [ref=e88]: "5"
+            - text: 생기부 평가 내역
+          - img [ref=e90]
+        - generic [ref=e92]:
+          - link "6 교과 전형 탐색" [ref=e93] [cursor=pointer]:
+            - /url: /susi/subject
+            - generic [ref=e94]: "6"
+            - text: 교과 전형 탐색
+          - img [ref=e96]
+        - generic [ref=e98]:
+          - link "7 학종 전형 탐색" [ref=e99] [cursor=pointer]:
+            - /url: /susi/comprehensive
+            - generic [ref=e100]: "7"
+            - text: 학종 전형 탐색
+          - img [ref=e102]
+        - generic [ref=e104]:
+          - link "8 논술 전형 탐색" [ref=e105] [cursor=pointer]:
+            - /url: /susi/nonsul
+            - generic [ref=e106]: "8"
+            - text: 논술 전형 탐색
+          - img [ref=e108]
+        - generic [ref=e110]:
+          - link "9 관심대학" [ref=e111] [cursor=pointer]:
+            - /url: /susi/interest
+            - generic [ref=e112]: "9"
+            - text: 관심대학
+          - img [ref=e114]
+        - link "10 모의지원" [ref=e117] [cursor=pointer]:
+          - /url: /susi/combination
+          - generic [ref=e118]: "10"
+          - text: 모의지원
+    - generic [ref=e120]:
+      - link "학종 전형을 찾으시나요?" [ref=e121] [cursor=pointer]:
+        - /url: /susi/comprehensive
+        - paragraph [ref=e122]: 학종 전형을 찾으시나요?
+      - paragraph [ref=e123]: 🏫 교과 전형 탐색 하기
+      - paragraph [ref=e124]: 단계별 필터링을 통해 나에게 딱 맞는 입시 전형을 찾아보세요!
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - img [ref=e128]
+            - text: 자격 및 대학선택
+          - img [ref=e131]
+        - generic [ref=e133]:
+          - generic [ref=e134]: 최저등급
+          - img [ref=e135]
+        - generic [ref=e137]:
+          - generic [ref=e138]: 비교과
+          - img [ref=e139]
+        - generic [ref=e141]:
+          - generic [ref=e142]: 모집단위
+          - img [ref=e143]
+        - generic [ref=e146]: 전형일자 확인
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - paragraph [ref=e149]: ✏️ 전형 선택
+          - generic [ref=e150]:
+            - button "일반전형" [ref=e151] [cursor=pointer]
+            - button "특별전형" [ref=e152] [cursor=pointer]
+        - generic [ref=e153]:
+          - paragraph [ref=e154]: 계열 선택 (문/이과)
+          - generic [ref=e155]:
+            - button "전체" [ref=e156] [cursor=pointer]
+            - button "문과" [ref=e157] [cursor=pointer]
+            - button "이과" [ref=e158] [cursor=pointer]
+            - button "공통" [ref=e159] [cursor=pointer]
+            - button "예체능" [ref=e160] [cursor=pointer]
+        - generic [ref=e161]:
+          - paragraph [ref=e162]: 🗺️ 지역 선택
+          - generic [ref=e163]:
+            - button "전국" [ref=e164] [cursor=pointer]
+            - button "서울" [ref=e165] [cursor=pointer]
+            - button "경기" [ref=e166] [cursor=pointer]
+            - button "인천" [ref=e167] [cursor=pointer]
+            - button "대전" [ref=e168] [cursor=pointer]
+            - button "세종" [ref=e169] [cursor=pointer]
+            - button "충남" [ref=e170] [cursor=pointer]
+            - button "충북" [ref=e171] [cursor=pointer]
+            - button "광주" [ref=e172] [cursor=pointer]
+            - button "전남" [ref=e173] [cursor=pointer]
+            - button "전북" [ref=e174] [cursor=pointer]
+            - button "대구" [ref=e175] [cursor=pointer]
+            - button "경북" [ref=e176] [cursor=pointer]
+            - button "경남" [ref=e177] [cursor=pointer]
+            - button "부산" [ref=e178] [cursor=pointer]
+            - button "울산" [ref=e179] [cursor=pointer]
+            - button "강원" [ref=e180] [cursor=pointer]
+            - button "제주" [ref=e181] [cursor=pointer]
+        - generic [ref=e182]:
+          - generic [ref=e185]:
+            - img [ref=e186]:
+              - generic [ref=e255]:
+                - generic [ref=e259] [cursor=pointer]:
+                  - paragraph [ref=e260]: 극동대학교(충북)
+                  - paragraph [ref=e261]: 교과우수자전형
+                - generic [ref=e265] [cursor=pointer]:
+                  - paragraph [ref=e266]: 강원대학교(강원)
+                  - paragraph [ref=e267]: 지역인재전형
+                - generic [ref=e271] [cursor=pointer]:
+                  - paragraph [ref=e272]: 한국성서대학교(서울)
+                  - paragraph [ref=e273]: 일반학생전형
+                - generic [ref=e277] [cursor=pointer]:
+                  - paragraph [ref=e278]: 동양대학교(경북)
+                  - paragraph [ref=e279]: 일반전형
+                - generic [ref=e283] [cursor=pointer]:
+                  - paragraph [ref=e284]: 경운대학교(경북)
+                  - paragraph [ref=e285]: 교과2전형
+                - generic [ref=e289] [cursor=pointer]:
+                  - paragraph [ref=e290]: 나사렛대학교(충남)
+                  - paragraph [ref=e291]: 일반학생전형
+                - generic [ref=e295] [cursor=pointer]:
+                  - paragraph [ref=e296]: 가야대학교(경남)
+                  - paragraph [ref=e297]: 가야인재전형
+                - generic [ref=e301] [cursor=pointer]:
+                  - paragraph [ref=e302]: 가야대학교(경남)
+                  - paragraph [ref=e303]: 일반학생전형
+                - generic [ref=e307] [cursor=pointer]:
+                  - paragraph [ref=e308]: 가야대학교(경남)
+                  - paragraph [ref=e309]: 지역인재전형
+                - generic [ref=e313] [cursor=pointer]:
+                  - paragraph [ref=e314]: 가톨릭관동대학교(강원)
+                  - paragraph [ref=e315]: 교과일반전형
+                - generic [ref=e319] [cursor=pointer]:
+                  - paragraph [ref=e320]: 가톨릭관동대학교(강원)
+                  - paragraph [ref=e321]: 운동선수출신전형
+                - generic [ref=e325] [cursor=pointer]:
+                  - paragraph [ref=e326]: 가톨릭관동대학교(강원)
+                  - paragraph [ref=e327]: 지역인재전형
+                - generic [ref=e331] [cursor=pointer]:
+                  - paragraph [ref=e332]: 고려대학교(세종)(세종)
+                  - paragraph [ref=e333]: 일반전형
+                - generic [ref=e337] [cursor=pointer]:
+                  - paragraph [ref=e338]: 가톨릭꽃동네대학교(충북)
+                  - paragraph [ref=e339]: 일반학생전형
+                - generic [ref=e343] [cursor=pointer]:
+                  - paragraph [ref=e344]: 가톨릭꽃동네대학교(충북)
+                  - paragraph [ref=e345]: 휴먼리더면접전형
+                - generic [ref=e349] [cursor=pointer]:
+                  - paragraph [ref=e350]: 강남대학교(경기)
+                  - paragraph [ref=e351]: 만학도전형
+                - generic [ref=e355] [cursor=pointer]:
+                  - paragraph [ref=e356]: 강남대학교(경기)
+                  - paragraph [ref=e357]: 지역균형전형
+                - generic [ref=e361] [cursor=pointer]:
+                  - paragraph [ref=e362]: 강서대학교(서울)
+                  - paragraph [ref=e363]: 교과우수자전형
+                - generic [ref=e367] [cursor=pointer]:
+                  - paragraph [ref=e368]: 강서대학교(서울)
+                  - paragraph [ref=e369]: 일반학생전형
+                - generic [ref=e373] [cursor=pointer]:
+                  - paragraph [ref=e374]: 건국대학교(서울)
+                  - paragraph [ref=e375]: KU지역균형전형
+                - generic [ref=e379] [cursor=pointer]:
+                  - paragraph [ref=e380]: 건국대학교(글로컬)(충북)
+                  - paragraph [ref=e381]: 지역인재 (충북 전형)
+                - generic [ref=e385] [cursor=pointer]:
+                  - paragraph [ref=e386]: 건국대학교(글로컬)(충북)
+                  - paragraph [ref=e387]: 학생부
+                - generic [ref=e391] [cursor=pointer]:
+                  - paragraph [ref=e392]: 경성대학교(부산)
+                  - paragraph [ref=e393]: 일반계고면접전형
+                - generic [ref=e397] [cursor=pointer]:
+                  - paragraph [ref=e398]: 경운대학교(경북)
+                  - paragraph [ref=e399]: 교과1전형
+                - generic [ref=e403] [cursor=pointer]:
+                  - paragraph [ref=e404]: 경남대학교(경남)
+                  - paragraph [ref=e405]: 일반면접전형
+                - generic [ref=e409] [cursor=pointer]:
+                  - paragraph [ref=e410]: 경남대학교(경남)
+                  - paragraph [ref=e411]: 지역인재전형
+                - generic [ref=e415] [cursor=pointer]:
+                  - paragraph [ref=e416]: 경남대학교(경남)
+                  - paragraph [ref=e417]: 일반전형
+                - generic [ref=e421] [cursor=pointer]:
+                  - paragraph [ref=e422]: 경남대학교(경남)
+                  - paragraph [ref=e423]: 체육교육과전형
+                - generic [ref=e427] [cursor=pointer]:
+                  - paragraph [ref=e428]: 경성대학교(부산)
+                  - paragraph [ref=e429]: 일반계고교과전형
+                - generic [ref=e433] [cursor=pointer]:
+                  - paragraph [ref=e434]: 경성대학교(부산)
+                  - paragraph [ref=e435]: 지역인재전형
+                - generic [ref=e439] [cursor=pointer]:
+                  - paragraph [ref=e440]: 경인교육대학교(인천)
+                  - paragraph [ref=e441]: 학교장추천전형
+                - generic [ref=e445] [cursor=pointer]:
+                  - paragraph [ref=e446]: 고려대학교(서울)
+                  - paragraph [ref=e447]: 학교추천전형
+                - generic [ref=e451] [cursor=pointer]:
+                  - paragraph [ref=e452]: 고신대학교(부산)
+                  - paragraph [ref=e453]: 농어촌전형 (외)
+                - generic [ref=e457] [cursor=pointer]:
+                  - paragraph [ref=e458]: 고신대학교(부산)
+                  - paragraph [ref=e459]: 성인학습자전형
+                - generic [ref=e463] [cursor=pointer]:
+                  - paragraph [ref=e464]: 고신대학교(부산)
+                  - paragraph [ref=e465]: 일반고전형
+                - generic [ref=e469] [cursor=pointer]:
+                  - paragraph [ref=e470]: 고신대학교(부산)
+                  - paragraph [ref=e471]: 지역인재전형
+                - generic [ref=e475] [cursor=pointer]:
+                  - paragraph [ref=e476]: 극동대학교(충북)
+                  - paragraph [ref=e477]: 일반학생전형
+                - generic [ref=e481] [cursor=pointer]:
+                  - paragraph [ref=e482]: 광운대학교(서울)
+                  - paragraph [ref=e483]: 지역균형전형
+                - generic [ref=e487] [cursor=pointer]:
+                  - paragraph [ref=e488]: 광주교육대학교(광주)
+                  - paragraph [ref=e489]: 교직적성우수자전형I
+                - generic [ref=e493] [cursor=pointer]:
+                  - paragraph [ref=e494]: 광주대학교(광주)
+                  - paragraph [ref=e495]: 기초생활및차상위전형 (외)
+                - generic [ref=e499] [cursor=pointer]:
+                  - paragraph [ref=e500]: 광주대학교(광주)
+                  - paragraph [ref=e501]: 일반학생전형
+                - generic [ref=e505] [cursor=pointer]:
+                  - paragraph [ref=e506]: 광주대학교(광주)
+                  - paragraph [ref=e507]: 지역학생1전형
+                - generic [ref=e511] [cursor=pointer]:
+                  - paragraph [ref=e512]: 광주대학교(광주)
+                  - paragraph [ref=e513]: 지역학생2전형
+                - generic [ref=e517] [cursor=pointer]:
+                  - paragraph [ref=e518]: 광주여자대학교(광주)
+                  - paragraph [ref=e519]: 일반학생전형I
+                - generic [ref=e523] [cursor=pointer]:
+                  - paragraph [ref=e524]: 광주여자대학교(광주)
+                  - paragraph [ref=e525]: 일반학생전형II
+                - generic [ref=e529] [cursor=pointer]:
+                  - paragraph [ref=e530]: 국민대학교(서울)
+                  - paragraph [ref=e531]: 교과성적우수자전형
+                - generic [ref=e535] [cursor=pointer]:
+                  - paragraph [ref=e536]: 군산대학교(전북)
+                  - paragraph [ref=e537]: 일반전형
+                - generic [ref=e541] [cursor=pointer]:
+                  - paragraph [ref=e542]: 금오공과대학교(경북)
+                  - paragraph [ref=e543]: 교과전형
+                - generic [ref=e547] [cursor=pointer]:
+                  - paragraph [ref=e548]: 김천대학교(경북)
+                  - paragraph [ref=e549]: 일반교과전형
+                - generic [ref=e553] [cursor=pointer]:
+                  - paragraph [ref=e554]: 나사렛대학교(충남)
+                  - paragraph [ref=e555]: 농어촌학생전형 (외)
+                - generic [ref=e559] [cursor=pointer]:
+                  - paragraph [ref=e560]: 김천대학교(경북)
+                  - paragraph [ref=e561]: 일반면접전형
+                - generic [ref=e565] [cursor=pointer]:
+                  - paragraph [ref=e566]: 원광대학교(전북)
+                  - paragraph [ref=e567]: 일반전형
+                - generic [ref=e571] [cursor=pointer]:
+                  - paragraph [ref=e572]: 나사렛대학교(충남)
+                  - paragraph [ref=e573]: 기초생활및차상위전형 (외)
+                - generic [ref=e577] [cursor=pointer]:
+                  - paragraph [ref=e578]: 제주대학교(제주)
+                  - paragraph [ref=e579]: 고른기회전형
+                - generic [ref=e583] [cursor=pointer]:
+                  - paragraph [ref=e584]: 나사렛대학교(충남)
+                  - paragraph [ref=e585]: 특성화고졸업자전형 (외)
+                - generic [ref=e589] [cursor=pointer]:
+                  - paragraph [ref=e590]: 남부대학교(광주)
+                  - paragraph [ref=e591]: 일반학생전형
+                - generic [ref=e595] [cursor=pointer]:
+                  - paragraph [ref=e596]: 남서울대학교(충남)
+                  - paragraph [ref=e597]: 계약학과 채용조건전형 (외)
+                - generic [ref=e601] [cursor=pointer]:
+                  - paragraph [ref=e602]: 남서울대학교(충남)
+                  - paragraph [ref=e603]: 교과면접전형
+                - generic [ref=e607] [cursor=pointer]:
+                  - paragraph [ref=e608]: 남서울대학교(충남)
+                  - paragraph [ref=e609]: 일반학생전형
+                - generic [ref=e613] [cursor=pointer]:
+                  - paragraph [ref=e614]: 남서울대학교(충남)
+                  - paragraph [ref=e615]: 성인학습자만학자 (외)
+                - generic [ref=e619] [cursor=pointer]:
+                  - paragraph [ref=e620]: 안동대학교(경북)
+                  - paragraph [ref=e621]: 일반학생전형
+                - generic [ref=e625] [cursor=pointer]:
+                  - paragraph [ref=e626]: 동덕여자대학교(서울)
+                  - paragraph [ref=e627]: 교과우수자전형
+                - generic [ref=e631] [cursor=pointer]:
+                  - paragraph [ref=e632]: 제주대학교(제주)
+                  - paragraph [ref=e633]: 일반학생전형
+                - generic [ref=e637] [cursor=pointer]:
+                  - paragraph [ref=e638]: 대구대학교(경북)
+                  - paragraph [ref=e639]: 면접
+                - generic [ref=e643] [cursor=pointer]:
+                  - paragraph [ref=e644]: 대구대학교(경북)
+                  - paragraph [ref=e645]: 일반전형
+                - generic [ref=e649] [cursor=pointer]:
+                  - paragraph [ref=e650]: 목포해양대학교(전남)
+                  - paragraph [ref=e651]: 누구나전형
+                - generic [ref=e655] [cursor=pointer]:
+                  - paragraph [ref=e656]: 청운대학교(충남)
+                  - paragraph [ref=e657]: 일반전형
+                - generic [ref=e661] [cursor=pointer]:
+                  - paragraph [ref=e662]: 대구한의대학교(경북)
+                  - paragraph [ref=e663]: 면접전형
+                - generic [ref=e667] [cursor=pointer]:
+                  - paragraph [ref=e668]: 대구한의대학교(경북)
+                  - paragraph [ref=e669]: 일반전형
+                - generic [ref=e673] [cursor=pointer]:
+                  - paragraph [ref=e674]: 대진대학교(경기)
+                  - paragraph [ref=e675]: 종단추천자전형
+                - generic [ref=e679] [cursor=pointer]:
+                  - paragraph [ref=e680]: 대진대학교(경기)
+                  - paragraph [ref=e681]: 학교장추천전형
+                - generic [ref=e685] [cursor=pointer]:
+                  - paragraph [ref=e686]: 대진대학교(경기)
+                  - paragraph [ref=e687]: 학생부우수자전형
+                - generic [ref=e691] [cursor=pointer]:
+                  - paragraph [ref=e692]: 덕성여자대학교(서울)
+                  - paragraph [ref=e693]: 고교추천전형
+                - generic [ref=e697] [cursor=pointer]:
+                  - paragraph [ref=e698]: 동국대학교(서울)
+                  - paragraph [ref=e699]: 학교장추천인재전형
+                - generic [ref=e703] [cursor=pointer]:
+                  - paragraph [ref=e704]: 동국대학교(WISE)(경북)
+                  - paragraph [ref=e705]: 교과전형
+                - generic [ref=e709] [cursor=pointer]:
+                  - paragraph [ref=e710]: 동국대학교(WISE)(경북)
+                  - paragraph [ref=e711]: 면접전형
+                - generic [ref=e715] [cursor=pointer]:
+                  - paragraph [ref=e716]: 동국대학교(WISE)(경북)
+                  - paragraph [ref=e717]: 불교추천전형
+                - generic [ref=e721] [cursor=pointer]:
+                  - paragraph [ref=e722]: 성신여자대학교(서울)
+                  - paragraph [ref=e723]: 지역균형전형
+                - generic [ref=e727] [cursor=pointer]:
+                  - paragraph [ref=e728]: 동명대학교(부산)
+                  - paragraph [ref=e729]: 기회균형전형 (외)
+                - generic [ref=e733] [cursor=pointer]:
+                  - paragraph [ref=e734]: 동신대학교(전남)
+                  - paragraph [ref=e735]: 면접전형
+                - generic [ref=e739] [cursor=pointer]:
+                  - paragraph [ref=e740]: 동명대학교(부산)
+                  - paragraph [ref=e741]: 면접전형
+                - generic [ref=e745] [cursor=pointer]:
+                  - paragraph [ref=e746]: 동명대학교(부산)
+                  - paragraph [ref=e747]: 스포츠우수자전형
+                - generic [ref=e751] [cursor=pointer]:
+                  - paragraph [ref=e752]: 동명대학교(부산)
+                  - paragraph [ref=e753]: 일반고교과전형
+                - generic [ref=e757] [cursor=pointer]:
+                  - paragraph [ref=e758]: 동명대학교(부산)
+                  - paragraph [ref=e759]: 특성화고교과전형
+                - generic [ref=e763] [cursor=pointer]:
+                  - paragraph [ref=e764]: 목원대학교(대전)
+                  - paragraph [ref=e765]: 교과전형
+                - generic [ref=e769] [cursor=pointer]:
+                  - paragraph [ref=e770]: 동명대학교(부산)
+                  - paragraph [ref=e771]: 특성화고동일계전형 (외)
+                - generic [ref=e775] [cursor=pointer]:
+                  - paragraph [ref=e776]: 동서대학교(부산)
+                  - paragraph [ref=e777]: 고교생활우수자전형
+                - generic [ref=e781] [cursor=pointer]:
+                  - paragraph [ref=e782]: 동서대학교(부산)
+                  - paragraph [ref=e783]: 일반계교과전형
+                - generic [ref=e787] [cursor=pointer]:
+                  - paragraph [ref=e788]: 동서대학교(부산)
+                  - paragraph [ref=e789]: 학생부면접전형
+                - generic [ref=e793] [cursor=pointer]:
+                  - paragraph [ref=e794]: 동아대학교(부산)
+                  - paragraph [ref=e795]: 교과성적우수자전형
+                - generic [ref=e799] [cursor=pointer]:
+                  - paragraph [ref=e800]: 동신대학교(전남)
+                  - paragraph [ref=e801]: 일반전형
+                - generic [ref=e805] [cursor=pointer]:
+                  - paragraph [ref=e806]: 동아대학교(부산)
+                  - paragraph [ref=e807]: 지역인재교과전형
+                - generic [ref=e811] [cursor=pointer]:
+                  - paragraph [ref=e812]: 동아대학교(부산)
+                  - paragraph [ref=e813]: 지역인재기회균형대상자전형
+                - generic [ref=e817] [cursor=pointer]:
+                  - paragraph [ref=e818]: 동의대학교(부산)
+                  - paragraph [ref=e819]: 기회균형전형
+                - generic [ref=e823] [cursor=pointer]:
+                  - paragraph [ref=e824]: 동의대학교(부산)
+                  - paragraph [ref=e825]: 일반고교과전형
+                - generic [ref=e829] [cursor=pointer]:
+                  - paragraph [ref=e830]: 동의대학교(부산)
+                  - paragraph [ref=e831]: 지역인재교과전형
+                - generic [ref=e835] [cursor=pointer]:
+                  - paragraph [ref=e836]: 목원대학교(대전)
+                  - paragraph [ref=e837]: 교과면접전형
+                - generic [ref=e841] [cursor=pointer]:
+                  - paragraph [ref=e842]: 목원대학교(대전)
+                  - paragraph [ref=e843]: 기초생활및차상위전형 (외)
+                - generic [ref=e847] [cursor=pointer]:
+                  - paragraph [ref=e848]: 목원대학교(대전)
+                  - paragraph [ref=e849]: 농어촌학생전형 (외)
+                - generic [ref=e853] [cursor=pointer]:
+                  - paragraph [ref=e854]: 목포대학교(전남)
+                  - paragraph [ref=e855]: 교과일반전형
+                - generic [ref=e859] [cursor=pointer]:
+                  - paragraph [ref=e860]: 목포대학교(전남)
+                  - paragraph [ref=e861]: 지역인재전형
+                - generic [ref=e865] [cursor=pointer]:
+                  - paragraph [ref=e866]: 목포해양대학교(전남)
+                  - paragraph [ref=e867]: 선원자녀및선원경력자전형
+                - generic [ref=e871] [cursor=pointer]:
+                  - paragraph [ref=e872]: 목포해양대학교(전남)
+                  - paragraph [ref=e873]: 학생부성적우수자전형
+                - generic [ref=e877] [cursor=pointer]:
+                  - paragraph [ref=e878]: 배재대학교(대전)
+                  - paragraph [ref=e879]: 교과전형
+                - generic [ref=e883] [cursor=pointer]:
+                  - paragraph [ref=e884]: 배재대학교(대전)
+                  - paragraph [ref=e885]: 일반고교과전형
+                - generic [ref=e889] [cursor=pointer]:
+                  - paragraph [ref=e890]: 배재대학교(대전)
+                  - paragraph [ref=e891]: 항공인재전형
+                - generic [ref=e895] [cursor=pointer]:
+                  - paragraph [ref=e896]: 백석대학교(충남)
+                  - paragraph [ref=e897]: 계약학과 (외)
+                - generic [ref=e901] [cursor=pointer]:
+                  - paragraph [ref=e902]: 삼육대학교(서울)
+                  - paragraph [ref=e903]: 학교장추천전형
+                - generic [ref=e907] [cursor=pointer]:
+                  - paragraph [ref=e908]: 백석대학교(충남)
+                  - paragraph [ref=e909]: 백석인재전형
+                - generic [ref=e913] [cursor=pointer]:
+                  - paragraph [ref=e914]: 백석대학교(충남)
+                  - paragraph [ref=e915]: 일반전형
+                - generic [ref=e919] [cursor=pointer]:
+                  - paragraph [ref=e920]: 백석대학교(충남)
+                  - paragraph [ref=e921]: 특성화고졸재직자전형 (외)
+                - generic [ref=e925] [cursor=pointer]:
+                  - paragraph [ref=e926]: 부경대학교(부산)
+                  - paragraph [ref=e927]: 교과성적우수인재전형
+                - generic [ref=e931] [cursor=pointer]:
+                  - paragraph [ref=e932]: 부경대학교(부산)
+                  - paragraph [ref=e933]: 일반전형
+                - generic [ref=e937] [cursor=pointer]:
+                  - paragraph [ref=e938]: 부경대학교(부산)
+                  - paragraph [ref=e939]: 지역혁신인재전형
+                - generic [ref=e943] [cursor=pointer]:
+                  - paragraph [ref=e944]: 부산가톨릭대학교(부산)
+                  - paragraph [ref=e945]: 교과성적우수자전형
+                - generic [ref=e949] [cursor=pointer]:
+                  - paragraph [ref=e950]: 부산외국어대학교(부산)
+                  - paragraph [ref=e951]: 교과면접전형
+                - generic [ref=e955] [cursor=pointer]:
+                  - paragraph [ref=e956]: 부산외국어대학교(부산)
+                  - paragraph [ref=e957]: 일반고교과전형
+                - generic [ref=e961] [cursor=pointer]:
+                  - paragraph [ref=e962]: 상지대학교(강원)
+                  - paragraph [ref=e963]: 강원인재전형
+                - generic [ref=e967] [cursor=pointer]:
+                  - paragraph [ref=e968]: 서경대학교(서울)
+                  - paragraph [ref=e969]: 교과우수전형2
+                - generic [ref=e973] [cursor=pointer]:
+                  - paragraph [ref=e974]: 서경대학교(서울)
+                  - paragraph [ref=e975]: 서해5도전형 (외)
+                - generic [ref=e979] [cursor=pointer]:
+                  - paragraph [ref=e980]: 상지대학교(강원)
+                  - paragraph [ref=e981]: 일반전형
+                - generic [ref=e985] [cursor=pointer]:
+                  - paragraph [ref=e986]: 서강대학교(서울)
+                  - paragraph [ref=e987]: 지역균형
+                - generic [ref=e991] [cursor=pointer]:
+                  - paragraph [ref=e992]: 서경대학교(서울)
+                  - paragraph [ref=e993]: 계약학과채용조건형
+                - generic [ref=e997] [cursor=pointer]:
+                  - paragraph [ref=e998]: 서경대학교(서울)
+                  - paragraph [ref=e999]: 교과우수전형1
+                - generic [ref=e1003] [cursor=pointer]:
+                  - paragraph [ref=e1004]: 서경대학교(서울)
+                  - paragraph [ref=e1005]: 특성화고졸재직자전형 (외)
+                - generic [ref=e1009] [cursor=pointer]:
+                  - paragraph [ref=e1010]: 서울과학기술대학교(서울)
+                  - paragraph [ref=e1011]: 고교추천전형
+                - generic [ref=e1015] [cursor=pointer]:
+                  - paragraph [ref=e1016]: 서울교육대학교(서울)
+                  - paragraph [ref=e1017]: 학교장추천전형
+                - generic [ref=e1021] [cursor=pointer]:
+                  - paragraph [ref=e1022]: 서울시립대학교(서울)
+                  - paragraph [ref=e1023]: 지역균형선발전형
+                - generic [ref=e1027] [cursor=pointer]:
+                  - paragraph [ref=e1028]: 서울여자대학교(서울)
+                  - paragraph [ref=e1029]: 교과우수자전형
+                - generic [ref=e1033] [cursor=pointer]:
+                  - paragraph [ref=e1034]: 서울여자대학교(서울)
+                  - paragraph [ref=e1035]: 교과우수자전형 (체육)
+                - generic [ref=e1039] [cursor=pointer]:
+                  - paragraph [ref=e1040]: 서원대학교(충북)
+                  - paragraph [ref=e1041]: 인문계고전형
+                - generic [ref=e1045] [cursor=pointer]:
+                  - paragraph [ref=e1046]: 서원대학교(충북)
+                  - paragraph [ref=e1047]: 일반전형
+                - generic [ref=e1051] [cursor=pointer]:
+                  - paragraph [ref=e1052]: 서원대학교(충북)
+                  - paragraph [ref=e1053]: 창의면접전형
+                - generic [ref=e1057] [cursor=pointer]:
+                  - paragraph [ref=e1058]: 서원대학교(충북)
+                  - paragraph [ref=e1059]: 체육특기자전형
+                - generic [ref=e1063] [cursor=pointer]:
+                  - paragraph [ref=e1064]: 성결대학교(경기)
+                  - paragraph [ref=e1065]: 교과성적우수자전형
+                - generic [ref=e1069] [cursor=pointer]:
+                  - paragraph [ref=e1070]: 선문대학교(충남)
+                  - paragraph [ref=e1071]: 면접전형
+                - generic [ref=e1075] [cursor=pointer]:
+                  - paragraph [ref=e1076]: 선문대학교(충남)
+                  - paragraph [ref=e1077]: 일반학생전형
+                - generic [ref=e1081] [cursor=pointer]:
+                  - paragraph [ref=e1082]: 성결대학교(경기)
+                  - paragraph [ref=e1083]: SKU창의적인재전형
+                - generic [ref=e1087] [cursor=pointer]:
+                  - paragraph [ref=e1088]: 성결대학교(경기)
+                  - paragraph [ref=e1089]: 기독교
+                - generic [ref=e1093] [cursor=pointer]:
+                  - paragraph [ref=e1094]: 성공회대학교(서울)
+                  - paragraph [ref=e1095]: 교과성적전형
+                - generic [ref=e1099] [cursor=pointer]:
+                  - paragraph [ref=e1100]: 세명대학교(충북)
+                  - paragraph [ref=e1101]: 면접우수자전형
+                - generic [ref=e1105] [cursor=pointer]:
+                  - paragraph [ref=e1106]: 세명대학교(충북)
+                  - paragraph [ref=e1107]: 일반전형
+                - generic [ref=e1111] [cursor=pointer]:
+                  - paragraph [ref=e1112]: 세종대학교(서울)
+                  - paragraph [ref=e1113]: 항공시스템공학전형 (외)
+                - generic [ref=e1117] [cursor=pointer]:
+                  - paragraph [ref=e1118]: 송원대학교(광주)
+                  - paragraph [ref=e1119]: 인성우수자 (일반 전형)
+                - generic [ref=e1123] [cursor=pointer]:
+                  - paragraph [ref=e1124]: 송원대학교(광주)
+                  - paragraph [ref=e1125]: 일반전형
+                - generic [ref=e1129] [cursor=pointer]:
+                  - paragraph [ref=e1130]: 수원대학교(경기)
+                  - paragraph [ref=e1131]: 고교추천전형
+                - generic [ref=e1135] [cursor=pointer]:
+                  - paragraph [ref=e1136]: 수원대학교(경기)
+                  - paragraph [ref=e1137]: 교과우수전형
+                - generic [ref=e1141] [cursor=pointer]:
+                  - paragraph [ref=e1142]: 수원대학교(경기)
+                  - paragraph [ref=e1143]: 면접위주교과전형
+                - generic [ref=e1147] [cursor=pointer]:
+                  - paragraph [ref=e1148]: 순천대학교(전남)
+                  - paragraph [ref=e1149]: 교과일반전형
+                - generic [ref=e1153] [cursor=pointer]:
+                  - paragraph [ref=e1154]: 숙명여자대학교(서울)
+                  - paragraph [ref=e1155]: 지역균형선발전형
+                - generic [ref=e1159] [cursor=pointer]:
+                  - paragraph [ref=e1160]: 순천대학교(전남)
+                  - paragraph [ref=e1161]: 지역균형인재전형
+                - generic [ref=e1165] [cursor=pointer]:
+                  - paragraph [ref=e1166]: 순천대학교(전남)
+                  - paragraph [ref=e1167]: 지역인재전형
+                - generic [ref=e1171] [cursor=pointer]:
+                  - paragraph [ref=e1172]: 순천대학교(전남)
+                  - paragraph [ref=e1173]: 특수교육대상자전형 (외)
+                - generic [ref=e1177] [cursor=pointer]:
+                  - paragraph [ref=e1178]: 순천향대학교(충남)
+                  - paragraph [ref=e1179]: 교과면접전형
+                - generic [ref=e1183] [cursor=pointer]:
+                  - paragraph [ref=e1184]: 순천향대학교(충남)
+                  - paragraph [ref=e1185]: 교과우수자전형
+                - generic [ref=e1189] [cursor=pointer]:
+                  - paragraph [ref=e1190]: 순천향대학교(충남)
+                  - paragraph [ref=e1191]: 충남형지역인재전형
+                - generic [ref=e1195] [cursor=pointer]:
+                  - paragraph [ref=e1196]: 순천향대학교(충남)
+                  - paragraph [ref=e1197]: 충청형지역인재전형
+                - generic [ref=e1201] [cursor=pointer]:
+                  - paragraph [ref=e1202]: 숭실대학교(서울)
+                  - paragraph [ref=e1203]: 학생부우수자전형
+                - generic [ref=e1207] [cursor=pointer]:
+                  - paragraph [ref=e1208]: 신라대학교(부산)
+                  - paragraph [ref=e1209]: 만학도
+                - generic [ref=e1213] [cursor=pointer]:
+                  - paragraph [ref=e1214]: 신라대학교(부산)
+                  - paragraph [ref=e1215]: 면접우수자전형
+                - generic [ref=e1219] [cursor=pointer]:
+                  - paragraph [ref=e1220]: 신라대학교(부산)
+                  - paragraph [ref=e1221]: 미래인재
+                - generic [ref=e1225] [cursor=pointer]:
+                  - paragraph [ref=e1226]: 신라대학교(부산)
+                  - paragraph [ref=e1227]: 일반고교과전형
+                - generic [ref=e1231] [cursor=pointer]:
+                  - paragraph [ref=e1232]: 신라대학교(부산)
+                  - paragraph [ref=e1233]: 외국인
+                - generic [ref=e1237] [cursor=pointer]:
+                  - paragraph [ref=e1238]: 신라대학교(부산)
+                  - paragraph [ref=e1239]: 지역인재전형
+                - generic [ref=e1243] [cursor=pointer]:
+                  - paragraph [ref=e1244]: 아주대학교(경기)
+                  - paragraph [ref=e1245]: 고교추천전형
+                - generic [ref=e1249] [cursor=pointer]:
+                  - paragraph [ref=e1250]: 안동대학교(경북)
+                  - paragraph [ref=e1251]: 선수출신자
+                - generic [ref=e1255] [cursor=pointer]:
+                  - paragraph [ref=e1256]: 연세대학교(서울)
+                  - paragraph [ref=e1257]: 추천형전형
+                - generic [ref=e1261] [cursor=pointer]:
+                  - paragraph [ref=e1262]: 영남대학교(경북)
+                  - paragraph [ref=e1263]: 일반학생전형
+                - generic [ref=e1267] [cursor=pointer]:
+                  - paragraph [ref=e1268]: 용인대학교(경기)
+                  - paragraph [ref=e1269]: 교과성적우수자특별전형
+                - generic [ref=e1273] [cursor=pointer]:
+                  - paragraph [ref=e1274]: 영남대학교(경북)
+                  - paragraph [ref=e1275]: 의학창의인재전형
+                - generic [ref=e1279] [cursor=pointer]:
+                  - paragraph [ref=e1280]: 용인대학교(경기)
+                  - paragraph [ref=e1281]: 일반학생전형
+                - generic [ref=e1285] [cursor=pointer]:
+                  - paragraph [ref=e1286]: 용인대학교(경기)
+                  - paragraph [ref=e1287]: 자율전공특별전형
+                - generic [ref=e1291] [cursor=pointer]:
+                  - paragraph [ref=e1292]: 우송대학교(대전)
+                  - paragraph [ref=e1293]: 교과중심전형
+                - generic [ref=e1297] [cursor=pointer]:
+                  - paragraph [ref=e1298]: 우송대학교(대전)
+                  - paragraph [ref=e1299]: 면접전형
+                - generic [ref=e1303] [cursor=pointer]:
+                  - paragraph [ref=e1304]: 우송대학교(대전)
+                  - paragraph [ref=e1305]: 재직자전형 (외)
+                - generic [ref=e1309] [cursor=pointer]:
+                  - paragraph [ref=e1310]: 원광대학교(전북)
+                  - paragraph [ref=e1311]: 고른기회전형
+                - generic [ref=e1315] [cursor=pointer]:
+                  - paragraph [ref=e1316]: 인천대학교(인천)
+                  - paragraph [ref=e1317]: 지역균형전형
+                - generic [ref=e1321] [cursor=pointer]:
+                  - paragraph [ref=e1322]: 원광대학교(전북)
+                  - paragraph [ref=e1323]: 지역인재교과 (전북)
+                - generic [ref=e1327] [cursor=pointer]:
+                  - paragraph [ref=e1328]: 원광대학교(전북)
+                  - paragraph [ref=e1329]: 지역인재교과 (호남)
+                - generic [ref=e1333] [cursor=pointer]:
+                  - paragraph [ref=e1334]: 원광대학교(전북)
+                  - paragraph [ref=e1335]: 특성화고교졸업자전형 (외)
+                - generic [ref=e1339] [cursor=pointer]:
+                  - paragraph [ref=e1340]: 이화여자대학교(서울)
+                  - paragraph [ref=e1341]: 고교추천전형
+                - generic [ref=e1345] [cursor=pointer]:
+                  - paragraph [ref=e1346]: 인천대학교(인천)
+                  - paragraph [ref=e1347]: 교과성적우수자전형
+                - generic [ref=e1351] [cursor=pointer]:
+                  - paragraph [ref=e1352]: 인하대학교(인천)
+                  - paragraph [ref=e1353]: 지역균형전형
+                - generic [ref=e1357] [cursor=pointer]:
+                  - paragraph [ref=e1358]: 전주대학교(전북)
+                  - paragraph [ref=e1359]: 달란트전형
+                - generic [ref=e1363] [cursor=pointer]:
+                  - paragraph [ref=e1364]: 전주대학교(전북)
+                  - paragraph [ref=e1365]: 일반학생전형
+                - generic [ref=e1369] [cursor=pointer]:
+                  - paragraph [ref=e1370]: 제주대학교(제주)
+                  - paragraph [ref=e1371]: 지역인재고른기회전형
+                - generic [ref=e1375] [cursor=pointer]:
+                  - paragraph [ref=e1376]: 제주대학교(제주)
+                  - paragraph [ref=e1377]: 지역인재전형
+                - generic [ref=e1381] [cursor=pointer]:
+                  - paragraph [ref=e1382]: 창원대학교(경남)
+                  - paragraph [ref=e1383]: 평생학습자
+                - generic [ref=e1387] [cursor=pointer]:
+                  - paragraph [ref=e1388]: 창원대학교(경남)
+                  - paragraph [ref=e1389]: 학업성적우수자전형
+                - generic [ref=e1393] [cursor=pointer]:
+                  - paragraph [ref=e1394]: 조선대학교(광주)
+                  - paragraph [ref=e1395]: 일반전형
+                - generic [ref=e1399] [cursor=pointer]:
+                  - paragraph [ref=e1400]: 중앙대학교(서울)
+                  - paragraph [ref=e1401]: 지역균형전형
+                - generic [ref=e1405] [cursor=pointer]:
+                  - paragraph [ref=e1406]: 중원대학교(충북)
+                  - paragraph [ref=e1407]: 일반전형 I
+                - generic [ref=e1411] [cursor=pointer]:
+                  - paragraph [ref=e1412]: 중원대학교(충북)
+                  - paragraph [ref=e1413]: 일반전형 II
+                - generic [ref=e1417] [cursor=pointer]:
+                  - paragraph [ref=e1418]: 차의과학대학교(경기)
+                  - paragraph [ref=e1419]: CHA학생부교과전형
+                - generic [ref=e1423] [cursor=pointer]:
+                  - paragraph [ref=e1424]: 차의과학대학교(경기)
+                  - paragraph [ref=e1425]: 지역균형선발전형
+                - generic [ref=e1429] [cursor=pointer]:
+                  - paragraph [ref=e1430]: 창신대학교(경남)
+                  - paragraph [ref=e1431]: 일반계고교전형
+                - generic [ref=e1435] [cursor=pointer]:
+                  - paragraph [ref=e1436]: 창신대학교(경남)
+                  - paragraph [ref=e1437]: 창신인재면접전형
+                - generic [ref=e1441] [cursor=pointer]:
+                  - paragraph [ref=e1442]: 창원대학교(경남)
+                  - paragraph [ref=e1443]: 글로컬인재전형
+                - generic [ref=e1447] [cursor=pointer]:
+                  - paragraph [ref=e1448]: 한양대학교(ERICA)(경기)
+                  - paragraph [ref=e1449]: 지역균형선발전형
+                - generic [ref=e1453] [cursor=pointer]:
+                  - paragraph [ref=e1454]: 한경대학교(경기)
+                  - paragraph [ref=e1455]: 지역균형선발전형
+                - generic [ref=e1459] [cursor=pointer]:
+                  - paragraph [ref=e1460]: 창원대학교(경남)
+                  - paragraph [ref=e1461]: 만학도 (외)
+                - generic [ref=e1465] [cursor=pointer]:
+                  - paragraph [ref=e1466]: 청주대학교(충북)
+                  - paragraph [ref=e1467]: 교과인재전형
+                - generic [ref=e1471] [cursor=pointer]:
+                  - paragraph [ref=e1472]: 청주대학교(충북)
+                  - paragraph [ref=e1473]: 교과우수전형
+                - generic [ref=e1477] [cursor=pointer]:
+                  - paragraph [ref=e1478]: 청주대학교(충북)
+                  - paragraph [ref=e1479]: 일반전형
+                - generic [ref=e1483] [cursor=pointer]:
+                  - paragraph [ref=e1484]: 청주대학교(충북)
+                  - paragraph [ref=e1485]: 담임추천전형
+                - generic [ref=e1489] [cursor=pointer]:
+                  - paragraph [ref=e1490]: 초당대학교(전남)
+                  - paragraph [ref=e1491]: 일반전형
+                - generic [ref=e1495] [cursor=pointer]:
+                  - paragraph [ref=e1496]: 청주대학교(충북)
+                  - paragraph [ref=e1497]: 창의면접전형
+                - generic [ref=e1501] [cursor=pointer]:
+                  - paragraph [ref=e1502]: 초당대학교(전남)
+                  - paragraph [ref=e1503]: 만학도전형
+                - generic [ref=e1507] [cursor=pointer]:
+                  - paragraph [ref=e1508]: 충남대학교(대전)
+                  - paragraph [ref=e1509]: 일반전형
+                - generic [ref=e1513] [cursor=pointer]:
+                  - paragraph [ref=e1514]: 한경대학교(경기)
+                  - paragraph [ref=e1515]: 서해5도학생전형 (외)
+                - generic [ref=e1519] [cursor=pointer]:
+                  - paragraph [ref=e1520]: 충북대학교(충북)
+                  - paragraph [ref=e1521]: 특성화고졸재직자전형 (외)
+                - generic [ref=e1525] [cursor=pointer]:
+                  - paragraph [ref=e1526]: 충북대학교(충북)
+                  - paragraph [ref=e1527]: 학생부교과전형
+                - generic [ref=e1531] [cursor=pointer]:
+                  - paragraph [ref=e1532]: 한경대학교(경기)
+                  - paragraph [ref=e1533]: 일반전형A
+                - generic [ref=e1537] [cursor=pointer]:
+                  - paragraph [ref=e1538]: 평택대학교(경기)
+                  - paragraph [ref=e1539]: PTU교과전형
+                - generic [ref=e1543] [cursor=pointer]:
+                  - paragraph [ref=e1544]: 평택대학교(경기)
+                  - paragraph [ref=e1545]: PTU추천전형
+                - generic [ref=e1549] [cursor=pointer]:
+                  - paragraph [ref=e1550]: 평택대학교(경기)
+                  - paragraph [ref=e1551]: 기회균형특별전형 (외)
+                - generic [ref=e1555] [cursor=pointer]:
+                  - paragraph [ref=e1556]: 평택대학교(경기)
+                  - paragraph [ref=e1557]: 농어촌학생전형 (외)
+                - generic [ref=e1561] [cursor=pointer]:
+                  - paragraph [ref=e1562]: 평택대학교(경기)
+                  - paragraph [ref=e1563]: 특성화고교졸업자전형 (외)
+                - generic [ref=e1567] [cursor=pointer]:
+                  - paragraph [ref=e1568]: 한경대학교(경기)
+                  - paragraph [ref=e1569]: 일반전형P
+                - generic [ref=e1573] [cursor=pointer]:
+                  - paragraph [ref=e1574]: 한국공학대학교(경기)
+                  - paragraph [ref=e1575]: 교과우수자전형
+                - generic [ref=e1579] [cursor=pointer]:
+                  - paragraph [ref=e1580]: 한국공학대학교(경기)
+                  - paragraph [ref=e1581]: 지역균형전형
+                - generic [ref=e1585] [cursor=pointer]:
+                  - paragraph [ref=e1586]: 한국기술교육대학교(충남)
+                  - paragraph [ref=e1587]: 일반전형
+                - generic [ref=e1591] [cursor=pointer]:
+                  - paragraph [ref=e1592]: 한국성서대학교(서울)
+                  - paragraph [ref=e1593]: 교과성적전형
+                - generic [ref=e1597] [cursor=pointer]:
+                  - paragraph [ref=e1598]: 한국외국어대학교(경기)
+                  - paragraph [ref=e1599]: 학교장추천전형
+                - generic [ref=e1603] [cursor=pointer]:
+                  - paragraph [ref=e1604]: 한국항공대학교(경기)
+                  - paragraph [ref=e1605]: 교과성적우수자전형
+                - generic [ref=e1609] [cursor=pointer]:
+                  - paragraph [ref=e1610]: 한국항공대학교(경기)
+                  - paragraph [ref=e1611]: 학교장추천전형
+                - generic [ref=e1615] [cursor=pointer]:
+                  - paragraph [ref=e1616]: 한국해양대학교(부산)
+                  - paragraph [ref=e1617]: 교과성적우수자전형
+                - generic [ref=e1621] [cursor=pointer]:
+                  - paragraph [ref=e1622]: 한국해양대학교(부산)
+                  - paragraph [ref=e1623]: 일반전형
+                - generic [ref=e1627] [cursor=pointer]:
+                  - paragraph [ref=e1628]: 한국해양대학교(부산)
+                  - paragraph [ref=e1629]: 지역인재전형
+                - generic [ref=e1633] [cursor=pointer]:
+                  - paragraph [ref=e1634]: 한남대학교(대전)
+                  - paragraph [ref=e1635]: 일반전형
+                - generic [ref=e1639] [cursor=pointer]:
+                  - paragraph [ref=e1640]: 한남대학교(대전)
+                  - paragraph [ref=e1641]: 장애인등대상자전형 (외)
+                - generic [ref=e1645] [cursor=pointer]:
+                  - paragraph [ref=e1646]: 한남대학교(대전)
+                  - paragraph [ref=e1647]: 지역인재교과우수자전형
+                - generic [ref=e1651] [cursor=pointer]:
+                  - paragraph [ref=e1652]: 한라대학교(강원)
+                  - paragraph [ref=e1653]: 일반학생
+                - generic [ref=e1657] [cursor=pointer]:
+                  - paragraph [ref=e1658]: 한동대학교(경북)
+                  - paragraph [ref=e1659]: 학생부교과전형
+                - generic [ref=e1663] [cursor=pointer]:
+                  - paragraph [ref=e1664]: 한동대학교(경북)
+                  - paragraph [ref=e1665]: 한동인재전형
+                - generic [ref=e1669] [cursor=pointer]:
+                  - paragraph [ref=e1670]: 한양대학교(서울)
+                  - paragraph [ref=e1671]: 추천형
+                - generic [ref=e1675] [cursor=pointer]:
+                  - paragraph [ref=e1676]: 한라대학교(강원)
+                  - paragraph [ref=e1677]: 일반학생 (면접중심 전형)
+                - generic [ref=e1681] [cursor=pointer]:
+                  - paragraph [ref=e1682]: 한라대학교(강원)
+                  - paragraph [ref=e1683]: 지역인재전형
+                - generic [ref=e1687] [cursor=pointer]:
+                  - paragraph [ref=e1688]: 한림대학교(강원)
+                  - paragraph [ref=e1689]: 교과우수자전형
+                - generic [ref=e1693] [cursor=pointer]:
+                  - paragraph [ref=e1694]: 한림대학교(강원)
+                  - paragraph [ref=e1695]: 농어촌학생전형 (외)
+                - generic [ref=e1699] [cursor=pointer]:
+                  - paragraph [ref=e1700]: 한림대학교(강원)
+                  - paragraph [ref=e1701]: 지역인재전형
+                - generic [ref=e1705] [cursor=pointer]:
+                  - paragraph [ref=e1706]: 한성대학교(서울)
+                  - paragraph [ref=e1707]: 지역균형전형
+                - generic [ref=e1711] [cursor=pointer]:
+                  - paragraph [ref=e1712]: 한밭대학교(대전)
+                  - paragraph [ref=e1713]: 학생부교과전형
+                - generic [ref=e1717] [cursor=pointer]:
+                  - paragraph [ref=e1718]: 한서대학교(충남)
+                  - paragraph [ref=e1719]: 학생부교과II전형
+                - generic [ref=e1723] [cursor=pointer]:
+                  - paragraph [ref=e1724]: 한서대학교(충남)
+                  - paragraph [ref=e1725]: 학생부교과I전형
+                - generic [ref=e1729] [cursor=pointer]:
+                  - paragraph [ref=e1730]: 한서대학교(충남)
+                  - paragraph [ref=e1731]: 한서인재전형
+                - generic [ref=e1735] [cursor=pointer]:
+                  - paragraph [ref=e1736]: 한성대학교(서울)
+                  - paragraph [ref=e1737]: 교과우수전형
+                - generic [ref=e1741] [cursor=pointer]:
+                  - paragraph [ref=e1742]: 한성대학교(서울)
+                  - paragraph [ref=e1743]: 특기자전형
+                - generic [ref=e1747] [cursor=pointer]:
+                  - paragraph [ref=e1748]: 한세대학교(경기)
+                  - paragraph [ref=e1749]: 학생부교과우수자전형
+                - generic [ref=e1753] [cursor=pointer]:
+                  - paragraph [ref=e1754]: 한세대학교(경기)
+                  - paragraph [ref=e1755]: 학생부면접우수자전형
+                - generic [ref=e1759] [cursor=pointer]:
+                  - paragraph [ref=e1760]: 한신대학교(경기)
+                  - paragraph [ref=e1761]: 학교장추천전형
+                - generic [ref=e1765] [cursor=pointer]:
+                  - paragraph [ref=e1766]: 한신대학교(경기)
+                  - paragraph [ref=e1767]: 학생부우수자전형
+                - generic [ref=e1771] [cursor=pointer]:
+                  - paragraph [ref=e1772]: 강원대학교(강원)
+                  - paragraph [ref=e1773]: 지역인재교과전형(지역인재전형)
+                - generic [ref=e1777] [cursor=pointer]:
+                  - paragraph [ref=e1778]: 협성대학교(경기)
+                  - paragraph [ref=e1779]: 미래역량우수자전형
+                - generic [ref=e1783] [cursor=pointer]:
+                  - paragraph [ref=e1784]: 가천대학교(인천)
+                  - paragraph [ref=e1785]: 학생부우수자전형
+                - generic [ref=e1789] [cursor=pointer]:
+                  - paragraph [ref=e1790]: 협성대학교(경기)
+                  - paragraph [ref=e1791]: 학생부교과우수자전형
+                - generic [ref=e1795] [cursor=pointer]:
+                  - paragraph [ref=e1796]: 호남대학교(광주)
+                  - paragraph [ref=e1797]: 일반고전형
+                - generic [ref=e1801] [cursor=pointer]:
+                  - paragraph [ref=e1802]: 호남대학교(광주)
+                  - paragraph [ref=e1803]: 일반학생 A 전형
+                - generic [ref=e1807] [cursor=pointer]:
+                  - paragraph [ref=e1808]: 호남대학교(광주)
+                  - paragraph [ref=e1809]: 일반학생 B 전형
+                - generic [ref=e1813] [cursor=pointer]:
+                  - paragraph [ref=e1814]: 호서대학교(충남)
+                  - paragraph [ref=e1815]: 면접형전형
+                - generic [ref=e1819] [cursor=pointer]:
+                  - paragraph [ref=e1820]: 호서대학교(충남)
+                  - paragraph [ref=e1821]: 학생부전형
+                - generic [ref=e1825] [cursor=pointer]:
+                  - paragraph [ref=e1826]: 홍익대학교(서울)
+                  - paragraph [ref=e1827]: 학교장추천자전형
+                - generic [ref=e1831] [cursor=pointer]:
+                  - paragraph [ref=e1832]: 홍익대학교(세종)(세종)
+                  - paragraph [ref=e1833]: 교과우수자전형
+                - generic [ref=e1837] [cursor=pointer]:
+                  - paragraph [ref=e1838]: 경일대학교(경북)
+                  - paragraph [ref=e1839]: 면접전형
+                - generic [ref=e1843] [cursor=pointer]:
+                  - paragraph [ref=e1844]: 경일대학교(경북)
+                  - paragraph [ref=e1845]: 일반전형
+                - generic [ref=e1849] [cursor=pointer]:
+                  - paragraph [ref=e1850]: 경일대학교(경북)
+                  - paragraph [ref=e1851]: 지역인재교과전형
+                - generic [ref=e1855] [cursor=pointer]:
+                  - paragraph [ref=e1856]: 가천대학교(인천)
+                  - paragraph [ref=e1857]: 지역균형전형
+                - generic [ref=e1861] [cursor=pointer]:
+                  - paragraph [ref=e1862]: 가톨릭대학교(경기)
+                  - paragraph [ref=e1863]: 지역균형전형
+                - generic [ref=e1867] [cursor=pointer]:
+                  - paragraph [ref=e1868]: 강원대학교(강원)
+                  - paragraph [ref=e1869]: 일반교과전형(일반전형 )
+                - generic [ref=e1873] [cursor=pointer]:
+                  - paragraph [ref=e1874]: 강원대학교(강원)
+                  - paragraph [ref=e1875]: 실기우수자
+                - generic [ref=e1879] [cursor=pointer]:
+                  - paragraph [ref=e1880]: 강원대학교(도계)(강원)
+                  - paragraph [ref=e1881]: 일반교과전형(일반전형 )
+                - generic [ref=e1885] [cursor=pointer]:
+                  - paragraph [ref=e1886]: 강원대학교(삼척)(강원)
+                  - paragraph [ref=e1887]: 일반교과전형(일반전형)
+                - generic [ref=e1891] [cursor=pointer]:
+                  - paragraph [ref=e1892]: 강원대학교(강원)
+                  - paragraph [ref=e1893]: 일반전형
+                - generic [ref=e1897] [cursor=pointer]:
+                  - paragraph [ref=e1898]: 강원대학교(도계)(강원)
+                  - paragraph [ref=e1899]: 일반전형
+                - generic [ref=e1903] [cursor=pointer]:
+                  - paragraph [ref=e1904]: 강원대학교(삼척)(강원)
+                  - paragraph [ref=e1905]: 일반전형
+                - generic [ref=e1909] [cursor=pointer]:
+                  - paragraph [ref=e1910]: 강원대학교(도계)(강원)
+                  - paragraph [ref=e1911]: 지역교과전형(지역인재전형)
+                - generic [ref=e1915] [cursor=pointer]:
+                  - paragraph [ref=e1916]: 강원대학교(삼척)(강원)
+                  - paragraph [ref=e1917]: 지역교과전형(지역인재전형)
+                - generic [ref=e1921] [cursor=pointer]:
+                  - paragraph [ref=e1922]: 강원대학교(도계)(강원)
+                  - paragraph [ref=e1923]: 지역인재전형
+                - generic [ref=e1927] [cursor=pointer]:
+                  - paragraph [ref=e1928]: 강원대학교(삼척)(강원)
+                  - paragraph [ref=e1929]: 지역인재전형
+                - generic [ref=e1933] [cursor=pointer]:
+                  - paragraph [ref=e1934]: 강원대학교(강원)
+                  - paragraph [ref=e1935]: 평생학습자전형
+                - generic [ref=e1939] [cursor=pointer]:
+                  - paragraph [ref=e1940]: 건양대학교(충남)
+                  - paragraph [ref=e1941]: 일반학생
+                - generic [ref=e1945] [cursor=pointer]:
+                  - paragraph [ref=e1946]: 건양대학교(대전)
+                  - paragraph [ref=e1947]: 일반학생 (면접 전형)
+                - generic [ref=e1951] [cursor=pointer]:
+                  - paragraph [ref=e1952]: 건양대학교(대전)
+                  - paragraph [ref=e1953]: 일반학생 (최저 전형)
+                - generic [ref=e1957] [cursor=pointer]:
+                  - paragraph [ref=e1958]: 건양대학교(충남)
+                  - paragraph [ref=e1959]: 채용조건형계약학과전형 (외)
+                - generic [ref=e1963] [cursor=pointer]:
+                  - paragraph [ref=e1964]: 건양대학교(충남)
+                  - paragraph [ref=e1965]: 특성화고등을졸업한재직자전형 (선취업 후진학)
+                - generic [ref=e1969] [cursor=pointer]:
+                  - paragraph [ref=e1970]: 경기대학교(경기)
+                  - paragraph [ref=e1971]: 교과성적우수자전형
+                - generic [ref=e1975] [cursor=pointer]:
+                  - paragraph [ref=e1976]: 동양대학교(경북)
+                  - paragraph [ref=e1977]: 면접전형
+                - generic [ref=e1981] [cursor=pointer]:
+                  - paragraph [ref=e1982]: 경동대학교(경기)
+                  - paragraph [ref=e1983]: 일반학생전형
+                - generic [ref=e1987] [cursor=pointer]:
+                  - paragraph [ref=e1988]: 경기대학교(경기)
+                  - paragraph [ref=e1989]: 학교장추천전형
+                - generic [ref=e1993] [cursor=pointer]:
+                  - paragraph [ref=e1994]: 경동대학교(강원)
+                  - paragraph [ref=e1995]: 지역인재전형
+                - generic [ref=e1999] [cursor=pointer]:
+                  - paragraph [ref=e2000]: 경북대학교(대구)
+                  - paragraph [ref=e2001]: 교과우수자전형
+                - generic [ref=e2005] [cursor=pointer]:
+                  - paragraph [ref=e2006]: 경북대학교(상주)(경북)
+                  - paragraph [ref=e2007]: 교과우수자전형
+                - generic [ref=e2011] [cursor=pointer]:
+                  - paragraph [ref=e2012]: 경희대학교(서울)
+                  - paragraph [ref=e2013]: 지역균형전형
+                - generic [ref=e2017] [cursor=pointer]:
+                  - paragraph [ref=e2018]: 대구가톨릭대학교(경북)
+                  - paragraph [ref=e2019]: 교과전형
+                - generic [ref=e2023] [cursor=pointer]:
+                  - paragraph [ref=e2024]: 대구가톨릭대학교(경북)
+                  - paragraph [ref=e2025]: 라이프융합전형
+                - generic [ref=e2029] [cursor=pointer]:
+                  - paragraph [ref=e2030]: 동양대학교(경북)
+                  - paragraph [ref=e2031]: 사회적배려자전형 (외)
+                - generic [ref=e2035] [cursor=pointer]:
+                  - paragraph [ref=e2036]: 동양대학교(경북)
+                  - paragraph [ref=e2037]: 지역인재전형
+                - generic [ref=e2041] [cursor=pointer]:
+                  - paragraph [ref=e2042]: 명지대학교(경기)
+                  - paragraph [ref=e2043]: 교과면접전형
+                - generic [ref=e2047] [cursor=pointer]:
+                  - paragraph [ref=e2048]: 명지대학교(경기)
+                  - paragraph [ref=e2049]: 만학도전형
+                - generic [ref=e2053] [cursor=pointer]:
+                  - paragraph [ref=e2054]: 명지대학교(경기)
+                  - paragraph [ref=e2055]: 학교장추천전형
+                - generic [ref=e2059] [cursor=pointer]:
+                  - paragraph [ref=e2060]: 부산대학교(밀양)(경남)
+                  - paragraph [ref=e2061]: 지역인재전형
+                - generic [ref=e2065] [cursor=pointer]:
+                  - paragraph [ref=e2066]: 부산대학교(양산)(경남)
+                  - paragraph [ref=e2067]: 지역인재전형
+                - generic [ref=e2071] [cursor=pointer]:
+                  - paragraph [ref=e2072]: 부산대학교(부산)
+                  - paragraph [ref=e2073]: 지역인재전형
+                - generic [ref=e2077] [cursor=pointer]:
+                  - paragraph [ref=e2078]: 안양대학교(경기)
+                  - paragraph [ref=e2079]: 학교장추천전형
+                - generic [ref=e2083] [cursor=pointer]:
+                  - paragraph [ref=e2084]: 부산대학교(밀양)(경남)
+                  - paragraph [ref=e2085]: 학생부교과전형
+                - generic [ref=e2089] [cursor=pointer]:
+                  - paragraph [ref=e2090]: 부산대학교(양산)(경남)
+                  - paragraph [ref=e2091]: 학생부교과전형
+                - generic [ref=e2095] [cursor=pointer]:
+                  - paragraph [ref=e2096]: 부산대학교(부산)
+                  - paragraph [ref=e2097]: 학생부교과전형
+                - generic [ref=e2101] [cursor=pointer]:
+                  - paragraph [ref=e2102]: 성균관대학교(서울)
+                  - paragraph [ref=e2103]: 학교장추천
+                - generic [ref=e2107] [cursor=pointer]:
+                  - paragraph [ref=e2108]: 상명대학교(서울)
+                  - paragraph [ref=e2109]: 고교추천전형
+                - generic [ref=e2113] [cursor=pointer]:
+                  - paragraph [ref=e2114]: 상명대학교(천안)(충남)
+                  - paragraph [ref=e2115]: 학생부교과전형
+                - generic [ref=e2119] [cursor=pointer]:
+                  - paragraph [ref=e2120]: 영산대학교(부산)
+                  - paragraph [ref=e2121]: 교과전형
+                - generic [ref=e2125] [cursor=pointer]:
+                  - paragraph [ref=e2126]: 세한대학교(전남)
+                  - paragraph [ref=e2127]: 일반학생전형
+                - generic [ref=e2131] [cursor=pointer]:
+                  - paragraph [ref=e2132]: 안양대학교(경기)
+                  - paragraph [ref=e2133]: 아리학생부교과전형
+                - generic [ref=e2137] [cursor=pointer]:
+                  - paragraph [ref=e2138]: 안양대학교(경기)
+                  - paragraph [ref=e2139]: 아리학생부면접전형
+                - generic [ref=e2143] [cursor=pointer]:
+                  - paragraph [ref=e2144]: 단국대학교(경기)
+                  - paragraph [ref=e2145]: 지역균형선발전형
+                - generic [ref=e2149] [cursor=pointer]:
+                  - paragraph [ref=e2150]: 단국대학교(천안)(충남)
+                  - paragraph [ref=e2151]: 지역메디바이오인재전형
+                - generic [ref=e2155] [cursor=pointer]:
+                  - paragraph [ref=e2156]: 단국대학교(천안)(충남)
+                  - paragraph [ref=e2157]: 취업자전형
+                - generic [ref=e2161] [cursor=pointer]:
+                  - paragraph [ref=e2162]: 단국대학교(경기)
+                  - paragraph [ref=e2163]: 취업자전형
+                - generic [ref=e2167] [cursor=pointer]:
+                  - paragraph [ref=e2168]: 단국대학교(천안)(충남)
+                  - paragraph [ref=e2169]: 특성화고졸재직자전형 (외)
+                - generic [ref=e2173] [cursor=pointer]:
+                  - paragraph [ref=e2174]: 단국대학교(경기)
+                  - paragraph [ref=e2175]: 특성화고졸재직자전형 (외)
+                - generic [ref=e2179] [cursor=pointer]:
+                  - paragraph [ref=e2180]: 단국대학교(천안)(충남)
+                  - paragraph [ref=e2181]: 학생부교과우수자전형
+                - generic [ref=e2185] [cursor=pointer]:
+                  - paragraph [ref=e2186]: 영산대학교(부산)
+                  - paragraph [ref=e2187]: 면접전형
+                - generic [ref=e2191] [cursor=pointer]:
+                  - paragraph [ref=e2192]: 영산대학교(부산)
+                  - paragraph [ref=e2193]: 성인학습자전형
+                - generic [ref=e2197] [cursor=pointer]:
+                  - paragraph [ref=e2198]: 영산대학교(부산)
+                  - paragraph [ref=e2199]: 일반계고전형
+                - generic [ref=e2203] [cursor=pointer]:
+                  - paragraph [ref=e2204]: 우석대학교(전북)
+                  - paragraph [ref=e2205]: 실기일반전형
+                - generic [ref=e2209] [cursor=pointer]:
+                  - paragraph [ref=e2210]: 우석대학교(전북)
+                  - paragraph [ref=e2211]: 일반학생
+                - generic [ref=e2215] [cursor=pointer]:
+                  - paragraph [ref=e2216]: 우석대학교(전북)
+                  - paragraph [ref=e2217]: 일반학생 (면접중심 전형)
+                - generic [ref=e2221] [cursor=pointer]:
+                  - paragraph [ref=e2222]: 우석대학교(전북)
+                  - paragraph [ref=e2223]: 지역인재전형
+                - generic [ref=e2227] [cursor=pointer]:
+                  - paragraph [ref=e2228]: 우석대학교(전북)
+                  - paragraph [ref=e2229]: 특기자전형
+                - generic [ref=e2233] [cursor=pointer]:
+                  - paragraph [ref=e2234]: 유원대학교(충북)
+                  - paragraph [ref=e2235]: 계약학과재교육형
+                - generic [ref=e2239] [cursor=pointer]:
+                  - paragraph [ref=e2240]: 유원대학교(충북)
+                  - paragraph [ref=e2241]: 계약학과조기취업형
+                - generic [ref=e2245] [cursor=pointer]:
+                  - paragraph [ref=e2246]: 유원대학교(충북)
+                  - paragraph [ref=e2247]: 유원교과전형
+                - generic [ref=e2251] [cursor=pointer]:
+                  - paragraph [ref=e2252]: 유원대학교(충북)
+                  - paragraph [ref=e2253]: 유원면접전형
+                - generic [ref=e2257] [cursor=pointer]:
+                  - paragraph [ref=e2258]: 을지대학교(경기)
+                  - paragraph [ref=e2259]: 기회균형II전형
+                - generic [ref=e2263] [cursor=pointer]:
+                  - paragraph [ref=e2264]: 을지대학교(경기)
+                  - paragraph [ref=e2265]: 지역균형전형
+                - generic [ref=e2269] [cursor=pointer]:
+                  - paragraph [ref=e2270]: 인제대학교(경남)
+                  - paragraph [ref=e2271]: 면접전형
+                - generic [ref=e2275] [cursor=pointer]:
+                  - paragraph [ref=e2276]: 인제대학교(경남)
+                  - paragraph [ref=e2277]: 의예약학전형
+                - generic [ref=e2281] [cursor=pointer]:
+                  - paragraph [ref=e2282]: 인제대학교(경남)
+                  - paragraph [ref=e2283]: 지역인재II전형
+                - generic [ref=e2287] [cursor=pointer]:
+                  - paragraph [ref=e2288]: 전남대학교(전남)
+                  - paragraph [ref=e2289]: 일반전형
+                - generic [ref=e2293] [cursor=pointer]:
+                  - paragraph [ref=e2294]: 인제대학교(경남)
+                  - paragraph [ref=e2295]: 지역인재I전형
+                - generic [ref=e2299] [cursor=pointer]:
+                  - paragraph [ref=e2300]: 중부대학교(경기)
+                  - paragraph [ref=e2301]: 학교생활우수자전형
+                - generic [ref=e2305] [cursor=pointer]:
+                  - paragraph [ref=e2306]: 인제대학교(경남)
+                  - paragraph [ref=e2307]: 특성화고교전형
+                - generic [ref=e2311] [cursor=pointer]:
+                  - paragraph [ref=e2312]: 인제대학교(경남)
+                  - paragraph [ref=e2313]: 학생부교과전형
+                - generic [ref=e2317] [cursor=pointer]:
+                  - paragraph [ref=e2318]: 청운대학교(충남)
+                  - paragraph [ref=e2319]: 청운인재전형
+                - generic [ref=e2323] [cursor=pointer]:
+                  - paragraph [ref=e2324]: 전남대학교(광주)
+                  - paragraph [ref=e2325]: 예체능실기전형
+                - generic [ref=e2329] [cursor=pointer]:
+                  - paragraph [ref=e2330]: 중부대학교(충남)
+                  - paragraph [ref=e2331]: 학생부우수자전형
+                - generic [ref=e2335] [cursor=pointer]:
+                  - paragraph [ref=e2336]: 청운대학교(충남)
+                  - paragraph [ref=e2337]: 재직자특별전형 (외)
+                - generic [ref=e2341] [cursor=pointer]:
+                  - paragraph [ref=e2342]: 청운대학교(충남)
+                  - paragraph [ref=e2343]: 평생학습자전형
+                - generic [ref=e2347] [cursor=pointer]:
+                  - paragraph [ref=e2348]: 경상국립대학교(경남)
+                  - paragraph [ref=e2349]: 일반전형
+                - generic [ref=e2353] [cursor=pointer]:
+                  - paragraph [ref=e2354]: 경상국립대학교(통영)(경남)
+                  - paragraph [ref=e2355]: 일반전형
+                - generic [ref=e2359] [cursor=pointer]:
+                  - paragraph [ref=e2360]: 한국교통대학교(충북)
+                  - paragraph [ref=e2361]: 일반전형
+                - generic [ref=e2365] [cursor=pointer]:
+                  - paragraph [ref=e2366]: 공주대학교(충남)
+                  - paragraph [ref=e2367]: 교과II전형
+                - generic [ref=e2371] [cursor=pointer]:
+                  - paragraph [ref=e2372]: 경상국립대학교(경남)
+                  - paragraph [ref=e2373]: 지역인재전형
+                - generic [ref=e2377] [cursor=pointer]:
+                  - paragraph [ref=e2378]: 공주대학교(충남)
+                  - paragraph [ref=e2379]: 일반전형
+                - generic [ref=e2383] [cursor=pointer]:
+                  - paragraph [ref=e2384]: 공주대학교(충남)
+                  - paragraph [ref=e2385]: 자율전공전형
+                - generic [ref=e2389] [cursor=pointer]:
+                  - paragraph [ref=e2390]: 신한대학교(경기)
+                  - paragraph [ref=e2391]: 교육기회전형 (외)
+                - generic [ref=e2395] [cursor=pointer]:
+                  - paragraph [ref=e2396]: 신한대학교(경기)
+                  - paragraph [ref=e2397]: 농어촌전형 (외)
+                - generic [ref=e2401] [cursor=pointer]:
+                  - paragraph [ref=e2402]: 신한대학교(경기)
+                  - paragraph [ref=e2403]: 일반전형
+                - generic [ref=e2407] [cursor=pointer]:
+                  - paragraph [ref=e2408]: 신한대학교(경기)
+                  - paragraph [ref=e2409]: 특성화고교졸업자전형 (외)
+                - generic [ref=e2413] [cursor=pointer]:
+                  - paragraph [ref=e2414]: 신한대학교(경기)
+                  - paragraph [ref=e2415]: 학생부우수자전형
+                - generic [ref=e2419] [cursor=pointer]:
+                  - paragraph [ref=e2420]: 전북대학교(전북)
+                  - paragraph [ref=e2421]: 일반학생전형
+                - generic [ref=e2425] [cursor=pointer]:
+                  - paragraph [ref=e2426]: 전북대학교(전북)
+                  - paragraph [ref=e2427]: 지역인재I전형
+                - generic [ref=e2431] [cursor=pointer]:
+                  - paragraph [ref=e2432]: 울산대학교(울산)
+                  - paragraph [ref=e2433]: 지역교과전형
+                - generic [ref=e2437] [cursor=pointer]:
+                  - paragraph [ref=e2438]: 계명대학교(대구)
+                  - paragraph [ref=e2439]: 면접전형
+                - generic [ref=e2443] [cursor=pointer]:
+                  - paragraph [ref=e2444]: 계명대학교(대구)
+                  - paragraph [ref=e2445]: 일반전형
+                - generic [ref=e2449] [cursor=pointer]:
+                  - paragraph [ref=e2450]: 울산대학교(울산)
+                  - paragraph [ref=e2451]: 일반교과전형
+              - generic [ref=e188]:
+                - generic [ref=e2454]: 9.00등급
+                - generic [ref=e2457]: 8.00등급
+                - generic [ref=e2460]: 7.00등급
+                - generic [ref=e2463]: 6.00등급
+                - generic [ref=e2466]: 5.00등급
+                - generic [ref=e2469]: 4.00등급
+                - generic [ref=e2472]: 3.00등급
+                - generic [ref=e2475]: 2.00등급
+                - generic [ref=e215]: 1.00등급
+              - generic [ref=e3190]: "내 등급: 2.15"
+            - list [ref=e219]:
+              - listitem [ref=e220]:
+                - img [ref=e221]
+                - text: 최초컷 범위
+          - generic [ref=e223]:
+            - switch "추합컷 정렬" [ref=e224] [cursor=pointer]
+            - generic [ref=e225]: 추합컷 정렬
+        - generic [ref=e226]: 위 차트에서 대학을 선택해주세요!
+        - generic [ref=e227]:
+          - button "다음 단계" [disabled]
+  - region "Notifications alt+T"
+  - generic [ref=e229]:
+    - generic [ref=e230]:
+      - generic [ref=e232]:
+        - img [ref=e233]
+        - generic [ref=e234]: (주)거북스쿨
+      - generic [ref=e235]:
+        - generic [ref=e236]:
+          - generic [ref=e237]: 사업체명 (주)거북스쿨
+          - generic [ref=e238]: 대표 강준호
+          - generic [ref=e239]: 사업자등록번호 772-87-02782
+          - generic [ref=e240]: 연락처 042-484-3356
+        - generic [ref=e241]:
+          - generic [ref=e242]: 서울시 성북구 화랑로 211 성북구 기술창업센터 105호
+          - generic [ref=e243]: 해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외
+    - generic [ref=e244]:
+      - generic [ref=e245]:
+        - link "이용약관" [ref=e246] [cursor=pointer]:
+          - /url: /explain/service
+        - link "환불규정" [ref=e247] [cursor=pointer]:
+          - /url: /explain/refund
+        - link "개인정보처리방침" [ref=e248] [cursor=pointer]:
+          - /url: /explain/privacy
+      - generic [ref=e249]:
+        - link [ref=e250] [cursor=pointer]:
+          - /url: https://www.youtube.com/@turtleschool_official
+          - img [ref=e251]
+        - link [ref=e252] [cursor=pointer]:
+          - /url: https://cafe.naver.com/turtlecorp
+          - img [ref=e253]

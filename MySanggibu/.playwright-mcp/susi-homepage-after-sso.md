@@ -1,0 +1,117 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "logo 2026 수시 거북스쿨" [ref=e6] [cursor=pointer]:
+        - /url: /susi
+        - img "logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: 2026 수시
+          - generic [ref=e10]: 거북스쿨
+      - button [ref=e12] [cursor=pointer]:
+        - img [ref=e13]
+  - generic [ref=e15]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - img [ref=e21]
+        - generic [ref=e24]:
+          - heading "TestUser님, 환영합니다!" [level=1] [ref=e25]
+          - paragraph [ref=e26]: 학생 계정
+      - generic [ref=e28]: 수시 서비스 이용중
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - img [ref=e34]
+        - generic [ref=e36]:
+          - heading "생기부를 등록하면 더 정확한 분석이 가능합니다" [level=3] [ref=e37]
+          - paragraph [ref=e38]: 마이페이지에서 생기부를 등록하시면 맞춤형 전형 분석을 받으실 수 있습니다.
+      - link "생기부 등록하기" [ref=e39] [cursor=pointer]:
+        - /url: /users/school-record
+        - button "생기부 등록하기" [ref=e40]
+    - generic [ref=e42]:
+      - link "교과 전형 탐색" [ref=e43] [cursor=pointer]:
+        - /url: /susi/subject
+        - generic [ref=e44]:
+          - img [ref=e46]
+          - paragraph [ref=e49]: 교과 전형 탐색
+      - link "학종 전형 탐색" [ref=e50] [cursor=pointer]:
+        - /url: /susi/comprehensive
+        - generic [ref=e51]:
+          - img [ref=e53]
+          - paragraph [ref=e56]: 학종 전형 탐색
+      - link "관심 대학 관리" [ref=e57] [cursor=pointer]:
+        - /url: /susi/interest
+        - generic [ref=e58]:
+          - img [ref=e60]
+          - paragraph [ref=e62]: 관심 대학 관리
+      - link "설정" [ref=e63] [cursor=pointer]:
+        - /url: /users/profile
+        - generic [ref=e64]:
+          - img [ref=e66]
+          - paragraph [ref=e69]: 설정
+    - generic [ref=e70]:
+      - heading "수시 서비스" [level=2] [ref=e71]
+      - generic [ref=e72]:
+        - link "교과 전형 탐색 내 생기부 교과 성적을 통해 나에게 유리한 전형을 찾는 서비스 바로가기 →" [ref=e73] [cursor=pointer]:
+          - /url: /susi/subject
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - img [ref=e77]
+              - heading "교과 전형 탐색" [level=3] [ref=e80]
+            - generic [ref=e81]:
+              - paragraph [ref=e82]: 내 생기부 교과 성적을 통해 나에게 유리한 전형을 찾는 서비스
+              - generic [ref=e83]: 바로가기 →
+        - link "학종 전형 탐색 생기부 평가 점수를 통해 나에게 유리한 전형을 찾는 서비스 바로가기 →" [ref=e84] [cursor=pointer]:
+          - /url: /susi/comprehensive
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - img [ref=e88]
+              - heading "학종 전형 탐색" [level=3] [ref=e91]
+            - generic [ref=e92]:
+              - paragraph [ref=e93]: 생기부 평가 점수를 통해 나에게 유리한 전형을 찾는 서비스
+              - generic [ref=e94]: 바로가기 →
+        - link "관심 대학 관리 교과/학종/논술 탐색에서 리포트를 저장하는 서비스 바로가기 →" [ref=e95] [cursor=pointer]:
+          - /url: /susi/interest
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - img [ref=e99]
+              - heading "관심 대학 관리" [level=3] [ref=e101]
+            - generic [ref=e102]:
+              - paragraph [ref=e103]: 교과/학종/논술 탐색에서 리포트를 저장하는 서비스
+              - generic [ref=e104]: 바로가기 →
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - button "수시(교과) 서비스" [ref=e108] [cursor=pointer]
+        - button "수시(학종) 서비스" [ref=e109] [cursor=pointer]
+      - generic [ref=e111]:
+        - img "교과 서비스 특징 2" [ref=e112]
+        - img "교과 서비스 특징 1" [ref=e113]
+        - img "교과 서비스 특징 3" [ref=e114]
+  - region "Notifications alt+T"
+  - generic [ref=e116]:
+    - generic [ref=e117]:
+      - generic [ref=e119]:
+        - img [ref=e120]
+        - generic [ref=e121]: (주)거북스쿨
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e124]: 사업체명 (주)거북스쿨
+          - generic [ref=e125]: 대표 강준호
+          - generic [ref=e126]: 사업자등록번호 772-87-02782
+          - generic [ref=e127]: 연락처 042-484-3356
+        - generic [ref=e128]:
+          - generic [ref=e129]: 서울시 성북구 화랑로 211 성북구 기술창업센터 105호
+          - generic [ref=e130]: 해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외
+    - generic [ref=e131]:
+      - generic [ref=e132]:
+        - link "이용약관" [ref=e133] [cursor=pointer]:
+          - /url: /explain/service
+        - link "환불규정" [ref=e134] [cursor=pointer]:
+          - /url: /explain/refund
+        - link "개인정보처리방침" [ref=e135] [cursor=pointer]:
+          - /url: /explain/privacy
+      - generic [ref=e136]:
+        - link [ref=e137] [cursor=pointer]:
+          - /url: https://www.youtube.com/@turtleschool_official
+          - img [ref=e138]
+        - link [ref=e139] [cursor=pointer]:
+          - /url: https://cafe.naver.com/turtlecorp
+          - img [ref=e140]

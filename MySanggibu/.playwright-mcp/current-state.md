@@ -1,0 +1,58 @@
+### Page state
+- Page URL: http://localhost:3001/auth/login
+- Page Title: 정시/수시 AI 예측 플랫폼 거북스쿨
+- Page Snapshot:
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e7]:
+    - heading "로그인" [level=2] [ref=e9]
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e13]:
+            - text: 이메일
+            - textbox "이메일" [ref=e14]:
+              - /placeholder: 이메일 주소
+              - text: test@test.com
+          - generic [ref=e15]:
+            - text: 패스워드
+            - textbox "패스워드" [ref=e16]: test1234
+        - button "로그인" [ref=e17] [cursor=pointer]
+      - generic [ref=e18]:
+        - generic [ref=e23]: 또는
+        - button "Hub 계정으로 로그인" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+          - text: Hub 계정으로 로그인
+      - link "회원가입" [ref=e29] [cursor=pointer]:
+        - /url: /auth/register
+  - region "Notifications alt+T"
+  - generic [ref=e31]:
+    - generic [ref=e32]:
+      - generic [ref=e34]:
+        - img [ref=e35]
+        - generic [ref=e36]: (주)거북스쿨
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: 사업체명 (주)거북스쿨
+          - generic [ref=e40]: 대표 강준호
+          - generic [ref=e41]: 사업자등록번호 772-87-02782
+          - generic [ref=e42]: 연락처 042-484-3356
+        - generic [ref=e43]:
+          - generic [ref=e44]: 서울시 성북구 화랑로 211 성북구 기술창업센터 105호
+          - generic [ref=e45]: 해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - link "이용약관" [ref=e48] [cursor=pointer]:
+          - /url: /explain/service
+        - link "환불규정" [ref=e49] [cursor=pointer]:
+          - /url: /explain/refund
+        - link "개인정보처리방침" [ref=e50] [cursor=pointer]:
+          - /url: /explain/privacy
+      - generic [ref=e51]:
+        - link [ref=e52] [cursor=pointer]:
+          - /url: https://www.youtube.com/@turtleschool_official
+          - img [ref=e53]
+        - link [ref=e54] [cursor=pointer]:
+          - /url: https://cafe.naver.com/turtlecorp
+          - img [ref=e55]
+```

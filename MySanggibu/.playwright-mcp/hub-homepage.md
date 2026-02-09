@@ -1,0 +1,178 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "logo 거북스쿨" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "logo" [ref=e7]
+        - generic [ref=e8]: 거북스쿨
+      - button [ref=e10] [cursor=pointer]:
+        - img [ref=e11]
+  - generic [ref=e13]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - img [ref=e17]
+        - text: 거북스쿨의 AI 앱 서비스
+      - heading "입시의 모든 것을 거북스쿨에서!" [level=1] [ref=e19]
+    - generic [ref=e21]:
+      - img "거북쌤" [ref=e23]
+      - paragraph [ref=e26]: 입시전문가 겸 AI 개발자, 거북쌤이 만든 앱은 다릅니다! 사용해 보시면 기존의 것과는 많이 다르다는 것을 느끼실 것입니다. 아래 앱들은 거북쌤이 직접, 나홀로 만든 AI 앱들입니다.
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - img [ref=e31]
+        - generic [ref=e33]:
+          - heading "현재 서비스 중" [level=2] [ref=e34]
+          - paragraph [ref=e35]: 지금 바로 이용 가능한 서비스
+      - link "유료 정시 예측 분석 기존 정시 서비스랑은 차원이 다른, 초격차 정시 예측 서비스! 대학별 유불리(특허) 모의지원 상황 기반 정시 시뮬레이션 단계별 프로세스식 진행 정시 모의지원 앱 계정연동으로 선생님과 앱 상담 바로가기" [ref=e37] [cursor=pointer]:
+        - /url: http://localhost:3002
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e42]: 유료
+              - heading "정시 예측 분석" [level=3] [ref=e43]
+            - img [ref=e45]
+          - paragraph [ref=e47]: 기존 정시 서비스랑은 차원이 다른, 초격차 정시 예측 서비스!
+        - list [ref=e49]:
+          - listitem [ref=e50]: 대학별 유불리(특허)
+          - listitem [ref=e52]: 모의지원 상황 기반 정시 시뮬레이션
+          - listitem [ref=e54]: 단계별 프로세스식 진행
+          - listitem [ref=e56]: 정시 모의지원 앱
+          - listitem [ref=e58]: 계정연동으로 선생님과 앱 상담
+        - generic [ref=e61]:
+          - text: 바로가기
+          - img [ref=e62]
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - img [ref=e68]
+        - generic [ref=e73]:
+          - heading "겨울방학부터 서비스" [level=2] [ref=e74]
+          - paragraph [ref=e75]: 2025년 겨울방학부터 만나볼 수 있어요
+      - generic [ref=e76]:
+        - link "무료 Exam Hub 내가 푼, 쪽지 시험의 단 한 문제도 이제는 버리는 일이 없도록! 학원시험, 내신, 모의고사, 사설모의 모든 시험의 성적 분석 취약 부분 관리 오답 관리 바로가기" [ref=e77] [cursor=pointer]:
+          - /url: http://localhost:3003
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e82]: 무료
+                - heading "Exam Hub" [level=3] [ref=e83]
+              - img [ref=e85]
+            - paragraph [ref=e87]: 내가 푼, 쪽지 시험의 단 한 문제도 이제는 버리는 일이 없도록!
+          - list [ref=e89]:
+            - listitem [ref=e90]: 학원시험, 내신, 모의고사, 사설모의 모든 시험의
+            - listitem [ref=e92]: 성적 분석
+            - listitem [ref=e94]: 취약 부분 관리
+            - listitem [ref=e96]: 오답 관리
+          - generic [ref=e99]:
+            - text: 바로가기
+            - img [ref=e100]
+        - link "무료 플래너 제대로 만든 수험생 전용 학습 플래너 장기계획과 주간 루틴 자동 계획 교과서, 참고서 분량 자동 생성 바로가기" [ref=e102] [cursor=pointer]:
+          - /url: http://localhost:3004
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e107]: 무료
+                - heading "플래너" [level=3] [ref=e108]
+              - img [ref=e110]
+            - paragraph [ref=e113]: 제대로 만든 수험생 전용 학습 플래너
+          - list [ref=e115]:
+            - listitem [ref=e116]: 장기계획과 주간 루틴 자동 계획
+            - listitem [ref=e118]: 교과서, 참고서 분량 자동 생성
+          - generic [ref=e121]:
+            - text: 바로가기
+            - img [ref=e122]
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e129]: 무료
+                - heading "수업 현황" [level=3] [ref=e130]
+              - img [ref=e132]
+            - paragraph [ref=e135]: 학원 수업이든 학교 수업이든 모든 수업 계획과 현황을 이곳에!
+          - list [ref=e137]:
+            - listitem [ref=e138]: 수업 계획
+            - listitem [ref=e140]: 수업 진도
+            - listitem [ref=e142]: 과제 현황
+          - generic [ref=e145]:
+            - text: 바로가기
+            - img [ref=e146]
+        - link "유료 2027 수시 예측 분석 수시 예측 분석 서비스를 겨울방학때부터! AI 사정관의 생기부 평가 대학별 유불리(특허) 단계별 프로세스식 진행 무료 수시 모의지원 앱 계정연동 선생님 상담 바로가기" [ref=e148] [cursor=pointer]:
+          - /url: http://localhost:3001
+          - generic [ref=e149]:
+            - generic [ref=e150]:
+              - generic [ref=e151]:
+                - generic [ref=e153]: 유료
+                - heading "2027 수시 예측 분석" [level=3] [ref=e154]
+              - img [ref=e156]
+            - paragraph [ref=e159]: 수시 예측 분석 서비스를 겨울방학때부터!
+          - list [ref=e161]:
+            - listitem [ref=e162]: AI 사정관의 생기부 평가
+            - listitem [ref=e164]: 대학별 유불리(특허)
+            - listitem [ref=e166]: 단계별 프로세스식 진행
+            - listitem [ref=e168]: 무료 수시 모의지원 앱
+            - listitem [ref=e170]: 계정연동 선생님 상담
+          - generic [ref=e173]:
+            - text: 바로가기
+            - img [ref=e174]
+        - generic [ref=e176]:
+          - generic [ref=e177]:
+            - generic [ref=e178]:
+              - generic [ref=e179]:
+                - generic [ref=e181]: 무료
+                - heading "계정 연동" [level=3] [ref=e182]
+              - img [ref=e184]
+            - paragraph [ref=e189]: 조회하고 싶은 사람들 여기 다 부르자!
+          - list [ref=e191]:
+            - listitem [ref=e192]: 학부모와 연동
+            - listitem [ref=e194]: 선생님과 연동
+          - generic [ref=e197]:
+            - text: 바로가기
+            - img [ref=e198]
+    - generic [ref=e201]:
+      - generic [ref=e202]:
+        - img [ref=e204]
+        - generic [ref=e208]:
+          - heading "3월 신학기부터 서비스" [level=2] [ref=e209]
+          - paragraph [ref=e210]: 2026년 3월 새학기부터 만나볼 수 있어요
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]:
+              - generic [ref=e217]: Members
+              - heading "맞춤 입시 정보 딜리버리" [level=3] [ref=e218]
+            - img [ref=e220]
+          - paragraph [ref=e223]: 이제 입시 정보를 찾으려고 시간 낭비하실 필요없습니다. 나에게 맞는 정보만 배달 서비스!
+        - list [ref=e225]:
+          - listitem [ref=e226]: 맞춤형 입시 정보 제공
+          - listitem [ref=e228]: 개인화된 알림 서비스
+        - generic [ref=e231]:
+          - text: 바로가기
+          - img [ref=e232]
+  - region "Notifications alt+T"
+  - generic [ref=e236]:
+    - generic [ref=e237]:
+      - generic [ref=e239]:
+        - img [ref=e240]
+        - generic [ref=e241]: (주)거북스쿨
+      - generic [ref=e242]:
+        - generic [ref=e243]:
+          - generic [ref=e244]: 사업체명 (주)거북스쿨
+          - generic [ref=e245]: 대표 강준호
+          - generic [ref=e246]: 사업자등록번호 772-87-02782
+          - generic [ref=e247]: 연락처 042-484-3356
+        - generic [ref=e248]:
+          - generic [ref=e249]: 서울시 성북구 화랑로 211 성북구 기술창업센터 105호
+          - generic [ref=e250]: 해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외
+    - generic [ref=e251]:
+      - generic [ref=e252]:
+        - link "이용약관" [ref=e253] [cursor=pointer]:
+          - /url: /explain/service
+        - link "환불규정" [ref=e254] [cursor=pointer]:
+          - /url: /explain/refund
+        - link "개인정보처리방침" [ref=e255] [cursor=pointer]:
+          - /url: /explain/privacy
+      - generic [ref=e256]:
+        - link [ref=e257] [cursor=pointer]:
+          - /url: https://www.youtube.com/@turtleschool_official
+          - img [ref=e258]
+        - link [ref=e259] [cursor=pointer]:
+          - /url: https://cafe.naver.com/turtlecorp
+          - img [ref=e260]

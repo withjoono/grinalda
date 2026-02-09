@@ -1,0 +1,3 @@
+Found 2 records.
+Record #1 | ID: 3 | OfficerID: 8 | Series: "의약계열>약학>약학"
+Record #2 | ID: 4 | OfficerID: 1 | Series: "공학계열>컴퓨터공학>소프트웨어"

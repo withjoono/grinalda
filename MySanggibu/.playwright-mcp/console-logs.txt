@@ -1,0 +1,42 @@
+[INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/chunk-UPELNCPK.js?v=86d594fa:21550
+[LOG] Environment Configuration: {mode: development, apiUrlHub: /api-hub, apiUrlNest: /api-susi, frontUrl: http://localhost:3000} @ http://localhost:3000/src/lib/config/env.ts:45
+[LOG] [Step1] React Query data: {isLoading: true, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
+[ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3000/api-nest/auth/me:0
+[WARNING] 🌐 공개 API에서 401 에러 발생 (리다이렉트 안 함): /auth/me @ http://localhost:3000/src/stores/server/api-client.ts:62
+[WARNING] 🌐 공개 API에서 401 에러 발생 (리다이렉트 안 함): /auth/me @ http://localhost:3000/src/stores/server/common-utils.ts:89
+[ERROR] API Error: AxiosError @ http://localhost:3000/src/stores/server/common-utils.ts:46
+[LOG] [Step1] React Query data: {isLoading: true, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
+[LOG] [Step1] React Query data: {isLoading: false, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
+[LOG] [Step1] React Query data: {isLoading: true, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
+[LOG] [Step1] React Query data: {isLoading: false, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
+[LOG] [Step1] React Query data: {isLoading: false, isError: false, dataItemCount: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:45
+[LOG] [Step1] Filtered data: {originalCount: 0, filteredCount: 0, filters: Object, firstFilteredItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:62
+[LOG] [ChartViewer] Data being passed to Step1Chart: {hasData: true, itemCount: 0, myGrade: undefined, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1.tsx:255
+[LOG] [Step1Chart] Input data.items: 0 @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:78
+[LOG] [Step1Chart] After mapping: {count: 0, firstItem: undefined, itemsWithRange: 0, itemsWithoutRange: 0} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:93
+[LOG] [Step1Chart] After filtering: {count: 0, firstItem: undefined} @ http://localhost:3000/src/components/services/explore/susi-kyokwa/components/step-1/step-1-chart.tsx:104
