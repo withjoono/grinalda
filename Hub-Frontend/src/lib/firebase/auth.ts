@@ -1,12 +1,3 @@
-/**
- * Firebase Auth 서비스
- *
- * Firebase Authentication을 사용한 인증 기능 제공
- * - 이메일/비밀번호 로그인
- * - Google 소셜 로그인
- * - 인증 상태 관리
- * - 토큰 관리
- */
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,

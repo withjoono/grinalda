@@ -80,4 +80,22 @@ export class FirebaseRegisterDto {
   @IsString()
   @IsNotEmpty()
   memberType: string;
+
+  @ApiProperty({
+    description: '선생님 담당 과목 (teacher 전용)',
+    example: '수학',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  subject?: string;
+
+  @ApiProperty({
+    description: '학부모 유형 (parent 전용)',
+    example: '아버지',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  parentType?: string;
 }

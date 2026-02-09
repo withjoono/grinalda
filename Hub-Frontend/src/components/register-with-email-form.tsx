@@ -133,7 +133,9 @@ export function RegisterWithEmailForm({ className }: Props) {
   const handleGoogleVerification = async () => {
     setIsVerifying(true);
     try {
+      console.log("[DEBUG] signInWithPopup 시작...");
       const result = await signInWithPopup(auth, provider);
+      console.log("[DEBUG] signInWithPopup 성공!", result.user.email);
       const googleEmail = result.user.email || "";
       const googleName = result.user.displayName || "";
       const googlePhoto = result.user.photoURL || "";
@@ -157,10 +159,14 @@ export function RegisterWithEmailForm({ className }: Props) {
 
       toast.success("✅ 본인인증이 완료되었습니다!");
     } catch (err: any) {
+      // [DEBUG] 화면에 에러 표시 (콘솔이 너무 빨리 지나갈 때 대비)
+      const errMsg = `[Google Auth Error]\ncode: ${err.code || 'N/A'}\nmessage: ${err.message || 'N/A'}\ncustomData: ${JSON.stringify(err.customData || {})}\nname: ${err.name || 'N/A'}`;
+      console.error(errMsg, err);
+      alert(errMsg);
+
       if (err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") {
         return; // 사용자가 팝업을 닫은 경우
       }
-      console.error("구글 본인인증 에러:", err);
       toast.error("구글 본인인증에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsVerifying(false);
@@ -234,6 +240,20 @@ export function RegisterWithEmailForm({ className }: Props) {
       return;
     }
 
+    // 학생인 경우 schoolLevel, grade 필수 체크
+    if (memberType === "student") {
+      if (!values.schoolLevel) {
+        form.setError("schoolLevel", { type: "manual", message: "학교/대상을 선택해주세요." });
+        toast.error("학교/대상을 선택해주세요.");
+        return;
+      }
+      if (!values.grade) {
+        form.setError("grade", { type: "manual", message: "학년을 선택해주세요." });
+        toast.error("학년을 선택해주세요.");
+        return;
+      }
+    }
+
     const school = HIGH_SCHOOL_LIST.find(
       (n) => n.highschoolName === values.school,
     );
@@ -296,6 +316,9 @@ export function RegisterWithEmailForm({ className }: Props) {
       }
     } catch (error: any) {
       console.error("회원가입 에러:", error);
+      // [DEBUG] 상세 에러 표시
+      const debugMsg = `[회원가입 에러]\nstatus: ${error.response?.status || 'N/A'}\nmessage: ${error.response?.data?.message || error.message || 'N/A'}\ndata: ${JSON.stringify(error.response?.data || {}).substring(0, 300)}`;
+      alert(debugMsg);
 
       // Firebase 에러 처리 (error.code가 'auth/'로 시작)
       if (error.code && error.code.startsWith('auth/')) {
@@ -455,7 +478,14 @@ export function RegisterWithEmailForm({ className }: Props) {
         {/* 구글 본인인증 섹션 */}
 
         {/* 회원가입 폼 */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          // 유효성 검사 실패 시 에러 표시
+          const errorMessages = Object.entries(errors)
+            .map(([field, error]) => `${field}: ${error?.message}`)
+            .join('\n');
+          console.error('[폼 유효성 에러]', errors);
+          toast.error('입력 정보를 확인해주세요: ' + Object.values(errors).map(e => e?.message).filter(Boolean).join(', '));
+        })} className="space-y-4">
           {!googleVerification.verified && (
             <div className="text-center py-4 text-sm text-muted-foreground">
               위에서 구글 본인인증을 완료하면 회원가입 폼이 활성화됩니다.

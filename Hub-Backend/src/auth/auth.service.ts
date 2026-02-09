@@ -573,6 +573,8 @@ export class AuthService {
         userTypeDetailCode: dto.userTypeCode,
         ckSmsAgree: dto.ckSmsAgree,
         memberType: dto.memberType,
+        subject: dto.subject,
+        parentType: dto.parentType,
       });
 
       // 앱별 권한 정보 조회
@@ -592,11 +594,12 @@ export class AuthService {
         activeServices,
       };
     } catch (error) {
-      this.logger.error(`[Firebase 회원가입 실패] ${error.message}`);
+      this.logger.error(`[Firebase 회원가입 실패] ${error.message}`, error.stack);
+      this.logger.error(`[Firebase 회원가입 실패 상세] name=${error.name}, code=${error.code || 'N/A'}`);
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new UnauthorizedException('Firebase 인증에 실패했습니다.');
+      throw new UnauthorizedException(`Firebase 인증에 실패했습니다: ${error.message}`);
     }
   }
 

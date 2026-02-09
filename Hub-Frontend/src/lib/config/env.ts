@@ -40,13 +40,13 @@ interface EnvConfig {
   // 소셜 로그인
   naverLoginClientId: string;
   googleClientId: string;
-  
+
   // Firebase
   firebase: FirebaseConfig;
-  
+
   // GCP
   gcp: GCPConfig;
-  
+
   // 환경
   isDevelopment: boolean;
   isProduction: boolean;
@@ -76,7 +76,7 @@ export const env: EnvConfig = {
   // Susi 백엔드 API URL (개발: 프록시, 프로덕션: 직접 연결)
   // Spring 백엔드는 더 이상 사용하지 않음 (2024-12 NestJS로 완전 마이그레이션)
   // apiUrlSpring: isDev ? '/api-spring' : getEnvVar('VITE_API_URL_SPRING', 'http://localhost:8080'),
-  apiUrlNest: isDev ? '/api-susi' : getEnvVar('VITE_API_URL_SUSI', 'http://localhost:4002'),
+  apiUrlNest: isDev ? '/api-nest' : getEnvVar('VITE_API_URL_NEST', 'http://localhost:4000'),
 
   // Hub OAuth 클라이언트 ID
   hubOAuthClientId: getEnvVar('VITE_HUB_OAUTH_CLIENT_ID', 'geobukschool-frontend'),
@@ -84,7 +84,7 @@ export const env: EnvConfig = {
   // 소셜 로그인
   naverLoginClientId: getEnvVar('VITE_NAVER_LOGIN_CLIENT_ID'),
   googleClientId: getEnvVar('VITE_GOOGLE_CLIENT_ID'),
-  
+
   // Firebase
   firebase: {
     apiKey: getEnvVar('VITE_FIREBASE_API_KEY'),
@@ -95,13 +95,13 @@ export const env: EnvConfig = {
     appId: getEnvVar('VITE_FIREBASE_APP_ID'),
     measurementId: getEnvVar('VITE_FIREBASE_MEASUREMENT_ID'),
   },
-  
+
   // GCP
   gcp: {
     storageBucket: import.meta.env.VITE_GCP_STORAGE_BUCKET,
     cdnUrl: import.meta.env.VITE_GCP_CDN_URL,
   },
-  
+
   // 환경
   isDevelopment: import.meta.env.DEV,
   isProduction: import.meta.env.PROD,

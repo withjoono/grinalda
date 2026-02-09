@@ -34,6 +34,7 @@ async function bootstrap() {
       },
       crossOriginEmbedderPolicy: false, // API 서버는 비활성화
       crossOriginResourcePolicy: { policy: 'cross-origin' }, // CORS와 호환
+      crossOriginOpenerPolicy: false, // Firebase Auth Popup 허용을 위해 비활성화
     }),
   );
 
@@ -102,29 +103,29 @@ async function bootstrap() {
       .setTitle('거북스쿨 (TurtleSchool) API')
       .setDescription(
         '대학 입시 컨설팅 서비스를 위한 교육 플랫폼 REST API\n\n' +
-          '## 주요 기능\n' +
-          '- 회원 인증 및 관리 (이메일, 소셜 로그인)\n' +
-          '- 학생부 기록 관리 (출석, 성적, 과목)\n' +
-          '- 수시/정시 전형 탐색 및 조합\n' +
-          '- 모의고사 점수 관리 및 표준화\n' +
-          '- 결제 처리 (Iamport 연동)\n' +
-          '- 입학사정관 평가 시스템\n' +
-          '- 파일 업로드 (Google Cloud Storage)\n\n' +
-          '## 인증 방법\n' +
-          '대부분의 엔드포인트는 JWT Bearer 토큰 인증이 필요합니다.\n' +
-          '1. `/auth/login/email` 또는 `/auth/login/social`로 로그인\n' +
-          '2. 응답에서 `accessToken` 획득\n' +
-          '3. 이후 요청 헤더에 `Authorization: Bearer {accessToken}` 포함\n\n' +
-          '## 에러 응답 형식\n' +
-          '모든 에러는 다음 형식으로 반환됩니다:\n' +
-          '```json\n' +
-          '{\n' +
-          '  "success": false,\n' +
-          '  "statusCode": 400,\n' +
-          '  "message": "에러 메시지",\n' +
-          '  "error": "BadRequestException"\n' +
-          '}\n' +
-          '```\n',
+        '## 주요 기능\n' +
+        '- 회원 인증 및 관리 (이메일, 소셜 로그인)\n' +
+        '- 학생부 기록 관리 (출석, 성적, 과목)\n' +
+        '- 수시/정시 전형 탐색 및 조합\n' +
+        '- 모의고사 점수 관리 및 표준화\n' +
+        '- 결제 처리 (Iamport 연동)\n' +
+        '- 입학사정관 평가 시스템\n' +
+        '- 파일 업로드 (Google Cloud Storage)\n\n' +
+        '## 인증 방법\n' +
+        '대부분의 엔드포인트는 JWT Bearer 토큰 인증이 필요합니다.\n' +
+        '1. `/auth/login/email` 또는 `/auth/login/social`로 로그인\n' +
+        '2. 응답에서 `accessToken` 획득\n' +
+        '3. 이후 요청 헤더에 `Authorization: Bearer {accessToken}` 포함\n\n' +
+        '## 에러 응답 형식\n' +
+        '모든 에러는 다음 형식으로 반환됩니다:\n' +
+        '```json\n' +
+        '{\n' +
+        '  "success": false,\n' +
+        '  "statusCode": 400,\n' +
+        '  "message": "에러 메시지",\n' +
+        '  "error": "BadRequestException"\n' +
+        '}\n' +
+        '```\n',
       )
       .setVersion('2.0.0')
       .addBearerAuth(

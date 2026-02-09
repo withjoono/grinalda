@@ -43,9 +43,6 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         setData({
           socialType: 'google',
           token: idToken,
-          email: result.user.email || '',
-          name: result.user.displayName || '',
-          profileImage: result.user.photoURL || '',
         });
         toast.warning("🎓 회원가입이 필요합니다.\n추가 정보를 입력해주세요.", {
           duration: 6000,
