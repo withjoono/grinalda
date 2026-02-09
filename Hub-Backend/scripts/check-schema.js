@@ -1,35 +1,81 @@
-const { Client } = require('pg');
-const { v4: uuidv4 } = require('uuid');
-const c = new Client({ host: '127.0.0.1', port: 5432, user: 'tsuser', password: 'tsuser1234', database: 'geobukschool_dev' });
+const pg = require('pg');
+const fs = require('fs');
+const c = new pg.Client({
+    host: '127.0.0.1', port: 5432, user: 'tsuser',
+    password: 'tsuser1234', database: 'geobukschool_dev'
+});
 
-async function run() {
-    await c.connect();
+async function main() {
+    const lines = [];
+    const log = (msg) => lines.push(msg);
 
-    // Get a member ID to test with
-    const members = await c.query(`SELECT id, nickname, member_type FROM auth_member LIMIT 3`);
-    console.log('Members:', JSON.stringify(members.rows));
-
-    if (members.rows.length === 0) {
-        console.log('No members found!');
-        await c.end();
-        return;
-    }
-
-    const memberId = members.rows[0].id;
-    const code = uuidv4();
-    const expireAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-    // Try inserting directly
     try {
-        const result = await c.query(
-            `INSERT INTO mentoring_temp_code_tb (member_id, code, return_url, status, expire_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [memberId, code, null, 'pending', expireAt]
-        );
-        console.log('Insert success:', JSON.stringify(result.rows[0]));
-    } catch (e) {
-        console.error('Insert failed:', e.message);
-    }
+        await c.connect();
 
-    await c.end();
+        // Check FK constraints referencing auth_member
+        log('=== FK constraints referencing auth_member ===');
+        const fks = await c.query(`
+      SELECT
+        tc.table_name AS source_table,
+        kcu.column_name AS source_column,
+        ccu.table_name AS target_table,
+        ccu.column_name AS target_column,
+        tc.constraint_name
+      FROM information_schema.table_constraints tc
+      JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+      JOIN information_schema.constraint_column_usage ccu
+        ON ccu.constraint_name = tc.constraint_name
+      WHERE tc.constraint_type = 'FOREIGN KEY'
+        AND ccu.table_name = 'auth_member'
+    `);
+        if (fks.rows.length === 0) {
+            log('  No FK constraints found');
+        } else {
+            fks.rows.forEach(r => log(`  ${r.source_table}.${r.source_column} -> ${r.target_table}.${r.target_column} (${r.constraint_name})`));
+        }
+
+        // Check indexes on auth_member
+        log('');
+        log('=== Indexes on auth_member ===');
+        const idxs = await c.query(`
+      SELECT indexname, indexdef
+      FROM pg_indexes
+      WHERE tablename = 'auth_member'
+    `);
+        idxs.rows.forEach(r => log(`  ${r.indexname}: ${r.indexdef}`));
+
+        // Check PK constraint
+        log('');
+        log('=== Primary key constraint on auth_member ===');
+        const pk = await c.query(`
+      SELECT constraint_name, column_name
+      FROM information_schema.key_column_usage
+      WHERE table_name = 'auth_member'
+        AND constraint_name IN (
+          SELECT constraint_name FROM information_schema.table_constraints
+          WHERE table_name = 'auth_member' AND constraint_type = 'PRIMARY KEY'
+        )
+    `);
+        pk.rows.forEach(r => log(`  ${r.constraint_name}: ${r.column_name}`));
+
+        // Check all columns and their defaults
+        log('');
+        log('=== auth_member column defaults ===');
+        const defs = await c.query(`
+      SELECT column_name, column_default, data_type, character_maximum_length
+      FROM information_schema.columns
+      WHERE table_name = 'auth_member'
+      ORDER BY ordinal_position
+    `);
+        defs.rows.forEach(r => log(`  ${r.column_name} | ${r.data_type}(${r.character_maximum_length || ''}) | default: ${r.column_default || 'null'}`));
+
+    } catch (e) {
+        log(`Error: ${e.message}`);
+    } finally {
+        await c.end();
+        fs.writeFileSync('scripts/schema-check-result3.txt', lines.join('\n'));
+        console.log('Done');
+    }
 }
-run().catch(e => console.error(e));
+main();

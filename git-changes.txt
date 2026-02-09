@@ -1,0 +1,13 @@
+warning: in the working copy of 'Hub-Backend/src/main.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Hub-Frontend/src/components/login-google-button.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Hub-Frontend/src/lib/validations/auth.ts', LF will be replaced by CRLF the next time Git touches it
+Hub-Backend/scripts/check-schema.js
+Hub-Backend/src/auth/auth.service.ts
+Hub-Backend/src/auth/dtos/firebase-auth.dto.ts
+Hub-Backend/src/main.ts
+Hub-Frontend/src/components/login-google-button.tsx
+Hub-Frontend/src/components/register-with-email-form.tsx
+Hub-Frontend/src/lib/config/env.ts
+Hub-Frontend/src/lib/firebase/auth.ts
+Hub-Frontend/src/lib/validations/auth.ts
+Hub-Frontend/vite.config.ts

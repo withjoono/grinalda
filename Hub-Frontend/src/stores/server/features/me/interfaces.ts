@@ -1,16 +1,32 @@
 export interface IUser {
   id: string;
   email: string | null;
-  roleType: string | null;
+  role_type: string | null;
   phone: string | null;
-  ckSmsAgree: boolean;
+  ck_sms_agree: boolean;
   nickname: string;
-  sTypeId: string | null;
-  hstTypeId: string;
-  gTypeId: string | null;
-  graduateYear: string;
-  major: string;
-  memberType: 'student' | 'teacher' | 'parent';
+  member_type: 'student' | 'teacher' | 'parent';
+  user_type_code: string | null;
+  user_type_detail_code: string | null;
+  // 타입별 서브 프로필
+  studentProfile?: {
+    member_id: string;
+    school_code: string | null;
+    school_name: string | null;
+    school_location: string | null;
+    school_type: string | null;
+    school_level: string | null;
+    grade: number | null;
+  };
+  teacherProfile?: {
+    member_id: string;
+    school_level: string | null;
+    subject: string | null;
+  };
+  parentProfile?: {
+    member_id: string;
+    parent_type: string | null;
+  };
 }
 
 // 출결
@@ -114,10 +130,19 @@ export interface ISchoolRecordVolunteer {
 // *************** Mutation *************
 
 export interface IEditProfileBody {
-  graduate_year: string;
-  major: number; // 0 문과, 1 이과
-  hst_type_id: number | null;
-  ck_sms_agree: boolean;
+  nickname?: string;
+  phone?: string;
+  ck_sms_agree?: boolean;
+  // 학생 전용
+  school_level?: string;
+  grade?: number;
+  school_code?: string;
+  school_name?: string;
+  // 선생님 전용
+  subject?: string;
+  teacher_school_level?: string;
+  // 학부모 전용
+  parent_type?: string;
 }
 
 export interface IEditLifeRecordBody {

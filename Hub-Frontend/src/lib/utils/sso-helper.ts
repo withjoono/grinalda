@@ -59,6 +59,10 @@ const SSO_SERVICE_MAP: Record<string, string> = {
   'http://localhost:3003': 'examhub',
   'http://localhost:3004': 'studyplanner',
   'http://localhost:3005': 'tutorboard',
+  'http://localhost:3006': 'studyarena',
+  'http://localhost:3007': 'mysanggibu',
+  'http://localhost:3019': 'parentadmin',
+  'http://localhost:3020': 'teacheradmin',
 };
 
 /**
@@ -73,12 +77,20 @@ export function getSSOServiceId(href: string): string | null {
   const myexamUrl = import.meta.env.VITE_MYEXAM_URL || 'http://localhost:3003';
   const studyplannerUrl = import.meta.env.VITE_STUDYPLANNER_URL || 'http://localhost:3004';
   const tutorboardUrl = import.meta.env.VITE_TUTORBOARD_URL || 'http://localhost:3005';
+  const studyarenaUrl = import.meta.env.VITE_STUDYARENA_URL || 'http://localhost:3006';
+  const mysanggibuUrl = import.meta.env.VITE_MYSANGGIBU_URL || 'http://localhost:3007';
+  const parentadminUrl = import.meta.env.VITE_PARENTADMIN_URL || 'http://localhost:3019';
+  const teacheradminUrl = import.meta.env.VITE_TEACHERADMIN_URL || 'http://localhost:3020';
 
   if (href.startsWith(susiUrl)) return 'susi';
   if (href.startsWith(jungsiUrl)) return 'jungsi';
   if (href.startsWith(myexamUrl)) return 'examhub';
   if (href.startsWith(studyplannerUrl)) return 'studyplanner';
   if (href.startsWith(tutorboardUrl)) return 'tutorboard';
+  if (href.startsWith(studyarenaUrl)) return 'studyarena';
+  if (href.startsWith(mysanggibuUrl)) return 'mysanggibu';
+  if (href.startsWith(parentadminUrl)) return 'parentadmin';
+  if (href.startsWith(teacheradminUrl)) return 'teacheradmin';
 
   return null;
 }

@@ -1,0 +1,138 @@
+=== ALL TABLES ===
+  application_rate_history
+  application_rates
+  auth_member
+  auth_member_file
+  board_board
+  board_comment
+  board_post
+  eh_exam_questions
+  eh_mock_answer
+  eh_mock_exams
+  eh_student_answers
+  eh_student_scores
+  eh_student_targets
+  eh_students
+  eh_subject_areas
+  eh_subject_chapters
+  eh_subject_codes
+  essay_list_tb
+  essay_lowest_grade_list_tb
+  hub_app_subscriptions
+  hub_apps
+  hub_product_permission_mappings
+  js_admission
+  js_admission_previous_result
+  js_pyunggawon_month
+  js_pyunggawon_raw_score
+  js_raw_to_standard
+  js_sunung_raw_score
+  js_sunung_standard_score
+  js_user_application_combination
+  js_user_application_combination_items
+  js_user_calculated_scores
+  js_user_hwansan_score
+  js_user_input_scores
+  js_user_recruitment_scores
+  js_user_university_interest
+  mc_attendance
+  mc_consultation
+  mc_health_record
+  mc_test
+  member_tb
+  member_upload_file_list_tb
+  mentoring_account_link_tb
+  mentoring_temp_code_tb
+  middle_series_subject_requirements
+  notification_logs
+  oauth_authorization_codes
+  oauth_clients
+  officer_bottom_survey_tb
+  officer_comment_list_tb
+  officer_list_tb
+  officer_scoring_tb
+  officer_student_evaludate_relation_tb
+  officer_ticket_tb
+  payment_cancel_log
+  payment_contract
+  payment_coupon
+  payment_order
+  payment_product
+  payment_service
+  payment_service_product
+  pl_class
+  pl_item
+  pl_management
+  pl_notice
+  pl_plan
+  pl_routine
+  series_evaluation_criteria_humanities
+  series_evaluation_criteria_science
+  sgb_attendance
+  sgb_select_subject
+  sgb_sport_art
+  sgb_subject_learning
+  sgb_volunteer
+  ss_admission
+  ss_admission_category
+  ss_admission_method
+  ss_admission_subtype
+  ss_admission_subtype_category
+  ss_admission_subtype_relations
+  ss_category_subject_necessity
+  ss_general_field
+  ss_major_field
+  ss_mid_field
+  ss_minor_field
+  ss_recruitment_unit
+  ss_recruitment_unit_interview
+  ss_recruitment_unit_minimum_grade
+  ss_recruitment_unit_pass_fail_record
+  ss_recruitment_unit_previous_result
+  ss_recruitment_unit_score
+  ss_recruitment_units
+  ss_subject_codes
+  ss_unit_categories
+  ss_university
+  ss_user_application_combination
+  ss_user_recruitment_unit_combination_items
+  ss_user_university_interest
+  susi_calculation_formula
+  susi_comprehensive_tb
+  susi_jonghap_ipkyul
+  susi_jonghap_recruitment
+  susi_jonghap_special
+  susi_kyokwa_cut
+  susi_kyokwa_ipkyul
+  susi_kyokwa_recruitment
+  susi_kyokwa_special
+  susi_pass_record_tb
+  susi_subject_tb
+  susi_univ_unit_category
+  susi_user_calculated_scores
+  susi_user_recruitment_scores
+  tr_account_link
+  tr_admin_class
+  tr_temp_code
+  ts_admission_subtype_relations
+  ts_member_calculated_scores
+  ts_member_jungsi_input_scores
+  typeorm_migrations
+  university_level
+  user_notification_settings
+  user_notification_types
+
+=== Sub-profile tables check ===
+  auth_member_s: MISSING
+  auth_member_t: MISSING
+  auth_member_p: MISSING
+
+=== ID type analysis ===
+  id=2 | type=bigint
+  id=3 | type=bigint
+  id=4 | type=bigint
+  id=6 | type=bigint
+  id=9 | type=bigint
+
+=== Can varchar ID be inserted? ===
+  VARCHAR ID insert: FAILED - invalid input syntax for type bigint: "S26H208011"

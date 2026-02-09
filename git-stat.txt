@@ -1,0 +1,14 @@
+warning: in the working copy of 'Hub-Backend/src/main.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Hub-Frontend/src/components/login-google-button.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Hub-Frontend/src/lib/validations/auth.ts', LF will be replaced by CRLF the next time Git touches it
+ Hub-Backend/scripts/check-schema.js                | 100 +++++++++++++++------
+ Hub-Backend/src/auth/auth.service.ts               |   7 +-
+ Hub-Backend/src/auth/dtos/firebase-auth.dto.ts     |  18 ++++
+ Hub-Backend/src/main.ts                            |  47 +++++-----
+ .../src/components/login-google-button.tsx         |   3 -
+ .../src/components/register-with-email-form.tsx    |  34 ++++++-
+ Hub-Frontend/src/lib/config/env.ts                 |  14 +--
+ Hub-Frontend/src/lib/firebase/auth.ts              |   9 --
+ Hub-Frontend/src/lib/validations/auth.ts           |   4 +-
+ Hub-Frontend/vite.config.ts                        |  12 +--
+ 10 files changed, 168 insertions(+), 80 deletions(-)

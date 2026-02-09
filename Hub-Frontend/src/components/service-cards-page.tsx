@@ -7,7 +7,9 @@ import {
   BarChart3,
   ClipboardList,
   ArrowRight,
-  Share2
+  Share2,
+  Swords,
+  FileText
 } from "lucide-react";
 
 interface ServiceCard {
@@ -30,6 +32,8 @@ const JUNGSI_URL = import.meta.env.VITE_JUNGSI_URL || "http://localhost:3002";
 const MYEXAM_URL = import.meta.env.VITE_MYEXAM_URL || "http://localhost:3003";
 const STUDYPLANNER_URL = import.meta.env.VITE_STUDYPLANNER_URL || "http://localhost:3004";
 const TUTORBOARD_URL = import.meta.env.VITE_TUTORBOARD_URL || "http://localhost:3005";
+const STUDYARENA_URL = import.meta.env.VITE_STUDYARENA_URL || "http://localhost:3006";
+const MYSANGGIBU_URL = import.meta.env.VITE_MYSANGGIBU_URL || "http://localhost:3007";
 
 // 모든 서비스 (카테고리 없이 플랫하게)
 const allServices: ServiceCard[] = [
@@ -91,8 +95,8 @@ const allServices: ServiceCard[] = [
     description: "학원 수업이든 학교 수업이든 모든 수업 계획과 현황을 이곳에!",
     icon: <BookOpen className="w-6 h-6" />,
     href: TUTORBOARD_URL,
-    color: "text-inferno-500",
-    bgGradient: "from-inferno-500 to-inferno-600",
+    color: "text-wine-500",
+    bgGradient: "from-wine-500 to-wine-600",
     features: [
       "수업 계획",
       "수업 진도",
@@ -115,6 +119,40 @@ const allServices: ServiceCard[] = [
       "단계별 프로세스식 진행",
       "무료 수시 모의지원 앱",
       "계정연동 선생님 상담"
+    ],
+    isExternal: true,
+  },
+  {
+    id: "studyarena",
+    title: "StudyArena",
+    price: "무료",
+    description: "클래스 친구들과 매일 학습 성과를 비교하고, 서로 경쟁하며 성장하세요!",
+    icon: <Swords className="w-6 h-6" />,
+    href: STUDYARENA_URL,
+    color: "text-inferno-500",
+    bgGradient: "from-inferno-500 to-inferno-600",
+    features: [
+      "공부 아레나: AI가 평가한 매일 학습 성과 비교",
+      "정시 아레나: 모의고사 성적으로 경쟁",
+      "클래스별 실시간 랭킹",
+      "친구 초대 및 그룹 관리"
+    ],
+    isExternal: true,
+  },
+  {
+    id: "mysanggibu",
+    title: "MySanggibu",
+    price: "무료",
+    description: "생활기록부를 체계적으로 관리하고, AI 분석으로 강점을 파악하세요!",
+    icon: <FileText className="w-6 h-6" />,
+    href: MYSANGGIBU_URL,
+    color: "text-ocean-500",
+    bgGradient: "from-ocean-500 to-ocean-600",
+    features: [
+      "생기부 항목별 체계적 관리",
+      "AI 기반 생기부 분석",
+      "대학별 유불리 평가",
+      "활동 이력 타임라인"
     ],
     isExternal: true,
   },

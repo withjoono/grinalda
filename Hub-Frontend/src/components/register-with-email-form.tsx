@@ -310,7 +310,15 @@ export function RegisterWithEmailForm({ className }: Props) {
         // 회원가입 성공 후 me 쿼리 캐시 무효화
         await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
         toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
-        navigate({ to: "/" });
+
+        // 회원 유형에 따라 해당 앱으로 리다이렉트
+        if (memberType === "teacher") {
+          window.location.href = `http://localhost:3020`;
+        } else if (memberType === "parent") {
+          window.location.href = `http://localhost:3019`;
+        } else {
+          navigate({ to: "/" });
+        }
       } else {
         toast.error(res.data.error || "회원가입에 실패했습니다.");
       }

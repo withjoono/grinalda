@@ -190,6 +190,13 @@ export class MembersService {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
 
+    // 공통 필드 업데이트
+    if (updateData.nickname !== undefined) {
+      member.nickname = updateData.nickname;
+    }
+    if (updateData.phone !== undefined) {
+      member.phone = updateData.phone;
+    }
     if (updateData.ck_sms_agree !== undefined) {
       member.ck_sms_agree = updateData.ck_sms_agree;
     }
@@ -197,7 +204,7 @@ export class MembersService {
     member.update_dt = new Date();
     await this.membersRepository.save(member);
 
-    // 학생 프로필 업데이트 (school_level, grade, school_code, school_name)
+    // 학생 프로필 업데이트
     if (member.member_type === 'student') {
       const studentProfile = await this.studentRepository.findOneBy({ member_id: memberId });
       if (studentProfile) {
@@ -214,6 +221,31 @@ export class MembersService {
           studentProfile.school_name = updateData.school_name;
         }
         await this.studentRepository.save(studentProfile);
+      }
+    }
+
+    // 선생님 프로필 업데이트
+    if (member.member_type === 'teacher') {
+      const teacherProfile = await this.teacherRepository.findOneBy({ member_id: memberId });
+      if (teacherProfile) {
+        if (updateData.subject !== undefined) {
+          teacherProfile.subject = updateData.subject;
+        }
+        if (updateData.teacher_school_level !== undefined) {
+          teacherProfile.school_level = updateData.teacher_school_level;
+        }
+        await this.teacherRepository.save(teacherProfile);
+      }
+    }
+
+    // 학부모 프로필 업데이트
+    if (member.member_type === 'parent') {
+      const parentProfile = await this.parentRepository.findOneBy({ member_id: memberId });
+      if (parentProfile) {
+        if (updateData.parent_type !== undefined) {
+          parentProfile.parent_type = updateData.parent_type;
+        }
+        await this.parentRepository.save(parentProfile);
       }
     }
 

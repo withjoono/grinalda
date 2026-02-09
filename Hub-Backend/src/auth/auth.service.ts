@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
   Optional,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { LoginResponseType } from './types/login-response.type';
@@ -46,6 +47,7 @@ export class AuthService {
     private readonly configService: ConfigService<AllConfigType>,
     private readonly httpService: HttpService,
     private readonly smsService: SmsService,
+    private readonly dataSource: DataSource,
 
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -685,11 +687,80 @@ export class AuthService {
 
     this.logger.info(`[SSO 코드 검증 성공] memberId=${ssoData.memberId}, serviceId=${serviceId}`);
 
+    // 6. 앱별 auth_member 테이블에 사용자 기록 동기화
+    await this.syncAppAuthMember(ssoData.memberId, serviceId);
+
     return {
       accessToken: ssoData.accessToken,
       refreshToken: ssoData.refreshToken,
       tokenExpiry: ssoData.tokenExpiry,
       activeServices,
     };
+  }
+
+  // ==========================================
+  // 앱별 auth_member 동기화
+  // ==========================================
+
+  /** serviceId → 테이블 prefix 매핑 */
+  private static readonly SERVICE_TABLE_MAP: Record<string, string> = {
+    susi: 'ss',
+    jungsi: 'js',
+    planner: 'pl',
+    examhub: 'eh',
+    tutorboard: 'tb',
+    studyarena: 'sa',
+    parentadmin: 'pa',
+    teacheradmin: 'ta',
+    mysanggibu: 'ms',
+  };
+
+  /**
+   * SSO 로그인 시 앱별 auth_member 테이블에 사용자 기록을 동기화합니다.
+   * - 최초 방문: INSERT
+   * - 재방문: last_login_at 업데이트
+   */
+  private async syncAppAuthMember(memberId: string, serviceId: string): Promise<void> {
+    const prefix = AuthService.SERVICE_TABLE_MAP[serviceId];
+    if (!prefix) {
+      this.logger.warn(`[SSO Sync] 알 수 없는 serviceId: ${serviceId} — 동기화 건너뜀`);
+      return;
+    }
+
+    const tableName = `${prefix}_auth_member`;
+    const pkCol = `${prefix}_auth_id`;
+
+    try {
+      // auth_member에서 사용자 정보 조회
+      const member = await this.dataSource.query(
+        `SELECT id, nickname, email, member_type, phone FROM auth_member WHERE id = $1`,
+        [memberId],
+      );
+
+      if (!member || member.length === 0) {
+        this.logger.warn(`[SSO Sync] memberId=${memberId} — auth_member에 없음`);
+        return;
+      }
+
+      const m = member[0];
+
+      // UPSERT: ON CONFLICT → last_login_at 업데이트
+      await this.dataSource.query(
+        `INSERT INTO ${tableName} (${pkCol}, nickname, email, member_type, phone, created_at, last_login_at)
+         VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+         ON CONFLICT (${pkCol}) DO UPDATE SET
+           nickname = EXCLUDED.nickname,
+           email = EXCLUDED.email,
+           member_type = EXCLUDED.member_type,
+           phone = EXCLUDED.phone,
+           last_login_at = NOW()`,
+        [m.id, m.nickname, m.email, m.member_type, m.phone],
+      );
+
+      this.logger.info(`[SSO Sync] ${tableName} — memberId=${memberId} 동기화 완료`);
+    } catch (error) {
+      // 동기화 실패해도 SSO 로그인은 정상 진행
+      this.logger.error(`[SSO Sync] ${tableName} 동기화 실패: ${error.message}`);
+    }
   }
 }
