@@ -1,0 +1,9 @@
+[GET] http://localhost:3001/logo.png => [200] OK
+[GET] http://localhost:3001/api-hub/auth/me => [200] OK
+[POST] https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBLLpafoaIWncIXrQL-TYzQdNNXwtyz6Sw => [200] 
+[GET] http://localhost:3001/api-nest/explore/susi/kyokwa/step-1?year=2025&basic_type=%EC%9D%BC%EB%B0%98 => [200] OK
+[GET] http://localhost:3001/api-nest/members/8/schoolrecord/attendance => [200] OK
+[GET] http://localhost:3001/api-nest/members/8/schoolrecord/select-subject => [200] OK
+[GET] http://localhost:3001/api-nest/members/8/schoolrecord/subject => [200] OK
+[GET] http://localhost:3001/api-nest/members/8/schoolrecord/volunteers => [200] OK
+[GET] http://localhost:3001/api-nest/explore/susi/kyokwa/step-1?year=2025&basic_type=%EC%9D%BC%EB%B0%98&category=%EB%AC%B8%EA%B3%BC => [200] OK
