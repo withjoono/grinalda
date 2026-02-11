@@ -160,7 +160,7 @@ export const MsHeader = () => {
 
                   <div className="w-full space-y-1">
                     <div className="px-1 py-2 text-sm font-semibold text-olive-500">
-                      교과
+                      입력과 평가
                     </div>
                     <Link
                       to="/ms/school-record"
@@ -172,6 +172,14 @@ export const MsHeader = () => {
                     >
                       📝 생기부 입력
                     </Link>
+                  </div>
+
+                  <Separator className="my-2 bg-gray-200" />
+
+                  <div className="w-full space-y-1">
+                    <div className="px-1 py-2 text-sm font-semibold text-olive-500">
+                      교과
+                    </div>
                     <Link
                       to="/ms/performance"
                       className={cn(
@@ -229,6 +237,16 @@ export const MsHeader = () => {
                       onClick={() => setIsOpen(false)}
                     >
                       📄 세특
+                    </Link>
+                    <Link
+                      to="/ms/creative-activity"
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      🎨 창체
                     </Link>
                   </div>
 
@@ -424,14 +442,14 @@ export const MsHeader = () => {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                {/* 교과 */}
+                {/* 입력과 평가 */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className="bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 data-[state=open]:bg-gray-100"
                     onPointerMove={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
                     onPointerLeave={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
                   >
-                    교과
+                    입력과 평가
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="p-4 md:w-[400px]">
@@ -447,6 +465,23 @@ export const MsHeader = () => {
                             </div>
                           </div>
                         </Link>
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                {/* 교과 */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    className="bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 data-[state=open]:bg-gray-100"
+                    onPointerMove={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
+                    onPointerLeave={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
+                  >
+                    교과
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="p-4 md:w-[400px]">
+                      <div className="flex flex-col gap-2">
                         <Link
                           to="/ms/performance"
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
@@ -503,6 +538,12 @@ export const MsHeader = () => {
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <span className="text-sm font-medium">📄 세특</span>
+                        </Link>
+                        <Link
+                          to="/ms/creative-activity"
+                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
+                        >
+                          <span className="text-sm font-medium">🎨 창체</span>
                         </Link>
                       </div>
                     </div>
