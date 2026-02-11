@@ -26,7 +26,7 @@ export class SchoolRecordController {
     private readonly schoolRecordService: SchoolRecordService,
     private readonly htmlParserService: SchoolRecordHtmlParserService,
     private readonly aiPdfParserService: AiPdfParserService,
-  ) {}
+  ) { }
 
   @Get('files')
   @Roles(['ROLE_ADMIN'])
@@ -50,6 +50,7 @@ export class SchoolRecordController {
     };
   }
 
+  /*
   @Post('upload/pdf')
   @UseInterceptors(FileInterceptor('file'))
   async uploadSchoolRecordPdf(
@@ -59,6 +60,7 @@ export class SchoolRecordController {
     const uploadedFileUrl = await this.schoolRecordService.uploadSchoolRecordPdf(memberId, file);
     return { url: uploadedFileUrl };
   }
+  */
 
   @Get('access')
   @Roles(['ROLE_ADMIN'])
@@ -67,15 +69,23 @@ export class SchoolRecordController {
     return { signedUrl };
   }
 
+  /*
   @Delete(':schoolRecordId')
   @Roles(['ROLE_ADMIN'])
   async deleteSchoolRecord(@Param('schoolRecordId') schoolRecordId: string) {
     return this.schoolRecordService.deleteSchoolRecordById(schoolRecordId);
   }
+  */
 
   /**
    * HTML 형식 학생부 파싱 (재학생용 - NEIS에서 다운로드)
    */
+  /*
+  // ====================================================================
+  // [Hub DB 이전] HTML/PDF 파싱은 Hub 백엔드(localhost:4000)에서 처리
+  // MySanggibu 백엔드는 읽기 전용으로만 생기부 데이터를 사용합니다.
+  // ====================================================================
+
   @Post('parse/html')
   @ApiOperation({ summary: 'HTML 학생부 파싱 (재학생용)' })
   @ApiConsumes('multipart/form-data')
@@ -115,11 +125,13 @@ export class SchoolRecordController {
       data: result,
     };
   }
+  */
 
   /**
    * PDF 형식 학생부 파싱 (졸업생용)
    * - AI(GPT)로 PDF 파싱 후 자동으로 DB에 저장
    */
+  /*
   @Post('parse/pdf')
   @ApiOperation({ summary: 'PDF 학생부 파싱 및 저장 (졸업생용)' })
   @ApiConsumes('multipart/form-data')
@@ -161,4 +173,5 @@ export class SchoolRecordController {
       data: result,
     };
   }
+  */
 }
