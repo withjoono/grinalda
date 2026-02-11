@@ -31,6 +31,12 @@ import {
   ProductPermissionMappingEntity,
 } from './entities/subscription';
 
+import { SchoolRecordAttendanceDetailEntity } from './entities/schoolrecord/schoolrecord-attendance-detail.entity';
+import { SchoolRecordSelectSubjectEntity } from './entities/schoolrecord/schoolrecord-select-subject.entity';
+import { SchoolRecordSubjectLearningEntity } from './entities/schoolrecord/schoolrecord-subject-learning.entity';
+import { SchoolRecordVolunteerEntity } from './entities/schoolrecord/schoolrecord-volunteer.entity';
+import { SchoolrecordSportsArtEntity } from './entities/schoolrecord/schoolrecord-sport-art.entity';
+
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -111,6 +117,13 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         AppEntity, // 앱 정의 (examhub, susi 등)
         AppSubscriptionEntity, // 사용자별 앱 구독 정보
         ProductPermissionMappingEntity, // 상품-권한 매핑 (관리자가 동적 관리)
+
+        // 생기부 관련
+        SchoolRecordAttendanceDetailEntity,
+        SchoolRecordSelectSubjectEntity,
+        SchoolRecordSubjectLearningEntity,
+        SchoolRecordVolunteerEntity,
+        SchoolrecordSportsArtEntity,
 
       ],
     } as TypeOrmModuleOptions;
