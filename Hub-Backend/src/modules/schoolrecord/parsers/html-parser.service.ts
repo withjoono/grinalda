@@ -12,6 +12,8 @@ import {
     ParsedSubjectLearning,
     ParsedSelectSubject,
     ParsedVolunteer,
+    ParsedCreativeActivity,
+    ParsedBehaviorOpinion,
     ParsedSchoolRecord,
     DEFAULT_MAIN_SUBJECT_CODE,
     DEFAULT_SUBJECT_CODE_LEARNING,
@@ -36,8 +38,10 @@ export class SchoolRecordHtmlParserService {
             const subjectLearnings = this.parseSubjectLearning($, mainMappingTable, mappingTable);
             const selectSubjects = this.parseSelectSubject($, mainMappingTable, mappingTable);
             const volunteers = this.parseVolunteer($);
+            const creativeActivities = this.parseCreativeActivities($);
+            const behaviorOpinions = this.parseBehaviorOpinions($);
 
-            return { subjectLearnings, selectSubjects, volunteers };
+            return { subjectLearnings, selectSubjects, volunteers, creativeActivities, behaviorOpinions };
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Unknown error';
             this.logger.error('HTML 파싱 오류:', error);
@@ -66,6 +70,71 @@ export class SchoolRecordHtmlParserService {
         return { mainMappingTable, mappingTable };
     }
 
+    private findDetailAndSpecialtyMap($: cheerio.CheerioAPI): Map<string, string> {
+        const map = new Map<string, string>();
+
+        $('table').each((_, table) => {
+            const headers = $(table).find('thead th').map((_, th) => $(th).text().trim()).get();
+            // "과목" 및 "세부능력 및 특기사항" 헤더가 있는지 확인
+            const hasSubject = headers.some(h => h.includes('과목'));
+            const hasDetail = headers.some(h => h.includes('세부능력') && h.includes('특기사항'));
+
+            if (hasSubject && hasDetail) {
+                // 이 테이블은 세특 테이블임
+                // 학년/학기 정보를 찾아야 함. 보통 테이블 근처나 상위 div id에서 유추...하거나
+                // 단순히 과목명으로 매핑 시도. 하지만 학년/학기는 필수임.
+                // NEIS HTML 구조상 세특 테이블이 학년별로 분리되어 있는지, 통으로 있는지 확인 필요.
+                // 보통 학년별 테이블이 분리됨.
+                // 상위 div id 확인: pr_id_... 
+
+                const parentId = $(table).closest('div[id^="pr_id_"]').attr('id');
+                // ID로 학년 유추는 `possibleIds`와 매핑해야하므로 복잡.
+                // 대신, 행별로 파싱하면서 매핑에 추가. 키: "과목명" (동일 과목명이 학년/학기 다를 수 있음 -> 문제)
+                // 따라서, Context 검색 필요.
+
+                // 간단히: 현재 파싱 중인 grade loop 내에서 호출하는 것이 나음?
+                // 아니면 여기서 모든 세특을 긁어모으되, "학기" 컬럼이 있으면 사용.
+                // 세특 테이블 컬럼: [학기, 과목, 세부능력 및 특기사항] 인 경우가 많음.
+
+                const hasSemester = headers.some(h => h.includes('학기'));
+
+                $(table).find('tbody tr').each((__, tr) => {
+                    const tds = $(tr).children('td');
+                    if (tds.length < 2) return;
+
+                    let semester = '';
+                    let subjectName = '';
+                    let content = '';
+
+                    if (hasSemester && tds.length >= 3) {
+                        semester = $(tds.get(0)).text().trim();
+                        subjectName = $(tds.get(1)).text().trim().replace(/\s/g, '');
+                        content = $(tds.get(2)).text().trim();
+                    } else {
+                        // 학기가 없으면... 순서대로? 혹은 이전 로직 의존?
+                        // 대부분의 NEIS HTML 세특 테이블은 [학기, 과목, 내용] 또는 [과목, 내용] (학기 정보 상위 표시)
+                        subjectName = $(tds.get(0)).text().trim().replace(/\s/g, '');
+                        content = $(tds.get(1)).text().trim();
+                    }
+
+                    if (subjectName && content) {
+                        // 키 생성: 과목명 (학기 정보가 없으면 중복 문제 발생 가능하나, 우선 과목명으로 매핑)
+                        // 학기가 있으면: `${semester}-${subjectName}`
+                        const key = semester ? `${semester}-${subjectName}` : subjectName;
+                        // 이미 있으면 이어붙이기 (혹시 1학기, 2학기 나눠진 경우)
+                        if (map.has(key)) {
+                            map.set(key, map.get(key) + '\n' + content);
+                        } else {
+                            map.set(key, content);
+                        }
+                    }
+                });
+            }
+        });
+
+        return map;
+    }
+
     /**
      * 교과학습발달상황 (일반교과목) 파싱
      */
@@ -75,6 +144,11 @@ export class SchoolRecordHtmlParserService {
         mappingTable: Map<string, string>,
     ): ParsedSubjectLearning[] {
         const result: ParsedSubjectLearning[] = [];
+
+        // 세특 매핑 맵 생성 (전역 검색)
+        // 주의: 학년별 루프 안에서 돌리면 더 정확할 수 있지만, findDetailAndSpecialtyMap은 전체를 훑음.
+        // 여기서는 간단히 전체 훑은 맵을 사용하되, 키 매칭을 최대한 시도.
+        const detailMap = this.findDetailAndSpecialtyMap($);
 
         // 가능한 요소 ID 목록 시도
         const possibleIds = [
@@ -155,6 +229,11 @@ export class SchoolRecordHtmlParserService {
                     const ranking = $(children.get(6)).text().trim();
                     const etc = $(children.get(7)).text().trim();
 
+                    // 세특 매핑
+                    // 1. `${semester}-${subjectName}` 
+                    // 2. `subjectName` (학기 정보 없는 경우 대비)
+                    const detailAndSpecialty = detailMap.get(`${semester}-${subjectName}`) || detailMap.get(subjectName);
+
                     result.push({
                         grade: String(grade),
                         semester,
@@ -170,6 +249,7 @@ export class SchoolRecordHtmlParserService {
                         studentsNum,
                         ranking,
                         etc,
+                        detailAndSpecialty, // 추가됨
                     });
                 });
             });
@@ -189,6 +269,8 @@ export class SchoolRecordHtmlParserService {
         mappingTable: Map<string, string>,
     ): ParsedSelectSubject[] {
         const result: ParsedSelectSubject[] = [];
+
+        const detailMap = this.findDetailAndSpecialtyMap($);
 
         // 가능한 요소 ID 목록 시도
         const possibleIds = [
@@ -270,6 +352,8 @@ export class SchoolRecordHtmlParserService {
 
                     const etc = $(children.get(7)).text().trim();
 
+                    const detailAndSpecialty = detailMap.get(`${semester}-${subjectName}`) || detailMap.get(subjectName);
+
                     result.push({
                         grade: String(grade),
                         semester,
@@ -286,6 +370,7 @@ export class SchoolRecordHtmlParserService {
                         achievementB,
                         achievementC,
                         etc,
+                        detailAndSpecialty, // 추가됨
                     });
                 });
             });
@@ -373,5 +458,110 @@ export class SchoolRecordHtmlParserService {
     private extractPercentage(text: string): string {
         const match = text.match(/\(([^)]+)\)/);
         return match ? match[1] : '';
+    }
+
+    /**
+     * 창의적 체험활동상황 파싱
+     * NEIS HTML 테이블에서 "창의적 체험활동상황" 섹션을 찾아
+     * 학년, 활동유형(자치활동/동아리활동/봉사활동/진로활동), 특기사항을 파싱
+     */
+    private parseCreativeActivities($: cheerio.CheerioAPI): ParsedCreativeActivity[] {
+        const result: ParsedCreativeActivity[] = [];
+
+        $('table').each((_, table) => {
+            const caption = $(table).find('caption').text().trim();
+            const headerText = $(table).find('thead').text().trim();
+            const fullText = caption + ' ' + headerText;
+
+            // "창의적 체험활동상황" 테이블 식별
+            if (!fullText.includes('창의적') && !fullText.includes('체험활동')) {
+                return; // continue
+            }
+
+            const headers = $(table).find('thead th').map((_, th) => $(th).text().trim()).get();
+            // 활동 유형과 특기사항 컬럼 인덱스 찾기
+            const hasActivityType = headers.some(h => h.includes('영역') || h.includes('활동'));
+            const hasContent = headers.some(h => h.includes('특기사항') || h.includes('내용'));
+
+            if (!hasActivityType && !hasContent) return;
+
+            let currentGrade = '';
+
+            $(table).find('tbody tr').each((__, tr) => {
+                const tds = $(tr).children('td');
+                if (tds.length < 2) return;
+
+                // 학년이 포함된 경우 (보통 rowspan으로 학년이 첫 번째 컬럼)
+                const cells = tds.map((___, td) => $(td).text().trim()).get();
+
+                if (tds.length >= 3) {
+                    // [학년, 활동유형, 특기사항]
+                    const gradeText = cells[0];
+                    if (/^\d$/.test(gradeText)) {
+                        currentGrade = gradeText;
+                    }
+                    const activityType = cells[cells.length - 2] || '';
+                    const content = cells[cells.length - 1] || '';
+
+                    if (content) {
+                        result.push({
+                            grade: currentGrade || gradeText,
+                            activityType: activityType.replace(/\s/g, ''),
+                            content,
+                        });
+                    }
+                } else if (tds.length === 2) {
+                    // [활동유형, 특기사항] (학년은 이전 행에서 rowspan으로)
+                    const activityType = cells[0] || '';
+                    const content = cells[1] || '';
+
+                    if (content) {
+                        result.push({
+                            grade: currentGrade,
+                            activityType: activityType.replace(/\s/g, ''),
+                            content,
+                        });
+                    }
+                }
+            });
+        });
+
+        return result;
+    }
+
+    /**
+     * 행동특성 및 종합의견 파싱
+     * NEIS HTML에서 "행동특성 및 종합의견" 섹션을 찾아 학년별 내용을 파싱
+     */
+    private parseBehaviorOpinions($: cheerio.CheerioAPI): ParsedBehaviorOpinion[] {
+        const result: ParsedBehaviorOpinion[] = [];
+
+        $('table').each((_, table) => {
+            const caption = $(table).find('caption').text().trim();
+            const headerText = $(table).find('thead').text().trim();
+            const fullText = caption + ' ' + headerText;
+
+            // "행동특성 및 종합의견" 테이블 식별
+            if (!fullText.includes('행동특성') && !fullText.includes('종합의견')) {
+                return; // continue
+            }
+
+            $(table).find('tbody tr').each((__, tr) => {
+                const tds = $(tr).children('td');
+                if (tds.length < 2) return;
+
+                const cells = tds.map((___, td) => $(td).text().trim()).get();
+
+                // [학년, 내용] 형태
+                const grade = cells[0] || '';
+                const content = cells[cells.length - 1] || '';
+
+                if (/^\d$/.test(grade) && content) {
+                    result.push({ grade, content });
+                }
+            });
+        });
+
+        return result;
     }
 }

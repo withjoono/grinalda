@@ -1,11 +1,12 @@
 /**
  * ============================================
- * 생활기록부 업로드 훅 (NestJS 백엔드 사용)
- * 2024-12 NestJS로 완전 마이그레이션 완료
+ * 생활기록부 업로드 훅 (Hub 중앙 API 사용)
+ * Hub-Backend의 schoolrecord 모듈을 통해 업로드합니다.
+ * 수시/정시와 동일한 패턴으로 크로스앱 공유를 지원합니다.
  * ============================================
  */
 
-import { authClient } from "@/lib/api";
+import { hubApiClient } from "@/stores/server/hub-api-client";
 import { useAuthStore } from "@/stores/client/use-auth-store";
 import {
   useGetCurrentUser,
@@ -21,6 +22,8 @@ export const useLifeRecordUpload = () => {
 
   // 생기부 데이터가 없으면 업로드 가능 (isEmpty가 true면 canUpload도 true)
   const canUpload = schoolRecords?.isEmpty ?? true;
+  // 기존 생기부 데이터가 있는지 여부
+  const hasExistingRecord = !(schoolRecords?.isEmpty ?? true);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -36,9 +39,9 @@ export const useLifeRecordUpload = () => {
   };
 
   /**
-   * 생기부 파일 업로드 (NestJS 백엔드)
-   * - HTML: POST /schoolrecord/parse/html → PATCH /members/life-record (재학생용)
-   * - PDF: POST /schoolrecord/parse/pdf (졸업생용 - AI 파싱 후 자동 저장)
+   * 생기부 파일 업로드 (Hub 중앙 API)
+   * - HTML: POST /schoolrecord/:memberId/parse/html (파싱 + 저장 한 번에 처리)
+   * - PDF: POST /schoolrecord/:memberId/parse/pdf (AI 파싱 + 저장 한 번에 처리)
    */
   const uploadFile = async (type: "html" | "pdf", file: File) => {
     if (!currentUser) return;
@@ -48,32 +51,28 @@ export const useLifeRecordUpload = () => {
 
     try {
       if (type === "html") {
-        // 1. HTML 파싱
-        const parseRes = await authClient.post("/schoolrecord/parse/html", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        // Hub-Backend에서 HTML 파싱 + 저장을 한 번에 처리
+        const res = await hubApiClient.post(
+          `/schoolrecord/${currentUser.id}/parse/html`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } },
+        );
 
-        if (parseRes.data?.data) {
-          const parsedData = parseRes.data.data;
-
-          // 2. 파싱된 데이터 저장 (camelCase → snake_case 변환은 백엔드 DTO에서 처리)
-          await authClient.patch("/members/life-record", {
-            attendances: [], // HTML 파서에서 attendance는 아직 미지원
-            subjects: parsedData.subjectLearnings || [],
-            selectSubjects: parsedData.selectSubjects || [],
-          });
-
+        if (res.data) {
           toast.success("생활기록부(HTML) 업로드에 성공하였습니다.");
           await _refetchSchoolRecord();
         }
       } else if (type === "pdf") {
-        // PDF는 백엔드에서 AI 파싱 + 저장을 한 번에 처리
-        // AI 파싱이 오래 걸릴 수 있으므로 타임아웃을 5분으로 설정
+        // Hub-Backend에서 PDF AI 파싱 + 저장을 한 번에 처리
         toast.info("PDF 파싱 중입니다. 최대 5분 정도 걸릴 수 있습니다...");
-        const res = await authClient.post("/schoolrecord/parse/pdf", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-          timeout: 300000, // 5분 타임아웃 (AI 파싱이 오래 걸릴 수 있음)
-        });
+        const res = await hubApiClient.post(
+          `/schoolrecord/${currentUser.id}/parse/pdf`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            timeout: 300000, // 5분 타임아웃
+          },
+        );
         if (res.data) {
           toast.success("생활기록부(PDF) 업로드에 성공하였습니다.");
           await _refetchSchoolRecord();
@@ -82,8 +81,7 @@ export const useLifeRecordUpload = () => {
     } catch (e: unknown) {
       console.error("[useLifeRecordUpload] 업로드 실패:", e);
       const error = e as { response?: { data?: { message?: string } }, code?: string };
-      
-      // 타임아웃 에러인 경우 특별한 메시지 표시
+
       if (error.code === "ECONNABORTED") {
         toast.error(
           "파일 처리 시간이 초과되었습니다. 파일 크기가 크거나 서버가 혼잡할 수 있습니다. 잠시 후 다시 시도해주세요.",
@@ -95,5 +93,31 @@ export const useLifeRecordUpload = () => {
     }
   };
 
-  return { canUpload, uploadFile };
+  /**
+   * 생기부 재업로드 (기존 성적 삭제 → 새 파일 업로드)
+   * - 사정관 평가(officer evaluation)는 보존됨
+   * - 교과 성적(subjects, selectSubjects, attendance, volunteers)만 삭제 후 재등록
+   */
+  const deleteAndReupload = async (type: "html" | "pdf", file: File) => {
+    if (!currentUser) return;
+
+    try {
+      toast.info("기존 생기부 데이터를 삭제하고 재등록합니다...");
+
+      // 1. 기존 성적 데이터 삭제 (Hub DELETE API)
+      await hubApiClient.delete(`/schoolrecord/${currentUser.id}`);
+
+      // 2. 캐시 무효화
+      await _refetchSchoolRecord();
+
+      // 3. 새 파일 업로드
+      await uploadFile(type, file);
+    } catch (e: unknown) {
+      console.error("[useLifeRecordUpload] 재업로드 실패:", e);
+      const error = e as { response?: { data?: { message?: string } } };
+      toast.error(error.response?.data?.message || "생기부 재등록에 실패했습니다.");
+    }
+  };
+
+  return { canUpload, hasExistingRecord, uploadFile, deleteAndReupload };
 };

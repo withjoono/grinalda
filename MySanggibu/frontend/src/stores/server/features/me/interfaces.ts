@@ -51,6 +51,7 @@ export interface ISchoolRecordSelectSubject {
   subjectCode: string | null;
   subjectName: string;
   unit: string | null;
+  detailAndSpecialty: string | null;
 }
 
 // 교과 성적 (API 응답은 humps에 의해 camelCase로 변환됨)
@@ -70,6 +71,20 @@ export interface ISchoolRecordSubject {
   subjectCode: string | null; // 과목
   subjectName: string | null; // 과목이름
   unit: string | null; // 단위수
+  detailAndSpecialty: string | null; // 세부능력 및 특기사항
+}
+
+export interface ISchoolRecordCreativeActivity {
+  id: number;
+  grade: string | null;
+  activityType: string | null; // 활동유형 (자치활동, 동아리활동, 봉사활동, 진로활동)
+  content: string | null; // 특기사항
+}
+
+export interface ISchoolRecordBehaviorOpinion {
+  id: number;
+  grade: string | null;
+  content: string | null; // 행동특성 및 종합의견
 }
 
 export interface ISchoolRecord {
@@ -77,6 +92,8 @@ export interface ISchoolRecord {
   selectSubjects: ISchoolRecordSelectSubject[];
   subjects: ISchoolRecordSubject[];
   volunteers: ISchoolRecordVolunteer[];
+  creativeActivities: ISchoolRecordCreativeActivity[];
+  behaviorOpinions: ISchoolRecordBehaviorOpinion[];
   isEmpty: boolean;
 }
 

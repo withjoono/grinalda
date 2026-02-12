@@ -24,6 +24,7 @@ interface AcademicRecord {
     성취도분포비율A?: string;
     성취도분포비율B?: string;
     성취도분포비율C?: string;
+    세부능력및특기사항?: string;
 }
 
 /**
@@ -139,6 +140,15 @@ interface ParsedAcademicRecords {
     academic_records: {
         [year: string]: YearData;
     };
+    creative_activities?: {
+        [year: string]: Array<{
+            활동유형: string;
+            특기사항: string;
+        }>;
+    };
+    behavior_opinions?: {
+        [year: string]: string;
+    };
 }
 
 @Injectable()
@@ -242,11 +252,19 @@ export class AiPdfParserService {
                 일반: this.extractSection(yearContent, '^', '세 부 능 력 및 특 기 사 항'),
                 진로선택: this.extractSection(yearContent, '진로 선택 과목', '세 부 능 력 및 특 기 사 항'),
                 체육예술: this.extractSection(yearContent, '체육ㆍ예술', '세 부 능 력 및 특 기 사 항'),
+                세특: this.extractSection(yearContent, '세 부 능 력 및 특 기 사 항', '$'),
+                창체: this.extractSection(yearContent, '창의적', '행동특성'),
+                행특: this.extractSection(yearContent, '행동특성', '$'),
             };
             const processedSections: Record<string, { '1학기': string; '2학기': string }> = {};
             for (const [sectionName, sectionContent] of Object.entries(sections)) {
                 if (sectionContent.trim()) {
-                    processedSections[sectionName] = this.processSemesterData(sectionContent);
+                    if (sectionName === '세특' || sectionName === '창체' || sectionName === '행특') {
+                        // 학기 구분 없이 통으로 전달
+                        processedSections[sectionName] = { '1학기': sectionContent, '2학기': '' };
+                    } else {
+                        processedSections[sectionName] = this.processSemesterData(sectionContent);
+                    }
                 }
             }
             if (Object.keys(processedSections).length > 0) {
@@ -299,6 +317,7 @@ export class AiPdfParserService {
 1. 일반 과목: 텍스트의 "일반" 섹션에 있는 과목
 2. 진로선택 과목: 텍스트의 "진로선택" 섹션에 있는 과목
 3. 체육예술 과목: 텍스트의 "체육예술" 섹션에 있는 과목
+4. 세부능력 및 특기사항(세특): "세특" 섹션에 있는 텍스트를 분석하여 해당 과목의 "세부능력 및 특기사항" 필드에 매핑해주세요. 과목명이 정확히 일치하지 않아도 문맥상 유사하면 매핑하세요.
 
 각 섹션은 동일한 섹션에서의 데이터만 포함해야 합니다.
 
@@ -307,9 +326,9 @@ export class AiPdfParserService {
     "academic_records": {
         "${year}": {
             "1학기": {
-                "일반": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "표준편차": "string", "성취도": "string", "수강자수": "string", "석차등급": "string"}],
-                "진로선택": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "성취도분포비율A": "string", "성취도분포비율B": "string", "성취도분포비율C": "string"}],
-                "체육예술": [{"교과명": "string", "과목명": "string", "단위수": "string", "성취도": "string"}]
+                "일반": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "표준편차": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "세부능력및특기사항": "string"}],
+                "진로선택": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "성취도분포비율A": "string", "성취도분포비율B": "string", "성취도분포비율C": "string", "세부능력및특기사항": "string"}],
+                "체육예술": [{"교과명": "string", "과목명": "string", "단위수": "string", "성취도": "string", "세부능력및특기사항": "string"}]
             },
             "2학기": {"일반": [], "진로선택": [], "체육예술": []}
         }
@@ -326,6 +345,9 @@ export class AiPdfParserService {
 7. 교과는 반드시 다음 배열 중 하나: ["국어", "수학", "영어", "사회(역사/도덕포함)", "과학", "기술・가정/제2외국어/한문/교양", "한국사", "체육", "예술", ...]
 8. 입력 수와 출력 수는 동일해야 합니다.
 9. "성취도"와 "석차등급"은 "P"일 수 있으며 원점수/과목평균/표준편차/수강자수는 존재하지 않을 수 있습니다.
+10. "세부능력및특기사항"은 해당 과목에 대한 서술형 평가 내용입니다. 내용이 길면 전체를 포함하세요. 줄바꿈은 \\n으로 표현하세요.
+11. "창체" 섹션이 있으면 "creative_activities" 키에 학년별 배열로 반환하세요: {"활동유형": "자치활동|동아리활동|봉사활동|진로활동", "특기사항": "내용"}
+12. "행특" 섹션이 있으면 "behavior_opinions" 키에 학년별 문자열로 반환하세요: {"${year}": "행동특성 및 종합의견 내용"}
 
 텍스트:
 ${JSON.stringify(content)}`;
@@ -365,14 +387,16 @@ ${JSON.stringify(content)}`;
             grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
             subjectCode: string; subjectName: string; unit: string; rawScore: string;
             subSubjectAverage: string; standardDeviation: string; achievement: string;
-            studentsNum: string; ranking: string; etc: string;
+            studentsNum: string; ranking: string; etc: string; detailAndSpecialty: string;
         }>;
         selectSubjects: Array<{
             grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
             subjectCode: string; subjectName: string; unit: string; rawScore: string;
             subSubjectAverage: string; achievement: string; studentsNum: string;
-            achievementA: string; achievementB: string; achievementC: string; etc: string;
+            achievementA: string; achievementB: string; achievementC: string; etc: string; detailAndSpecialty: string;
         }>;
+        creativeActivities: Array<{ grade: string; activityType: string; content: string }>;
+        behaviorOpinions: Array<{ grade: string; content: string }>;
     }> {
         const aiResult = await this.parseGrades(pdfBuffer);
         return this.convertToLegacyFormat(aiResult);
@@ -383,14 +407,16 @@ ${JSON.stringify(content)}`;
             grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
             subjectCode: string; subjectName: string; unit: string; rawScore: string;
             subSubjectAverage: string; standardDeviation: string; achievement: string;
-            studentsNum: string; ranking: string; etc: string;
+            studentsNum: string; ranking: string; etc: string; detailAndSpecialty: string;
         }> = [];
         const selectSubjects: Array<{
             grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
             subjectCode: string; subjectName: string; unit: string; rawScore: string;
             subSubjectAverage: string; achievement: string; studentsNum: string;
-            achievementA: string; achievementB: string; achievementC: string; etc: string;
+            achievementA: string; achievementB: string; achievementC: string; etc: string; detailAndSpecialty: string;
         }> = [];
+        const creativeActivities: Array<{ grade: string; activityType: string; content: string }> = [];
+        const behaviorOpinions: Array<{ grade: string; content: string }> = [];
 
         for (const [yearKey, yearData] of Object.entries(aiResult.academic_records)) {
             const grade = yearKey.replace('학년', '');
@@ -409,6 +435,7 @@ ${JSON.stringify(content)}`;
                             subSubjectAverage: record.과목평균 || '', standardDeviation: record.표준편차 || '',
                             achievement: record.성취도 || '', studentsNum: record.수강자수 || '',
                             ranking: record.석차등급 || '', etc: '',
+                            detailAndSpecialty: record.세부능력및특기사항 || '',
                         });
                     }
                 }
@@ -424,6 +451,7 @@ ${JSON.stringify(content)}`;
                             unit: record.단위수 || '', rawScore: '', subSubjectAverage: '',
                             standardDeviation: '', achievement: record.성취도 || 'P',
                             studentsNum: '', ranking: '', etc: '',
+                            detailAndSpecialty: record.세부능력및특기사항 || '',
                         });
                     }
                 }
@@ -442,12 +470,37 @@ ${JSON.stringify(content)}`;
                             achievementA: record.성취도분포비율A || '',
                             achievementB: record.성취도분포비율B || '',
                             achievementC: record.성취도분포비율C || '', etc: '',
+                            detailAndSpecialty: record.세부능력및특기사항 || '',
                         });
                     }
                 }
             }
         }
 
-        return { subjectLearnings, selectSubjects };
+        // 창체 파싱
+        if (aiResult.creative_activities) {
+            for (const [yearKey, activities] of Object.entries(aiResult.creative_activities)) {
+                const grade = yearKey.replace('학년', '');
+                for (const activity of activities) {
+                    creativeActivities.push({
+                        grade,
+                        activityType: activity.활동유형 || '',
+                        content: activity.특기사항 || '',
+                    });
+                }
+            }
+        }
+
+        // 행특 파싱
+        if (aiResult.behavior_opinions) {
+            for (const [yearKey, content] of Object.entries(aiResult.behavior_opinions)) {
+                const grade = yearKey.replace('학년', '');
+                if (content) {
+                    behaviorOpinions.push({ grade, content });
+                }
+            }
+        }
+
+        return { subjectLearnings, selectSubjects, creativeActivities, behaviorOpinions };
     }
 }

@@ -25,6 +25,7 @@ export interface ParsedSubjectLearning {
     studentsNum: string;
     ranking: string;
     etc: string;
+    detailAndSpecialty?: string;
 }
 
 export interface ParsedSelectSubject {
@@ -43,6 +44,7 @@ export interface ParsedSelectSubject {
     achievementB: string;
     achievementC: string;
     etc: string;
+    detailAndSpecialty?: string;
 }
 
 export interface ParsedVolunteer {
@@ -54,15 +56,30 @@ export interface ParsedVolunteer {
     accumulateTime: string;
 }
 
+export interface ParsedCreativeActivity {
+    grade: string;
+    activityType: string; // 자치활동, 동아리활동, 봉사활동, 진로활동
+    content: string;
+}
+
+export interface ParsedBehaviorOpinion {
+    grade: string;
+    content: string;
+}
+
 export interface ParsedSchoolRecord {
     subjectLearnings: ParsedSubjectLearning[];
     selectSubjects: ParsedSelectSubject[];
     volunteers: ParsedVolunteer[];
+    creativeActivities: ParsedCreativeActivity[];
+    behaviorOpinions: ParsedBehaviorOpinion[];
 }
 
 export interface ParsedSchoolRecordPdf {
     subjectLearnings: ParsedSubjectLearning[];
     selectSubjects: ParsedSelectSubject[];
+    creativeActivities: ParsedCreativeActivity[];
+    behaviorOpinions: ParsedBehaviorOpinion[];
 }
 
 // 과목 목록 (PDF 파싱용)

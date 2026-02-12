@@ -6,6 +6,8 @@ import { SchoolRecordSubjectLearningEntity } from 'src/database/entities/schoolr
 import { SchoolRecordVolunteerEntity } from 'src/database/entities/schoolrecord/schoolrecord-volunteer.entity';
 import { DataSource, EntityManager, EntityTarget, ObjectLiteral, Repository } from 'typeorm';
 import { SchoolrecordSportsArtEntity } from 'src/database/entities/schoolrecord/schoolrecord-sport-art.entity';
+import { SchoolRecordCreativeActivityEntity } from 'src/database/entities/schoolrecord/schoolrecord-creative-activity.entity';
+import { SchoolRecordBehaviorOpinionEntity } from 'src/database/entities/schoolrecord/schoolrecord-behavior-opinion.entity';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
 
 @Injectable()
@@ -22,6 +24,10 @@ export class SchoolRecordService {
         private volunteerRepository: Repository<SchoolRecordVolunteerEntity>,
         @InjectRepository(SchoolrecordSportsArtEntity)
         private sportArtRepository: Repository<SchoolrecordSportsArtEntity>,
+        @InjectRepository(SchoolRecordCreativeActivityEntity)
+        private creativeActivityRepository: Repository<SchoolRecordCreativeActivityEntity>,
+        @InjectRepository(SchoolRecordBehaviorOpinionEntity)
+        private behaviorOpinionRepository: Repository<SchoolRecordBehaviorOpinionEntity>,
         @InjectRepository(MemberEntity)
         private memberRepository: Repository<MemberEntity>,
         private readonly dataSource: DataSource,
@@ -38,13 +44,15 @@ export class SchoolRecordService {
             throw new NotFoundException(`유저를 찾을 수 없습니다. (id: ${memberId})`);
         }
 
-        const [subjectLearnings, selectSubjects, attendanceDetails, volunteers, sportArts] =
+        const [subjectLearnings, selectSubjects, attendanceDetails, volunteers, sportArts, creativeActivities, behaviorOpinions] =
             await Promise.all([
                 this.getSubjectLearnings(memberId),
                 this.getSelectSubjects(memberId),
                 this.getAttendanceDetails(memberId),
                 this.getVolunteers(memberId),
                 this.getSportArts(memberId),
+                this.getCreativeActivities(memberId),
+                this.getBehaviorOpinions(memberId),
             ]);
 
         return {
@@ -54,6 +62,8 @@ export class SchoolRecordService {
             attendanceDetails,
             volunteers,
             sportArts,
+            creativeActivities,
+            behaviorOpinions,
         };
     }
 
@@ -103,6 +113,26 @@ export class SchoolRecordService {
         });
     }
 
+    async getCreativeActivities(memberId: string): Promise<SchoolRecordCreativeActivityEntity[]> {
+        try {
+            return await this.creativeActivityRepository.find({
+                where: { member: { id: memberId } },
+            });
+        } catch {
+            return [];
+        }
+    }
+
+    async getBehaviorOpinions(memberId: string): Promise<SchoolRecordBehaviorOpinionEntity[]> {
+        try {
+            return await this.behaviorOpinionRepository.find({
+                where: { member: { id: memberId } },
+            });
+        } catch {
+            return [];
+        }
+    }
+
     /**
      * PDF 파싱 결과를 DB에 저장
      */
@@ -113,14 +143,16 @@ export class SchoolRecordService {
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; standardDeviation: string; achievement: string;
-                studentsNum: string; ranking: string; etc: string;
+                studentsNum: string; ranking: string; etc: string; detailAndSpecialty?: string;
             }>;
             selectSubjects: Array<{
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; achievement: string; studentsNum: string;
-                achievementA: string; achievementB: string; achievementC: string; etc: string;
+                achievementA: string; achievementB: string; achievementC: string; etc: string; detailAndSpecialty?: string;
             }>;
+            creativeActivities?: Array<{ grade: string; activityType: string; content: string }>;
+            behaviorOpinions?: Array<{ grade: string; content: string }>;
         },
     ): Promise<void> {
         const member = await this.memberRepository.findOne({
@@ -134,6 +166,8 @@ export class SchoolRecordService {
             // 기존 기록 삭제 (재업로드 시)
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
 
             // 일반 교과목 저장
             if (data.subjectLearnings.length > 0) {
@@ -154,6 +188,7 @@ export class SchoolRecordService {
                         students_num: item.studentsNum,
                         ranking: item.ranking,
                         etc: item.etc,
+                        detail_and_specialty: item.detailAndSpecialty || null,
                     }),
                 );
                 await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, subjectLearnings);
@@ -179,14 +214,40 @@ export class SchoolRecordService {
                         achievementb: item.achievementB,
                         achievementc: item.achievementC,
                         etc: item.etc,
+                        detail_and_specialty: item.detailAndSpecialty || null,
                     }),
                 );
                 await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, selectSubjects);
             }
+
+            // 창체 저장
+            if (data.creativeActivities && data.creativeActivities.length > 0) {
+                const entities = data.creativeActivities.map((item) =>
+                    this.creativeActivityRepository.create({
+                        member,
+                        grade: item.grade,
+                        activity_type: item.activityType,
+                        content: item.content,
+                    }),
+                );
+                await transactionalEntityManager.save(SchoolRecordCreativeActivityEntity, entities);
+            }
+
+            // 행특 저장
+            if (data.behaviorOpinions && data.behaviorOpinions.length > 0) {
+                const entities = data.behaviorOpinions.map((item) =>
+                    this.behaviorOpinionRepository.create({
+                        member,
+                        grade: item.grade,
+                        content: item.content,
+                    }),
+                );
+                await transactionalEntityManager.save(SchoolRecordBehaviorOpinionEntity, entities);
+            }
         });
 
         this.logger.log(
-            `Saved PDF parsed data for member ${member.id}: ${data.subjectLearnings.length} subjects, ${data.selectSubjects.length} select subjects`,
+            `Saved PDF parsed data for member ${member.id}: ${data.subjectLearnings.length} subjects, ${data.selectSubjects.length} select subjects, ${data.creativeActivities?.length || 0} creative activities, ${data.behaviorOpinions?.length || 0} behavior opinions`,
         );
     }
 
@@ -200,18 +261,20 @@ export class SchoolRecordService {
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; standardDeviation: string; achievement: string;
-                studentsNum: string; ranking: string; etc: string;
+                studentsNum: string; ranking: string; etc: string; detailAndSpecialty?: string;
             }>;
             selectSubjects: Array<{
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; achievement: string; studentsNum: string;
-                achievementA: string; achievementB: string; achievementC: string; etc: string;
+                achievementA: string; achievementB: string; achievementC: string; etc: string; detailAndSpecialty?: string;
             }>;
             volunteers: Array<{
                 grade: string; date: string; place: string; activityContent: string;
                 activityTime: string; accumulateTime: string;
             }>;
+            creativeActivities?: Array<{ grade: string; activityType: string; content: string }>;
+            behaviorOpinions?: Array<{ grade: string; content: string }>;
         },
     ): Promise<void> {
         const member = await this.memberRepository.findOne({ where: { id: memberId } });
@@ -224,6 +287,8 @@ export class SchoolRecordService {
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordVolunteerEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
 
             // 일반 교과목 저장
             if (data.subjectLearnings.length > 0) {
@@ -235,7 +300,7 @@ export class SchoolRecordService {
                         unit: item.unit, raw_score: item.rawScore,
                         sub_subject_average: item.subSubjectAverage, standard_deviation: item.standardDeviation,
                         achievement: item.achievement, students_num: item.studentsNum,
-                        ranking: item.ranking, etc: item.etc,
+                        ranking: item.ranking, etc: item.etc, detail_and_specialty: item.detailAndSpecialty || null,
                     }),
                 );
                 await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, entities);
@@ -252,7 +317,7 @@ export class SchoolRecordService {
                         sub_subject_average: item.subSubjectAverage, achievement: item.achievement,
                         students_num: item.studentsNum,
                         achievementa: item.achievementA, achievementb: item.achievementB,
-                        achievementc: item.achievementC, etc: item.etc,
+                        achievementc: item.achievementC, etc: item.etc, detail_and_specialty: item.detailAndSpecialty || null,
                     }),
                 );
                 await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, entities);
@@ -268,6 +333,31 @@ export class SchoolRecordService {
                     }),
                 );
                 await transactionalEntityManager.save(SchoolRecordVolunteerEntity, entities);
+            }
+
+            // 창체 저장
+            if (data.creativeActivities && data.creativeActivities.length > 0) {
+                const entities = data.creativeActivities.map((item) =>
+                    this.creativeActivityRepository.create({
+                        member,
+                        grade: item.grade,
+                        activity_type: item.activityType,
+                        content: item.content,
+                    }),
+                );
+                await transactionalEntityManager.save(SchoolRecordCreativeActivityEntity, entities);
+            }
+
+            // 행특 저장
+            if (data.behaviorOpinions && data.behaviorOpinions.length > 0) {
+                const entities = data.behaviorOpinions.map((item) =>
+                    this.behaviorOpinionRepository.create({
+                        member,
+                        grade: item.grade,
+                        content: item.content,
+                    }),
+                );
+                await transactionalEntityManager.save(SchoolRecordBehaviorOpinionEntity, entities);
             }
         });
 
@@ -292,13 +382,13 @@ export class SchoolRecordService {
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; standardDeviation: string; achievement: string;
-                studentsNum: string; ranking: string; etc: string;
+                studentsNum: string; ranking: string; etc: string; detailAndSpecialty: string;
             }>;
             selectSubjects: Array<{
                 grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
                 subjectCode: string; subjectName: string; unit: string; rawScore: string;
                 subSubjectAverage: string; achievement: string; studentsNum: string;
-                achievementa: string; achievementb: string; achievementc: string; etc: string;
+                achievementa: string; achievementb: string; achievementc: string; etc: string; detailAndSpecialty: string;
             }>;
         },
     ): Promise<void> {
@@ -328,7 +418,7 @@ export class SchoolRecordService {
                     unit: item.unit, raw_score: item.rawScore,
                     sub_subject_average: item.subSubjectAverage, standard_deviation: item.standardDeviation,
                     achievement: item.achievement, students_num: item.studentsNum,
-                    ranking: item.ranking, etc: item.etc,
+                    ranking: item.ranking, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
                 }));
                 await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, entities);
             }
@@ -343,7 +433,7 @@ export class SchoolRecordService {
                     sub_subject_average: item.subSubjectAverage, achievement: item.achievement,
                     students_num: item.studentsNum,
                     achievementa: item.achievementa, achievementb: item.achievementb,
-                    achievementc: item.achievementc, etc: item.etc,
+                    achievementc: item.achievementc, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
                 }));
                 await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, entities);
             }
@@ -367,6 +457,8 @@ export class SchoolRecordService {
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordAttendanceDetailEntity, member.id);
             await this.deleteByMemberId(transactionalEntityManager, SchoolRecordVolunteerEntity, member.id);
             await this.deleteByMemberId(transactionalEntityManager, SchoolrecordSportsArtEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
+            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
         });
 
         this.logger.log(`Deleted all school records for member ${member.id}`);

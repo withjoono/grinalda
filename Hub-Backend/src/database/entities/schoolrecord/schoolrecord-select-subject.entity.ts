@@ -19,6 +19,9 @@ export class SchoolRecordSelectSubjectEntity {
     achievementc: string | null;
 
     @Column({ type: 'text', nullable: true })
+    detail_and_specialty: string | null;
+
+    @Column({ type: 'text', nullable: true })
     etc: string | null;
 
     @Column({ type: 'text', nullable: true })

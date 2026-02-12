@@ -41,8 +41,8 @@ function getRankingBgColor(ranking: string | null): string {
 
 // 과목 카드 컴포넌트
 function SubjectCard({ subject }: { subject: ISchoolRecordSubject }) {
-    // 세특 내용 (etc 필드 또는 placeholder)
-    const setukContent = subject.etc;
+    // 세특 내용 (detailAndSpecialty 필드)
+    const setukContent = subject.detailAndSpecialty;
 
     return (
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden transition-all hover:shadow-md">

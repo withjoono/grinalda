@@ -9,6 +9,9 @@ export class SchoolRecordSubjectLearningEntity {
     @Column({ type: 'varchar', length: 1000, nullable: true })
     achievement: string | null;
 
+    @Column({ type: 'text', nullable: true })
+    detail_and_specialty: string | null;
+
     @Column({ type: 'varchar', length: 1000, nullable: true })
     etc: string | null;
 

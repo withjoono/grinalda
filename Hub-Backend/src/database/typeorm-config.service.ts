@@ -36,6 +36,8 @@ import { SchoolRecordSelectSubjectEntity } from './entities/schoolrecord/schoolr
 import { SchoolRecordSubjectLearningEntity } from './entities/schoolrecord/schoolrecord-subject-learning.entity';
 import { SchoolRecordVolunteerEntity } from './entities/schoolrecord/schoolrecord-volunteer.entity';
 import { SchoolrecordSportsArtEntity } from './entities/schoolrecord/schoolrecord-sport-art.entity';
+import { SchoolRecordCreativeActivityEntity } from './entities/schoolrecord/schoolrecord-creative-activity.entity';
+import { SchoolRecordBehaviorOpinionEntity } from './entities/schoolrecord/schoolrecord-behavior-opinion.entity';
 
 
 @Injectable()
@@ -124,6 +126,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         SchoolRecordSubjectLearningEntity,
         SchoolRecordVolunteerEntity,
         SchoolrecordSportsArtEntity,
+        SchoolRecordCreativeActivityEntity,
+        SchoolRecordBehaviorOpinionEntity,
 
       ],
     } as TypeOrmModuleOptions;
