@@ -246,7 +246,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎨 창체
+                      🎨 창체 및 행특
                     </Link>
                   </div>
 
@@ -543,7 +543,7 @@ export const MsHeader = () => {
                           to="/ms/creative-activity"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🎨 창체</span>
+                          <span className="text-sm font-medium">🎨 창체 및 행특</span>
                         </Link>
                       </div>
                     </div>

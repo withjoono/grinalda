@@ -41,6 +41,13 @@ const PLACEHOLDER_DATA: Record<ActivityType, Record<Grade, ActivityEntry[]>> = {
   },
 };
 
+// 행동특성 및 종합의견 placeholder 데이터
+const BEHAVIOR_PLACEHOLDER_DATA: Record<Grade, string> = {
+  "1": "",
+  "2": "",
+  "3": "",
+};
+
 const ACTIVITY_LABELS: Record<
   ActivityType,
   { label: string; emoji: string; description: string }
@@ -130,6 +137,56 @@ function GradeSection({
   );
 }
 
+// 행동특성 및 종합의견 섹션 컴포넌트
+function BehaviorSection() {
+  const [selectedGrade, setSelectedGrade] = useState<Grade>("1");
+
+  // TODO: 실제 데이터 연동 시 아래 placeholder를 API 데이터로 교체
+  const behaviorData = BEHAVIOR_PLACEHOLDER_DATA;
+
+  return (
+    <div className="space-y-4">
+      <Tabs
+        value={selectedGrade}
+        onValueChange={(v) => setSelectedGrade(v as Grade)}
+        className="w-full"
+      >
+        <TabsList className="grid w-full grid-cols-3">
+          {(["1", "2", "3"] as Grade[]).map((grade) => (
+            <TabsTrigger key={grade} value={grade} className="gap-1.5 text-sm">
+              <span>{GRADE_LABELS[grade]}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {(["1", "2", "3"] as Grade[]).map((grade) => (
+          <TabsContent key={grade} value={grade}>
+            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+              {behaviorData[grade] ? (
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700">
+                  {behaviorData[grade]}
+                </p>
+              ) : (
+                <div className="flex min-h-[160px] flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-6">
+                  <span className="text-3xl">📝</span>
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-gray-500">
+                      {GRADE_LABELS[grade]} 행동특성 및 종합의견
+                    </p>
+                    <p className="mt-1 text-xs text-gray-400">
+                      아직 등록된 내용이 없습니다.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  );
+}
+
 function CreativeActivityPage() {
   const [selectedTab, setSelectedTab] = useState<ActivityType>("autonomous");
 
@@ -152,7 +209,7 @@ function CreativeActivityPage() {
 
       <Separator />
 
-      {/* 탭 */}
+      {/* 창체 탭 */}
       <Tabs
         value={selectedTab}
         onValueChange={(v) => setSelectedTab(v as ActivityType)}
@@ -193,6 +250,20 @@ function CreativeActivityPage() {
           </TabsContent>
         ))}
       </Tabs>
+
+      <Separator />
+
+      {/* 행동특성 및 종합의견 */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900">
+          📋 행동특성 및 종합의견
+        </h2>
+        <p className="mt-1 text-sm text-gray-500">
+          학년별 행동특성 및 종합의견을 확인하세요.
+        </p>
+      </div>
+
+      <BehaviorSection />
     </div>
   );
 }
