@@ -40,6 +40,9 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthOauthCallbackRouteImport } from './routes/auth/oauth/callback'
 
+const UsersRouteImport = createFileRoute('/users')()
+const OfficerRouteImport = createFileRoute('/officer')()
+const EvaluationRouteImport = createFileRoute('/evaluation')()
 const TryIndexLazyRouteImport = createFileRoute('/try/')()
 const ScoreAnalysisIndexLazyRouteImport = createFileRoute('/score-analysis/')()
 const MsIndexLazyRouteImport = createFileRoute('/ms/')()
@@ -176,6 +179,21 @@ const OfficerLayoutApplyEvaluationIdLazyRouteImport = createFileRoute(
   '/officer/_layout/apply/$evaluationId',
 )()
 
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerRoute = OfficerRouteImport.update({
+  id: '/officer',
+  path: '/officer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvaluationRoute = EvaluationRouteImport.update({
+  id: '/evaluation',
+  path: '/evaluation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -944,6 +962,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/evaluation': typeof EvaluationRouteWithChildren
   '/evaluation/_layout': typeof EvaluationLayoutRouteWithChildren
   '/explore/admission': typeof ExploreAdmissionRoute
   '/explore/recruitment-unit': typeof ExploreRecruitmentUnitRoute
@@ -951,10 +970,12 @@ export interface FileRoutesById {
   '/grade-analysis/_layout': typeof GradeAnalysisLayoutRouteWithChildren
   '/mock-analysis/_layout': typeof MockAnalysisLayoutRouteWithChildren
   '/ms/_layout': typeof MsLayoutRouteWithChildren
+  '/officer': typeof OfficerRouteWithChildren
   '/officer/_layout': typeof OfficerLayoutRouteWithChildren
   '/order/$productId': typeof OrderProductIdRoute
   '/test/auth-me': typeof TestAuthMeRoute
   '/test/login-debug': typeof TestLoginDebugRoute
+  '/users': typeof UsersRouteWithChildren
   '/users/_layout': typeof UsersLayoutRouteWithChildren
   '/(naver)/redirect': typeof naverRedirectLazyRoute
   '/analysis/performance': typeof AnalysisPerformanceLazyRoute
@@ -1199,6 +1220,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/evaluation'
     | '/evaluation/_layout'
     | '/explore/admission'
     | '/explore/recruitment-unit'
@@ -1206,10 +1228,12 @@ export interface FileRouteTypes {
     | '/grade-analysis/_layout'
     | '/mock-analysis/_layout'
     | '/ms/_layout'
+    | '/officer'
     | '/officer/_layout'
     | '/order/$productId'
     | '/test/auth-me'
     | '/test/login-debug'
+    | '/users'
     | '/users/_layout'
     | '/(naver)/redirect'
     | '/analysis/performance'
@@ -1288,12 +1312,15 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  EvaluationRoute: typeof EvaluationRouteWithChildren
   ExploreAdmissionRoute: typeof ExploreAdmissionRoute
   ExploreRecruitmentUnitRoute: typeof ExploreRecruitmentUnitRoute
   ExploreUniversityRoute: typeof ExploreUniversityRoute
+  OfficerRoute: typeof OfficerRouteWithChildren
   OrderProductIdRoute: typeof OrderProductIdRoute
   TestAuthMeRoute: typeof TestAuthMeRoute
   TestLoginDebugRoute: typeof TestLoginDebugRoute
+  UsersRoute: typeof UsersRouteWithChildren
   naverRedirectLazyRoute: typeof naverRedirectLazyRoute
   AnalysisPerformanceLazyRoute: typeof AnalysisPerformanceLazyRoute
   ExplainPrivacyLazyRoute: typeof ExplainPrivacyLazyRoute
@@ -1312,6 +1339,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer': {
+      id: '/officer'
+      path: '/officer'
+      fullPath: '/officer'
+      preLoaderRoute: typeof OfficerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evaluation': {
+      id: '/evaluation'
+      path: '/evaluation'
+      fullPath: '/evaluation'
+      preLoaderRoute: typeof EvaluationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -1510,7 +1558,7 @@ declare module '@tanstack/react-router' {
     }
     '/users/_layout': {
       id: '/users/_layout'
-      path: ''
+      path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersLayoutRouteImport
       parentRoute: typeof UsersRoute
@@ -1538,7 +1586,7 @@ declare module '@tanstack/react-router' {
     }
     '/officer/_layout': {
       id: '/officer/_layout'
-      path: ''
+      path: '/officer'
       fullPath: '/officer'
       preLoaderRoute: typeof OfficerLayoutRouteImport
       parentRoute: typeof OfficerRoute
@@ -1587,7 +1635,7 @@ declare module '@tanstack/react-router' {
     }
     '/evaluation/_layout': {
       id: '/evaluation/_layout'
-      path: ''
+      path: '/evaluation'
       fullPath: '/evaluation'
       preLoaderRoute: typeof EvaluationLayoutRouteImport
       parentRoute: typeof EvaluationRoute
@@ -2068,6 +2116,98 @@ const TryRouteRouteWithChildren = TryRouteRoute._addFileChildren(
   TryRouteRouteChildren,
 )
 
+interface EvaluationLayoutRouteChildren {
+  EvaluationLayoutCompatibilityLazyRoute: typeof EvaluationLayoutCompatibilityLazyRoute
+  EvaluationLayoutListLazyRoute: typeof EvaluationLayoutListLazyRoute
+  EvaluationLayoutRequestLazyRoute: typeof EvaluationLayoutRequestLazyRoute
+  EvaluationLayoutSelfIndexLazyRoute: typeof EvaluationLayoutSelfIndexLazyRoute
+}
+
+const EvaluationLayoutRouteChildren: EvaluationLayoutRouteChildren = {
+  EvaluationLayoutCompatibilityLazyRoute:
+    EvaluationLayoutCompatibilityLazyRoute,
+  EvaluationLayoutListLazyRoute: EvaluationLayoutListLazyRoute,
+  EvaluationLayoutRequestLazyRoute: EvaluationLayoutRequestLazyRoute,
+  EvaluationLayoutSelfIndexLazyRoute: EvaluationLayoutSelfIndexLazyRoute,
+}
+
+const EvaluationLayoutRouteWithChildren =
+  EvaluationLayoutRoute._addFileChildren(EvaluationLayoutRouteChildren)
+
+interface EvaluationRouteChildren {
+  EvaluationLayoutRoute: typeof EvaluationLayoutRouteWithChildren
+  EvaluationIndexLazyRoute: typeof EvaluationIndexLazyRoute
+}
+
+const EvaluationRouteChildren: EvaluationRouteChildren = {
+  EvaluationLayoutRoute: EvaluationLayoutRouteWithChildren,
+  EvaluationIndexLazyRoute: EvaluationIndexLazyRoute,
+}
+
+const EvaluationRouteWithChildren = EvaluationRoute._addFileChildren(
+  EvaluationRouteChildren,
+)
+
+interface OfficerLayoutRouteChildren {
+  OfficerLayoutProfileLazyRoute: typeof OfficerLayoutProfileLazyRoute
+  OfficerLayoutApplyEvaluationIdLazyRoute: typeof OfficerLayoutApplyEvaluationIdLazyRoute
+  OfficerLayoutApplyIndexLazyRoute: typeof OfficerLayoutApplyIndexLazyRoute
+}
+
+const OfficerLayoutRouteChildren: OfficerLayoutRouteChildren = {
+  OfficerLayoutProfileLazyRoute: OfficerLayoutProfileLazyRoute,
+  OfficerLayoutApplyEvaluationIdLazyRoute:
+    OfficerLayoutApplyEvaluationIdLazyRoute,
+  OfficerLayoutApplyIndexLazyRoute: OfficerLayoutApplyIndexLazyRoute,
+}
+
+const OfficerLayoutRouteWithChildren = OfficerLayoutRoute._addFileChildren(
+  OfficerLayoutRouteChildren,
+)
+
+interface OfficerRouteChildren {
+  OfficerLayoutRoute: typeof OfficerLayoutRouteWithChildren
+}
+
+const OfficerRouteChildren: OfficerRouteChildren = {
+  OfficerLayoutRoute: OfficerLayoutRouteWithChildren,
+}
+
+const OfficerRouteWithChildren =
+  OfficerRoute._addFileChildren(OfficerRouteChildren)
+
+interface UsersLayoutRouteChildren {
+  UsersLayoutAdditionalFileLazyRoute: typeof UsersLayoutAdditionalFileLazyRoute
+  UsersLayoutMockExamLazyRoute: typeof UsersLayoutMockExamLazyRoute
+  UsersLayoutProfileLazyRoute: typeof UsersLayoutProfileLazyRoute
+  UsersLayoutSchoolRecordLazyRoute: typeof UsersLayoutSchoolRecordLazyRoute
+  UsersLayoutPaymentIdLazyRoute: typeof UsersLayoutPaymentIdLazyRoute
+  UsersLayoutPaymentIndexLazyRoute: typeof UsersLayoutPaymentIndexLazyRoute
+}
+
+const UsersLayoutRouteChildren: UsersLayoutRouteChildren = {
+  UsersLayoutAdditionalFileLazyRoute: UsersLayoutAdditionalFileLazyRoute,
+  UsersLayoutMockExamLazyRoute: UsersLayoutMockExamLazyRoute,
+  UsersLayoutProfileLazyRoute: UsersLayoutProfileLazyRoute,
+  UsersLayoutSchoolRecordLazyRoute: UsersLayoutSchoolRecordLazyRoute,
+  UsersLayoutPaymentIdLazyRoute: UsersLayoutPaymentIdLazyRoute,
+  UsersLayoutPaymentIndexLazyRoute: UsersLayoutPaymentIndexLazyRoute,
+}
+
+const UsersLayoutRouteWithChildren = UsersLayoutRoute._addFileChildren(
+  UsersLayoutRouteChildren,
+)
+
+interface UsersRouteChildren {
+  UsersLayoutRoute: typeof UsersLayoutRouteWithChildren
+}
+
+const UsersRouteChildren: UsersRouteChildren = {
+  UsersLayoutRoute: UsersLayoutRouteWithChildren,
+}
+
+const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GradeAnalysisRouteRoute: GradeAnalysisRouteRouteWithChildren,
@@ -2083,12 +2223,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
+  EvaluationRoute: EvaluationRouteWithChildren,
   ExploreAdmissionRoute: ExploreAdmissionRoute,
   ExploreRecruitmentUnitRoute: ExploreRecruitmentUnitRoute,
   ExploreUniversityRoute: ExploreUniversityRoute,
+  OfficerRoute: OfficerRouteWithChildren,
   OrderProductIdRoute: OrderProductIdRoute,
   TestAuthMeRoute: TestAuthMeRoute,
   TestLoginDebugRoute: TestLoginDebugRoute,
+  UsersRoute: UsersRouteWithChildren,
   naverRedirectLazyRoute: naverRedirectLazyRoute,
   AnalysisPerformanceLazyRoute: AnalysisPerformanceLazyRoute,
   ExplainPrivacyLazyRoute: ExplainPrivacyLazyRoute,
