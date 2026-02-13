@@ -189,7 +189,7 @@ export class AuthService {
         dto.refreshToken,
         this.configService.getOrThrow('auth', { infer: true }).refreshSecret,
       );
-      const member = await this.membersService.findOneById(Number(memberId));
+      const member = await this.membersService.findOneById(memberId);
 
       if (!member) {
         throw new NotFoundException(STATUS_MESSAGES.MEMBER.ACCOUNT_NOT_FOUND);
@@ -335,7 +335,7 @@ export class AuthService {
         this.configService.getOrThrow('auth', { infer: true }).secret,
       );
 
-      const member = await this.membersService.findOneById(Number(memberId));
+      const member = await this.membersService.findOneById(memberId);
       if (!member) {
         throw new NotFoundException('회원을 찾을 수 없습니다.');
       }

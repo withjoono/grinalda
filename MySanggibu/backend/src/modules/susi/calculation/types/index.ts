@@ -97,7 +97,7 @@ export interface GradesBySubject {
  * 사용자 내신 데이터 전체 (그룹화 포함)
  */
 export interface MemberGradeData {
-  memberId: number;
+  memberId: string | number;
   grades: SubjectGrade[];
   byYear: GradesByYear;
   bySubject: GradesBySubject;

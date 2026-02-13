@@ -70,7 +70,7 @@ export const useLifeRecordUpload = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-            timeout: 300000, // 5분 타임아웃
+            timeout: 300000, // 5분 타임아웃 (AI 파싱이 오래 걸릴 수 있음)
           },
         );
         if (res.data) {
@@ -82,6 +82,7 @@ export const useLifeRecordUpload = () => {
       console.error("[useLifeRecordUpload] 업로드 실패:", e);
       const error = e as { response?: { data?: { message?: string } }, code?: string };
 
+      // 타임아웃 에러인 경우 특별한 메시지 표시
       if (error.code === "ECONNABORTED") {
         toast.error(
           "파일 처리 시간이 초과되었습니다. 파일 크기가 크거나 서버가 혼잡할 수 있습니다. 잠시 후 다시 시도해주세요.",

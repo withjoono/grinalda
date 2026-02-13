@@ -96,7 +96,7 @@ export const MsHeader = () => {
       <div className="mx-auto">
         <div className="container flex h-14 w-screen items-center justify-between lg:h-16">
           {/* 로고 */}
-          <Link to="/ms" className="flex shrink-0 items-center gap-3">
+          <Link to={user ? "/ms/dashboard" : "/ms"} className="flex shrink-0 items-center gap-3">
             <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
             <span className="text-base font-bold text-gray-900 lg:text-lg">
               My 생기부
@@ -148,7 +148,7 @@ export const MsHeader = () => {
 
                   {/* My 생기부 서비스 메뉴 */}
                   <Link
-                    to="/ms"
+                    to={user ? "/ms/dashboard" : "/ms"}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
@@ -438,7 +438,7 @@ export const MsHeader = () => {
                     )}
                     asChild
                   >
-                    <Link to="/ms">홈</Link>
+                    <Link to={user ? "/ms/dashboard" : "/ms"}>홈</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 

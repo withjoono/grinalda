@@ -1,11 +1,11 @@
 steps:
   # Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/geobukschool-backend:latest', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/ms-backend:latest', '.']
 
   # Push image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/geobukschool-backend:latest']
+    args: ['push', 'gcr.io/$PROJECT_ID/ms-backend:latest']
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -13,9 +13,9 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      - 'geobukschool-backend'
+      - 'ms-backend'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/geobukschool-backend:latest'
+      - 'gcr.io/$PROJECT_ID/ms-backend:latest'
       - '--region'
       - 'asia-northeast3'
       - '--platform'
@@ -35,6 +35,7 @@ steps:
       - 'ts-back-nest-479305:asia-northeast3:geobuk-db'
 
 images:
-  - 'gcr.io/$PROJECT_ID/geobukschool-backend:latest'
+  - 'gcr.io/$PROJECT_ID/ms-backend:latest'
 
 timeout: '1800s'
+

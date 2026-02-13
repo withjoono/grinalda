@@ -17,7 +17,7 @@ export class MembersService {
     private membersRepository: Repository<MemberEntity>,
     private readonly dataSource: DataSource,
     private bcryptService: BcryptService,
-  ) {}
+  ) { }
 
   findOneByEmail(email: string): Promise<MemberEntity | null> {
     return this.membersRepository.findOneBy({
@@ -35,15 +35,15 @@ export class MembersService {
     });
   }
 
-  findOneById(id: number): Promise<MemberEntity | null> {
+  findOneById(id: string | number): Promise<MemberEntity | null> {
     return this.membersRepository.findOneBy({
-      id,
+      id: String(id),
     });
   }
 
-  findMeById(id: number): Promise<MemberEntity | null> {
+  findMeById(id: string | number): Promise<MemberEntity | null> {
     return this.membersRepository.findOne({
-      where: { id },
+      where: { id: String(id) },
       select: {
         id: true,
         email: true,
@@ -61,11 +61,11 @@ export class MembersService {
     });
   }
 
-  async findActiveServicesById(memberId: number): Promise<string[]> {
+  async findActiveServicesById(memberId: string | number): Promise<string[]> {
     // 테스트 계정은 모든 서비스 이용 가능
     const testAccountEmails = ['test@test.com', 'admin@test.com', 'test2@test.com', 'test3@test.com'];
     const member = await this.membersRepository.findOne({
-      where: { id: memberId },
+      where: { id: String(memberId) },
       select: ['email'],
     });
 
@@ -156,7 +156,7 @@ export class MembersService {
   }
 
   async editProfile(memberId: string, updateData: EditProfileDto): Promise<MemberEntity> {
-    const member = await this.findOneById(Number(memberId));
+    const member = await this.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
@@ -191,7 +191,7 @@ export class MembersService {
     });
   }
 
-  async updatePassword(memberId: number, newPassword: string): Promise<void> {
+  async updatePassword(memberId: string | number, newPassword: string): Promise<void> {
     await this.membersRepository.update(memberId, {
       password: newPassword,
       provider_type: 'local',

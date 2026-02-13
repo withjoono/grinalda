@@ -88,7 +88,7 @@ export class AuthController implements OnModuleInit {
   })
   @Get('me')
   public getCurrentMember(@CurrentMemberId() memberId: string): Promise<MemberEntity> {
-    return this.membersService.findMeById(Number(memberId));
+    return this.membersService.findMeById(memberId);
   }
 
   @ApiOperation({
@@ -111,7 +111,7 @@ export class AuthController implements OnModuleInit {
   })
   @Get('me/active')
   public getCurrentMemberActiveService(@CurrentMemberId() memberId: string): Promise<string[]> {
-    return this.membersService.findActiveServicesById(Number(memberId));
+    return this.membersService.findActiveServicesById(memberId);
   }
 
   @ApiOperation({

@@ -44,8 +44,8 @@ export class OfficerListEntity {
   @Expose({ groups: ['admin'] })
   update_dt: Date;
 
-  @Column({ type: 'bigint', nullable: true })
-  member_id: number;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  member_id: string;
 
   @ManyToOne(() => MemberEntity)
   @JoinColumn({ name: 'member_id' })

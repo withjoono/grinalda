@@ -35,7 +35,8 @@ export const useGetActiveServices = () => {
 };
 
 /**
- * [생기부] 통합 데이터 조회
+ * [생기부] 통합 데이터 조회 (Hub 중앙 API 사용)
+ * Hub-Backend의 단일 엔드포인트로 전체 데이터를 한 번에 조회합니다.
  */
 export const useGetSchoolRecords = () => {
   const { data: currentUser } = useGetCurrentUser();
@@ -44,24 +45,23 @@ export const useGetSchoolRecords = () => {
     queryKey: meQueryKeys.schoolRecords(),
     queryFn: async () => {
       if (!currentUser) throw new Error("User not found");
-      const [attendance, selectSubjects, subjects, volunteers] =
-        await Promise.all([
-          USER_API.fetchSchoolRecordAttendanceAPI(currentUser.id),
-          USER_API.fetchSchoolRecordSelectSubjectsAPI(currentUser.id),
-          USER_API.fetchSchoolRecordSubjectsAPI(currentUser.id),
-          USER_API.fetchSchoolRecordVolunteersAPI(currentUser.id),
-        ]);
+      const data = await USER_API.fetchAllSchoolRecordsAPI(currentUser.id);
+
+      const attendance = data?.attendanceDetails || [];
+      const selectSubjects = data?.selectSubjects || [];
+      const subjects = data?.subjectLearnings || [];
+      const volunteers = data?.volunteers || [];
 
       return {
-        attendance: attendance || [],
-        selectSubjects: selectSubjects || [],
-        subjects: subjects || [],
-        volunteers: volunteers || [],
+        attendance,
+        selectSubjects,
+        subjects,
+        volunteers,
         isEmpty:
-          (attendance || []).length === 0 &&
-          (selectSubjects || []).length === 0 &&
-          (subjects || []).length === 0 &&
-          (volunteers || []).length === 0,
+          attendance.length === 0 &&
+          selectSubjects.length === 0 &&
+          subjects.length === 0 &&
+          volunteers.length === 0,
       };
     },
     enabled: !!currentUser, // currentUser가 있을 때만 실행

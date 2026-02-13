@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique, Index, OneToMany } from 'typeorm';
+import { Column, Entity, PrimaryColumn, Unique, Index, OneToMany } from 'typeorm';
 import { MemberInterestsEntity } from './member-interests';
 import { SchoolRecordAttendanceDetailEntity } from '../schoolrecord/schoolrecord-attendance-detail.entity';
 import { SchoolRecordSelectSubjectEntity } from '../schoolrecord/schoolrecord-select-subject.entity';
@@ -18,8 +18,8 @@ import { MockexamStandardScoreEntity } from '../mock-exam/mockexam-standard-scor
 @Unique(['email', 'phone', 'oauth_id'])
 @Index(['email', 'phone', 'oauth_id'])
 export class MemberEntity {
-  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
-  id: number;
+  @PrimaryColumn({ type: 'varchar', length: 50 })
+  id: string;
 
   @Column({ type: 'varchar', length: 500 })
   email: string;

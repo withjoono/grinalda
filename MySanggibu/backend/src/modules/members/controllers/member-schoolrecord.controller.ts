@@ -6,7 +6,7 @@ import { SchoolRecordService } from 'src/modules/schoolrecord/schoolrecord.servi
 @ApiTags('schoolrecord')
 @Controller('members/:memberId/schoolrecord')
 export class MemberSchoolRecordController {
-  constructor(private readonly schoolRecordService: SchoolRecordService) {}
+  constructor(private readonly schoolRecordService: SchoolRecordService) { }
 
   @ApiOperation({
     summary: '학생부 출결 데이터 조회',
@@ -29,7 +29,7 @@ export class MemberSchoolRecordController {
   @ApiBearerAuth('access-token')
   @Get('attendance')
   @UseGuards(MemberPermissionGuard)
-  async getAttendanceDetails(@Param('memberId') memberId: number) {
+  async getAttendanceDetails(@Param('memberId') memberId: string) {
     return await this.schoolRecordService.getAttendanceDetails(memberId);
   }
 
@@ -54,7 +54,7 @@ export class MemberSchoolRecordController {
   @ApiBearerAuth('access-token')
   @Get('select-subject')
   @UseGuards(MemberPermissionGuard)
-  async getSelectSubjects(@Param('memberId') memberId: number) {
+  async getSelectSubjects(@Param('memberId') memberId: string) {
     return await this.schoolRecordService.getSelectSubjects(memberId);
   }
 
@@ -79,7 +79,7 @@ export class MemberSchoolRecordController {
   @ApiBearerAuth('access-token')
   @Get('subject')
   @UseGuards(MemberPermissionGuard)
-  async getSubjectLearnings(@Param('memberId') memberId: number) {
+  async getSubjectLearnings(@Param('memberId') memberId: string) {
     return await this.schoolRecordService.getSubjectLearnings(memberId);
   }
 
@@ -103,7 +103,7 @@ export class MemberSchoolRecordController {
   @ApiBearerAuth('access-token')
   @Get('volunteers')
   @UseGuards(MemberPermissionGuard)
-  async getVolunteers(@Param('memberId') memberId: number) {
+  async getVolunteers(@Param('memberId') memberId: string) {
     return await this.schoolRecordService.getVolunteers(memberId);
   }
 
@@ -128,7 +128,7 @@ export class MemberSchoolRecordController {
   @ApiBearerAuth('access-token')
   @Get('sport-art')
   @UseGuards(MemberPermissionGuard)
-  async getSportArts(@Param('memberId') memberId: number) {
+  async getSportArts(@Param('memberId') memberId: string) {
     return await this.schoolRecordService.getSportArts(memberId);
   }
 }

@@ -29,7 +29,7 @@ export const removeAuthToken = () => {
 export const handleApiError = <T = never>(e: unknown, suppressLog = false): BaseResponse<T> => {
   // 생기부 관련 500 에러는 데이터가 없을 때 정상적으로 발생할 수 있으므로 로그 억제
   const shouldSuppressLog = suppressLog || (
-    e instanceof AxiosError && 
+    e instanceof AxiosError &&
     e.response?.status === 500 &&
     e.config?.url?.includes('/schoolrecord/')
   );
@@ -64,7 +64,7 @@ const PUBLIC_ENDPOINTS = [
   '/sms/auth/send',
   '/sms/auth/verify',
   '/store/available',
-  '/application-rate', // 실시간 경쟁률 공개 API
+
 ];
 
 // URL이 공개 엔드포인트인지 확인

@@ -60,15 +60,9 @@ import { MemberRegularCombinationEntity } from './entities/member/member-regular
 import { MockexamStandardScoreEntity } from './entities/mock-exam/mockexam-standard-score.entity';
 import { MemberCalculatedScoreEntity } from './entities/member/member-calculated-score.entity';
 import { MsAuthMemberEntity } from './entities/member/ms-auth-member.entity';
-import {
-  HealthRecordEntity,
-  ConsultationEntity,
-  AttendanceEntity,
-  TestEntity,
-} from './entities/myclass';
 
-import { ApplicationRate } from '../modules/application-rate/entities/application-rate.entity';
-import { ApplicationRateHistory } from '../modules/application-rate/entities/application-rate-history.entity';
+
+
 import { SusiRecruitmentUnitEntity } from './entities/susi/susi-recruitment-unit.entity';
 import { SusiUnitCategoryEntity } from './entities/susi/susi-unit-category.entity';
 import { SusiCalculationFormulaEntity } from './entities/susi/susi-calculation-formula.entity';
@@ -199,17 +193,11 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         MemberRegularCombinationEntity, // 정시 조합
         MemberCalculatedScoreEntity, // 정시 환산인자별 환산점수
 
-        // 마이클래스 관련
-        HealthRecordEntity, // 건강 기록
-        ConsultationEntity, // 상담 기록
-        AttendanceEntity, // 출결 기록
-        TestEntity, // 테스트 기록
 
 
 
-        // 경쟁률 크롤링 관련
-        ApplicationRate, // 경쟁률 데이터
-        ApplicationRateHistory, // 경쟁률 변동 히스토리
+
+
 
         // 수시 통합 테이블 (새 플랫 구조)
         SusiRecruitmentUnitEntity, // 수시 모집단위 통합 테이블

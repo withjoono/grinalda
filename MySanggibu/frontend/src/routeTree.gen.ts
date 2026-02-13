@@ -48,6 +48,7 @@ const EvaluationIndexLazyRouteImport = createFileRoute('/evaluation/')()
 const AnalysisIndexLazyRouteImport = createFileRoute('/analysis/')()
 const OfficialGuideLazyRouteImport = createFileRoute('/official/guide')()
 const OfficialFaqLazyRouteImport = createFileRoute('/official/faq')()
+const MsDashboardLazyRouteImport = createFileRoute('/ms/dashboard')()
 const ExploreSusiKyokwaLazyRouteImport = createFileRoute(
   '/explore/susi-kyokwa',
 )()
@@ -285,6 +286,11 @@ const OfficialFaqLazyRoute = OfficialFaqLazyRouteImport.update({
   path: '/official/faq',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/official/faq.lazy').then((d) => d.Route))
+const MsDashboardLazyRoute = MsDashboardLazyRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => MsRouteRoute,
+} as any).lazy(() => import('./routes/ms/dashboard.lazy').then((d) => d.Route))
 const ExploreSusiKyokwaLazyRoute = ExploreSusiKyokwaLazyRouteImport.update({
   id: '/explore/susi-kyokwa',
   path: '/explore/susi-kyokwa',
@@ -788,6 +794,7 @@ export interface FileRoutesByFullPath {
   '/explain/service': typeof ExplainServiceLazyRoute
   '/explore/susi-jonghap': typeof ExploreSusiJonghapLazyRoute
   '/explore/susi-kyokwa': typeof ExploreSusiKyokwaLazyRoute
+  '/ms/dashboard': typeof MsDashboardLazyRoute
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/products': typeof ProductsIndexRoute
@@ -870,6 +877,7 @@ export interface FileRoutesByTo {
   '/explain/service': typeof ExplainServiceLazyRoute
   '/explore/susi-jonghap': typeof ExploreSusiJonghapLazyRoute
   '/explore/susi-kyokwa': typeof ExploreSusiKyokwaLazyRoute
+  '/ms/dashboard': typeof MsDashboardLazyRoute
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/products': typeof ProductsIndexRoute
@@ -955,6 +963,7 @@ export interface FileRoutesById {
   '/explain/service': typeof ExplainServiceLazyRoute
   '/explore/susi-jonghap': typeof ExploreSusiJonghapLazyRoute
   '/explore/susi-kyokwa': typeof ExploreSusiKyokwaLazyRoute
+  '/ms/dashboard': typeof MsDashboardLazyRoute
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
   '/products/': typeof ProductsIndexRoute
@@ -1041,6 +1050,7 @@ export interface FileRouteTypes {
     | '/explain/service'
     | '/explore/susi-jonghap'
     | '/explore/susi-kyokwa'
+    | '/ms/dashboard'
     | '/official/faq'
     | '/official/guide'
     | '/products'
@@ -1123,6 +1133,7 @@ export interface FileRouteTypes {
     | '/explain/service'
     | '/explore/susi-jonghap'
     | '/explore/susi-kyokwa'
+    | '/ms/dashboard'
     | '/official/faq'
     | '/official/guide'
     | '/products'
@@ -1207,6 +1218,7 @@ export interface FileRouteTypes {
     | '/explain/service'
     | '/explore/susi-jonghap'
     | '/explore/susi-kyokwa'
+    | '/ms/dashboard'
     | '/official/faq'
     | '/official/guide'
     | '/products/'
@@ -1439,6 +1451,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/official/faq'
       preLoaderRoute: typeof OfficialFaqLazyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/ms/dashboard': {
+      id: '/ms/dashboard'
+      path: '/dashboard'
+      fullPath: '/ms/dashboard'
+      preLoaderRoute: typeof MsDashboardLazyRouteImport
+      parentRoute: typeof MsRouteRoute
     }
     '/explore/susi-kyokwa': {
       id: '/explore/susi-kyokwa'
@@ -2013,11 +2032,13 @@ const MsLayoutRouteWithChildren = MsLayoutRoute._addFileChildren(
 
 interface MsRouteRouteChildren {
   MsLayoutRoute: typeof MsLayoutRouteWithChildren
+  MsDashboardLazyRoute: typeof MsDashboardLazyRoute
   MsIndexLazyRoute: typeof MsIndexLazyRoute
 }
 
 const MsRouteRouteChildren: MsRouteRouteChildren = {
   MsLayoutRoute: MsLayoutRouteWithChildren,
+  MsDashboardLazyRoute: MsDashboardLazyRoute,
   MsIndexLazyRoute: MsIndexLazyRoute,
 }
 

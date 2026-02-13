@@ -1,0 +1,35 @@
+src/auth/auth.controller.ts(662,70): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.controller.ts(663,72): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(65,59): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(66,61): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(90,59): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(91,61): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(129,59): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(130,61): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(167,59): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(168,61): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(198,61): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(199,63): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(327,53): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/auth/auth.service.ts(344,48): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/modules/members/controllers/member-schoolrecord.controller.ts(33,64): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/members/controllers/member-schoolrecord.controller.ts(58,61): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/members/controllers/member-schoolrecord.controller.ts(83,63): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/members/controllers/member-schoolrecord.controller.ts(107,57): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/members/controllers/member-schoolrecord.controller.ts(132,56): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/members/services/member-combination.service.ts(44,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/members/services/member-combination.service.ts(61,20): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/members/services/member-combination.service.ts(85,60): error TS2345: Argument of type '{ id: number; member: { id: number; }; }' is not assignable to parameter of type 'string | number | string[] | Date | number[] | ObjectId | FindOptionsWhere<MemberRecruitmentUnitCombinationEntity> | Date[] | ObjectId[] | FindOptionsWhere<...>[]'.
+src/modules/members/services/member-regular-combination.service.ts(44,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/members/services/member-regular-combination.service.ts(54,20): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/members/services/member-regular-combination.service.ts(78,60): error TS2345: Argument of type '{ id: number; member: { id: number; }; }' is not assignable to parameter of type 'string | number | string[] | Date | number[] | ObjectId | Date[] | ObjectId[] | FindOptionsWhere<MemberRegularCombinationEntity> | FindOptionsWhere<...>[]'.
+src/modules/mock-exam/mock-exam.service.ts(52,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/mock-exam/mock-exam.service.ts(62,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/mock-exam/mock-exam.service.ts(190,50): error TS2345: Argument of type '{ member: { id: number; }; }' is not assignable to parameter of type 'string | number | string[] | Date | number[] | ObjectId | FindOptionsWhere<MockexamRawScoreEntity> | Date[] | ObjectId[] | FindOptionsWhere<...>[]'.
+src/modules/mock-exam/mock-exam.service.ts(193,47): error TS2345: Argument of type '{ member: { id: number; }; }' is not assignable to parameter of type 'string | number | string[] | Date | number[] | ObjectId | FindOptionsWhere<MockexamScoreEntity> | Date[] | ObjectId[] | FindOptionsWhere<...>[]'.
+src/modules/mock-exam/mock-exam.service.ts(265,50): error TS2345: Argument of type '{ member: { id: number; }; }' is not assignable to parameter of type 'string | number | string[] | Date | number[] | ObjectId | FindOptionsWhere<MockexamStandardScoreEntity> | Date[] | ObjectId[] | FindOptionsWhere<...>[]'.
+src/modules/officer/services/officer-evaluation.service.ts(222,9): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/officer/services/officer-evaluation.service.ts(245,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer-evaluation.service.ts(256,9): error TS2769: No overload matches this call.
+src/modules/schoolrecord/schoolrecord.service.ts(362,44): error TS2769: No overload matches this call.
+src/modules/susi/calculation/services/susi-calculation.service.ts(171,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.

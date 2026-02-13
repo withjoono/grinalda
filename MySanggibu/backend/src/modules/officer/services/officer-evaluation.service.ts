@@ -103,7 +103,7 @@ export class OfficerEvaluationService {
       .getRawMany();
 
     return officers.map((officer) => ({
-      officer_id: Number(officer.member_id),
+      officer_id: officer.member_id,
       officer_name: officer.officer_name,
       officer_profile_image: officer.officer_profile_image,
       officer_university: officer.university,
@@ -131,7 +131,7 @@ export class OfficerEvaluationService {
     const evaluations = await this.officerEvaluationRepository
       .createQueryBuilder('evaluation')
       .leftJoin('auth_member', 'student', 'evaluation.student_id = student.id')
-      .where('evaluation.member_id = :officerMemberId', { officerMemberId: Number(officerMemberId) })
+      .where('evaluation.member_id = :officerMemberId', { officerMemberId })
       .select([
         'evaluation.id AS evaluation_id',
         'evaluation.student_id AS student_id',
@@ -143,7 +143,7 @@ export class OfficerEvaluationService {
         'student.email AS email',
         "(SELECT COUNT(*) FROM officer_student_evaludate_relation_tb e WHERE e.status = 'READY' AND e.member_id = :officerMemberId AND e.update_dt <= evaluation.update_dt) AS ready_count",
       ])
-      .setParameter('officerMemberId', Number(officerMemberId))
+      .setParameter('officerMemberId', officerMemberId)
       .orderBy('evaluation.update_dt', 'DESC')
       .getRawMany();
 
@@ -196,7 +196,7 @@ export class OfficerEvaluationService {
   async getTicketCount(memberId: string): Promise<GetTicketCountResponseDto> {
     const ticket = await this.officerTicketRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
     return {
@@ -210,7 +210,7 @@ export class OfficerEvaluationService {
   async useTicket(memberId: string, body: UseTicketReqDto): Promise<void> {
     const ticket = await this.officerTicketRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
     if (!ticket || ticket.ticket_count < 1) {
@@ -219,7 +219,7 @@ export class OfficerEvaluationService {
 
     const schoolRecords = await this.schoolRecordSubjectLearningRepository.find({
       where: {
-        member: { id: Number(memberId) },
+        member: { id: memberId },
       },
     });
     if (schoolRecords.length < 1) {
@@ -228,7 +228,7 @@ export class OfficerEvaluationService {
 
     const officer = await this.officerRepository.findOne({
       where: {
-        member_id: Number(body.officerId),
+        member_id: body.officerId,
       },
       relations: {
         member: true,
@@ -241,7 +241,7 @@ export class OfficerEvaluationService {
 
     const exist = await this.officerEvaluationRepository.find({
       where: {
-        student_id: Number(memberId),
+        student_id: memberId,
         member_id: officer.member.id,
         status: 'READY',
       },
@@ -254,7 +254,7 @@ export class OfficerEvaluationService {
     await this.officerEvaluationRepository.save(
       this.officerEvaluationRepository.create({
         member_id: officer.member.id,
-        student_id: Number(memberId),
+        student_id: memberId,
         series: body.series,
         status: 'READY',
         create_dt: new Date(),
@@ -280,8 +280,8 @@ export class OfficerEvaluationService {
   async saveEvaluationBySelf(memberId: string, dto: SelfEvaluationBodyDto): Promise<void> {
     let evaluation = await this.officerEvaluationRepository.findOne({
       where: {
-        member_id: Number(memberId),
-        student_id: Number(memberId),
+        member_id: memberId,
+        student_id: memberId,
         status: 'COMPLETE',
       },
     });
@@ -298,8 +298,8 @@ export class OfficerEvaluationService {
     } else {
       // 없으면 생성
       evaluation = this.officerEvaluationRepository.create({
-        member_id: Number(memberId),
-        student_id: Number(memberId),
+        member_id: memberId,
+        student_id: memberId,
         status: 'COMPLETE',
         series: dto.series,
         create_dt: new Date(),
@@ -323,7 +323,7 @@ export class OfficerEvaluationService {
   async saveEvaluationByOfficer(memberId: string, dto: OfficerEvaluationBodyDto): Promise<void> {
     const officer = await this.officerRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
     if (!officer) {
@@ -332,8 +332,8 @@ export class OfficerEvaluationService {
 
     const evaluation = await this.officerEvaluationRepository.findOne({
       where: {
-        member_id: Number(officer.member_id),
-        student_id: Number(dto.studentId),
+        member_id: officer.member_id,
+        student_id: String(dto.studentId),
         series: dto.series,
       },
     });
@@ -385,7 +385,7 @@ export class OfficerEvaluationService {
   ): Promise<{ url: string; fileName: string }> {
     // 사정관 여부 확인
     const officer = await this.officerRepository.findOne({
-      where: { member_id: Number(officerMemberId) },
+      where: { member_id: officerMemberId },
     });
     if (!officer) {
       throw new BadRequestException('평가자가 아닙니다.');
@@ -394,8 +394,8 @@ export class OfficerEvaluationService {
     // 해당 학생에 대한 평가 신청이 있는지 확인
     const evaluation = await this.officerEvaluationRepository.findOne({
       where: {
-        member_id: Number(officerMemberId),
-        student_id: Number(studentId),
+        member_id: officerMemberId,
+        student_id: studentId,
       },
     });
     if (!evaluation) {
@@ -405,7 +405,7 @@ export class OfficerEvaluationService {
     // 학생의 생기부 파일 조회
     const file = await this.memberUploadFileListRepository.findOne({
       where: {
-        member_id: Number(studentId),
+        member_id: studentId,
         file_type: 'school-record-pdf',
       },
       order: {

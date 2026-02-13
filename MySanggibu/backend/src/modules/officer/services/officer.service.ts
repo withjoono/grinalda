@@ -31,7 +31,7 @@ export class OfficerService {
     private schoolRecordSubjectLearningRepository: Repository<SchoolRecordSubjectLearningEntity>,
 
     private smsService: SmsService,
-  ) {}
+  ) { }
 
   /**
    * 사정관인지 체크
@@ -39,7 +39,7 @@ export class OfficerService {
   async checkOfficer(memberId: string): Promise<boolean> {
     const officer = await this.officerRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
 
@@ -52,7 +52,7 @@ export class OfficerService {
   async getOfficerProfile(memberId: string): Promise<OfficerListEntity> {
     const officer = await this.officerRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
 
@@ -69,7 +69,7 @@ export class OfficerService {
   ): Promise<OfficerListEntity> {
     const officer = await this.officerRepository.findOne({
       where: {
-        member_id: Number(memberId),
+        member_id: memberId,
       },
     });
 

@@ -1,4 +1,3 @@
-import { makeApiCall } from "../../common-utils";
 import { hubApiClient } from "../../hub-api-client";
 import {
   ISchoolRecordAttendance,
@@ -56,94 +55,27 @@ const fetchCurrentUserActiveServicesAPI = async (): Promise<string[]> => {
 };
 
 /**
- * [생기부] 출석 기록 조회
+ * [생기부] 전체 데이터 통합 조회 (Hub 중앙 API)
+ * Hub-Backend의 GET /schoolrecord/:memberId 단일 엔드포인트에서 전체 데이터를 조회합니다.
  */
-const fetchSchoolRecordAttendanceAPI = async (memberId: string) => {
+const fetchAllSchoolRecordsAPI = async (memberId: string): Promise<{
+  attendanceDetails: ISchoolRecordAttendance[];
+  selectSubjects: ISchoolRecordSelectSubject[];
+  subjectLearnings: ISchoolRecordSubject[];
+  volunteers: ISchoolRecordVolunteer[];
+} | null> => {
   try {
-    const res = await makeApiCall<void, ISchoolRecordAttendance[]>(
-      "GET",
-      `/members/${memberId}/schoolrecord/attendance`,
-      undefined,
-    );
-
-    if (res.success) {
-      return res.data;
-    }
-    return [];
+    const res = await hubApiClient.get(`/schoolrecord/${memberId}`);
+    const data = extractHubApiData<any>(res.data);
+    return data;
   } catch (error) {
-    // 데이터가 없을 때 500 에러가 발생할 수 있음 (정상 상황)
-    return [];
-  }
-};
-
-/**
- * [생기부] 선택 과목 조회
- */
-const fetchSchoolRecordSelectSubjectsAPI = async (memberId: string) => {
-  try {
-    const res = await makeApiCall<void, ISchoolRecordSelectSubject[]>(
-      "GET",
-      `/members/${memberId}/schoolrecord/select-subject`,
-      undefined,
-    );
-
-    if (res.success) {
-      return res.data;
-    }
-    return [];
-  } catch (error) {
-    // 데이터가 없을 때 500 에러가 발생할 수 있음 (정상 상황)
-    return [];
-  }
-};
-
-/**
- * [생기부] 과목 조회
- */
-const fetchSchoolRecordSubjectsAPI = async (memberId: string) => {
-  try {
-    const res = await makeApiCall<void, ISchoolRecordSubject[]>(
-      "GET",
-      `/members/${memberId}/schoolrecord/subject`,
-      undefined,
-    );
-
-    if (res.success) {
-      return res.data;
-    }
-    return [];
-  } catch (error) {
-    // 데이터가 없을 때 500 에러가 발생할 수 있음 (정상 상황)
-    return [];
-  }
-};
-
-/**
- * [생기부] 봉사 활동 조회
- */
-const fetchSchoolRecordVolunteersAPI = async (memberId: string) => {
-  try {
-    const res = await makeApiCall<void, ISchoolRecordVolunteer[]>(
-      "GET",
-      `/members/${memberId}/schoolrecord/volunteers`,
-      undefined,
-    );
-
-    if (res.success) {
-      return res.data;
-    }
-    return [];
-  } catch (error) {
-    // 데이터가 없을 때 500 에러가 발생할 수 있음 (정상 상황)
-    return [];
+    console.warn('[fetchAllSchoolRecordsAPI] 생기부 데이터 조회 실패:', error);
+    return null;
   }
 };
 
 export const USER_API = {
   fetchCurrentUserAPI,
   fetchCurrentUserActiveServicesAPI,
-  fetchSchoolRecordAttendanceAPI,
-  fetchSchoolRecordSelectSubjectsAPI,
-  fetchSchoolRecordSubjectsAPI,
-  fetchSchoolRecordVolunteersAPI,
+  fetchAllSchoolRecordsAPI,
 };

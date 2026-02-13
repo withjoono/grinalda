@@ -29,8 +29,8 @@ export class MemberUploadFileListEntity {
   @Column({ name: 'file_type', length: 500 })
   file_type: string;
 
-  @Column({ name: 'member_id', type: 'bigint' })
-  member_id: number;
+  @Column({ name: 'member_id', type: 'varchar', length: 50 })
+  member_id: string;
 
   @UpdateDateColumn({ name: 'update_dt' })
   update_dt: Date;

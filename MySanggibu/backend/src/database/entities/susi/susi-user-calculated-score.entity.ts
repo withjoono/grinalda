@@ -23,8 +23,8 @@ export class SusiUserCalculatedScoreEntity {
   @PrimaryGeneratedColumn({ comment: '고유 ID' })
   id: number;
 
-  @Column({ type: 'int', comment: '회원 ID' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 50, comment: '회원 ID' })
+  member_id: string;
 
   @Column({ type: 'varchar', length: 100, comment: '대학명' })
   university_name: string;

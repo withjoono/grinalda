@@ -29,7 +29,7 @@ import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
 import { SnakeToCamelInterceptor } from '../../../common/interceptors/snake-to-camel.interceptor';
 
 interface RequestWithMemberId extends Request {
-  memberId: number;
+  memberId: string;
 }
 
 @ApiTags('수시 교과전형 환산점수')
@@ -38,7 +38,7 @@ interface RequestWithMemberId extends Request {
 @UseInterceptors(SnakeToCamelInterceptor)
 @ApiBearerAuth()
 export class SusiCalculationController {
-  constructor(private readonly calculationService: SusiCalculationService) {}
+  constructor(private readonly calculationService: SusiCalculationService) { }
 
   /**
    * 교과전형 환산점수 계산 및 저장

@@ -30,7 +30,7 @@ export class JwtService {
     return Buffer.from(secretKey, 'base64'); // 스프링에서는 시크릿키를 base64 인코딩처리를 하여 사용하기 때문에 맞춰줘야함
   }
 
-  createAccessToken(memberId: number): string {
+  createAccessToken(memberId: string | number): string {
     const payload = {
       sub: 'ATK',
       jti: memberId,
@@ -41,7 +41,7 @@ export class JwtService {
     });
   }
 
-  createRefreshToken(memberId: number): string {
+  createRefreshToken(memberId: string | number): string {
     const payload = {
       sub: 'RTK',
       jti: memberId,

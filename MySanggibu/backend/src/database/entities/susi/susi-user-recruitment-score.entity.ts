@@ -25,8 +25,8 @@ export class SusiUserRecruitmentScoreEntity {
   @PrimaryGeneratedColumn({ comment: '고유 ID' })
   id: number;
 
-  @Column({ type: 'int', comment: '회원 ID' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 50, comment: '회원 ID' })
+  member_id: string;
 
   @Column({ type: 'int', comment: '수시 모집단위 ID (susi_subject_tb.id)' })
   susi_subject_id: number;

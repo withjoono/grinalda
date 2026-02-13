@@ -49,8 +49,7 @@ import { CoreModule } from './modules/core/core.module';
 import { StaticDataModule } from './modules/static-data/static-data.module';
 import { ExplorationModule } from './modules/exploration/exploration.module';
 
-import { MyclassModule } from './modules/myclass/myclass.module';
-import { ApplicationRateModule } from './modules/application-rate/application-rate.module';
+
 import { ChatbotModule } from './modules/chatbot/chatbot.module';
 import { winstonConfig } from './common/utils/winston.utils';
 import { WinstonModule } from 'nest-winston';
@@ -138,9 +137,7 @@ import { WinstonModule } from 'nest-winston';
     StaticDataModule, // 정적데이터 모듈(교과 코드, 계열 등)
     ExplorationModule,
 
-    MyclassModule, // 마이클래스 모듈 (건강관리, 상담, 출결, 시험)
-    ApplicationRateModule, // 경쟁률 크롤링 모듈
-    ChatbotModule, // 챗봇 모듈 (FAQ, 용어사전, 매뉴얼 기반 Q&A)
+
   ],
   controllers: [AppController],
   providers: [

@@ -15,7 +15,7 @@ export class MemberRecruitmentUnitCombinationService {
     private combinationRepository: Repository<MemberRecruitmentUnitCombinationEntity>,
     @InjectRepository(RecruitmentUnitEntity)
     private recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-  ) {}
+  ) { }
 
   async create(
     memberId: string,
@@ -23,7 +23,7 @@ export class MemberRecruitmentUnitCombinationService {
   ): Promise<MemberRecruitmentUnitCombinationEntity> {
     const combination = new MemberRecruitmentUnitCombinationEntity();
     combination.name = createDto.name;
-    combination.member = { id: Number(memberId) } as any;
+    combination.member = { id: memberId } as any;
 
     const recruitmentUnits = await this.recruitmentUnitRepository.find({
       where: {
@@ -41,7 +41,7 @@ export class MemberRecruitmentUnitCombinationService {
 
   async findAll(memberId: string): Promise<MemberRecruitmentUnitCombinationEntity[]> {
     return this.combinationRepository.find({
-      where: { member: { id: Number(memberId) } },
+      where: { member: { id: memberId } },
       relations: [
         'recruitment_units',
         'recruitment_units.admission',
@@ -58,7 +58,7 @@ export class MemberRecruitmentUnitCombinationService {
 
   async findOne(id: number, memberId: string): Promise<MemberRecruitmentUnitCombinationEntity> {
     const combination = await this.combinationRepository.findOne({
-      where: { id, member: { id: Number(memberId) } },
+      where: { id, member: { id: memberId } },
       relations: ['recruitment_units'],
     });
 
@@ -84,7 +84,7 @@ export class MemberRecruitmentUnitCombinationService {
   async remove(memberId: string, id: number): Promise<void> {
     const result = await this.combinationRepository.delete({
       id,
-      member: { id: Number(memberId) },
+      member: { id: memberId },
     });
 
     if (result.affected === 0) {

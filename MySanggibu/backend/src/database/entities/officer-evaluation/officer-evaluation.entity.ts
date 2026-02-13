@@ -22,8 +22,8 @@ export class OfficerEvaluationEntity {
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   create_dt: Date;
 
-  @Column({ type: 'bigint' })
-  member_id: number;
+  @Column({ type: 'varchar', length: 50 })
+  member_id: string;
 
   @Column({ type: 'varchar', length: 500 })
   series: string;
@@ -31,8 +31,8 @@ export class OfficerEvaluationEntity {
   @Column({ type: 'varchar', length: 500 })
   status: string; // COMPLETE | READY
 
-  @Column({ type: 'bigint' })
-  student_id: number;
+  @Column({ type: 'varchar', length: 50 })
+  student_id: string;
 
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   update_dt: Date;

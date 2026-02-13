@@ -39,13 +39,13 @@ export class SusiCalculationService {
     private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
     private readonly formulaDataService: SusiFormulaDataService,
     private readonly gradeCalculationService: SusiGradeCalculationService,
-  ) {}
+  ) { }
 
   /**
    * 환산점수 계산 및 저장 (메인 진입점)
    */
   async calculateAndSaveScores(
-    memberId: number,
+    memberId: string,
     options?: {
       universityNames?: string[];
       recalculate?: boolean;
@@ -166,9 +166,9 @@ export class SusiCalculationService {
   /**
    * 사용자 내신 데이터 조회
    */
-  async getMemberGrades(memberId: number): Promise<MemberGradeData | null> {
+  async getMemberGrades(memberId: string | number): Promise<MemberGradeData | null> {
     const entities = await this.subjectLearningRepository.find({
-      where: { member: { id: memberId } },
+      where: { member: { id: String(memberId) } },
     });
 
     if (!entities || entities.length === 0) {
@@ -196,7 +196,7 @@ export class SusiCalculationService {
     const bySubject = this.gradeCalculationService.groupGradesBySubject(grades);
 
     return {
-      memberId,
+      memberId: String(memberId),
       grades,
       byYear,
       bySubject,
@@ -307,12 +307,12 @@ export class SusiCalculationService {
    * 대학별 환산점수 DB 저장
    */
   private async saveUniversityScores(
-    memberId: number,
+    memberId: string,
     scores: UniversityCalculatedScore[],
     year: number,
   ): Promise<void> {
     const entities: Partial<SusiUserCalculatedScoreEntity>[] = scores.map((score) => ({
-      member_id: memberId,
+      member_id: String(memberId),
       university_name: score.university_name,
       year,
       converted_score: score.converted_score,
@@ -346,7 +346,7 @@ export class SusiCalculationService {
     for (const entity of entities) {
       const existing = await this.calculatedScoreRepository.findOne({
         where: {
-          member_id: memberId,
+          member_id: String(memberId),
           university_name: entity.university_name,
         },
       });
@@ -365,7 +365,7 @@ export class SusiCalculationService {
    * 모집단위별 환산점수 계산 및 저장
    */
   private async calculateAndSaveRecruitmentScores(
-    memberId: number,
+    memberId: string,
     universityScores: UniversityCalculatedScore[],
     year: number,
   ): Promise<RecruitmentScoreResult[]> {
@@ -444,11 +444,11 @@ export class SusiCalculationService {
    * 모집단위별 환산점수 저장
    */
   private async saveRecruitmentScore(
-    memberId: number,
+    memberId: string,
     score: RecruitmentScoreResult,
   ): Promise<void> {
     const entity: Partial<SusiUserRecruitmentScoreEntity> = {
-      member_id: memberId,
+      member_id: String(memberId),
       susi_subject_id: score.susi_subject_id,
       university_name: score.university_name,
       recruitment_name: score.recruitment_name,
@@ -475,7 +475,7 @@ export class SusiCalculationService {
 
     const existing = await this.recruitmentScoreRepository.findOne({
       where: {
-        member_id: memberId,
+        member_id: String(memberId),
         susi_subject_id: score.susi_subject_id,
       },
     });
@@ -492,9 +492,9 @@ export class SusiCalculationService {
   /**
    * 저장된 환산점수 조회
    */
-  async getSavedScores(memberId: number): Promise<SusiUserCalculatedScoreEntity[]> {
+  async getSavedScores(memberId: string): Promise<SusiUserCalculatedScoreEntity[]> {
     return this.calculatedScoreRepository.find({
-      where: { member_id: memberId },
+      where: { member_id: String(memberId) },
       order: { university_name: 'ASC' },
     });
   }
@@ -503,12 +503,12 @@ export class SusiCalculationService {
    * 특정 대학 환산점수 조회
    */
   async getSavedScoreByUniversity(
-    memberId: number,
+    memberId: string,
     universityName: string,
   ): Promise<SusiUserCalculatedScoreEntity | null> {
     return this.calculatedScoreRepository.findOne({
       where: {
-        member_id: memberId,
+        member_id: String(memberId),
         university_name: universityName,
       },
     });
@@ -517,9 +517,9 @@ export class SusiCalculationService {
   /**
    * 모집단위별 환산점수 조회
    */
-  async getSavedRecruitmentScores(memberId: number): Promise<SusiUserRecruitmentScoreEntity[]> {
+  async getSavedRecruitmentScores(memberId: string): Promise<SusiUserRecruitmentScoreEntity[]> {
     return this.recruitmentScoreRepository.find({
-      where: { member_id: memberId },
+      where: { member_id: String(memberId) },
       order: { risk_score: 'DESC', university_name: 'ASC' },
     });
   }
@@ -527,20 +527,20 @@ export class SusiCalculationService {
   /**
    * 환산점수 삭제
    */
-  async deleteScores(memberId: number, universityNames?: string[]): Promise<void> {
+  async deleteScores(memberId: string, universityNames?: string[]): Promise<void> {
     if (universityNames && universityNames.length > 0) {
       await this.calculatedScoreRepository.delete({
-        member_id: memberId,
+        member_id: String(memberId),
         university_name: In(universityNames),
       });
       // 모집단위 점수도 삭제
       await this.recruitmentScoreRepository.delete({
-        member_id: memberId,
+        member_id: String(memberId),
         university_name: In(universityNames),
       });
     } else {
-      await this.calculatedScoreRepository.delete({ member_id: memberId });
-      await this.recruitmentScoreRepository.delete({ member_id: memberId });
+      await this.calculatedScoreRepository.delete({ member_id: String(memberId) });
+      await this.recruitmentScoreRepository.delete({ member_id: String(memberId) });
     }
   }
 

@@ -47,19 +47,19 @@ export class MockExamService {
   ) { }
 
   // 모의고사 원점수 목록 조회
-  async getMockexamRawScoresByMemberId(memberId: number): Promise<MockexamRawScoreEntity[]> {
+  async getMockexamRawScoresByMemberId(memberId: string | number): Promise<MockexamRawScoreEntity[]> {
     return this.mockexamRawScoreRepository.find({
-      where: { member: { id: memberId } },
+      where: { member: { id: String(memberId) } },
     });
   }
 
   // 모의고사 표준점수 목록 조회 (나의 누적백분위 포함)
   async getMockexamScoresByMemberId(
-    memberId: number,
+    memberId: string | number,
   ): Promise<GetMockExamStandardScoresResponseDto> {
     // 추후 표준점수 저장 기능 활성화 시 (원점수만 사용 시 주석 처리 후 하단의 원점수 -> 변환 테이블 사용)
     const exist = await this.mockexamStandardRepository.find({
-      where: { member: { id: memberId } },
+      where: { member: { id: String(memberId) } },
     });
 
     let scores: GetMockExamStandardScoreDto[] = [];
@@ -181,17 +181,17 @@ export class MockExamService {
 
   // 모의고사 원점수 저장
   async saveMockexamScore(
-    memberId: number,
+    memberId: string | number,
     createMockExamScoreDtos: CreateMockExamRawScoreDto[],
   ): Promise<void> {
     if (createMockExamScoreDtos.length === 0) return;
 
     // 기존 유저의 모의고사 점수 삭제
     await this.mockexamRawScoreRepository.delete({
-      member: { id: memberId },
+      member: { id: String(memberId) },
     });
     await this.mockexamScoreRepository.delete({
-      member: { id: memberId },
+      member: { id: String(memberId) },
     });
 
     for (const dto of createMockExamScoreDtos) {
@@ -203,7 +203,7 @@ export class MockExamService {
       const mockExamRawScore = new MockexamRawScoreEntity();
       mockExamRawScore.raw_score = dto.raw_score;
       mockExamRawScore.subject_code = dto.subject_code;
-      mockExamRawScore.member = { id: memberId } as any;
+      mockExamRawScore.member = { id: String(memberId) } as any;
       mockExamRawScore.schedule = mockExamSchedule;
 
       await this.mockexamRawScoreRepository.save(mockExamRawScore);
@@ -256,14 +256,14 @@ export class MockExamService {
 
   // 모의고사 표준점수 저장
   async saveMockexamStandardScore(
-    memberId: number,
+    memberId: string | number,
     createMockExamScoreDtos: CreateMockExamStandardScoreDto[],
   ): Promise<void> {
     if (createMockExamScoreDtos.length === 0) return;
 
     // 기존 유저의 모의고사 점수 삭제
     await this.mockexamStandardRepository.delete({
-      member: { id: memberId },
+      member: { id: String(memberId) },
     });
 
     for (const dto of createMockExamScoreDtos) {
@@ -277,7 +277,7 @@ export class MockExamService {
       mockExamStandardScore.subject_code = dto.subject_code;
       mockExamStandardScore.grade = dto.grade;
       mockExamStandardScore.percentile = dto.percentile;
-      mockExamStandardScore.member = { id: memberId } as any;
+      mockExamStandardScore.member = { id: String(memberId) } as any;
       mockExamStandardScore.schedule = mockExamSchedule;
 
       await this.mockexamStandardRepository.save(mockExamStandardScore);
