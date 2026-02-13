@@ -98,4 +98,22 @@ export class FirebaseRegisterDto {
   @IsOptional()
   @IsString()
   parentType?: string;
+
+  @ApiProperty({
+    description: '문이과 구분 (0: 문과, 1: 이과)',
+    example: '0',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  isMajor?: string;
+
+  @ApiProperty({
+    description: '졸업 예정 연도',
+    example: '2025',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  graduateYear?: string;
 }
