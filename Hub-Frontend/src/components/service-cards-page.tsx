@@ -79,6 +79,8 @@ interface ServiceCategory {
   title: string;
   description: string;
   services: ServiceCard[];
+  icon: React.ReactNode;
+  gradientClass: string;
 }
 
 const serviceCategories: ServiceCategory[] = [
@@ -86,6 +88,8 @@ const serviceCategories: ServiceCategory[] = [
     id: "grade-management",
     title: "성적 관리용 앱",
     description: "내신, 비교과, 모의고사 성적 관리용 앱",
+    icon: <BarChart3 className="w-6 h-6" />,
+    gradientClass: "from-sky-500 to-blue-500",
     services: [
       {
         id: "mysanggibu",
@@ -122,6 +126,8 @@ const serviceCategories: ServiceCategory[] = [
     id: "learning",
     title: "학습용 앱",
     description: "학습 관리 및 동기 부여를 위한 앱",
+    icon: <BookOpen className="w-6 h-6" />,
+    gradientClass: "from-blue-500 to-cyan-500",
     services: [
       {
         id: "planner",
@@ -170,6 +176,8 @@ const serviceCategories: ServiceCategory[] = [
     id: "prediction",
     title: "수시/정시 예측 앱",
     description: "기존의 정적 예측 서비스들과는 차원이 다른, AI 동적 예측 서비스",
+    icon: <GraduationCap className="w-6 h-6" />,
+    gradientClass: "from-emerald-500 to-teal-500",
     services: [
       {
         id: "susi-2027",
@@ -213,6 +221,8 @@ const serviceCategories: ServiceCategory[] = [
     id: "user-specific",
     title: "사용자별 앱",
     description: "거북스쿨 앱들을 선생님과 학부모가 공유하기 위한 앱",
+    icon: <Users className="w-6 h-6" />,
+    gradientClass: "from-purple-500 to-pink-500",
     services: [
       {
         id: "teacher-admin",
@@ -298,38 +308,87 @@ export function ServiceCardsPage() {
         </div>
       </section>
 
-      {/* ═══════════════════ SERVICES GRID (CATEGORIZED) ═══════════════════ */}
-      <section id="services" className="py-12 md:py-20 bg-transparent relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto flex flex-col gap-16">
-            {serviceCategories.map((category, index) => (
-              <div key={category.id} className="relative">
-                {/* 카테고리 헤더 */}
-                <div className="mb-8 pl-2 border-l-4 border-blue-500">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1 leading-none">
-                    {category.title}
-                  </h3>
-                  <p className="text-sm text-gray-500 font-medium">
-                    {category.description}
-                  </p>
-                </div>
-
-                {/* 서비스 카드 그리드 */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                  {category.services.map((service) => {
-                    const isDisabled = service.disabled && !isDev;
-                    return (
-                      <ServiceCardItem
-                        key={service.id}
-                        service={service}
-                        isDisabled={isDisabled}
-                      />
-                    );
-                  })}
-                </div>
+      {/* ═══════════════════ SERVICE GRID ═══════════════════ */}
+      <div className="container mx-auto px-4 py-20 relative z-10" id="service-grid">
+        {serviceCategories.map((category, index) => (
+          <motion.section
+            key={category.id}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: index * 0.1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-32 last:mb-0"
+          >
+            <div className="flex items-center gap-4 mb-10 pl-2">
+              <div className={`p-3 rounded-2xl bg-gradient-to-br ${category.gradientClass} text-white shadow-lg`}>
+                {category.icon}
               </div>
-            ))}
-          </div>
+              <h2 className="text-3xl font-bold text-gray-900 tracking-tight">{category.title}</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {category.services.map((service) => (
+                <ServiceCardItem key={service.title} service={service} />
+              ))}
+            </div>
+          </motion.section>
+        ))}
+      </div>
+
+      {/* ═══════════════════ FOOTER MESSAGE WITH CHARACTER ═══════════════════ */}
+      <section className="bg-gray-50 py-24 relative overflow-hidden border-t border-gray-100">
+        <div className="container mx-auto px-4 relative z-10 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+          {/* Character Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: -50 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex-shrink-0"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-400 blur-[80px] opacity-20 rounded-full" />
+              <img src="/images/geobuk-ssam.png" alt="거북쌤" className="relative w-48 md:w-64 lg:w-80 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" />
+            </div>
+          </motion.div>
+
+          {/* Speech Bubble */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 relative max-w-3xl"
+          >
+            {/* Tail of speech bubble (Left for desktop, Top for mobile) */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 lg:top-1/2 lg:-left-4 lg:translate-x-0 lg:-translate-y-1/2 w-8 h-8 bg-white transform rotate-45 border-l border-t lg:border-t-0 lg:border-l lg:border-b border-gray-100 z-0" />
+
+            <div className="relative z-10 space-y-6 text-gray-700 leading-relaxed text-lg break-keep">
+              <p className="font-bold text-2xl text-gray-900 mb-4">
+                입시전문가이자, 1인 AI / IT 개발자 '거북쌤' 입니다.
+              </p>
+              <p>
+                학생마다의 DB인 <span className="font-bold text-blue-600">'RAG'</span>와 AI 학습을 통해(파인튜닝),<br className="hidden md:block" />
+                그 어떤 선생님, 그 어떤 학원보다<br className="hidden md:block" />
+                <span className="font-bold text-blue-600">상상이상의 도움</span>을 줄 수 있는 것이,<br className="hidden md:block" />
+                현재 무섭게 발전하는 <span className="font-bold text-blue-600">'AI'</span> 입니다.
+              </p>
+              <p>
+                이런 AI의 도움을 받기 위해서는<br />
+                <span className="font-semibold text-gray-900 bg-yellow-100 px-1">학생에 대한 데이터가 필요합니다.</span>
+              </p>
+              <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-base">
+                <p className="mb-2">
+                  위의 앱들은 당장 유용하고 필요한 기능도 제공하지만,<br />
+                  위의 앱들을 이용할수록,<br />
+                  위의 앱들의 본연의 기능 뿐만 아니라,
+                </p>
+                <p className="font-bold text-indigo-600 text-lg mt-4">
+                  향후, '상상 그 이상의 유익한 도움'을 제공드림을 약속드립니다.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
