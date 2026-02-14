@@ -38,55 +38,83 @@ async function bootstrap() {
       SELECT data_type FROM information_schema.columns
       WHERE table_name = 'auth_member' AND column_name = 'id'
     `);
+
     if (idColInfo.length > 0 && idColInfo[0].data_type === 'bigint') {
-      console.log('[SchemaPatch] Converting auth_member.id from bigint to varchar(30)...');
+      console.log('[SchemaPatch] auth_member.id is bigint — converting to varchar(30)...');
 
-      // FK 제약 조건 임시 해제 후 타입 변경
-      // 1a) 관련 테이블의 member_id 컬럼도 함께 변경
-      const relatedTables = [
-        { table: 'member_student', col: 'member_id' },
-        { table: 'member_teacher', col: 'member_id' },
-        { table: 'member_parent', col: 'member_id' },
-        { table: 'member_interests', col: 'member_id' },
-        { table: 'member_file', col: 'member_id' },
-        { table: 'payment_contract', col: 'member_id' },
-      ];
+      await queryRunner.startTransaction();
+      try {
+        // 1a) auth_member.id를 참조하는 모든 FK 조회
+        const fkRows = await queryRunner.query(`
+          SELECT
+            tc.constraint_name,
+            tc.table_name AS fk_table,
+            kcu.column_name AS fk_column,
+            ccu.table_name AS ref_table,
+            ccu.column_name AS ref_column
+          FROM information_schema.table_constraints tc
+          JOIN information_schema.key_column_usage kcu
+            ON tc.constraint_name = kcu.constraint_name
+          JOIN information_schema.constraint_column_usage ccu
+            ON tc.constraint_name = ccu.constraint_name
+          WHERE tc.constraint_type = 'FOREIGN KEY'
+            AND ccu.table_name = 'auth_member'
+            AND ccu.column_name = 'id'
+        `);
 
-      // FK 제약 조건을 모두 비활성화
-      await queryRunner.query(`SET session_replication_role = 'replica'`);
+        console.log(`[SchemaPatch] Found ${fkRows.length} FK constraints referencing auth_member.id`);
 
-      // auth_member.id 타입 변경
-      await queryRunner.query(`
-        ALTER TABLE auth_member ALTER COLUMN id TYPE varchar(30) USING CAST(id AS TEXT)
-      `);
+        // 1b) FK 제약 조건 모두 DROP
+        for (const fk of fkRows) {
+          console.log(`[SchemaPatch] Dropping FK: ${fk.constraint_name} on ${fk.fk_table}`);
+          await queryRunner.query(`ALTER TABLE "${fk.fk_table}" DROP CONSTRAINT "${fk.constraint_name}"`);
+        }
 
-      // 관련 테이블의 member_id 타입 변경
-      for (const rel of relatedTables) {
-        try {
-          const tableExists = await queryRunner.query(`
-            SELECT 1 FROM information_schema.tables
-            WHERE table_name = $1
-          `, [rel.table]);
-          if (tableExists.length > 0) {
-            const colExists = await queryRunner.query(`
+        // 1c) auth_member PK 제약 조건 찾아서 DROP
+        const pkRows = await queryRunner.query(`
+          SELECT constraint_name FROM information_schema.table_constraints
+          WHERE table_name = 'auth_member' AND constraint_type = 'PRIMARY KEY'
+        `);
+        for (const pk of pkRows) {
+          console.log(`[SchemaPatch] Dropping PK: ${pk.constraint_name}`);
+          await queryRunner.query(`ALTER TABLE auth_member DROP CONSTRAINT "${pk.constraint_name}"`);
+        }
+
+        // 1d) auth_member.id의 DEFAULT(시퀀스) 제거 및 타입 변경
+        await queryRunner.query(`ALTER TABLE auth_member ALTER COLUMN id DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE auth_member ALTER COLUMN id TYPE varchar(30) USING CAST(id AS TEXT)`);
+        console.log('[SchemaPatch] auth_member.id converted to varchar(30)');
+
+        // 1e) PK 복원
+        await queryRunner.query(`ALTER TABLE auth_member ADD PRIMARY KEY (id)`);
+
+        // 1f) FK가 참조하는 테이블의 member_id 컬럼도 varchar로 변환 + FK 복원
+        for (const fk of fkRows) {
+          try {
+            const colInfo = await queryRunner.query(`
               SELECT data_type FROM information_schema.columns
               WHERE table_name = $1 AND column_name = $2
-            `, [rel.table, rel.col]);
-            if (colExists.length > 0 && colExists[0].data_type !== 'character varying') {
-              console.log(`[SchemaPatch] Converting ${rel.table}.${rel.col} to varchar(30)...`);
-              await queryRunner.query(`
-                ALTER TABLE "${rel.table}" ALTER COLUMN "${rel.col}" TYPE varchar(30) USING CAST("${rel.col}" AS TEXT)
-              `);
-            }
-          }
-        } catch (e) {
-          console.warn(`[SchemaPatch] Skipping ${rel.table}.${rel.col}: ${e.message}`);
-        }
-      }
+            `, [fk.fk_table, fk.fk_column]);
 
-      // FK 제약 조건 다시 활성화
-      await queryRunner.query(`SET session_replication_role = 'origin'`);
-      console.log('[SchemaPatch] id column type conversion completed.');
+            if (colInfo.length > 0 && colInfo[0].data_type !== 'character varying') {
+              console.log(`[SchemaPatch] Converting ${fk.fk_table}.${fk.fk_column} to varchar(30)`);
+              await queryRunner.query(`ALTER TABLE "${fk.fk_table}" ALTER COLUMN "${fk.fk_column}" TYPE varchar(30) USING CAST("${fk.fk_column}" AS TEXT)`);
+            }
+
+            // FK 복원
+            console.log(`[SchemaPatch] Restoring FK: ${fk.constraint_name}`);
+            await queryRunner.query(`ALTER TABLE "${fk.fk_table}" ADD CONSTRAINT "${fk.constraint_name}" FOREIGN KEY ("${fk.fk_column}") REFERENCES auth_member(id)`);
+          } catch (fkErr) {
+            console.warn(`[SchemaPatch] FK restore warning for ${fk.fk_table}: ${fkErr.message}`);
+          }
+        }
+
+        await queryRunner.commitTransaction();
+        console.log('[SchemaPatch] id column type conversion completed successfully.');
+      } catch (txErr) {
+        console.error('[SchemaPatch] Transaction failed, rolling back:', txErr.message);
+        await queryRunner.rollbackTransaction();
+      }
     }
 
     // 2) 누락된 컬럼 추가
@@ -99,6 +127,10 @@ async function bootstrap() {
         { name: 'reg_month', type: 'character varying(2)' },
         { name: 'reg_day', type: 'character varying(2)' },
         { name: 'firebase_uid', type: 'character varying(255)' },
+        { name: 'member_type', type: 'character varying(20)' },
+        { name: 'profile_image_url', type: 'character varying(1000)' },
+        { name: 'oauth_id', type: 'character varying(255)' },
+        { name: 'provider_type', type: 'character varying(20)' },
       ];
 
       for (const col of missingColumns) {
