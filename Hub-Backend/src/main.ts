@@ -24,6 +24,7 @@ async function bootstrap() {
   // ---------------------------------------------------------------------------
   // [HOTFIX] Production Schema Patch
   // 마이그레이션 누락으로 인한 auth_member 테이블 스키마 불일치 해결 (2026-02-14)
+  // ID는 숫자 전용으로 생성하여 bigint/varchar 모두 호환
   // ---------------------------------------------------------------------------
   try {
     const { DataSource } = await import('typeorm');
@@ -33,146 +34,91 @@ async function bootstrap() {
 
     console.log('[SchemaPatch] Checking auth_member schema...');
 
-    // 1) id 컬럼 타입 확인 및 변환 (bigint → varchar)
+    // 1) id 컬럼 타입 확인 (bigint 또는 varchar)
     const idColInfo = await queryRunner.query(`
       SELECT data_type FROM information_schema.columns
       WHERE table_name = 'auth_member' AND column_name = 'id'
     `);
-
-    if (idColInfo.length > 0 && idColInfo[0].data_type === 'bigint') {
-      console.log('[SchemaPatch] auth_member.id is bigint — converting to varchar(30)...');
-
-      await queryRunner.startTransaction();
-      try {
-        // 1a) auth_member.id를 참조하는 모든 FK 조회
-        const fkRows = await queryRunner.query(`
-          SELECT
-            tc.constraint_name,
-            tc.table_name AS fk_table,
-            kcu.column_name AS fk_column,
-            ccu.table_name AS ref_table,
-            ccu.column_name AS ref_column
-          FROM information_schema.table_constraints tc
-          JOIN information_schema.key_column_usage kcu
-            ON tc.constraint_name = kcu.constraint_name
-          JOIN information_schema.constraint_column_usage ccu
-            ON tc.constraint_name = ccu.constraint_name
-          WHERE tc.constraint_type = 'FOREIGN KEY'
-            AND ccu.table_name = 'auth_member'
-            AND ccu.column_name = 'id'
-        `);
-
-        console.log(`[SchemaPatch] Found ${fkRows.length} FK constraints referencing auth_member.id`);
-
-        // 1b) FK 제약 조건 모두 DROP
-        for (const fk of fkRows) {
-          console.log(`[SchemaPatch] Dropping FK: ${fk.constraint_name} on ${fk.fk_table}`);
-          await queryRunner.query(`ALTER TABLE "${fk.fk_table}" DROP CONSTRAINT "${fk.constraint_name}"`);
-        }
-
-        // 1c) auth_member PK 제약 조건 찾아서 DROP
-        const pkRows = await queryRunner.query(`
-          SELECT constraint_name FROM information_schema.table_constraints
-          WHERE table_name = 'auth_member' AND constraint_type = 'PRIMARY KEY'
-        `);
-        for (const pk of pkRows) {
-          console.log(`[SchemaPatch] Dropping PK: ${pk.constraint_name}`);
-          await queryRunner.query(`ALTER TABLE auth_member DROP CONSTRAINT "${pk.constraint_name}"`);
-        }
-
-        // 1d) auth_member.id의 DEFAULT(시퀀스) 제거 및 타입 변경
-        await queryRunner.query(`ALTER TABLE auth_member ALTER COLUMN id DROP DEFAULT`);
-        await queryRunner.query(`ALTER TABLE auth_member ALTER COLUMN id TYPE varchar(30) USING CAST(id AS TEXT)`);
-        console.log('[SchemaPatch] auth_member.id converted to varchar(30)');
-
-        // 1e) PK 복원
-        await queryRunner.query(`ALTER TABLE auth_member ADD PRIMARY KEY (id)`);
-
-        // 1f) FK가 참조하는 테이블의 member_id 컬럼도 varchar로 변환 + FK 복원
-        for (const fk of fkRows) {
-          try {
-            const colInfo = await queryRunner.query(`
-              SELECT data_type FROM information_schema.columns
-              WHERE table_name = $1 AND column_name = $2
-            `, [fk.fk_table, fk.fk_column]);
-
-            if (colInfo.length > 0 && colInfo[0].data_type !== 'character varying') {
-              console.log(`[SchemaPatch] Converting ${fk.fk_table}.${fk.fk_column} to varchar(30)`);
-              await queryRunner.query(`ALTER TABLE "${fk.fk_table}" ALTER COLUMN "${fk.fk_column}" TYPE varchar(30) USING CAST("${fk.fk_column}" AS TEXT)`);
-            }
-
-            // FK 복원
-            console.log(`[SchemaPatch] Restoring FK: ${fk.constraint_name}`);
-            await queryRunner.query(`ALTER TABLE "${fk.fk_table}" ADD CONSTRAINT "${fk.constraint_name}" FOREIGN KEY ("${fk.fk_column}") REFERENCES auth_member(id)`);
-          } catch (fkErr) {
-            console.warn(`[SchemaPatch] FK restore warning for ${fk.fk_table}: ${fkErr.message}`);
-          }
-        }
-
-        await queryRunner.commitTransaction();
-        console.log('[SchemaPatch] id column type conversion completed successfully.');
-      } catch (txErr) {
-        console.error('[SchemaPatch] Transaction failed, rolling back:', txErr.message);
-        await queryRunner.rollbackTransaction();
-      }
-    }
+    const idType = idColInfo.length > 0 ? idColInfo[0].data_type : 'bigint';
+    const memberIdColType = idType === 'bigint' ? 'bigint' : 'varchar(30)';
+    console.log(`[SchemaPatch] auth_member.id type: ${idType} → sub-tables will use: ${memberIdColType}`);
 
     // 2) 누락된 컬럼 추가
-    const table = await queryRunner.getTable('auth_member');
-    if (table) {
-      const missingColumns = [
-        { name: 'user_type_code', type: 'character varying(5)' },
-        { name: 'user_type_detail_code', type: 'character varying(5)' },
-        { name: 'reg_year', type: 'integer' },
-        { name: 'reg_month', type: 'character varying(2)' },
-        { name: 'reg_day', type: 'character varying(2)' },
-        { name: 'firebase_uid', type: 'character varying(255)' },
-        { name: 'member_type', type: 'character varying(20)' },
-        { name: 'profile_image_url', type: 'character varying(1000)' },
-        { name: 'oauth_id', type: 'character varying(255)' },
-        { name: 'provider_type', type: 'character varying(20)' },
-      ];
+    const missingColumns = [
+      { name: 'user_type_code', type: 'character varying(5)' },
+      { name: 'user_type_detail_code', type: 'character varying(5)' },
+      { name: 'reg_year', type: 'integer' },
+      { name: 'reg_month', type: 'character varying(2)' },
+      { name: 'reg_day', type: 'character varying(2)' },
+      { name: 'firebase_uid', type: 'character varying(255)' },
+      { name: 'member_type', type: 'character varying(20)' },
+      { name: 'profile_image_url', type: 'character varying(1000)' },
+      { name: 'oauth_id', type: 'character varying(255)' },
+      { name: 'provider_type', type: 'character varying(20)' },
+      { name: 'nickname', type: 'character varying(255)' },
+      { name: 'account_stop_yn', type: 'character varying(1)' },
+      { name: 'ck_sms', type: 'boolean' },
+      { name: 'ck_sms_agree', type: 'boolean' },
+    ];
 
-      for (const col of missingColumns) {
-        if (!table.findColumnByName(col.name)) {
+    for (const col of missingColumns) {
+      try {
+        const colExists = await queryRunner.query(`
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'auth_member' AND column_name = $1
+        `, [col.name]);
+        if (colExists.length === 0) {
           console.log(`[SchemaPatch] Adding missing column: ${col.name}`);
           await queryRunner.query(`ALTER TABLE "auth_member" ADD "${col.name}" ${col.type}`);
         }
+      } catch (colErr) {
+        console.warn(`[SchemaPatch] Column ${col.name} error: ${colErr.message}`);
       }
     }
 
     // 3) 누락된 서브 테이블 생성 (auth_member_s, auth_member_t, auth_member_p)
+    // id 컬럼 타입에 맞춰 member_id 타입 결정
     console.log('[SchemaPatch] Checking sub-tables...');
 
-    await queryRunner.query(`
-      CREATE TABLE IF NOT EXISTS auth_member_s (
-        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
-        school_code varchar(20),
-        school_name varchar(100),
-        school_location varchar(50),
-        school_type varchar(50),
-        school_level varchar(10),
-        grade integer
-      )
-    `);
-    console.log('[SchemaPatch] auth_member_s (student) ensured.');
+    // FK 참조 없이 생성 (타입 불일치 방지)
+    const subTables = [
+      {
+        name: 'auth_member_s',
+        ddl: `CREATE TABLE IF NOT EXISTS auth_member_s (
+          member_id ${memberIdColType} PRIMARY KEY,
+          school_code varchar(20),
+          school_name varchar(100),
+          school_location varchar(50),
+          school_type varchar(50),
+          school_level varchar(10),
+          grade integer
+        )`,
+      },
+      {
+        name: 'auth_member_t',
+        ddl: `CREATE TABLE IF NOT EXISTS auth_member_t (
+          member_id ${memberIdColType} PRIMARY KEY,
+          school_level varchar(10),
+          subject varchar(50)
+        )`,
+      },
+      {
+        name: 'auth_member_p',
+        ddl: `CREATE TABLE IF NOT EXISTS auth_member_p (
+          member_id ${memberIdColType} PRIMARY KEY,
+          parent_type varchar(20)
+        )`,
+      },
+    ];
 
-    await queryRunner.query(`
-      CREATE TABLE IF NOT EXISTS auth_member_t (
-        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
-        school_level varchar(10),
-        subject varchar(50)
-      )
-    `);
-    console.log('[SchemaPatch] auth_member_t (teacher) ensured.');
-
-    await queryRunner.query(`
-      CREATE TABLE IF NOT EXISTS auth_member_p (
-        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
-        parent_type varchar(20)
-      )
-    `);
-    console.log('[SchemaPatch] auth_member_p (parent) ensured.');
+    for (const sub of subTables) {
+      try {
+        await queryRunner.query(sub.ddl);
+        console.log(`[SchemaPatch] ${sub.name} ensured.`);
+      } catch (subErr) {
+        console.warn(`[SchemaPatch] ${sub.name} error: ${subErr.message}`);
+      }
+    }
 
     await queryRunner.release();
     console.log('[SchemaPatch] Completed.');
