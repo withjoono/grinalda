@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { MemberEntity } from 'src/database/entities/member/member.entity';
 
 /**
@@ -13,6 +13,7 @@ export class MemberIdGeneratorService {
     constructor(
         @InjectRepository(MemberEntity)
         private membersRepository: Repository<MemberEntity>,
+        private readonly dataSource: DataSource,
     ) { }
 
     /**
@@ -35,16 +36,17 @@ export class MemberIdGeneratorService {
         const prefix = `${userTypeCode}${year}${detailCode}${month}${day}`;
 
         // 같은 prefix로 시작하는 기존 ID 중 가장 큰 순번 찾기
-        const existingMembers = await this.membersRepository.find({
-            where: { id: Like(`${prefix}%`) },
-            select: ['id'],
-            order: { id: 'DESC' },
-            take: 1,
-        });
+        // CAST(id AS TEXT)를 사용하여 bigint/varchar 모두 지원
+        const result = await this.dataSource.query(
+            `SELECT CAST(id AS TEXT) as id FROM auth_member
+             WHERE CAST(id AS TEXT) LIKE $1
+             ORDER BY CAST(id AS TEXT) DESC LIMIT 1`,
+            [`${prefix}%`],
+        );
 
         let seq = 1;
-        if (existingMembers.length > 0) {
-            const lastId = existingMembers[0].id;
+        if (result.length > 0) {
+            const lastId = result[0].id;
             const lastSeq = lastId.slice(prefix.length);
             seq = parseInt(lastSeq, 10) + 1;
         }

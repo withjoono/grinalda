@@ -23,7 +23,7 @@ async function bootstrap() {
 
   // ---------------------------------------------------------------------------
   // [HOTFIX] Production Schema Patch
-  // 마이그레이션 누락으로 인한 auth_member 테이블 컬럼 부재 해결 (2026-02-14)
+  // 마이그레이션 누락으로 인한 auth_member 테이블 스키마 불일치 해결 (2026-02-14)
   // ---------------------------------------------------------------------------
   try {
     const { DataSource } = await import('typeorm');
@@ -31,7 +31,65 @@ async function bootstrap() {
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
 
-    console.log('[SchemaPatch] Checking auth_member columns...');
+    console.log('[SchemaPatch] Checking auth_member schema...');
+
+    // 1) id 컬럼 타입 확인 및 변환 (bigint → varchar)
+    const idColInfo = await queryRunner.query(`
+      SELECT data_type FROM information_schema.columns
+      WHERE table_name = 'auth_member' AND column_name = 'id'
+    `);
+    if (idColInfo.length > 0 && idColInfo[0].data_type === 'bigint') {
+      console.log('[SchemaPatch] Converting auth_member.id from bigint to varchar(30)...');
+
+      // FK 제약 조건 임시 해제 후 타입 변경
+      // 1a) 관련 테이블의 member_id 컬럼도 함께 변경
+      const relatedTables = [
+        { table: 'member_student', col: 'member_id' },
+        { table: 'member_teacher', col: 'member_id' },
+        { table: 'member_parent', col: 'member_id' },
+        { table: 'member_interests', col: 'member_id' },
+        { table: 'member_file', col: 'member_id' },
+        { table: 'payment_contract', col: 'member_id' },
+      ];
+
+      // FK 제약 조건을 모두 비활성화
+      await queryRunner.query(`SET session_replication_role = 'replica'`);
+
+      // auth_member.id 타입 변경
+      await queryRunner.query(`
+        ALTER TABLE auth_member ALTER COLUMN id TYPE varchar(30) USING CAST(id AS TEXT)
+      `);
+
+      // 관련 테이블의 member_id 타입 변경
+      for (const rel of relatedTables) {
+        try {
+          const tableExists = await queryRunner.query(`
+            SELECT 1 FROM information_schema.tables
+            WHERE table_name = $1
+          `, [rel.table]);
+          if (tableExists.length > 0) {
+            const colExists = await queryRunner.query(`
+              SELECT data_type FROM information_schema.columns
+              WHERE table_name = $1 AND column_name = $2
+            `, [rel.table, rel.col]);
+            if (colExists.length > 0 && colExists[0].data_type !== 'character varying') {
+              console.log(`[SchemaPatch] Converting ${rel.table}.${rel.col} to varchar(30)...`);
+              await queryRunner.query(`
+                ALTER TABLE "${rel.table}" ALTER COLUMN "${rel.col}" TYPE varchar(30) USING CAST("${rel.col}" AS TEXT)
+              `);
+            }
+          }
+        } catch (e) {
+          console.warn(`[SchemaPatch] Skipping ${rel.table}.${rel.col}: ${e.message}`);
+        }
+      }
+
+      // FK 제약 조건 다시 활성화
+      await queryRunner.query(`SET session_replication_role = 'origin'`);
+      console.log('[SchemaPatch] id column type conversion completed.');
+    }
+
+    // 2) 누락된 컬럼 추가
     const table = await queryRunner.getTable('auth_member');
     if (table) {
       const missingColumns = [
@@ -40,6 +98,7 @@ async function bootstrap() {
         { name: 'reg_year', type: 'integer' },
         { name: 'reg_month', type: 'character varying(2)' },
         { name: 'reg_day', type: 'character varying(2)' },
+        { name: 'firebase_uid', type: 'character varying(255)' },
       ];
 
       for (const col of missingColumns) {
@@ -49,6 +108,7 @@ async function bootstrap() {
         }
       }
     }
+
     await queryRunner.release();
     console.log('[SchemaPatch] Completed.');
   } catch (error) {
