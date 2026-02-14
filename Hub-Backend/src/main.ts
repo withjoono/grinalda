@@ -21,6 +21,42 @@ import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // ---------------------------------------------------------------------------
+  // [HOTFIX] Production Schema Patch
+  // 마이그레이션 누락으로 인한 auth_member 테이블 컬럼 부재 해결 (2026-02-14)
+  // ---------------------------------------------------------------------------
+  try {
+    const { DataSource } = await import('typeorm');
+    const dataSource = app.get(DataSource);
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    console.log('[SchemaPatch] Checking auth_member columns...');
+    const table = await queryRunner.getTable('auth_member');
+    if (table) {
+      const missingColumns = [
+        { name: 'user_type_code', type: 'character varying(5)' },
+        { name: 'user_type_detail_code', type: 'character varying(5)' },
+        { name: 'reg_year', type: 'integer' },
+        { name: 'reg_month', type: 'character varying(2)' },
+        { name: 'reg_day', type: 'character varying(2)' },
+      ];
+
+      for (const col of missingColumns) {
+        if (!table.findColumnByName(col.name)) {
+          console.log(`[SchemaPatch] Adding missing column: ${col.name}`);
+          await queryRunner.query(`ALTER TABLE "auth_member" ADD "${col.name}" ${col.type}`);
+        }
+      }
+    }
+    await queryRunner.release();
+    console.log('[SchemaPatch] Completed.');
+  } catch (error) {
+    console.error('[SchemaPatch] Failed:', error);
+    // 패치 실패해도 앱 시작은 시도
+  }
+  // ---------------------------------------------------------------------------
+
   // Helmet - HTTP 보안 헤더 설정 (XSS, Clickjacking, MIME 스니핑 방지)
   app.use(
     helmet({
