@@ -34,6 +34,8 @@ const STUDYPLANNER_URL = import.meta.env.VITE_STUDYPLANNER_URL || "http://localh
 const TUTORBOARD_URL = import.meta.env.VITE_TUTORBOARD_URL || "http://localhost:3005";
 const STUDYARENA_URL = import.meta.env.VITE_STUDYARENA_URL || "http://localhost:3006";
 const MYSANGGIBU_URL = import.meta.env.VITE_MYSANGGIBU_URL || "http://localhost:3007";
+const PARENTADMIN_URL = import.meta.env.VITE_PARENTADMIN_URL || "http://localhost:3019";
+const TEACHERADMIN_URL = import.meta.env.VITE_TEACHERADMIN_URL || "http://localhost:3020";
 
 // 모든 서비스 (카테고리 없이 플랫하게)
 const allServices: ServiceCard[] = [
@@ -362,7 +364,7 @@ export function ServiceCardsPage() {
           {/* 학부모용 앱 */}
           <div
             className="group relative overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 via-white to-rose-50 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => window.open('http://localhost:3019', '_blank')}
+            onClick={() => window.open(PARENTADMIN_URL, '_blank')}
           >
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center shadow-md">
@@ -381,7 +383,7 @@ export function ServiceCardsPage() {
           {/* 선생님용 앱 */}
           <div
             className="group relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => window.open('http://localhost:3020', '_blank')}
+            onClick={() => window.open(TEACHERADMIN_URL, '_blank')}
           >
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-md">
