@@ -59,6 +59,8 @@ function RootLayout() {
   const isGradeAnalysisMode = isGradeAnalysisPath(location.pathname);
 
   const renderHeader = () => {
+    // 메인 페이지는 자체 헤더(service-cards-page.tsx)를 사용하므로 글로벌 헤더 숨김
+    if (location.pathname === "/") return null;
     if (isTestPage || isAuthPage || isHybridAppPage) return null;
     if (isJungsiMode) return <JungsiHeader />;
     if (isSusiMode) return <SusiHeader />;
