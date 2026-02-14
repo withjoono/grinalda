@@ -141,6 +141,39 @@ async function bootstrap() {
       }
     }
 
+    // 3) 누락된 서브 테이블 생성 (auth_member_s, auth_member_t, auth_member_p)
+    console.log('[SchemaPatch] Checking sub-tables...');
+
+    await queryRunner.query(`
+      CREATE TABLE IF NOT EXISTS auth_member_s (
+        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
+        school_code varchar(20),
+        school_name varchar(100),
+        school_location varchar(50),
+        school_type varchar(50),
+        school_level varchar(10),
+        grade integer
+      )
+    `);
+    console.log('[SchemaPatch] auth_member_s (student) ensured.');
+
+    await queryRunner.query(`
+      CREATE TABLE IF NOT EXISTS auth_member_t (
+        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
+        school_level varchar(10),
+        subject varchar(50)
+      )
+    `);
+    console.log('[SchemaPatch] auth_member_t (teacher) ensured.');
+
+    await queryRunner.query(`
+      CREATE TABLE IF NOT EXISTS auth_member_p (
+        member_id varchar(30) PRIMARY KEY REFERENCES auth_member(id) ON DELETE CASCADE,
+        parent_type varchar(20)
+      )
+    `);
+    console.log('[SchemaPatch] auth_member_p (parent) ensured.');
+
     await queryRunner.release();
     console.log('[SchemaPatch] Completed.');
   } catch (error) {
