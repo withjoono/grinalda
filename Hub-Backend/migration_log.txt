@@ -1,0 +1,111 @@
+
+> geobukschool-backend@0.0.1 typeorm:run
+> ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ormconfig.ts
+
+[90m[4mquery:[24m[39m [94mSELECT[0m [95mversion[0m[37m([0m[37m)[0m
+[90m[4mquery:[24m[39m [94mSELECT[0m [37m*[0m [94mFROM[0m [95mcurrent_schema[0m[37m([0m[37m)[0m
+[90m[4mquery:[24m[39m [94mSELECT[0m [37m*[0m [94mFROM[0m [37m"information_schema"[0m[37m.[0m[37m"tables"[0m [94mWHERE[0m [37m"table_schema"[0m [37m=[0m [37m'public'[0m [94mAND[0m [37m"table_name"[0m [37m=[0m [37m'typeorm_migrations'[0m
+[90m[4mquery:[24m[39m [94mSELECT[0m [37m*[0m [94mFROM[0m [37m"typeorm_migrations"[0m [37m"typeorm_migrations"[0m [94mORDER BY[0m [37m"id"[0m [94mDESC[0m
+[4m0 migrations are already loaded in the database.[24m
+[4m15 migrations were found in the source code.[24m
+[4m15 migrations are new migrations must be executed.[24m
+[90m[4mquery:[24m[39m [37mSTART[0m [37mTRANSACTION[0m
+?좑툘  InitialSchema migration - 踰좎씠?ㅻ씪??留덉씠洹몃젅?댁뀡
+?뱷 ??留덉씠洹몃젅?댁뀡? 湲곗〈 ?ㅽ궎留덈? 異붿쟻?섍린 ?꾪븳 寃껋엯?덈떎.
+??湲곗〈 ?곗씠?곕쿋?댁뒪??寃쎌슦: ??留덉씠洹몃젅?댁뀡???섎룞?쇰줈 湲곕줉?섏꽭??
+?넅 ???곗씠?곕쿋?댁뒪??寃쎌슦: DB_SYNCHRONIZE=true濡??ㅽ궎留??앹꽦 ??湲곕줉?섏꽭??
+[90m[4mquery:[24m[39m [94mINSERT INTO[0m [37m"typeorm_migrations"[0m[37m([0m[37m"timestamp"[0m[37m,[0m [37m"name"[0m[37m)[0m [94mVALUES[0m [37m([0m[37m$[0m[32m1[0m[37m,[0m [37m$[0m[32m2[0m[37m)[0m [90m-- PARAMETERS: [1732512000000,"InitialSchema1732512000000"][0m
+[4mMigration InitialSchema1732512000000 has been executed successfully.[24m
+?뵩 Creating update_timestamp trigger function...
+[90m[4mquery:[24m[39m 
+      [94mCREATE[0m [94mOR[0m [94mREPLACE[0m [37mFUNCTION[0m [95mupdate_timestamp_trigger[0m[37m([0m[37m)[0m
+      [37mRETURNS[0m [37mTRIGGER[0m [94mAS[0m [37m$[0m[37m$[0m
+      [94mBEGIN[0m
+        [90m-- updated_at 而щ읆??議댁옱?섎뒗 寃쎌슦?먮쭔 ?낅뜲?댄듃[0m
+        [90m-- 而щ읆???놁쑝硫??먮윭 諛쒖깮?섏? ?딄퀬 洹몃깷 ?섏뼱媛?[0m
+        [94mIF[0m [37mTG_OP[0m [37m=[0m [37m'UPDATE'[0m [94mTHEN[0m
+          [37mNEW[0m[37m.[0m[37mupdated_at[0m [37m=[0m [37mCURRENT_TIMESTAMP[0m[37m;[0m
+        [94mEND[0m [94mIF[0m[37m;[0m
+        [37mRETURN[0m [37mNEW[0m[37m;[0m
+      [94mEND[0m[37m;[0m
+      [37m$[0m[37m$[0m [37mLANGUAGE[0m [37mplpgsql[0m[37m;[0m
+    
+??Trigger function created successfully
+?뵩 Adding trigger to board_comment...
+[90m[4mquery:[24m[39m 
+      [94mDROP[0m [37mTRIGGER[0m [94mIF[0m [94mEXISTS[0m [37mupdate_comment_timestamp[0m [94mON[0m [37mboard_comment[0m[37m;[0m
+    
+[90m[4mquery:[24m[39m 
+      [94mCREATE[0m [37mTRIGGER[0m [37mupdate_comment_timestamp[0m
+        [37mBEFORE[0m [94mUPDATE[0m [94mON[0m [37mboard_comment[0m
+        [94mFOR[0m [94mEACH[0m [37mROW[0m
+        [37mEXECUTE[0m [37mFUNCTION[0m [95mupdate_timestamp_trigger[0m[37m([0m[37m)[0m[37m;[0m
+    
+[4m[31mquery failed:[39m[24m 
+      [94mCREATE[0m [37mTRIGGER[0m [37mupdate_comment_timestamp[0m
+        [37mBEFORE[0m [94mUPDATE[0m [94mON[0m [37mboard_comment[0m
+        [94mFOR[0m [94mEACH[0m [37mROW[0m
+        [37mEXECUTE[0m [37mFUNCTION[0m [95mupdate_timestamp_trigger[0m[37m([0m[37m)[0m[37m;[0m
+    
+[4m[31merror:[39m[24m error: relation "board_comment" does not exist
+[4mMigration "AddUpdateTimestampTriggers1732512100000" failed, error: relation "board_comment" does not exist[24m
+[90m[4mquery:[24m[39m [37mROLLBACK[0m
+[30m[41mError during migration run:[49m[39m
+QueryFailedError: relation "board_comment" does not exist
+    at PostgresQueryRunner.query (E:\Dev\github\Hub\Hub-Backend\node_modules\typeorm\src\driver\postgres\PostgresQueryRunner.ts:325:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AddUpdateTimestampTriggers1732512100000.up (E:\Dev\github\Hub\Hub-Backend\src\migrations\1732512100000-AddUpdateTimestampTriggers.ts:52:5)
+    at async MigrationExecutor.executePendingMigrations (E:\Dev\github\Hub\Hub-Backend\node_modules\src\migration\MigrationExecutor.ts:336:17)
+    at async DataSource.runMigrations (E:\Dev\github\Hub\Hub-Backend\node_modules\src\data-source\DataSource.ts:404:13)
+    at async Object.handler (E:\Dev\github\Hub\Hub-Backend\node_modules\src\commands\MigrationRunCommand.ts:76:13) {
+  query: '\n' +
+    '      CREATE TRIGGER update_comment_timestamp\n' +
+    '        BEFORE UPDATE ON board_comment\n' +
+    '        FOR EACH ROW\n' +
+    '        EXECUTE FUNCTION update_timestamp_trigger();\n' +
+    '    ',
+  parameters: undefined,
+  driverError: error: relation "board_comment" does not exist
+      at E:\Dev\github\Hub\Hub-Backend\node_modules\pg\lib\client.js:545:17
+      at processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async PostgresQueryRunner.query (E:\Dev\github\Hub\Hub-Backend\node_modules\typeorm\src\driver\postgres\PostgresQueryRunner.ts:254:25)
+      at async AddUpdateTimestampTriggers1732512100000.up (E:\Dev\github\Hub\Hub-Backend\src\migrations\1732512100000-AddUpdateTimestampTriggers.ts:52:5)
+      at async MigrationExecutor.executePendingMigrations (E:\Dev\github\Hub\Hub-Backend\node_modules\src\migration\MigrationExecutor.ts:336:17)
+      at async DataSource.runMigrations (E:\Dev\github\Hub\Hub-Backend\node_modules\src\data-source\DataSource.ts:404:13)
+      at async Object.handler (E:\Dev\github\Hub\Hub-Backend\node_modules\src\commands\MigrationRunCommand.ts:76:13) {
+    length: 111,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'namespace.c',
+    line: '433',
+    routine: 'RangeVarGetRelidExtended'
+  },
+  length: 111,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'namespace.c',
+  line: '433',
+  routine: 'RangeVarGetRelidExtended'
+}
