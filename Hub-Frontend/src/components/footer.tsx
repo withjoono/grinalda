@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <div className="border-t bg-gray-50 dark:bg-gray-900/50 py-10 sm:py-14">
       <div className="mx-auto w-full max-w-screen-lg px-6">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-[auto_1fr_auto] sm:gap-10">
           {/* Column 1: Logo + Company Name */}
           <div className="flex flex-col items-center sm:items-start gap-3">
             <img
@@ -27,7 +27,6 @@ export const Footer = () => {
               <span>사업자등록번호 772-87-02782</span>
               <span>연락처 042-484-3356</span>
               <span>서울시 성북구 화랑로 211 성북구 기술창업센터 105호</span>
-              <span>해피톡 상담시간 평일 10~16시 / 주말 및 공휴일 제외</span>
             </div>
             <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 text-sm font-medium pt-1">
               <Link
@@ -56,9 +55,7 @@ export const Footer = () => {
 
           {/* Column 3: Social Media */}
           <div className="flex flex-col items-center sm:items-end gap-3">
-            <span className="text-sm font-semibold text-foreground/80">
-              소셜 미디어
-            </span>
+
             <div className="flex items-center gap-4">
               <a
                 href="https://www.youtube.com/@turtleschool_official"
