@@ -7,4 +7,5 @@ export type DatabaseConfig = {
   username?: string;
 
   synchronize?: boolean;
+  schema?: string;
 };

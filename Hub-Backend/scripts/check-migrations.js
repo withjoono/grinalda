@@ -34,6 +34,7 @@ try {
 }
 
 async function checkDatabase() {
+  const searchPath = process.env.DB_SCHEMA || 'public';
   const client = new Client({
     host: process.env.DB_HOST || '127.0.0.1',
     port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -44,6 +45,7 @@ async function checkDatabase() {
 
   try {
     await client.connect();
+    await client.query(`SET search_path TO ${searchPath}`);
 
     // 2. Check Valid Migrations
     console.log('\n✅ 실행된 마이그레이션 (최근 5개):');

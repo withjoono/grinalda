@@ -59,6 +59,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       synchronize: dbConfig.synchronize,
     });
 
+    const searchPath = dbConfig.schema || 'public';
+
     const baseOptions = {
       type: dbConfig.type,
       database: dbConfig.name,
@@ -80,6 +82,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         port: dbConfig.port,
         username: dbConfig.username,
         password: dbConfig.password,
+        extra: {
+          options: `-c search_path=${searchPath}`,
+        },
       };
 
     return {

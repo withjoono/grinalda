@@ -131,5 +131,6 @@ export default registerAs<DatabaseConfig>('database', () => {
     name: process.env.DB_NAME,
     username: process.env.DB_USER,
     synchronize: process.env.DB_SYNCHRONIZE === 'true',
+    schema: process.env.DB_SCHEMA || 'public',
   };
 });
