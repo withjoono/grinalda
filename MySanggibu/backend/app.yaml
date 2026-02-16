@@ -1,3 +1,4 @@
+service: mysanggibu-backend
 runtime: nodejs22
 instance_class: F2
 entrypoint: node dist/main.js
@@ -12,6 +13,7 @@ env_variables:
   DB_PASSWORD: "tsuser1234"
   DB_NAME: "geobukschool_prod"
   DB_SYNCHRONIZE: "false"
+  DB_SCHEMA: "mysanggibu,hub,susi,jungsi"
   AUTH_JWT_SECRET: "04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1"
   AUTH_JWT_TOKEN_EXPIRES_IN: "7200000"
   AUTH_REFRESH_SECRET: "178235718923571923571925sda9sd90f821309sdfa0s9df802139458sdfasd09f78adsf785a9cvads"
@@ -42,6 +44,5 @@ handlers:
   - url: /.*
     script: auto
     secure: always
-
 # Sensitive env vars should be set via:
 # gcloud app deploy --set-env-vars="DB_PASSWORD=xxx,AUTH_JWT_SECRET=xxx,..."
