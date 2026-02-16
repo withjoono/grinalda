@@ -40,6 +40,9 @@ export default new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  extra: {
+    options: `-c search_path=${process.env.DB_SCHEMA || 'public'}`,
+  },
 
   // 엔티티 파일 경로 (모든 엔티티 자동 로드)
   entities: [
