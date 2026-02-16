@@ -1,0 +1,6 @@
+src/modules/susi/calculation/susi-calculation.controller.ts(64,59): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/susi/calculation/susi-calculation.controller.ts(92,63): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/susi/calculation/susi-calculation.controller.ts(133,7): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/susi/calculation/susi-calculation.controller.ts(166,74): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/susi/calculation/susi-calculation.controller.ts(211,59): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/modules/susi/calculation/susi-calculation.controller.ts(234,48): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.

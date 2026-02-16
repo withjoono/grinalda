@@ -1,0 +1,13 @@
+src/modules/officer/services/officer-evaluation.service.ts(199,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer-evaluation.service.ts(213,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer-evaluation.service.ts(222,9): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.
+src/modules/officer/services/officer-evaluation.service.ts(245,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer-evaluation.service.ts(256,9): error TS2769: No overload matches this call.
+src/modules/officer/services/officer-evaluation.service.ts(283,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer-evaluation.service.ts(301,9): error TS2769: No overload matches this call.
+src/modules/officer/services/officer-evaluation.service.ts(326,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer.service.ts(42,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer.service.ts(55,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/officer/services/officer.service.ts(72,9): error TS2322: Type 'string' is not assignable to type 'number | FindOperator<number>'.
+src/modules/schoolrecord/schoolrecord.service.ts(362,44): error TS2769: No overload matches this call.
+src/modules/susi/calculation/services/susi-calculation.service.ts(171,16): error TS2322: Type '{ id: number; }' is not assignable to type 'boolean | MemberEntity | FindOptionsWhere<MemberEntity> | FindOperator<any> | FindOptionsWhere<MemberEntity>[] | EqualOperator<...>'.

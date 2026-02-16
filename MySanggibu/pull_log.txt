@@ -1,0 +1,16 @@
+From https://github.com/withjoono/Hub
+   9de3617..5292ed5  main       -> origin/main
+Auto packing the repository for optimum performance.
+See "git help gc" for manual housekeeping.
+warning: There are too many unreachable loose objects; run 'git prune' to remove them.
+Merge made by the 'ort' strategy.
+Auto packing the repository for optimum performance.
+See "git help gc" for manual housekeeping.
+warning: There are too many unreachable loose objects; run 'git prune' to remove them.
+ Hub-Backend/.gcloudignore                      |    2 +
+ Hub-Backend/package-lock.json                  | 5875 ++++++++++++++----------
+ Hub-Backend/src/auth/dtos/firebase-auth.dto.ts |   18 +
+ Hub-Backend/yarn.lock                          |  468 +-
+ deploy-ecosystem.ps1                           |  105 +
+ 5 files changed, 3921 insertions(+), 2547 deletions(-)
+ create mode 100644 deploy-ecosystem.ps1
