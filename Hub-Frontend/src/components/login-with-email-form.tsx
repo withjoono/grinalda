@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/utils/firebase/firebase";
+import { env } from "@/lib/config/env";
 
 import {
   Form,
@@ -68,7 +69,7 @@ export function LoginWithEmailForm({ className }: Props) {
       const idToken = await userCredential.user.getIdToken();
 
       // 3. 백엔드 로그인
-      const response = await fetch('/api-hub/auth/firebase/login', {
+      const response = await fetch(`${env.apiUrlHub}/auth/firebase/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ export function LoginWithEmailForm({ className }: Props) {
             console.log("🔄 SSO 리다이렉트 처리 시작:", redirectUrl);
 
             // SSO 코드 생성 요청
-            const ssoResponse = await fetch('/api-hub/auth/sso/generate-code', {
+            const ssoResponse = await fetch(`${env.apiUrlHub}/auth/sso/generate-code`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
