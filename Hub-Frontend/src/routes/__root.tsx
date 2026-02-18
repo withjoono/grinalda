@@ -12,6 +12,7 @@ import { useSSOInit } from "@shared/sso-client/hooks";
 import { setTokens as setTokensToManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";
 import { useAuthStore } from "@/stores/client/use-auth-store";
+import { useState } from "react";
 
 function isJungsiPath(pathname: string): boolean {
   return pathname.startsWith("/jungsi") || pathname.startsWith("/j");
@@ -36,6 +37,12 @@ function RootLayout() {
   const isHybridAppPage = location.pathname.startsWith("/mock-apply") ||
     location.pathname.startsWith("/score-analysis");
 
+  // SSO 자동 로그인 로딩 상태
+  const [isSSOLoading, setIsSSOLoading] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return !!(params.get('sso_access_token') || params.get('access_token') || params.get('sso_code'));
+  });
+
   // SSO 토큰 초기화 (URL 파라미터에서 토큰 확인)
   const { setTokens: setTokenStoreTokens } = useTokenStore();
   const { setTokens: setAuthStoreTokens } = useAuthStore();
@@ -51,7 +58,11 @@ function RootLayout() {
       tokens.refreshToken,
       tokens.tokenExpiry ?? Math.floor(Date.now() / 1000) + 7200
     );
+    setIsSSOLoading(false);
   });
+
+  // SSO 파라미터가 없었다면 로딩 해제 (타이머 대비)
+  // useSSOInit 콜백이 호출되지 않는 경우 (토큰 없음) 이미 false
 
   const isJungsiMode = isJungsiPath(location.pathname);
   const isSusiMode = isSusiPath(location.pathname);
@@ -71,6 +82,31 @@ function RootLayout() {
 
   return (
     <>
+      {isSSOLoading && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(4px)',
+        }}>
+          <div style={{
+            fontSize: '2.5rem',
+            marginBottom: '1rem',
+            animation: 'spin 1.2s linear infinite',
+          }}>⏳</div>
+          <p style={{
+            fontSize: '1.1rem',
+            color: '#374151',
+            fontWeight: 500,
+          }}>자동 로그인 중입니다...</p>
+          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+        </div>
+      )}
       {renderHeader()}
       <div className={isHybridAppPage ? "h-full min-h-screen" : "h-full min-h-screen py-4"}>
         <Outlet />
@@ -92,5 +128,3 @@ function RootLayout() {
 export const Route = createRootRoute({
   component: RootLayout,
 });
-
-
