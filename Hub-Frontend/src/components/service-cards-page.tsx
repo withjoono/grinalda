@@ -83,7 +83,7 @@ interface ServiceCategory {
 const serviceCategories: ServiceCategory[] = [
   {
     id: "grade-management",
-    title: "성적 관리",
+    title: "성적관리 앱",
     description: "내신, 비교과, 모의고사 성적을 체계적으로 관리하세요",
     icon: <BarChart3 className="w-5 h-5" />,
     services: [
@@ -111,7 +111,7 @@ const serviceCategories: ServiceCategory[] = [
   },
   {
     id: "learning",
-    title: "학습 관리",
+    title: "학습관리 앱",
     description: "학습 계획과 경쟁을 통한 효율적인 학습을 도와요",
     icon: <BookOpen className="w-5 h-5" />,
     services: [
@@ -149,7 +149,7 @@ const serviceCategories: ServiceCategory[] = [
   },
   {
     id: "prediction",
-    title: "입시 예측",
+    title: "입시예측 앱",
     description: "AI 기반 수시·정시 예측 분석으로 합격을 앞당기세요",
     icon: <GraduationCap className="w-5 h-5" />,
     services: [
@@ -288,6 +288,47 @@ export function ServiceCardsPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ═══════ 소개 배너 ═══════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        style={{
+          maxWidth: 960,
+          margin: '0 auto',
+          padding: '48px 24px 0',
+        }}
+      >
+        <div style={{
+          background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+          borderRadius: 20,
+          padding: '32px 36px',
+          color: '#fff',
+          textAlign: 'center',
+        }}>
+          <p style={{
+            fontSize: 17,
+            fontWeight: 500,
+            lineHeight: 1.8,
+            letterSpacing: '-0.01em',
+            color: 'rgba(255,255,255,0.85)',
+          }}>
+            거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
+            서로 연계될때, 더 큰 시너지를 냅니다.
+          </p>
+          <p style={{
+            fontSize: 15,
+            fontWeight: 600,
+            marginTop: 12,
+            color: '#93c5fd',
+            letterSpacing: '-0.01em',
+          }}>
+            한번의 생기부 업로드로 여러가지 서비스를 받으세요
+          </p>
+        </div>
+      </motion.div>
 
       {/* ═══════ Service Grid — 토스 스타일 ═══════ */}
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '40px 24px 80px' }}>
@@ -598,16 +639,16 @@ function Header() {
             </NavItem>
           ) : (
             <>
-              <NavItem title="성적 관리" isScrolled={isScrolled}>
+              <NavItem title="성적관리 앱" isScrolled={isScrolled}>
                 <DropdownItem href={MYSANGGIBU_URL}>My 생기부</DropdownItem>
                 <DropdownItem href={MYEXAM_URL}>Exam Hub</DropdownItem>
               </NavItem>
-              <NavItem title="학습 관리" isScrolled={isScrolled}>
+              <NavItem title="학습관리 앱" isScrolled={isScrolled}>
                 <DropdownItem href={STUDYPLANNER_URL}>Study Planner</DropdownItem>
                 <DropdownItem href={TUTORBOARD_URL}>Tutor Board</DropdownItem>
                 <DropdownItem href={STUDYARENA_URL}>Study Arena</DropdownItem>
               </NavItem>
-              <NavItem title="입시 예측" isScrolled={isScrolled}>
+              <NavItem title="입시예측 앱" isScrolled={isScrolled}>
                 <DropdownItem href={SUSI_URL}>수시 예측</DropdownItem>
                 <DropdownItem href={JUNGSI_URL}>정시 예측</DropdownItem>
               </NavItem>
@@ -733,16 +774,16 @@ function Header() {
           }}
         >
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <MobileNavSection title="성적 관리">
+            <MobileNavSection title="성적관리 앱">
               <MobileNavLink href={MYSANGGIBU_URL} onClick={() => setMobileOpen(false)}>My 생기부</MobileNavLink>
               <MobileNavLink href={MYEXAM_URL} onClick={() => setMobileOpen(false)}>Exam Hub</MobileNavLink>
             </MobileNavSection>
-            <MobileNavSection title="학습 관리">
+            <MobileNavSection title="학습관리 앱">
               <MobileNavLink href={STUDYPLANNER_URL} onClick={() => setMobileOpen(false)}>Study Planner</MobileNavLink>
               <MobileNavLink href={TUTORBOARD_URL} onClick={() => setMobileOpen(false)}>Tutor Board</MobileNavLink>
               <MobileNavLink href={STUDYARENA_URL} onClick={() => setMobileOpen(false)}>Study Arena</MobileNavLink>
             </MobileNavSection>
-            <MobileNavSection title="입시 예측">
+            <MobileNavSection title="입시예측 앱">
               <MobileNavLink href={SUSI_URL} onClick={() => setMobileOpen(false)}>수시 예측</MobileNavLink>
               <MobileNavLink href={JUNGSI_URL} onClick={() => setMobileOpen(false)}>정시 예측</MobileNavLink>
             </MobileNavSection>
@@ -802,9 +843,25 @@ function Header() {
 
 // ───────────────────────────── 토스 스타일 Nav 서브 컴포넌트 ─────────────────────────────
 function NavItem({ title, children, isScrolled }: { title: string; children: React.ReactNode; isScrolled: boolean }) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 시 닫기
+  React.useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
   return (
-    <div className="relative group" style={{ cursor: 'pointer', padding: '8px 0' }}>
+    <div ref={ref} style={{ position: 'relative', cursor: 'pointer', padding: '8px 0' }}>
       <span
+        onClick={() => setOpen(!open)}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -815,51 +872,65 @@ function NavItem({ title, children, isScrolled }: { title: string; children: Rea
           padding: '6px 12px',
           borderRadius: 8,
           transition: 'all 150ms ease',
+          background: open ? (isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)') : 'transparent',
         }}
-        className="group-hover:bg-black/5"
       >
         {title}
-        <ChevronDown className="w-3.5 h-3.5" />
+        <ChevronDown className="w-3.5 h-3.5" style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms ease' }} />
       </span>
-      <div
-        style={{
-          position: 'absolute',
-          top: '100%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          paddingTop: 8,
-          opacity: 0,
-          visibility: 'hidden',
-          transition: 'all 200ms ease',
-          pointerEvents: 'none',
-        }}
-        className="group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto"
-      >
-        <div style={{
-          background: '#fff',
-          borderRadius: 12,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-          border: '1px solid var(--color-border-light)',
-          padding: 6,
-          minWidth: 160,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}>
-          {children}
+      {open && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            paddingTop: 8,
+            zIndex: 50,
+          }}
+        >
+          <div style={{
+            background: '#fff',
+            borderRadius: 12,
+            boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+            border: '1px solid var(--color-border-light)',
+            padding: 6,
+            minWidth: 180,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}>
+            {children}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 function DropdownItem({ href, children }: { href: string; children: React.ReactNode }) {
+  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const serviceId = getSSOServiceId(href);
+    if (!serviceId) {
+      window.open(href, '_blank');
+      return;
+    }
+    try {
+      const ssoUrl = await generateSSOUrl(href, serviceId);
+      window.open(ssoUrl, '_blank');
+    } catch {
+      window.open(href, '_blank');
+    }
+  };
+
   return (
     <a
       href={href}
+      onClick={handleClick}
       style={{
         display: 'block',
-        padding: '8px 14px',
+        padding: '10px 14px',
         fontSize: 14,
         color: 'var(--color-text-secondary)',
         textDecoration: 'none',
