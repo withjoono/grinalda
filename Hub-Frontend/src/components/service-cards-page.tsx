@@ -384,72 +384,65 @@ export function ServiceCardsPage() {
         ))}
       </div>
 
-      {/* ═══════ Footer Message — 토스 스타일 ═══════ */}
-      <section style={{
-        background: 'var(--color-bg-secondary)',
-        padding: '64px 24px',
-        borderTop: '1px solid var(--color-border-light)',
-      }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 40, alignItems: 'center', flexWrap: 'wrap' }}>
+      {/* ═══════════════════ FOOTER MESSAGE WITH CHARACTER ═══════════════════ */}
+      <section className="bg-gray-50 py-24 relative overflow-hidden border-t border-gray-100">
+        <div className="container mx-auto px-4 relative z-10 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+          {/* Character Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.8, x: -50 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            style={{ flexShrink: 0 }}
+            className="flex-shrink-0"
           >
-            <img src="/images/geobuk-ssam.png" alt="거북쌤" style={{ width: 120, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))' }} />
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-400 blur-[80px] opacity-20 rounded-full" />
+              <img src="/images/geobuk-ssam.png" alt="거북쌤" className="relative w-48 md:w-64 lg:w-80 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" />
+            </div>
           </motion.div>
 
+          {/* Speech Bubble */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            style={{ flex: 1, minWidth: 280 }}
+            className="bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 relative max-w-3xl"
           >
-            <h3 style={{
-              fontSize: 20,
-              fontWeight: 700,
-              color: 'var(--color-text)',
-              marginBottom: 12,
-              letterSpacing: '-0.02em',
-            }}>
-              입시전문가이자, AI/IT 개발자 '거북쌤' 입니다.
-            </h3>
-            <p style={{
-              fontSize: 15,
-              color: 'var(--color-text-secondary)',
-              lineHeight: 1.7,
-              wordBreak: 'keep-all',
-              marginBottom: 16,
-            }}>
-              학생마다의 DB인 'RAG'와 AI 학습을 통해,
-              그 어떤 선생님, 그 어떤 학원보다
-              상상이상의 도움을 줄 수 있습니다.
-            </p>
-            <div style={{
-              background: 'var(--color-bg)',
-              borderRadius: 12,
-              padding: '16px 20px',
-              border: '1px solid var(--color-border-light)',
-            }}>
-              <p style={{ fontSize: 14, color: 'var(--color-text-tertiary)', lineHeight: 1.7 }}>
-                위의 앱들을 이용할수록, 향후 '상상 그 이상의 유익한 도움'을 제공드림을 약속드립니다.
+            {/* Tail of speech bubble (Left for desktop, Top for mobile) */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 lg:top-1/2 lg:-left-4 lg:translate-x-0 lg:-translate-y-1/2 w-8 h-8 bg-white transform rotate-45 border-l border-t lg:border-t-0 lg:border-l lg:border-b border-gray-100 z-0" />
+
+            <div className="relative z-10 space-y-6 text-gray-700 leading-relaxed text-lg break-keep">
+              <p className="font-bold text-2xl text-gray-900 mb-4">
+                입시전문가이자, 1인 AI / IT 개발자 '거북쌤' 입니다.
               </p>
+              <p>
+                학생마다의 DB인 <span className="font-bold text-blue-600">'RAG'</span>와 AI 학습을 통해(파인튜닝),<br className="hidden md:block" />
+                그 어떤 선생님, 그 어떤 학원보다<br className="hidden md:block" />
+                <span className="font-bold text-blue-600">상상이상의 도움</span>을 줄 수 있는 것이,<br className="hidden md:block" />
+                현재 무섭게 발전하는 <span className="font-bold text-blue-600">'AI'</span> 입니다.
+              </p>
+              <p>
+                이런 AI의 도움을 받기 위해서는<br />
+                <span className="font-semibold text-gray-900 bg-yellow-100 px-1">학생에 대한 데이터가 필요합니다.</span>
+              </p>
+              <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-base">
+                <p className="mb-2">
+                  위의 앱들은 당장 유용하고 필요한 기능도 제공하지만,<br />
+                  위의 앱들을 이용할수록,<br />
+                  위의 앱들의 본연의 기능 뿐만 아니라,
+                </p>
+                <p className="font-bold text-indigo-600 text-lg mt-4">
+                  향후, '상상 그 이상의 유익한 도움'을 제공드림을 약속드립니다.
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ═══════ Footer ═══════ */}
-      <footer style={{
-        borderTop: '1px solid var(--color-border-light)',
-        padding: '40px 24px',
-        textAlign: 'center',
-      }}>
-        <p style={{ fontSize: 13, color: 'var(--color-text-disabled)' }}>
-          © 2025 거북스쿨. All rights reserved.
-        </p>
-      </footer>
+      {/* Footer 여백 */}
+      <div className="pb-8" />
     </div>
   );
 }
