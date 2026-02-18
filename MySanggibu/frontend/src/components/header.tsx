@@ -115,10 +115,10 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto">
-        <div className="container flex h-14 w-screen items-center justify-between lg:h-16">
-          <Link to="/" className="flex shrink-0 items-center gap-3">
-            <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
-            <div className="text-base font-medium text-primary lg:text-lg">거북스쿨</div>
+        <div className="container flex h-14 w-screen items-center justify-between">
+          <Link to="/" className="flex shrink-0 items-center gap-2" style={{ textDecoration: 'none' }}>
+            <img src="/logo.png" alt="logo" className="h-auto w-8" />
+            <span className="text-[15px] font-bold tracking-tight" style={{ color: 'var(--color-primary)' }}>My 생기부</span>
           </Link>
 
           <span className="flex lg:hidden">
@@ -185,7 +185,7 @@ export const Header = () => {
             </Sheet>
           </span>
 
-          <div className="hidden items-center gap-4 lg:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             {/* 전체 서비스 버튼 */}
             <a
               href={env.hubUrl}
