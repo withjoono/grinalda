@@ -240,108 +240,53 @@ export function ServiceCardsPage() {
     <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
       <Header />
 
-      {/* ═══════ Hero Section — 토스 스타일 클린 ═══════ */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, var(--color-primary) 0%, #333 100%)',
-          padding: '120px 24px 80px',
-        }}
-      >
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+      {/* ═══════════════════ HERO SECTION (Full Screen) ═══════════════════ */}
+      <section className="relative min-h-screen flex items-center justify-end z-10 overflow-hidden px-10 md:px-20">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/images/hero-blob.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        {/* Overlay for readability (Optional, light) */}
+        <div className="absolute inset-0 z-0 bg-black/20" />
+
+        <div className="container mx-auto px-4 text-right relative z-10 flex flex-col items-end">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-end"
           >
-            <h1
-              style={{
-                fontSize: 'clamp(28px, 5vw, 42px)',
-                fontWeight: 800,
-                color: '#fff',
-                lineHeight: 1.3,
-                letterSpacing: '-0.03em',
-                marginBottom: 16,
-              }}
-            >
-              거북쌤에게
-              <br />
-              물어보세요
+            {/* 거북이 로고 제거됨 */}
+
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg leading-tight">
+              거북쌤에게 물어보세요
             </h1>
-            <p
-              style={{
-                fontSize: 'clamp(15px, 2vw, 17px)',
-                color: 'rgba(255,255,255,0.8)',
-                lineHeight: 1.7,
-                marginBottom: 32,
-                maxWidth: 420,
-              }}
-            >
-              RAG 기반 AI 검색으로 생기부, 입시 요강, 학습 자료를
-              깊이 있게 분석하고 답변해 드립니다.
+            <p className="text-lg md:text-xl text-gray-100 max-w-2xl ml-auto mb-10 leading-relaxed font-medium drop-shadow-md">
+              <span className="font-semibold text-white">RAG 기반 AI 검색</span>으로 학교생활기록부, 입시 요강,
+              <br className="hidden md:block" />
+              학습 자료를 깊이 있게 분석하고 답변해 드립니다.
             </p>
 
-            {/* 검색 인풋 */}
-            <div style={{ maxWidth: 480 }}>
-              <div style={{ position: 'relative' }}>
+            {/* 검색창 */}
+            <div className="w-full max-w-xl relative">
+              <div className="relative group">
                 <input
                   type="text"
                   placeholder="AI 거북쌤의 상담은 3월부터 시작합니다"
-                  style={{
-                    width: '100%',
-                    padding: '16px 56px 16px 20px',
-                    borderRadius: 16,
-                    border: 'none',
-                    background: 'rgba(255,255,255,0.15)',
-                    backdropFilter: 'blur(8px)',
-                    color: '#fff',
-                    fontSize: 15,
-                    outline: 'none',
-                  }}
+                  className="w-full px-8 py-5 rounded-full bg-white/90 backdrop-blur-sm border-2 border-white/50 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 transition-all shadow-xl text-lg"
                 />
-                <button
-                  style={{
-                    position: 'absolute',
-                    right: 8,
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: 36,
-                    height: 36,
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.2)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <img src="/images/geobuk-ssam.png" alt="Search" style={{ width: 20, height: 20, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+                <button className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md group-hover:scale-105">
+                  <img src="/images/geobuk-ssam.png" alt="Search" className="w-6 h-6 object-contain filter brightness-0 invert" />
                 </button>
               </div>
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* ═══════ Intro Text ═══════ */}
-      <section style={{ padding: '60px 24px 20px', maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{
-            fontSize: 'clamp(16px, 2.5vw, 20px)',
-            fontWeight: 600,
-            color: 'var(--color-text)',
-            lineHeight: 1.7,
-            letterSpacing: '-0.02em',
-            wordBreak: 'keep-all',
-          }}
-        >
-          거북스쿨 앱들은 각각의 독립적인 기능도 수행하지만,
-          <br className="hidden md:block" />
-          서로 유기적으로 연계되어 시너지를 배가시킵니다.
-        </motion.p>
       </section>
 
       {/* ═══════ Service Grid — 토스 스타일 ═══════ */}
