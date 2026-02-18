@@ -112,12 +112,12 @@ export const Header = () => {
   };
 
   return (
-    <header className="gb-header" style={{ backdropFilter: 'blur(12px)', background: 'rgba(255,255,255,0.85)' }}>
+    <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto">
-        <div className="container flex h-14 w-screen items-center justify-between lg:h-14">
-          <Link to="/" className="gb-header-brand">
-            <img src="/logo.png" alt="logo" className="h-auto w-8 lg:w-9" />
-            <span className="text-base font-bold tracking-tight" style={{ color: 'var(--color-primary)' }}>거북스쿨</span>
+        <div className="container flex h-14 w-screen items-center justify-between lg:h-16">
+          <Link to="/" className="flex shrink-0 items-center gap-3">
+            <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
+            <div className="text-base font-medium text-primary lg:text-lg">거북스쿨</div>
           </Link>
 
           <span className="flex lg:hidden">
@@ -185,13 +185,13 @@ export const Header = () => {
             </Sheet>
           </span>
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             {/* 전체 서비스 버튼 */}
             <a
               href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
               target="_blank"
               rel="noopener noreferrer"
-              className="gb-header-nav-link" style={{ color: 'var(--color-primary)' }}
+              className={cn(buttonVariants({ variant: "ghost" }), "text-blue-600 hover:text-blue-700 hover:bg-blue-50")}
             >
               전체 서비스
             </a>
@@ -267,7 +267,7 @@ export const Header = () => {
                 </PopoverContent>
               </Popover>
             ) : (
-              <Link to="/auth/login" className="gb-btn gb-btn-primary gb-btn-sm" style={{ borderRadius: '9999px' }}>로그인</Link>
+              <Link to="/auth/login" className={cn(buttonVariants(), "rounded-full bg-blue-600 hover:bg-blue-700")}>로그인</Link>
             )}
           </div>
         </div>
