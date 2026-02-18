@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { env } from "@/lib/config/env";
 import debounce from "lodash/debounce";
 
 import {
@@ -165,7 +166,8 @@ export function RegisterWithSocialForm({ className }: Props) {
     const formattedPhone = values.phone.replace(/-/g, "");
 
     // Firebase 회원가입 API 호출
-    const response = await fetch('/api-hub/auth/firebase/register', {
+    const hubApiUrl = import.meta.env.VITE_API_URL_HUB || 'http://localhost:4000';
+    const response = await fetch(`${hubApiUrl}/auth/firebase/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -199,7 +201,14 @@ export function RegisterWithSocialForm({ className }: Props) {
       clearSocialData(); // 소셜 로그인 임시 데이터 삭제
       toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
       setIsLoading(false);
-      navigate({ to: "/" });
+      // 회원 유형에 따라 해당 앱으로 리다이렉트
+      if (memberType === "teacher") {
+        window.location.href = env.serviceUrls.teacherAdmin;
+      } else if (memberType === "parent") {
+        window.location.href = env.serviceUrls.parentAdmin;
+      } else {
+        navigate({ to: "/" });
+      }
     } else {
       toast.error(result.message || result.error || "회원가입에 실패했습니다.");
       setIsLoading(false);
@@ -222,13 +231,12 @@ export function RegisterWithSocialForm({ className }: Props) {
       const result = await sendRegisterCode.mutateAsync({
         phone: formattedPhone,
       });
-      if (result.success) {
-        toast.success("인증번호가 발송되었습니다.");
-        return;
-      } else {
+      if (!result.success) {
         toast.error(result.error);
         return;
       }
+      toast.success("인증번호가 발송되었습니다.");
+      return;
     } catch (error: any) {
       // 백엔드 에러 메시지를 전화번호 필드에 표시
       const errorMessage = error.response?.data?.message || "인증코드 발송 중 오류가 발생했습니다.";
@@ -252,14 +260,14 @@ export function RegisterWithSocialForm({ className }: Props) {
       code: phoneToken,
     });
 
-    if (result.success) {
-      toast.success("인증번호가 확인되었습니다.");
-      setIsAuthedPhone(true);
-      return;
-    } else {
+    if (!result.success) {
       toast.error(result.error);
       return;
     }
+
+    toast.success("인증번호가 확인되었습니다.");
+    setIsAuthedPhone(true);
+    return;
   };
 
   return (

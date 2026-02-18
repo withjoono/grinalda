@@ -93,8 +93,53 @@ export function LoginWithEmailForm({ className }: Props) {
       }
 
       if (loginData.success) {
-        // 토큰 저장 (Zustand store + localStorage)
         const { accessToken, refreshToken, tokenExpiry } = loginData.data;
+
+        // 1. 사용자 정보 조회 (Role 확인용)
+        try {
+          const meResponse = await fetch(`${env.apiUrlHub}/auth/me`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          const meData = await meResponse.json();
+          const memberType = meData.member_type; // 'student', 'teacher', 'parent'
+
+          // 2. 선생님/학부모일 경우: 해당 Admin으로 바로 SSO 리다이렉트 (Hub에는 로그인 유지 안 함)
+          if (memberType === 'teacher' || memberType === 'parent') {
+            const targetService = memberType === 'teacher' ? 'teacheradmin' : 'parentadmin';
+            const targetUrlBase = memberType === 'teacher' ? env.serviceUrls.teacherAdmin : env.serviceUrls.parentAdmin;
+
+            const ssoResponse = await fetch(`${env.apiUrlHub}/auth/sso/generate-code`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ targetService }),
+            });
+            const ssoData = await ssoResponse.json();
+
+            if (ssoResponse.ok && (ssoData.success || ssoData.code)) {
+              const code = ssoData.data?.code || ssoData.code;
+              const redirectUrl = new URL(targetUrlBase);
+              redirectUrl.searchParams.set('sso_code', code);
+
+              toast.success(`${memberType === 'teacher' ? '선생님' : '학부모'} 앱으로 이동합니다.`);
+              window.location.href = redirectUrl.toString();
+              return; // 여기서 함수 종료 (Hub 토큰 저장 안 함)
+            } else {
+              console.error("SSO Code Generation Failed:", ssoData);
+              toast.error("이동 중 오류가 발생했습니다.");
+            }
+          }
+        } catch (meError) {
+          console.error("Failed to fetch user info:", meError);
+          // 정보 조회 실패 시 일단 학생(기본)으로 처리하여 진행
+        }
+
+        // 3. 학생(또는 기타)일 경우: Hub 로그인 진행
+        // 토큰 저장 (Zustand store + localStorage)
         setTokens(accessToken, refreshToken, tokenExpiry);
         setTokensInStorage(accessToken, refreshToken);
 

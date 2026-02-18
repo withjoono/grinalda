@@ -4,6 +4,7 @@ import { z } from "zod";
 import debounce from "lodash/debounce";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/lib/utils/firebase/firebase";
+import { env } from "@/lib/config/env";
 import googleIcon from "@/assets/icon/login-google.png";
 
 import {
@@ -313,9 +314,9 @@ export function RegisterWithEmailForm({ className }: Props) {
 
         // 회원 유형에 따라 해당 앱으로 리다이렉트
         if (memberType === "teacher") {
-          window.location.href = `http://localhost:3020`;
+          window.location.href = env.serviceUrls.teacherAdmin;
         } else if (memberType === "parent") {
-          window.location.href = `http://localhost:3019`;
+          window.location.href = env.serviceUrls.parentAdmin;
         } else {
           navigate({ to: "/" });
         }

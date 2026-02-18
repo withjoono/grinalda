@@ -4,6 +4,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { hasTokens, getAccessToken } from "@/lib/api/token-manager";
 import { getSSOServiceId } from "@/lib/utils/sso-helper";
+import { env } from "@/lib/config/env";
 
 export const Route = createFileRoute("/auth/login")({
   component: Login,
@@ -29,7 +30,7 @@ function Login() {
       try {
         const serviceId = getSSOServiceId(redirectUrl) || 'unknown';
 
-        const response = await fetch('/api-hub/auth/sso/generate-code', {
+        const response = await fetch(`${env.apiUrlHub}/auth/sso/generate-code`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

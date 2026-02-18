@@ -8,7 +8,7 @@
  * - Susi Backend가 Hub Backend에 코드 검증 및 토큰 교환
  */
 
-import { authClient } from '@/lib/api';
+import nestApiClient from '@/stores/server/api-client';
 import { hasTokens } from '@/lib/api/token-manager';
 
 /**
@@ -31,7 +31,7 @@ export async function generateSSOUrl(
 
   try {
     // Hub Backend에 SSO 코드 생성 요청
-    const response = await authClient.post('/auth/sso/generate-code', {
+    const response = await nestApiClient.post('/auth/sso/generate-code', {
       targetService,
     });
 

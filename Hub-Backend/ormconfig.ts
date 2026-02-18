@@ -80,6 +80,9 @@ export default new DataSource({
   password: dbConfig.password,
   database: dbConfig.database,
 
+  // 스키마 설정 (app.yaml의 DB_SCHEMA와 일치시킴)
+  schema: process.env.DB_SCHEMA || 'public',
+
   // 엔티티 파일 경로 (모든 엔티티 자동 로드)
   entities: [
     'src/database/entities/**/*.entity.ts',

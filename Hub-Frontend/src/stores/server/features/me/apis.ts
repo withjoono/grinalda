@@ -11,6 +11,12 @@ import {
  * 로그인한 유저 조회
  */
 const fetchCurrentUserAPI = async () => {
+  // 토큰이 없으면 API 호출 없이 바로 null 반환 (게스트 사용자 401 방지)
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    return null;
+  }
+
   const res = await makeApiCall<void, IUser | null>("GET", "/auth/me", undefined, undefined, 'nest');
   if (res.success) {
     return res.data;

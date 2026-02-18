@@ -707,6 +707,7 @@ export class AuthService {
     susi: 'ss',
     jungsi: 'js',
     planner: 'pl',
+    studyplanner: 'pl',  // getSSOServiceId에서 'studyplanner'로 매핑
     examhub: 'eh',
     tutorboard: 'tb',
     studyarena: 'sa',

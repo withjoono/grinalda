@@ -44,7 +44,8 @@ import { SsoExchangeDto } from './dtos/sso-exchange.dto';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController implements OnModuleInit {
-  private redis: Redis;
+  private redis: Redis | null = null;
+  private memoryStore: Map<string, { value: string; expiry: number }> = new Map();
 
   constructor(
     private readonly service: AuthService,
@@ -55,12 +56,17 @@ export class AuthController implements OnModuleInit {
   ) { }
 
   onModuleInit() {
+<<<<<<< Updated upstream
     // OAuth state 저장을 위한 Redis 클라이언트 초기화
+=======
+    // OAuth state 저장을 위한 Redis 클라이언트 초기화 (graceful fallback)
+>>>>>>> Stashed changes
     try {
       this.redis = new Redis({
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(process.env.REDIS_PORT || '6379', 10),
         keyPrefix: 'susi-oauth:',
+<<<<<<< Updated upstream
         connectTimeout: 3000,
         lazyConnect: true,
       });
@@ -75,6 +81,73 @@ export class AuthController implements OnModuleInit {
     } catch (err) {
       console.warn('⚠️ [OAuth] Redis 초기화 실패:', err.message);
     }
+=======
+        lazyConnect: true,
+        maxRetriesPerRequest: 3,
+        retryStrategy(times) {
+          if (times > 3) {
+            console.warn('⚠️ [OAuth] Redis 연결 포기 (3회 시도 실패). 메모리 저장소 사용.');
+            return null; // stop retrying
+          }
+          return Math.min(times * 200, 1000);
+        },
+      });
+      this.redis.on('connect', () => {
+        console.log('✅ [OAuth] Redis 클라이언트 연결됨');
+      });
+      this.redis.on('error', (err) => {
+        // 한 번만 로그 출력
+        if (!this['_redisErrorLogged']) {
+          console.warn('⚠️ [OAuth] Redis 사용 불가, 메모리 저장소로 대체:', err.message);
+          this['_redisErrorLogged'] = true;
+        }
+        this.redis = null; // disable redis
+      });
+      this.redis.connect().catch(() => {
+        console.warn('⚠️ [OAuth] Redis 초기 연결 실패, 메모리 저장소 사용');
+        this.redis = null;
+      });
+    } catch (err) {
+      console.warn('⚠️ [OAuth] Redis 초기화 실패, 메모리 저장소 사용');
+      this.redis = null;
+    }
+  }
+
+  // Redis/Memory 헬퍼 메서드
+  private async storeSetex(key: string, ttl: number, value: string): Promise<void> {
+    if (this.redis) {
+      try {
+        await this.redis.setex(key, ttl, value);
+        return;
+      } catch { /* fallback to memory */ }
+    }
+    this.memoryStore.set(key, { value, expiry: Date.now() + ttl * 1000 });
+  }
+
+  private async storeGet(key: string): Promise<string | null> {
+    if (this.redis) {
+      try {
+        return await this.redis.get(key);
+      } catch { /* fallback to memory */ }
+    }
+    const entry = this.memoryStore.get(key);
+    if (!entry) return null;
+    if (Date.now() > entry.expiry) { this.memoryStore.delete(key); return null; }
+    return entry.value;
+  }
+
+  private async storeGetdel(key: string): Promise<string | null> {
+    if (this.redis) {
+      try {
+        return await this.redis.getdel(key);
+      } catch { /* fallback to memory */ }
+    }
+    const entry = this.memoryStore.get(key);
+    this.memoryStore.delete(key);
+    if (!entry) return null;
+    if (Date.now() > entry.expiry) return null;
+    return entry.value;
+>>>>>>> Stashed changes
   }
 
   @ApiOperation({
@@ -575,13 +648,13 @@ export class AuthController implements OnModuleInit {
     // CSRF 방지용 state 생성
     const state = Math.random().toString(36).substring(2, 15);
 
-    // Code Verifier를 Redis에 직접 저장 (5분 TTL)
+    // Code Verifier를 저장 (Redis 또는 메모리, 5분 TTL)
     const redisKey = `verifier:${state}`;
-    await this.redis.setex(redisKey, 300, codeVerifier); // 300초 = 5분
-    console.log(`✅ [OAuth Login] Redis에 저장: ${redisKey} = ${codeVerifier.substring(0, 20)}...`);
+    await this.storeSetex(redisKey, 300, codeVerifier);
+    console.log(`✅ [OAuth Login] 저장: ${redisKey} = ${codeVerifier.substring(0, 20)}...`);
 
     // 저장 확인
-    const savedValue = await this.redis.get(redisKey);
+    const savedValue = await this.storeGet(redisKey);
     console.log(`🔍 [OAuth Login] 저장 즉시 조회: ${savedValue ? '성공' : '실패'}`);
 
     // Hub 인증 페이지로 리다이렉트
@@ -636,10 +709,10 @@ export class AuthController implements OnModuleInit {
 
     console.log(`📥 [OAuth Callback] 받은 state: ${state}`);
 
-    // Redis에서 Code Verifier를 원자적으로 조회 및 삭제 (GETDEL)
+    // 저장소에서 Code Verifier를 조회 및 삭제
     // 이렇게 하면 중복 요청 시 첫 번째 요청만 verifier를 얻을 수 있음
     const redisKey = `verifier:${state}`;
-    const codeVerifier = await this.redis.getdel(redisKey);
+    const codeVerifier = await this.storeGetdel(redisKey);
     console.log(`🔍 [OAuth Callback] ${redisKey} GETDEL 결과: ${codeVerifier ? '성공' : '실패 (이미 사용됨 또는 만료)'}`);
 
     if (!codeVerifier) {

@@ -27,7 +27,8 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
       const idToken = await result.user.getIdToken();
 
       // 3. Firebase 토큰으로 백엔드 로그인
-      const response = await fetch('/api-hub/auth/firebase/login', {
+      const hubApiUrl = import.meta.env.VITE_API_URL_HUB || 'http://localhost:4000';
+      const response = await fetch(`${hubApiUrl}/auth/firebase/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,6 +44,8 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         setData({
           socialType: 'google',
           token: idToken,
+          email: result.user.email || null,
+          name: result.user.displayName || null,
         });
         toast.warning("🎓 회원가입이 필요합니다.\n추가 정보를 입력해주세요.", {
           duration: 6000,
@@ -56,8 +59,57 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
       }
 
       if (loginData.success) {
+        const { accessToken, refreshToken } = loginData.data;
+
+        // 1. 사용자 정보 조회 (Role 확인용)
+        try {
+          // env.apiUrlHub 사용 (import 필요)
+          // 만약 env가 import되지 않았다면 상단에 추가해야 함. 
+          // 여기서는 /api-hub 프록시 대신 env 직접 사용 권장 (일관성)
+          const meResponse = await fetch(`${import.meta.env.VITE_API_URL_HUB || 'http://localhost:4000'}/auth/me`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          const meData = await meResponse.json();
+          const memberType = meData.member_type; // 'student', 'teacher', 'parent'
+
+          // 2. 선생님/학부모일 경우: 해당 Admin으로 바로 SSO 리다이렉트
+          if (memberType === 'teacher' || memberType === 'parent') {
+            const teacherAdminUrl = import.meta.env.VITE_TEACHERADMIN_URL || 'http://localhost:3020';
+            const parentAdminUrl = import.meta.env.VITE_PARENTADMIN_URL || 'http://localhost:3019';
+            const hubApiUrl = import.meta.env.VITE_API_URL_HUB || 'http://localhost:4000';
+
+            const targetService = memberType === 'teacher' ? 'teacheradmin' : 'parentadmin';
+            const targetUrlBase = memberType === 'teacher' ? teacherAdminUrl : parentAdminUrl;
+
+            const ssoResponse = await fetch(`${hubApiUrl}/auth/sso/generate-code`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ targetService }),
+            });
+            const ssoData = await ssoResponse.json();
+
+            if (ssoResponse.ok && (ssoData.success || ssoData.code)) {
+              const code = ssoData.data?.code || ssoData.code;
+              const redirectUrl = new URL(targetUrlBase);
+              redirectUrl.searchParams.set('sso_code', code);
+
+              toast.success(`${memberType === 'teacher' ? '선생님' : '학부모'} 앱으로 이동합니다.`);
+              window.location.href = redirectUrl.toString();
+              return; // 여기서 함수 종료 (Hub 토큰 저장 안 함)
+            }
+          }
+        } catch (meError) {
+          console.error("Failed to fetch user info:", meError);
+        }
+
+        // 3. 학생(또는 기타)일 경우: Hub 로그인 진행
         // 토큰을 localStorage에 저장 (쿠키는 포트 간 공유 안 됨)
-        setTokens(loginData.data.accessToken, loginData.data.refreshToken);
+        setTokens(accessToken, refreshToken);
 
         toast.success("환영합니다. 거북스쿨입니다. 😄");
         await user.refetch();

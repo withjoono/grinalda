@@ -51,6 +51,19 @@ interface EnvConfig {
   isDevelopment: boolean;
   isProduction: boolean;
   isTest: boolean;
+
+  // 서비스 URL 모음 (리다이렉트용)
+  serviceUrls: {
+    teacherAdmin: string;
+    parentAdmin: string;
+    susi: string;
+    jungsi: string;
+    examhub: string;
+    studyplanner: string;
+    tutorboard: string;
+    studyarena: string;
+    mysanggibu: string;
+  };
 }
 
 const getEnvVar = (key: string, defaultValue?: string): string => {
@@ -106,6 +119,19 @@ export const env: EnvConfig = {
   isDevelopment: import.meta.env.DEV,
   isProduction: import.meta.env.PROD,
   isTest: import.meta.env.MODE === 'test',
+
+  // 서비스 URL 모음
+  serviceUrls: {
+    teacherAdmin: getEnvVar('VITE_TEACHERADMIN_URL', 'http://localhost:3020'),
+    parentAdmin: getEnvVar('VITE_PARENTADMIN_URL', 'http://localhost:3019'),
+    susi: getEnvVar('VITE_SUSI_URL', 'http://localhost:3001'),
+    jungsi: getEnvVar('VITE_JUNGSI_URL', 'http://localhost:3002'),
+    examhub: getEnvVar('VITE_MYEXAM_URL', 'http://localhost:3003'),
+    studyplanner: getEnvVar('VITE_STUDYPLANNER_URL', 'http://localhost:3004'),
+    tutorboard: getEnvVar('VITE_TUTORBOARD_URL', 'http://localhost:3005'),
+    studyarena: getEnvVar('VITE_STUDYARENA_URL', 'http://localhost:3006'),
+    mysanggibu: getEnvVar('VITE_MYSANGGIBU_URL', 'http://localhost:3007'),
+  },
 };
 
 // 개발 환경에서 환경 변수 로깅 (디버깅용)

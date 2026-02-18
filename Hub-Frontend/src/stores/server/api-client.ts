@@ -24,11 +24,15 @@ let refreshSubscribers: ((token: string) => void)[] = [];
 
 // 공개 API 엔드포인트 목록 (401 에러 시 리다이렉트하지 않음)
 const PUBLIC_ENDPOINTS = [
-  '/auth/me', // 인증 체크용 - 미로그인 시 null 반환 (리다이렉트 안함)
   '/auth/login',
   '/auth/register',
   '/auth/refresh',
   '/store/available',
+];
+
+// 401 발생 시 토큰 갱신은 시도하되, 갱신 실패해도 리다이렉트하지 않는 엔드포인트
+const SOFT_AUTH_ENDPOINTS = [
+  '/auth/me', // 인증 체크용 - 미로그인 시 null 반환 (리다이렉트 안함)
 ];
 
 // URL이 공개 엔드포인트인지 확인
@@ -130,12 +134,12 @@ const createNestApiInterceptors = (apiClientInstance) => {
 
         if (refreshToken) {
           try {
-            // 토큰 갱신 시도 (환경에 따른 URL 사용)
+            // 토큰 갱신 시도 (Hub Backend POST /auth/refresh)
             // 타임아웃 10초 설정 (네트워크 지연 시 무한 대기 방지)
-            const response = await axios.get(getBaseUrl('nest') + '/auth/refresh', {
-              headers: {
-                refreshToken: `Bearer ${refreshToken}`
-              },
+            const hubBaseUrl = env.isDevelopment ? '/api-hub' : env.apiUrlHub;
+            const response = await axios.post(hubBaseUrl + '/auth/refresh', {
+              refreshToken,
+            }, {
               timeout: 10000, // 10초 타임아웃
             });
 
@@ -166,18 +170,28 @@ const createNestApiInterceptors = (apiClientInstance) => {
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
             return apiClientInstance(originalRequest);
           } catch (refreshError) {
-            // 토큰 갱신 실패 시 로그아웃 처리
+            // 토큰 갱신 실패 시
             isRefreshing = false;
             clearTokens();
             localStorage.removeItem('refreshToken');
-            window.location.href = '/auth/login';
+            localStorage.removeItem('auth-storage');
+            localStorage.removeItem('token-storage');
+            // soft auth 엔드포인트는 리다이렉트하지 않음
+            const isSoft = SOFT_AUTH_ENDPOINTS.some(ep => originalRequest?.url?.includes(ep));
+            if (!isSoft) {
+              window.location.href = '/auth/login';
+            }
             return Promise.reject(refreshError);
           }
         } else {
-          // refreshToken이 없으면 로그인 페이지로
+          // refreshToken이 없으면
           isRefreshing = false;
           clearTokens();
-          window.location.href = '/auth/login';
+          // soft auth 엔드포인트는 리다이렉트하지 않음
+          const isSoft = SOFT_AUTH_ENDPOINTS.some(ep => originalRequest?.url?.includes(ep));
+          if (!isSoft) {
+            window.location.href = '/auth/login';
+          }
         }
       }
 

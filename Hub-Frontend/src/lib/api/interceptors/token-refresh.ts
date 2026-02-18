@@ -3,9 +3,9 @@
  * Reference 프로젝트의 단순화된 토큰 갱신 패턴 적용
  */
 
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { camelizeKeys } from 'humps';
-import { publicClient } from '../instances';
+import { env } from '@/lib/config/env';
 import {
   clearTokens,
   getRefreshToken,
@@ -23,16 +23,18 @@ const refreshAccessToken = async (): Promise<string | null> => {
       return null;
     }
 
-    const response = await publicClient.get('/auth/refresh', {
-      headers: {
-        refreshToken: `Bearer ${refreshToken}`,
-      },
+    // Hub Backend POST /auth/refresh (body에 refreshToken 전달)
+    // publicClient 대신 raw axios 사용 (decamelizeKeys가 refreshToken을 refresh_token으로 변환하는 것 방지)
+    const response = await axios.post(env.apiUrlNest + '/auth/refresh', {
+      refreshToken,
     });
 
-    const { accessToken } = response.data;
-    if (accessToken) {
-      setAccessToken(accessToken.accessToken);
-      return accessToken.accessToken;
+    // Hub API 응답 형식: { data: { accessToken, refreshToken } }
+    const data = response.data?.data || response.data;
+    const newAccessToken = data?.accessToken;
+    if (newAccessToken) {
+      setAccessToken(newAccessToken);
+      return newAccessToken;
     }
 
     return null;
@@ -81,7 +83,11 @@ export const authResponseErrorInterceptor = async (error: AxiosError) => {
       if (newAccessToken) {
         // 새 토큰으로 원래 요청 재시도
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return publicClient.request(originalRequest);
+        // authClient 대신 직접 axios 사용 (순환 참조 방지)
+        return axios.request({
+          ...originalRequest,
+          headers: { ...originalRequest.headers, Authorization: `Bearer ${newAccessToken}` },
+        });
       } else {
         // 갱신 실패 → 로그아웃
         handleLogout();

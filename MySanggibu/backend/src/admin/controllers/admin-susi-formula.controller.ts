@@ -92,7 +92,11 @@ export class AdminSusiFormulaController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
+<<<<<<< Updated upstream
         destination: '/tmp/uploads',
+=======
+        destination: '/tmp/uploads/temp',
+>>>>>>> Stashed changes
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `susi-formula-${uniqueSuffix}.xlsx`);
