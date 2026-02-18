@@ -1,0 +1,30 @@
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCommonModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mBcryptModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mWinstonModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mScheduleModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[GcsUploadService] [39m[32mGCS Upload Service initialized with bucket: ts-back-nest-bk[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  ?? ENCRYPTION_KEY ????? ???? ?????. ???? ???? ???????.
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [33m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [33m   WARN[39m [38;5;3m[AiPromptService] [39m[33mGEMINI_API_KEY ????? ???? ?????.[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEncryptionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChatbotModule dependencies initialized[39m[38;5;3m +459ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [32m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGcsUploadModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:07:35 susi-backend[20260218t080257]  Redis Connection Error:  Error: connect ECONNREFUSED 127.0.0.1:6379
+2026-02-17 23:07:35 susi-backend[20260218t080257]      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+2026-02-17 23:07:35 susi-backend[20260218t080257]      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2026-02-17 23:07:35 susi-backend[20260218t080257]    errno: -111,
+2026-02-17 23:07:35 susi-backend[20260218t080257]    code: 'ECONNREFUSED',
+2026-02-17 23:07:35 susi-backend[20260218t080257]    syscall: 'connect',
+2026-02-17 23:07:35 susi-backend[20260218t080257]    address: '127.0.0.1',
+2026-02-17 23:07:35 susi-backend[20260218t080257]    port: 6379
+2026-02-17 23:07:35 susi-backend[20260218t080257]  }
+2026-02-17 23:07:35 susi-backend[20260218t080257]  [31m[Nest] 15  - [39m02/17/2026, 11:07:35 PM [31m  ERROR[39m [38;5;3m[ExceptionHandler] [39m[31mconnect ECONNREFUSED 127.0.0.1:6379[39m
+2026-02-17 23:07:36 susi-backend[20260218t080257]  Error: connect ECONNREFUSED 127.0.0.1:6379      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)

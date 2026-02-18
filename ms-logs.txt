@@ -1,0 +1,30 @@
+2026-02-17 23:28:15 mysanggibu-backend[20260218t065351]  }
+2026-02-17 23:30:05 mysanggibu-backend[20260218t065351]  "OPTIONS /auth/sso/exchange HTTP/1.1" 503
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  Error: Cannot find module 'xlsx'
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  Require stack:
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/common/utils/excel.util.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/modules/nonsul/parsers/excel-parser.service.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/modules/nonsul/nonsul.module.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/admin/admin.module.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/app.module.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  - /workspace/dist/main.js
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Function._load (node:internal/modules/cjs/loader:1192:37)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Module.patchedRequire (/layers/google.nodejs.yarn/yarn_modules/node_modules/require-in-the-middle/index.js:233:34)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Hook._require.Module.require (/layers/google.nodejs.yarn/yarn_modules/node_modules/require-in-the-middle/index.js:181:27)
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      at Module.patchedRequire (/layers/google.nodejs.yarn/yarn_modules/node_modules/require-in-the-middle/index.js:233:34) {
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]    code: 'MODULE_NOT_FOUND',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]    requireStack: [
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/common/utils/excel.util.js',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/modules/nonsul/parsers/excel-parser.service.js',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/modules/nonsul/nonsul.module.js',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/admin/admin.module.js',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/app.module.js',
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]      '/workspace/dist/main.js'
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]    ]
+2026-02-17 23:30:08 mysanggibu-backend[20260218t065351]  }

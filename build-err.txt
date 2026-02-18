@@ -1,0 +1,22 @@
+[31mx[39m Build failed in 2.70s
+[31merror during build:
+[31m../../../../../../E:/Dev/github/StudyPlanner/apps/studyplanner-frontend/src/stores/server/planner/hooks.ts (25:9): "useAuthStore" is not exported by "../../../../../../E:/Dev/github/StudyPlanner/apps/studyplanner-frontend/src/stores/client/index.ts", imported by "../../../../../../E:/Dev/github/StudyPlanner/apps/studyplanner-frontend/src/stores/server/planner/hooks.ts".[31m
+file: [36mE:/Dev/github/StudyPlanner/apps/studyplanner-frontend/src/stores/server/planner/hooks.ts:25:9[31m
+[33m
+23: import type { Routine, LongTermPlan } from '@/types/planner';
+24: import { plannerClient } from '@/lib/api/instances';
+25: import { useAuthStore } from '@/stores/client';
+             ^
+26: 
+27: // ============================================
+[31m
+    at getRollupError (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Module.error (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:16994:16)
+    at Module.traceVariable (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:17450:29)
+    at ModuleScope.findVariable (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:15113:39)
+    at FunctionScope.findVariable (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at FunctionBodyScope.findVariable (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at Identifier.bind (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:5448:40)
+    at CallExpression.bind (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:2817:23)
+    at CallExpression.bind (file:///E:/Dev/github/StudyPlanner/node_modules/rollup/dist/es/shared/node-entry.js:12148:15)[39m

@@ -1,0 +1,60 @@
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]  Error: EROFS: read-only file system, mkdir '/workspace/uploads'      at Object.mkdirSync (node:fs:1377:26)      at Function.sync (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/node_modules/mkdirp/index.js:74:13)      at new DiskStorage (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:21:12)      at module.exports (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:65:10)      at Object.<anonymous> (/workspace/dist/admin/controllers/admin-susi-subject.controller.js:58:43)      at Module._compile (node:internal/modules/cjs/loader:1706:14)      at Object..js (node:internal/modules/cjs/loader:1839:10)      at Module.load (node:internal/modules/cjs/loader:1441:32)      at Function._load (node:internal/modules/cjs/loader:1263:12)      at TracingChannel.traceSync (node:diagnostics_channel:328:14) {
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]    errno: -30,
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]    code: 'EROFS',
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]    syscall: 'mkdir',
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]    path: '/workspace/uploads'
+2026-02-18 09:44:05 mysanggibu-backend[20260218t183735]  }
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]  Error: EROFS: read-only file system, mkdir '/workspace/uploads'      at Object.mkdirSync (node:fs:1377:26)      at Function.sync (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/node_modules/mkdirp/index.js:74:13)      at new DiskStorage (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:21:12)      at module.exports (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:65:10)      at Object.<anonymous> (/workspace/dist/admin/controllers/admin-susi-subject.controller.js:58:43)      at Module._compile (node:internal/modules/cjs/loader:1706:14)      at Object..js (node:internal/modules/cjs/loader:1839:10)      at Module.load (node:internal/modules/cjs/loader:1441:32)      at Function._load (node:internal/modules/cjs/loader:1263:12)      at TracingChannel.traceSync (node:diagnostics_channel:328:14) {
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]    errno: -30,
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]    code: 'EROFS',
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]    syscall: 'mkdir',
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]    path: '/workspace/uploads'
+2026-02-18 09:44:44 mysanggibu-backend[20260218t183735]  }
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]  Error: EROFS: read-only file system, mkdir '/workspace/uploads'      at Object.mkdirSync (node:fs:1377:26)      at Function.sync (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/node_modules/mkdirp/index.js:74:13)      at new DiskStorage (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:21:12)      at module.exports (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:65:10)      at Object.<anonymous> (/workspace/dist/admin/controllers/admin-susi-subject.controller.js:58:43)      at Module._compile (node:internal/modules/cjs/loader:1706:14)      at Object..js (node:internal/modules/cjs/loader:1839:10)      at Module.load (node:internal/modules/cjs/loader:1441:32)      at Function._load (node:internal/modules/cjs/loader:1263:12)      at TracingChannel.traceSync (node:diagnostics_channel:328:14) {
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]    errno: -30,
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]    code: 'EROFS',
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]    syscall: 'mkdir',
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]    path: '/workspace/uploads'
+2026-02-18 09:44:50 mysanggibu-backend[20260218t183735]  }
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]  Error: EROFS: read-only file system, mkdir '/workspace/uploads'      at Object.mkdirSync (node:fs:1377:26)      at Function.sync (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/node_modules/mkdirp/index.js:74:13)      at new DiskStorage (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:21:12)      at module.exports (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:65:10)      at Object.<anonymous> (/workspace/dist/admin/controllers/admin-susi-subject.controller.js:58:43)      at Module._compile (node:internal/modules/cjs/loader:1706:14)      at Object..js (node:internal/modules/cjs/loader:1839:10)      at Module.load (node:internal/modules/cjs/loader:1441:32)      at Function._load (node:internal/modules/cjs/loader:1263:12)      at TracingChannel.traceSync (node:diagnostics_channel:328:14) {
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]    errno: -30,
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]    code: 'EROFS',
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]    syscall: 'mkdir',
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]    path: '/workspace/uploads'
+2026-02-18 09:44:56 mysanggibu-backend[20260218t183735]  }
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]  Error: EROFS: read-only file system, mkdir '/workspace/uploads'      at Object.mkdirSync (node:fs:1377:26)      at Function.sync (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/node_modules/mkdirp/index.js:74:13)      at new DiskStorage (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:21:12)      at module.exports (/layers/google.nodejs.yarn/yarn_modules/node_modules/multer/storage/disk.js:65:10)      at Object.<anonymous> (/workspace/dist/admin/controllers/admin-susi-subject.controller.js:58:43)      at Module._compile (node:internal/modules/cjs/loader:1706:14)      at Object..js (node:internal/modules/cjs/loader:1839:10)      at Module.load (node:internal/modules/cjs/loader:1441:32)      at Function._load (node:internal/modules/cjs/loader:1263:12)      at TracingChannel.traceSync (node:diagnostics_channel:328:14) {
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]    errno: -30,
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]    code: 'EROFS',
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]    syscall: 'mkdir',
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]    path: '/workspace/uploads'
+2026-02-18 09:45:03 mysanggibu-backend[20260218t183735]  }
+2026-02-18 09:52:56 mysanggibu-backend[20260218t184639]  "GET /swagger HTTP/1.1" 503
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +120ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCommonModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mBcryptModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mWinstonModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[GcsUploadService] [39m[32mGCS Upload Service initialized with bucket: ts-back-nest-bk[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  ?? ENCRYPTION_KEY ????? ???? ?????. ???? ???? ???????.
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [33m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [33m   WARN[39m [38;5;3m[AiPdfParserService] [39m[33mOPENAI_API_KEY not configured - AI parsing disabled[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-18 09:53:07 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:07 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEncryptionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]  [32m[Nest] 15  - [39m02/18/2026, 9:53:08 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGcsUploadModule dependencies initialized[39m[38;5;3m +537ms[39m
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]  Redis Connection Error:  Error: connect ECONNREFUSED 127.0.0.1:6379
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]    errno: -111,
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]    code: 'ECONNREFUSED',
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]    syscall: 'connect',
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]    address: '127.0.0.1',
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]    port: 6379
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]  }
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]  [31m[Nest] 15  - [39m02/18/2026, 9:53:08 AM [31m  ERROR[39m [38;5;3m[ExceptionHandler] [39m[31mconnect ECONNREFUSED 127.0.0.1:6379[39m
+2026-02-18 09:53:08 mysanggibu-backend[20260218t184639]  Error: connect ECONNREFUSED 127.0.0.1:6379      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)

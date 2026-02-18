@@ -1,0 +1,47 @@
+
+> examhub-frontend@1.0.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ??Next.js 16.0.10 (Turbopack)
+   - Environments: .env.local, .env.production
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ??Compiled successfully in 15.9s
+   Skipping validation of types
+   Collecting page data using 7 workers ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (0/15) ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (3/15) 
+   Generating static pages using 7 workers (7/15) 
+   Generating static pages using 7 workers (11/15) 
+ ??Generating static pages using 7 workers (15/15) in 916.7ms
+   Finalizing page optimization ...
+
+Route (app)
+????/
+????/_not-found
+????/icon.svg
+????/main
+????/main/input
+????/main/input/form
+????/main/input/score
+????/main/management
+????/main/prediction
+????/main/score-analysis
+????/main/score-input
+????/main/statistics
+????/main/target-university
+????/main/wrong-answers
+
+
+?? (Static)  prerendered as static content
+

@@ -1,0 +1,27 @@
+Services to deploy:
+
+descriptor:                  [E:\Dev\github\ExamHub\examhub-backend\app.yaml]
+source:                      [E:\Dev\github\ExamHub\examhub-backend]
+target project:              [ts-back-nest-479305]
+target service:              [examhub-backend]
+target version:              [20260218t194127]
+target url:                  [https://examhub-backend-dot-ts-back-nest-479305.du.r.appspot.com]
+target service account:      [ts-back-nest-479305@appspot.gserviceaccount.com]
+
+
+Beginning deployment of service [examhub-backend]...
+#============================================================#
+#= Uploading 1 file to Google Cloud Storage                 =#
+#============================================================#
+File upload done.
+Updating service [examhub-backend]...
+.......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................done.
+Setting traffic split for service [examhub-backend]...
+......done.
+Deployed service [examhub-backend] to [https://examhub-backend-dot-ts-back-nest-479305.du.r.appspot.com]
+
+You can stream logs from the command line by running:
+  $ gcloud app logs tail -s examhub-backend
+
+To view your application in the web browser run:
+  $ gcloud app browse -s examhub-backend

@@ -1,0 +1,21 @@
+Services to deploy:
+
+descriptor:                  [E:\Dev\github\ExamHub\examhub-backend\app.yaml]
+source:                      [E:\Dev\github\ExamHub\examhub-backend]
+target project:              [ts-back-nest-479305]
+target service:              [examhub-backend]
+target version:              [20260218t193815]
+target url:                  [https://examhub-backend-dot-ts-back-nest-479305.du.r.appspot.com]
+target service account:      [ts-back-nest-479305@appspot.gserviceaccount.com]
+
+
+Beginning deployment of service [examhub-backend]...
+#============================================================#
+#= Uploading 0 files to Google Cloud Storage                =#
+#============================================================#
+File upload done.
+Updating service [examhub-backend]...
+......................................................................................................................................................................................................................................................................................................................................................................................................failed.
+ERROR: (gcloud.app.deploy) Error Response: [9] Cloud build 641eb028-71cf-454a-b797-b9dab093a261 status: FAILURE
+An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=asia-northeast3/641eb028-71cf-454a-b797-b9dab093a261?project=742744456700
+Full build logs: https://console.cloud.google.com/cloud-build/builds;region=asia-northeast3/641eb028-71cf-454a-b797-b9dab093a261?project=742744456700

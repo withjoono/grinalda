@@ -1,0 +1,50 @@
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mWinstonModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[GcsUploadService] [39m[32mGCS Upload Service initialized with bucket: ts-back-nest-bk[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  ?? ENCRYPTION_KEY ????? ???? ?????. ???? ???? ???????.
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [33m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [33m   WARN[39m [38;5;3m[AiPdfParserService] [39m[33mOPENAI_API_KEY not configured - AI parsing disabled[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-17 23:43:06 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:06 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEncryptionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:07 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGcsUploadModule dependencies initialized[39m[38;5;3m +476ms[39m
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]  Redis Connection Error:  Error: connect ECONNREFUSED 127.0.0.1:6379
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]    errno: -111,
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]    code: 'ECONNREFUSED',
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]    syscall: 'connect',
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]    address: '127.0.0.1',
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]    port: 6379
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]  }
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]  [31m[Nest] 15  - [39m02/17/2026, 11:43:07 PM [31m  ERROR[39m [38;5;3m[ExceptionHandler] [39m[31mconnect ECONNREFUSED 127.0.0.1:6379[39m
+2026-02-17 23:43:07 mysanggibu-backend[20260218t083455]  Error: connect ECONNREFUSED 127.0.0.1:6379      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+2026-02-17 23:43:50 mysanggibu-backend[20260218t083455]  "OPTIONS /auth/sso/exchange HTTP/1.1" 503
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +112ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCommonModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mBcryptModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHttpModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mWinstonModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:55 PM [32m    LOG[39m [38;5;3m[GcsUploadService] [39m[32mGCS Upload Service initialized with bucket: ts-back-nest-bk[39m
+2026-02-17 23:43:55 mysanggibu-backend[20260218t083455]  ?? ENCRYPTION_KEY ????? ???? ?????. ???? ???? ???????.
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  [33m[Nest] 15  - [39m02/17/2026, 11:43:56 PM [33m   WARN[39m [38;5;3m[AiPdfParserService] [39m[33mOPENAI_API_KEY not configured - AI parsing disabled[39m
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:56 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:56 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEncryptionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  [32m[Nest] 15  - [39m02/17/2026, 11:43:56 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGcsUploadModule dependencies initialized[39m[38;5;3m +405ms[39m
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  Redis Connection Error:  Error: connect ECONNREFUSED 127.0.0.1:6379
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]    errno: -111,
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]    code: 'ECONNREFUSED',
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]    syscall: 'connect',
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]    address: '127.0.0.1',
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]    port: 6379
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  }
+2026-02-17 23:43:56 mysanggibu-backend[20260218t083455]  [31m[Nest] 15  - [39m02/17/2026, 11:43:56 PM [31m  ERROR[39m [38;5;3m[ExceptionHandler] [39m[31mconnect ECONNREFUSED 127.0.0.1:6379[39m
+2026-02-17 23:43:57 mysanggibu-backend[20260218t083455]  Error: connect ECONNREFUSED 127.0.0.1:6379      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)      at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)

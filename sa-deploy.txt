@@ -1,0 +1,27 @@
+Services to deploy:
+
+descriptor:                  [E:\Dev\github\StudyArena\backend\app.yaml]
+source:                      [E:\Dev\github\StudyArena\backend]
+target project:              [ts-back-nest-479305]
+target service:              [studyarena-backend]
+target version:              [20260218t195733]
+target url:                  [https://studyarena-backend-dot-ts-back-nest-479305.du.r.appspot.com]
+target service account:      [ts-back-nest-479305@appspot.gserviceaccount.com]
+
+
+Beginning deployment of service [studyarena-backend]...
+#============================================================#
+#= Uploading 1 file to Google Cloud Storage                 =#
+#============================================================#
+File upload done.
+Updating service [studyarena-backend]...
+......................................................................................................................................................................................................................................................................................................................................................................................................................................done.
+Setting traffic split for service [studyarena-backend]...
+.................................done.
+Deployed service [studyarena-backend] to [https://studyarena-backend-dot-ts-back-nest-479305.du.r.appspot.com]
+
+You can stream logs from the command line by running:
+  $ gcloud app logs tail -s studyarena-backend
+
+To view your application in the web browser run:
+  $ gcloud app browse -s studyarena-backend

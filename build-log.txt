@@ -1,0 +1,1301 @@
+----------------------------- REMOTE BUILD OUTPUT ------------------------------
+starting build "641eb028-71cf-454a-b797-b9dab093a261"
+
+FETCHSOURCE
+BUILD
+Starting Step #0 - "fetch"
+Step #0 - "fetch": Pulling image: asia-northeast3-docker.pkg.dev/serverless-runtimes/utilities/gcs-fetcher:base_20260130_18_04_RC00
+Step #0 - "fetch": base_20260130_18_04_RC00: Pulling from serverless-runtimes/utilities/gcs-fetcher
+Step #0 - "fetch": Digest: sha256:0b988327994e23132e54bcd547d381db3082e506b3bc6e7e49386bcd7f7cdc37
+Step #0 - "fetch": Status: Downloaded newer image for asia-northeast3-docker.pkg.dev/serverless-runtimes/utilities/gcs-fetcher:base_20260130_18_04_RC00
+Step #0 - "fetch": asia-northeast3-docker.pkg.dev/serverless-runtimes/utilities/gcs-fetcher:base_20260130_18_04_RC00
+Step #0 - "fetch": Fetching manifest gs://staging.ts-back-nest-479305.appspot.com/ae/82e9ea36-4752-4f55-af6a-0cf56d5e3aa9/manifest.json.
+Step #0 - "fetch": Processing 340 files.
+Step #0 - "fetch": ******************************************************
+Step #0 - "fetch": Status:                      SUCCESS
+Step #0 - "fetch": Started:                     2026-02-18T10:38:25Z
+Step #0 - "fetch": Completed:                   2026-02-18T10:38:25Z
+Step #0 - "fetch": Requested workers:    200
+Step #0 - "fetch": Actual workers:       200
+Step #0 - "fetch": Total files:          340
+Step #0 - "fetch": Total retries:          0
+Step #0 - "fetch": GCS timeouts:           0
+Step #0 - "fetch": MiB downloaded:         1.59 MiB
+Step #0 - "fetch": MiB/s throughput:       3.13 MiB/s
+Step #0 - "fetch": Time for manifest:     65.01 ms
+Step #0 - "fetch": Total time:             0.58 s
+Step #0 - "fetch": ******************************************************
+Finished Step #0 - "fetch"
+Starting Step #1 - "pre-buildpack"
+Step #1 - "pre-buildpack": Pulling image: asia-northeast3-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20260210_RC00_lightweight
+Step #1 - "pre-buildpack": nodejs_20260210_RC00_lightweight: Pulling from serverless-runtimes/google-22-full/builder/nodejs
+Step #1 - "pre-buildpack": 5d1190f163bb: Already exists
+Step #1 - "pre-buildpack": f494517dbbed: Already exists
+Step #1 - "pre-buildpack": 790266d15562: Already exists
+Step #1 - "pre-buildpack": a6269718ec09: Pulling fs layer
+Step #1 - "pre-buildpack": 27de60e49753: Pulling fs layer
+Step #1 - "pre-buildpack": bca78c5e84af: Pulling fs layer
+Step #1 - "pre-buildpack": 03f961302447: Pulling fs layer
+Step #1 - "pre-buildpack": ccd12d536472: Pulling fs layer
+Step #1 - "pre-buildpack": 7d5ab8c69529: Pulling fs layer
+Step #1 - "pre-buildpack": 9a130d1c82e5: Pulling fs layer
+Step #1 - "pre-buildpack": fe0a88c014e5: Pulling fs layer
+Step #1 - "pre-buildpack": 56cfddf2c067: Pulling fs layer
+Step #1 - "pre-buildpack": f99fa4354b03: Pulling fs layer
+Step #1 - "pre-buildpack": 78613c92ea9e: Pulling fs layer
+Step #1 - "pre-buildpack": 34ce8ba30961: Pulling fs layer
+Step #1 - "pre-buildpack": e6178d2c0976: Pulling fs layer
+Step #1 - "pre-buildpack": 4f4fb700ef54: Pulling fs layer
+Step #1 - "pre-buildpack": 9a130d1c82e5: Waiting
+Step #1 - "pre-buildpack": fe0a88c014e5: Waiting
+Step #1 - "pre-buildpack": 56cfddf2c067: Waiting
+Step #1 - "pre-buildpack": f99fa4354b03: Waiting
+Step #1 - "pre-buildpack": 78613c92ea9e: Waiting
+Step #1 - "pre-buildpack": 34ce8ba30961: Waiting
+Step #1 - "pre-buildpack": e6178d2c0976: Waiting
+Step #1 - "pre-buildpack": 4f4fb700ef54: Waiting
+Step #1 - "pre-buildpack": 27de60e49753: Download complete
+Step #1 - "pre-buildpack": 03f961302447: Verifying Checksum
+Step #1 - "pre-buildpack": 03f961302447: Download complete
+Step #1 - "pre-buildpack": fe0a88c014e5: Verifying Checksum
+Step #1 - "pre-buildpack": fe0a88c014e5: Download complete
+Step #1 - "pre-buildpack": bca78c5e84af: Verifying Checksum
+Step #1 - "pre-buildpack": bca78c5e84af: Download complete
+Step #1 - "pre-buildpack": a6269718ec09: Verifying Checksum
+Step #1 - "pre-buildpack": a6269718ec09: Download complete
+Step #1 - "pre-buildpack": 78613c92ea9e: Verifying Checksum
+Step #1 - "pre-buildpack": 78613c92ea9e: Download complete
+Step #1 - "pre-buildpack": a6269718ec09: Pull complete
+Step #1 - "pre-buildpack": 34ce8ba30961: Verifying Checksum
+Step #1 - "pre-buildpack": 34ce8ba30961: Download complete
+Step #1 - "pre-buildpack": f99fa4354b03: Verifying Checksum
+Step #1 - "pre-buildpack": f99fa4354b03: Download complete
+Step #1 - "pre-buildpack": 7d5ab8c69529: Verifying Checksum
+Step #1 - "pre-buildpack": 7d5ab8c69529: Download complete
+Step #1 - "pre-buildpack": ccd12d536472: Verifying Checksum
+Step #1 - "pre-buildpack": ccd12d536472: Download complete
+Step #1 - "pre-buildpack": 27de60e49753: Pull complete
+Step #1 - "pre-buildpack": 4f4fb700ef54: Verifying Checksum
+Step #1 - "pre-buildpack": 4f4fb700ef54: Download complete
+Step #1 - "pre-buildpack": e6178d2c0976: Download complete
+Step #1 - "pre-buildpack": 9a130d1c82e5: Verifying Checksum
+Step #1 - "pre-buildpack": 9a130d1c82e5: Download complete
+Step #1 - "pre-buildpack": bca78c5e84af: Pull complete
+Step #1 - "pre-buildpack": 56cfddf2c067: Verifying Checksum
+Step #1 - "pre-buildpack": 56cfddf2c067: Download complete
+Step #1 - "pre-buildpack": 03f961302447: Pull complete
+Step #1 - "pre-buildpack": ccd12d536472: Pull complete
+Step #1 - "pre-buildpack": 7d5ab8c69529: Pull complete
+Step #1 - "pre-buildpack": 9a130d1c82e5: Pull complete
+Step #1 - "pre-buildpack": fe0a88c014e5: Pull complete
+Step #1 - "pre-buildpack": 56cfddf2c067: Pull complete
+Step #1 - "pre-buildpack": f99fa4354b03: Pull complete
+Step #1 - "pre-buildpack": 78613c92ea9e: Pull complete
+Step #1 - "pre-buildpack": 34ce8ba30961: Pull complete
+Step #1 - "pre-buildpack": e6178d2c0976: Pull complete
+Step #1 - "pre-buildpack": 4f4fb700ef54: Pull complete
+Step #1 - "pre-buildpack": Digest: sha256:64b73ed2ae8a29975c43160ea8ef7ced44cf574c33eac30e07621ce90ff166ca
+Step #1 - "pre-buildpack": Status: Downloaded newer image for asia-northeast3-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20260210_RC00_lightweight
+Step #1 - "pre-buildpack": asia-northeast3-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20260210_RC00_lightweight
+Step #1 - "pre-buildpack": Preparing directory /layers
+Step #1 - "pre-buildpack": Preparing directory /workspace
+Step #1 - "pre-buildpack": Preparing directory /builder/home
+Step #1 - "pre-buildpack": Preparing directory /builder/outputs
+Step #1 - "pre-buildpack": Preparing directory /platform/env
+Step #1 - "pre-buildpack": Passing build environment variable BUILDER_OUTPUT to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_RUNTIME to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_LABEL_BUILDER_VERSION to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_LABEL_BUILDER_IMAGE to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_LABEL_RUN_IMAGE to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_LABEL_SOURCE to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_RUNTIME_IMAGE_REGION to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_RUNTIME_VERSION to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable X_GOOGLE_SKIP_RUNTIME_LAUNCH to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_BUILD_ENV to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_BUILD_UNIVERSE to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_TPC_TARBALL_PROJECT to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_TPC_HOSTNAME to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GAE_APP_ENGINE_APIS to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable GOOGLE_ENTRYPOINT to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable X_GOOGLE_TARGET_PLATFORM to buildpacks
+Step #1 - "pre-buildpack": Passing build environment variable X_GOOGLE_SET_NODE_HEAP_SIZE to buildpacks
+Step #1 - "pre-buildpack": Checking if image asia-northeast3-docker.pkg.dev/ts-back-nest-479305/gae-standard/build-cache/examhub-backend:latest exists
+Step #1 - "pre-buildpack": Image asia-northeast3-docker.pkg.dev/ts-back-nest-479305/gae-standard/build-cache/examhub-backend:latest does not exist
+Step #1 - "pre-buildpack": WARNING: Failed to reuse previous cache image; will not affect current build: image asia-northeast3-docker.pkg.dev/ts-back-nest-479305/gae-standard/build-cache/examhub-backend:latest does not exist
+Finished Step #1 - "pre-buildpack"
+Starting Step #2 - "build"
+Step #2 - "build": Already have image (with digest): asia-northeast3-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20260210_RC00_lightweight
+Step #2 - "build": ===> ANALYZING
+Step #2 - "build": Image with name "asia-northeast3-docker.pkg.dev/ts-back-nest-479305/gae-standard/app/examhub-backend:latest" not found
+Step #2 - "build": ===> DETECTING
+Step #2 - "build": target distro name/version labels not found, reading /etc/os-release file
+Step #2 - "build": google.nodejs.runtime    1.0.0
+Step #2 - "build": google.nodejs.npm        1.1.1
+Step #2 - "build": google.nodejs.appengine  0.9.0
+Step #2 - "build": google.utils.label-image 0.0.2
+Step #2 - "build": ===> RESTORING
+Step #2 - "build": Layer cache not found
+Step #2 - "build": ===> BUILDING
+Step #2 - "build": target distro name/version labels not found, reading /etc/os-release file
+Step #2 - "build": === Node.js - Runtime Using Runner (google.nodejs.runtime@1.0.0) ===
+Step #2 - "build": Using runtime version from GOOGLE_RUNTIME_VERSION: 22.22.0
+Step #2 - "build": Using exact version 22.22.0 for Node.js
+Step #2 - "build": ***** CACHE MISS: "nodejs"
+Step #2 - "build": Installing Node.js v22.22.0.
+Step #2 - "build": Runtime successfully downloaded from asia-northeast3-docker.pkg.dev/serverless-runtimes/runtimes-ubuntu2204/nodejs:22.22.0
+Step #2 - "build": Installing the heapsize.sh exec.d script.
+Step #2 - "build": === Node.js - Npm Using Runner (google.nodejs.npm@1.1.1) ===
+Step #2 - "build": ***** CACHE MISS: "npm_modules"
+Step #2 - "build": Installing application dependencies.
+Step #2 - "build": --------------------------------------------------------------------------------
+Step #2 - "build": Running "npm ci --quiet --no-fund --no-audit (NODE_ENV=development)"
+Step #2 - "build": npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+Step #2 - "build": npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Step #2 - "build": 
+Step #2 - "build": added 848 packages in 27s
+Step #2 - "build": Done "npm ci --quiet --no-fund --no-audit (NODE_ENV=development)" (26.908009591s)
+Step #2 - "build": --------------------------------------------------------------------------------
+Step #2 - "build": Running "npm run build"
+Step #2 - "build": 
+Step #2 - "build": > backend@0.0.1 build
+Step #2 - "build": > nest build
+Step #2 - "build": 
+Step #2 - "build": prisma/import-answer-db.ts:3:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 3 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": prisma/import-excel.ts:3:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 3 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": prisma/import-excel.ts:439:9 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'number'.
+Step #2 - "build": 
+Step #2 - "build": 439         mockExamMap.get(sheetName)!,
+Step #2 - "build":             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": prisma/seed.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 2 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:17:44 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 17     const existingExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                               ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:25:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 25     return this.prisma.mockExam.create({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:38:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 38     const exam = await this.prisma.mockExam.findUnique({ where: { id } });
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:44:46 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 44       const existingExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                                 ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:52:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52     return this.prisma.mockExam.update({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:59:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 59     const exam = await this.prisma.mockExam.findUnique({ where: { id } });
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:65:23 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 65     await this.prisma.examQuestion.deleteMany({
+Step #2 - "build":                          ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:69:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 69     return this.prisma.mockExam.delete({ where: { id } });
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:74:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 74     const exam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:84:25 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 84       await this.prisma.examQuestion.deleteMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:93:38 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 93     const result = await this.prisma.examQuestion.createMany({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:115:40 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 115     const question = await this.prisma.examQuestion.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:133:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 133     return this.prisma.examQuestion.update({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:140:40 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 140     const question = await this.prisma.examQuestion.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:150:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 150     return this.prisma.examQuestion.delete({ where: { id: question.id } });
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:168:47 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 168       const existingScore = await this.prisma.studentScore.findFirst({
+Step #2 - "build":                                                   ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:176:27 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 176         await this.prisma.studentScore.update({
+Step #2 - "build":                               ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:181:27 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 181         await this.prisma.studentScore.create({
+Step #2 - "build":                               ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:215:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 215     return this.prisma.studentScore.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:233:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 233     return this.prisma.studentScore.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:26:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 26     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                        ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:149:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 149     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:161:39 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 161       departments = await this.prisma.department.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:167:39 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 167       departments = await this.prisma.department.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:242:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 242     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:278:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 278     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:15:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 15     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:21:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 21     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:39:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 39     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:46:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 46     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:57:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 57     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:68:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 68     const mockExam = await this.prisma.mockExam.findFirst({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:76:26 - error TS2339: Property 'kyokwaSubject2022' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 76       return this.prisma.kyokwaSubject2022.findMany({
+Step #2 - "build":                             ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:80:24 - error TS2339: Property 'kyokwaSubject2015' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 80     return this.prisma.kyokwaSubject2015.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:88:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 88     return this.prisma.examQuestion.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:106:46 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 106     const correctAnswers = await this.prisma.examQuestion.findMany({
+Step #2 - "build":                                                  ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:137:60 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 137         const isCorrect = studentAnswer.answer === correct.answer;
+Step #2 - "build":                                                                ~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:138:39 - error TS2339: Property 'score' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 138         const questionScore = correct.score || 2;
+Step #2 - "build":                                           ~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:146:34 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 146           correctAnswer: correct.answer,
+Step #2 - "build":                                      ~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:150:31 - error TS2339: Property 'difficulty' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 150           difficulty: correct.difficulty || undefined,
+Step #2 - "build":                                   ~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:151:32 - error TS2339: Property 'correctRate' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 151           correctRate: correct.correctRate || undefined,
+Step #2 - "build":                                    ~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 2 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:29:16 - error TS2339: Property '$connect' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 29     await this.$connect();
+Step #2 - "build":                   ~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:33:16 - error TS2339: Property '$disconnect' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 33     await this.$disconnect();
+Step #2 - "build":                   ~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:43:16 - error TS2339: Property 'achievementResult' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 43     await this.achievementResult.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:44:16 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 44     await this.studentTarget.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:45:16 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 45     await this.studentScore.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:46:16 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 46     await this.examQuestion.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:47:16 - error TS2339: Property 'admissionCutoff' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 47     await this.admissionCutoff.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:48:16 - error TS2339: Property 'scoreConversionStandard' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 48     await this.scoreConversionStandard.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:49:16 - error TS2339: Property 'scoreConversionRaw' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 49     await this.scoreConversionRaw.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:50:16 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 50     await this.department.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:51:16 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 51     await this.university.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:52:16 - error TS2339: Property 'subjectChapter' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52     await this.subjectChapter.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:53:16 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 53     await this.mockExam.deleteMany();
+Step #2 - "build":                   ~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:54:16 - error TS2339: Property 'mentoring' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 54     await this.mentoring.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:55:16 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 55     await this.member.deleteMany();
+Step #2 - "build":                   ~~~~~~
+Step #2 - "build": src/score/score.service.ts:17:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 17     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/score/score.service.ts:25:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 25     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:36:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 36     return this.prisma.studentScore.upsert({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:97:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 97     return this.prisma.studentScore.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:110:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 110     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:136:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 136     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:159:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 159     return this.prisma.studentScore.update({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:178:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 178     return this.prisma.studentScore.delete({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:187:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 187     return this.prisma.studentScore.findFirst({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:200:24 - error TS2339: Property 'scoreConversionStandard' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 200     return this.prisma.scoreConversionStandard.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:213:24 - error TS2339: Property 'scoreConversionRaw' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 213     return this.prisma.scoreConversionRaw.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/scripts/verify-migration.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 1 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:30:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 30     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:53:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 53     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:130:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 130     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:152:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 152     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:233:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 233     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:255:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 255     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:30:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 30     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/target/target.service.ts:38:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 38     const targets = await this.prisma.studentTarget.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:52:40 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52         const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:91:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 91     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/target/target.service.ts:100:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 100     const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                              ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:110:45 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 110     const existingCount = await this.prisma.studentTarget.count({
+Step #2 - "build":                                                 ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:121:40 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 121     const existing = await this.prisma.studentTarget.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:133:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 133     const target = await this.prisma.studentTarget.create({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:160:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 160     const target = await this.prisma.studentTarget.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:175:44 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 175       const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                                ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:188:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 188     const updated = await this.prisma.studentTarget.update({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:199:38 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 199       const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:227:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 227     const target = await this.prisma.studentTarget.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:235:23 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 235     await this.prisma.studentTarget.delete({
+Step #2 - "build":                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:247:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 247     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/target/target.service.ts:261:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 261     const targets = await this.prisma.studentTarget.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:290:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 290     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:318:38 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 318       const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:13:24 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 13     return this.prisma.university.findMany({
+Step #2 - "build":                           ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:22:42 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 22     const university = await this.prisma.university.findUnique({
+Step #2 - "build":                                             ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:56:44 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 56     const universities = await this.prisma.university.findMany({
+Step #2 - "build":                                               ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:75:39 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 75     const regions = await this.prisma.university.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:89:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 89     const categories = await this.prisma.department.findMany({
+Step #2 - "build":                                             ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:103:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 103     const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                              ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:128:24 - error TS2339: Property 'admissionCutoff' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 128     return this.prisma.admissionCutoff.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:27:36 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 27     let member = await this.prisma.member.findUnique({
+Step #2 - "build":                                       ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:32:34 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 32       member = await this.prisma.member.create({
+Step #2 - "build":                                     ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:43:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 43     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:55:41 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 55     const questions = await this.prisma.examQuestion.findMany({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:80:60 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 80       const isCorrect = answer.selectedAnswer === question.answer;
+Step #2 - "build":                                                               ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:81:38 - error TS2339: Property 'score' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 81       const questionScore = question.score || 2;
+Step #2 - "build":                                         ~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:91:33 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 91         correctAnswer: question.answer,
+Step #2 - "build":                                    ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:99:34 - error TS2339: Property 'id' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 99         examQuestionId: question.id,
+Step #2 - "build":                                     ~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:100:35 - error TS2339: Property 'subjectAreaName' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 100         subjectAreaName: question.subjectAreaName,
+Step #2 - "build":                                       ~~~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:101:31 - 
+Step #2 - "build": error TS2339: Property 'subjectName' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 101         subjectName: question.subjectName,
+Step #2 - "build":                                   ~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:104:33 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 104         correctAnswer: question.answer,
+Step #2 - "build":                                     ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:113:25 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 113       await this.prisma.studentAnswer.upsert({
+Step #2 - "build":                             ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:159:47 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 159       const existingScore = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                                   ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:189:23 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 189     await this.prisma.studentScore.upsert({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:254:42 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 254     const totalCount = await this.prisma.studentAnswer.count({ where });
+Step #2 - "build":                                              ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:257:39 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 257     const answers = await this.prisma.studentAnswer.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:319:38 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 319     const answer = await this.prisma.studentAnswer.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:341:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 341     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:353:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 353     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:365:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 365     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:379:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 379     const totalAnswers = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:383:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 383     const correctCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:389:47 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 389     const bookmarkedCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                   ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:393:47 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 393     const needReviewCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                   ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:398:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 398     const bySubjectRaw = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:404:46 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 404     const bySubjectWrong = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                  ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:410:51 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 410     const bySubjectNeedReview = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                       ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:468:43 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 468     const totalByExam = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                               ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:475:43 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 475     const wrongByExam = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                               ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:483:41 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 483     const mockExams = await this.prisma.mockExam.findMany({
+Step #2 - "build":                                             ~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:498:33 - error TS2339: Property 'name' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 498         mockExamName: mockExam?.name || '? ? ??',
+Step #2 - "build":                                     ~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:499:25 - error TS2339: Property 'year' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 499         year: mockExam?.year || undefined,
+Step #2 - "build":                             ~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:500:26 - error TS2339: Property 'month' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 500         month: mockExam?.month || undefined,
+Step #2 - "build":                              ~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:503:58 - error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+Step #2 - "build": 
+Step #2 - "build": 503         wrongRate: (t._count?.id || 0) > 0 ? Math.round((wrongCount / (t._count?.id || 1)) * 100) : 0,
+Step #2 - "build":                                                              ~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:525:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 525     return this.prisma.studentAnswer.delete({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:534:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 534     return this.prisma.studentAnswer.deleteMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": 
+Step #2 - "build": Found 140 error(s).
+Step #2 - "build": 
+Step #2 - "build": Done "npm run build" (7.964802523s)
+Step #2 - "build": --------------------------------------------------------------------------------
+Step #2 - "build": failed to build: (error ID: 1a2262f3):
+Step #2 - "build": > backend@0.0.1 build
+Step #2 - "build": > nest build
+Step #2 - "build": 
+Step #2 - "build": prisma/import-answer-db.ts:3:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 3 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": prisma/import-excel.ts:3:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 3 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": prisma/import-excel.ts:439:9 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'number'.
+Step #2 - "build": 
+Step #2 - "build": 439         mockExamMap.get(sheetName)!,
+Step #2 - "build":             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": prisma/seed.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 2 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:17:44 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 17     const existingExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                               ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:25:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 25     return this.prisma.mockExam.create({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:38:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 38     const exam = await this.prisma.mockExam.findUnique({ where: { id } });
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:44:46 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 44       const existingExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                                 ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:52:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52     return this.prisma.mockExam.update({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:59:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 59     const exam = await this.prisma.mockExam.findUnique({ where: { id } });
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:65:23 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 65     await this.prisma.examQuestion.deleteMany({
+Step #2 - "build":                          ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:69:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 69     return this.prisma.mockExam.delete({ where: { id } });
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:74:36 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 74     const exam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                       ~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:84:25 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 84       await this.prisma.examQuestion.deleteMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:93:38 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 93     const result = await this.prisma.examQuestion.createMany({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:115:40 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 115     const question = await this.prisma.examQuestion.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:133:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 133     return this.prisma.examQuestion.update({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:140:40 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 140     const question = await this.prisma.examQuestion.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:150:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 150     return this.prisma.examQuestion.delete({ where: { id: question.id } });
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:168:47 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 168       const existingScore = await this.prisma.studentScore.findFirst({
+Step #2 - "build":                                                   ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:176:27 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 176         await this.prisma.studentScore.update({
+Step #2 - "build":                               ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:181:27 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 181         await this.prisma.studentScore.create({
+Step #2 - "build":                               ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:215:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 215     return this.prisma.studentScore.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/admin/admin.service.ts:233:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 233     return this.prisma.studentScore.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:26:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 26     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                        ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:149:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 149     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:161:39 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 161       departments = await this.prisma.department.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:167:39 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 167       departments = await this.prisma.department.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:242:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 242     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/analysis/analysis.service.ts:278:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 278     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:15:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 15     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:21:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 21     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:39:24 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 39     return this.prisma.mockExam.findMany({
+Step #2 - "build":                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:46:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 46     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:57:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 57     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:68:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 68     const mockExam = await this.prisma.mockExam.findFirst({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:76:26 - error TS2339: Property 'kyokwaSubject2022' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 76       return this.prisma.kyokwaSubject2022.findMany({
+Step #2 - "build":                             ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:80:24 - error TS2339: Property 'kyokwaSubject2015' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 80     return this.prisma.kyokwaSubject2015.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:88:24 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 88     return this.prisma.examQuestion.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:106:46 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 106     const correctAnswers = await this.prisma.examQuestion.findMany({
+Step #2 - "build":                                                  ~~~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:137:60 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 137         const isCorrect = studentAnswer.answer === correct.answer;
+Step #2 - "build":                                                                ~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:138:39 - error TS2339: Property 'score' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 138         const questionScore = correct.score || 2;
+Step #2 - "build":                                           ~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:146:34 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 146           correctAnswer: correct.answer,
+Step #2 - "build":                                      ~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:150:31 - error TS2339: Property 'difficulty' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 150           difficulty: correct.difficulty || undefined,
+Step #2 - "build":                                   ~~~~~~~~~~
+Step #2 - "build": src/mock-exam/mock-exam.service.ts:151:32 - error TS2339: Property 'correctRate' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 151           correctRate: correct.correctRate || undefined,
+Step #2 - "build":                                    ~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:2:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 2 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:29:16 - error TS2339: Property '$connect' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 29     await this.$connect();
+Step #2 - "build":                   ~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:33:16 - error TS2339: Property '$disconnect' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 33     await this.$disconnect();
+Step #2 - "build":                   ~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:43:16 - error TS2339: Property 'achievementResult' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 43     await this.achievementResult.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:44:16 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 44     await this.studentTarget.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:45:16 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 45     await this.studentScore.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:46:16 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 46     await this.examQuestion.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:47:16 - error TS2339: Property 'admissionCutoff' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 47     await this.admissionCutoff.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:48:16 - error TS2339: Property 'scoreConversionStandard' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 48     await this.scoreConversionStandard.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:49:16 - error TS2339: Property 'scoreConversionRaw' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 49     await this.scoreConversionRaw.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:50:16 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 50     await this.department.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:51:16 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 51     await this.university.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:52:16 - error TS2339: Property 'subjectChapter' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52     await this.subjectChapter.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:53:16 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 53     await this.mockExam.deleteMany();
+Step #2 - "build":                   ~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:54:16 - error TS2339: Property 'mentoring' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 54     await this.mentoring.deleteMany();
+Step #2 - "build":                   ~~~~~~~~~
+Step #2 - "build": src/prisma/prisma.service.ts:55:16 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 55     await this.member.deleteMany();
+Step #2 - "build":                   ~~~~~~
+Step #2 - "build": src/score/score.service.ts:17:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 17     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/score/score.service.ts:25:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 25     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:36:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 36     return this.prisma.studentScore.upsert({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:97:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 97     return this.prisma.studentScore.findMany({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:110:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 110     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:136:37 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 136     const score = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:159:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 159     return this.prisma.studentScore.update({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:178:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 178     return this.prisma.studentScore.delete({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:187:24 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 187     return this.prisma.studentScore.findFirst({
+Step #2 - "build":                            ~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:200:24 - error TS2339: Property 'scoreConversionStandard' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 200     return this.prisma.scoreConversionStandard.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/score/score.service.ts:213:24 - error TS2339: Property 'scoreConversionRaw' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 213     return this.prisma.scoreConversionRaw.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~~~~
+Step #2 - "build": src/scripts/verify-migration.ts:1:10 - error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Step #2 - "build": 
+Step #2 - "build": 1 import { PrismaClient } from '@prisma/client';
+Step #2 - "build":            ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:30:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 30     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:53:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 53     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                         ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:130:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 130     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:152:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 152     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:233:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 233     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/statistics/statistics.service.ts:255:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 255     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:30:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 30     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/target/target.service.ts:38:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 38     const targets = await this.prisma.studentTarget.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:52:40 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 52         const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                           ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:91:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 91     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                         ~~~~~~
+Step #2 - "build": src/target/target.service.ts:100:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 100     const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                              ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:110:45 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 110     const existingCount = await this.prisma.studentTarget.count({
+Step #2 - "build":                                                 ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:121:40 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 121     const existing = await this.prisma.studentTarget.findFirst({
+Step #2 - "build":                                            ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:133:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 133     const target = await this.prisma.studentTarget.create({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:160:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 160     const target = await this.prisma.studentTarget.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:175:44 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 175       const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                                ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:188:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 188     const updated = await this.prisma.studentTarget.update({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:199:38 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 199       const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:227:38 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 227     const target = await this.prisma.studentTarget.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:235:23 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 235     await this.prisma.studentTarget.delete({
+Step #2 - "build":                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:247:38 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 247     const member = await this.prisma.member.findUnique({
+Step #2 - "build":                                          ~~~~~~
+Step #2 - "build": src/target/target.service.ts:261:39 - error TS2339: Property 'studentTarget' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 261     const targets = await this.prisma.studentTarget.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:290:38 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 290     const scores = await this.prisma.studentScore.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~~~
+Step #2 - "build": src/target/target.service.ts:318:38 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 318       const dept = await this.prisma.department.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:13:24 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 13     return this.prisma.university.findMany({
+Step #2 - "build":                           ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:22:42 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 22     const university = await this.prisma.university.findUnique({
+Step #2 - "build":                                             ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:56:44 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 56     const universities = await this.prisma.university.findMany({
+Step #2 - "build":                                               ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:75:39 - error TS2339: Property 'university' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 75     const regions = await this.prisma.university.findMany({
+Step #2 - "build":                                          ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:89:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 89     const categories = await this.prisma.department.findMany({
+Step #2 - "build":                                             ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:103:42 - error TS2339: Property 'department' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 103     const department = await this.prisma.department.findUnique({
+Step #2 - "build":                                              ~~~~~~~~~~
+Step #2 - "build": src/university/university.service.ts:128:24 - error TS2339: Property 'admissionCutoff' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 128     return this.prisma.admissionCutoff.findMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:27:36 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 27     let member = await this.prisma.member.findUnique({
+Step #2 - "build":                                       ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:32:34 - error TS2339: Property 'member' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 32       member = await this.prisma.member.create({
+Step #2 - "build":                                     ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:43:40 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 43     const mockExam = await this.prisma.mockExam.findUnique({
+Step #2 - "build":                                           ~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:55:41 - error TS2339: Property 'examQuestion' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 55     const questions = await this.prisma.examQuestion.findMany({
+Step #2 - "build":                                            ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:80:60 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 80       const isCorrect = answer.selectedAnswer === question.answer;
+Step #2 - "build":                                                               ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:81:38 - error TS2339: Property 'score' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 81       const questionScore = question.score || 2;
+Step #2 - "build":                                         ~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:91:33 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 91         correctAnswer: question.answer,
+Step #2 - "build":                                    ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:99:34 - error TS2339: Property 'id' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 99         examQuestionId: question.id,
+Step #2 - "build":                                     ~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:100:35 - error TS2339: Property 'subjectAreaName' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 100         subjectAreaName: question.subjectAreaName,
+Step #2 - "build":                                       ~~~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:101:31 - error TS2339: Property 'subjectName' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 101         subjectName: question.subjectName,
+Step #2 - "build":                                   ~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:104:33 - error TS2339: Property 'answer' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 104         correctAnswer: question.answer,
+Step #2 - "build":                                     ~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:113:25 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 113       await this.prisma.studentAnswer.upsert({
+Step #2 - "build":                             ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:159:47 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 159       const existingScore = await this.prisma.studentScore.findUnique({
+Step #2 - "build":                                                   ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:189:23 - error TS2339: Property 'studentScore' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 189     await this.prisma.studentScore.upsert({
+Step #2 - "build":                           ~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:254:42 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 254     const totalCount = await this.prisma.studentAnswer.count({ where });
+Step #2 - "build":                                              ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:257:39 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 257     const answers = await this.prisma.studentAnswer.findMany({
+Step #2 - "build":                                           ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:319:38 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 319     const answer = await this.prisma.studentAnswer.findUnique({
+Step #2 - "build":                                          ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:341:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 341     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:353:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 353     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:365:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 365     return this.prisma.studentAnswer.update({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:379:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 379     const totalAnswers = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:383:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 383     const correctCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:389:47 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 389     const bookmarkedCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                   ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:393:47 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 393     const needReviewCount = await this.prisma.studentAnswer.count({
+Step #2 - "build":                                                   ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:398:44 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 398     const bySubjectRaw = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:404:46 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 404     const bySubjectWrong = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                  ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:410:51 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 410     const bySubjectNeedReview = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                                       ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:468:43 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 468     const totalByExam = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                               ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:475:43 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 475     const wrongByExam = await this.prisma.studentAnswer.groupBy({
+Step #2 - "build":                                               ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:483:41 - error TS2339: Property 'mockExam' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 483     const mockExams = await this.prisma.mockExam.findMany({
+Step #2 - "build":                                             ~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:498:33 - error TS2339: Property 'name' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 498         mockExamName: mockExam?.name || '? ? ??',
+Step #2 - "build":                                     ~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:499:25 - error TS2339: Property 'year' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 499         year: mockExam?.year || undefined,
+Step #2 - "build":                             ~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:500:26 - error TS2339: Property 'month' does not exist on type '{}'.
+Step #2 - "build": 
+Step #2 - "build": 500         month: mockExam?.month || undefined,
+Step #2 - "build":                              ~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:503:58 - error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+Step #2 - "build": 
+Step #2 - "build": 503         wrongRate: (t._count?.id || 0) > 0 ? Math.round((wrongCount / (t._count?.id || 1)) * 100) : 0,
+Step #2 - "build":                                                              ~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:525:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 525     return this.prisma.studentAnswer.delete({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": src/wrong-answer/wrong-answer.service.ts:534:24 - error TS2339: Property 'studentAnswer' does not exist on type 'PrismaService'.
+Step #2 - "build": 
+Step #2 - "build": 534     return this.prisma.studentAnswer.deleteMany({
+Step #2 - "build":                            ~~~~~~~~~~~~~
+Step #2 - "build": 
+Step #2 - "build": Found 140 error(s).
+Step #2 - "build": NOTE: Running the default build script can be skipped by passing the empty environment variable "GOOGLE_NODE_RUN_SCRIPTS=" to the build
+Step #2 - "build": ERROR: failed to build: exit status 1
+Finished Step #2 - "build"
+ERROR
+ERROR: build step 2 "asia-northeast3-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20260210_RC00_lightweight" failed: step exited with non-zero status: 51
+--------------------------------------------------------------------------------

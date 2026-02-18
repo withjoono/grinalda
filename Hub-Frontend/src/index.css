@@ -33,6 +33,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
   }
+
   .theme {
     --animate-marquee: marquee var(--duration) infinite linear;
     --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
@@ -43,9 +44,10 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background font-inter text-foreground;
-    font-family: "Inter", "Noto Sans KR", "Noto Color Emoji", sans-serif;
+    font-family: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Noto Color Emoji", sans-serif;
   }
 
   html {
@@ -71,6 +73,7 @@
       background: hsl(var(--primary) / 20%);
       right: 460px;
     }
+
     to {
       background: hsl(var(--primary) / 80%);
       right: 160px;
@@ -87,6 +90,7 @@
         background: hsl(var(--primary) / 20%);
         right: 460px;
       }
+
       to {
         background: hsl(var(--primary) / 50%);
         right: 160px;
@@ -107,6 +111,7 @@
         background: hsl(var(--primary) / 20%);
         right: 280px;
       }
+
       to {
         background: hsl(var(--primary) / 30%);
         right: 100px;
@@ -119,6 +124,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -126,19 +132,22 @@
 
 @theme inline {
   @keyframes marquee {
-  from {
-    transform: translateX(0);
+    from {
+      transform: translateX(0);
     }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
+
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
     }
   }
+
   @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
+    from {
+      transform: translateY(0);
     }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
+
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
     }
   }
 }
