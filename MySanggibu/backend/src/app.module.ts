@@ -86,16 +86,22 @@ import { WinstonModule } from 'nest-winston';
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => {
-        const store = await redisStore({
-          socket: {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: parseInt(process.env.REDIS_PORT || '6379', 10),
-          },
-          keyPrefix: 'susi-',
-          ttl: 300000, // 5분
-        });
-        console.log('✅ Susi: Redis 연결됨 (localhost:6379, prefix: susi-)');
-        return { store, ttl: 300000 };
+        try {
+          const store = await redisStore({
+            socket: {
+              host: process.env.REDIS_HOST || 'localhost',
+              port: parseInt(process.env.REDIS_PORT || '6379', 10),
+              connectTimeout: 3000,
+            },
+            keyPrefix: 'susi-',
+            ttl: 300000, // 5분
+          });
+          console.log('✅ MySanggibu: Redis 연결됨');
+          return { store, ttl: 300000 };
+        } catch (error) {
+          console.warn('⚠️ MySanggibu: Redis 연결 실패, 인메모리 캐시 사용:', error.message);
+          return { ttl: 300000 };
+        }
       },
     }),
     // Rate Limiting - DDoS/브루트포스 공격 방지

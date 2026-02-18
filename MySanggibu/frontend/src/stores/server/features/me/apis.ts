@@ -26,6 +26,12 @@ const extractHubApiData = <T>(responseData: any): T => {
  * SSO 토큰은 Hub에서 발급되므로 Hub 서버에서만 검증 가능합니다.
  */
 const fetchCurrentUserAPI = async (): Promise<IUser | null> => {
+  // 토큰이 없으면 API 호출 없이 바로 null 반환 (게스트 사용자 401 방지)
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    return null;
+  }
+
   try {
     const res = await hubApiClient.get("/auth/me");
     const userData = extractHubApiData<IUser>(res.data);

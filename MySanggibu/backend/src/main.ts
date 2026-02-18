@@ -14,7 +14,24 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: [
+        // 프로덕션 도메인
+        'https://ms-front.web.app', // MySanggibu 프론트엔드
+        'https://ms-front.firebaseapp.com',
+        'https://ts-front-479305.web.app', // Hub 프론트엔드
+        'https://www.geobukschool.kr',
+        'https://geobukschool.kr',
+        // 로컬 개발 환경
+        'http://localhost:3000', // Hub 프론트엔드
+        'http://localhost:3007', // MS 프론트엔드
+      ],
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+    },
+  });
 
   // Helmet - HTTP 보안 헤더 설정 (XSS, Clickjacking, MIME 스니핑 방지)
   app.use(
@@ -167,18 +184,7 @@ async function bootstrap() {
     console.log('Swagger documentation: disabled (production mode)');
   }
 
-  app.enableCors({
-    origin: [
-      // 프로덕션 도메인
-      'https://ts-front-479305.web.app', // Susi 프론트엔드 배포
-      'https://www.geobukschool.kr',
-      'https://geobukschool.kr',
-      // 로컬 개발 환경
-      'http://localhost:3007', // MS 프론트엔드
-    ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    credentials: true, // 자격 증명 허용
-  });
+  // CORS는 NestFactory.create()에서 설정됨 (Helmet보다 먼저 적용되어야 함)
 
   const appPort = process.env.PORT || configService.getOrThrow('app', { infer: true }).port;
   await app.listen(appPort, '127.0.0.1');

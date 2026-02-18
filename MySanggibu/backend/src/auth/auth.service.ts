@@ -362,14 +362,14 @@ export class AuthService {
   async exchangeSsoCode(code: string): Promise<LoginResponseType> {
     try {
       // Hub Backend URL 가져오기
-      const hubBaseUrl = process.env.HUB_BASE_URL || 'http://localhost:4000';
+      const hubBaseUrl = process.env.HUB_API_URL || process.env.HUB_BASE_URL || 'http://localhost:4000';
 
       // Hub Backend에 코드 검증 요청
       const response = await firstValueFrom(
         this.httpService
-          .post(`${hubBaseUrl}/api/auth/sso/verify-code`, {
+          .post(`${hubBaseUrl}/auth/sso/verify-code`, {
             code,
-            serviceId: 'susi', // Susi 서비스 식별자
+            serviceId: 'mysanggibu', // MySanggibu 서비스 식별자
           })
           .pipe(
             catchError((error: AxiosError) => {

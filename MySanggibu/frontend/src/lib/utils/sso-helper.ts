@@ -46,6 +46,10 @@ export async function processSSOLogin(): Promise<boolean> {
       tokenData.tokenExpiry || Date.now() + 3600 * 1000,
     );
 
+    // api-client의 getAccessToken()은 localStorage.getItem('accessToken')을 직접 읽으므로 별도 저장 필요
+    localStorage.setItem('accessToken', tokenData.accessToken);
+    localStorage.setItem('refreshToken', tokenData.refreshToken);
+
     // ⚠️ 보안: URL에서 코드 제거하여 브라우저 히스토리에 남지 않도록 함
     params.delete('sso_code');
 

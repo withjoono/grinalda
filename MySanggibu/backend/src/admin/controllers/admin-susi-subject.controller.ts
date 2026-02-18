@@ -11,7 +11,7 @@ import { AdminSusiSubjectResponseDto } from '../dtos/admin-susi-subject-response
 @ApiTags('[관리자] 수시 교과 통합DB')
 @Controller('admin/ms/subject')
 export class AdminSusiSubjectController {
-  constructor(private readonly adminSusiSubjectService: AdminSusiSubjectService) {}
+  constructor(private readonly adminSusiSubjectService: AdminSusiSubjectService) { }
 
   @Get()
   @Roles(['ROLE_ADMIN'])
@@ -28,7 +28,7 @@ export class AdminSusiSubjectController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: '/tmp/uploads',
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
@@ -47,7 +47,7 @@ export class AdminSusiSubjectController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: '/tmp/uploads',
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `${uniqueSuffix}${extname(file.originalname)}`);

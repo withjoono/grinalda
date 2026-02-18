@@ -30,7 +30,7 @@ import { AdminSusiFormulaService } from '../services/admin-susi-formula.service'
 @Roles(['ROLE_ADMIN'])
 @ApiBearerAuth()
 export class AdminSusiFormulaController {
-  constructor(private readonly adminSusiFormulaService: AdminSusiFormulaService) {}
+  constructor(private readonly adminSusiFormulaService: AdminSusiFormulaService) { }
 
   /**
    * 환산 공식 엑셀 업로드
@@ -92,7 +92,7 @@ export class AdminSusiFormulaController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/temp',
+        destination: '/tmp/uploads',
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `susi-formula-${uniqueSuffix}.xlsx`);
