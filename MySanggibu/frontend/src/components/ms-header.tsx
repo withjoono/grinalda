@@ -35,7 +35,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Menu, ArrowLeft, Bell, Users } from "lucide-react";
+import { Menu, LayoutGrid, Bell, Users } from "lucide-react";
 import { WonCircle } from "./icons";
 import { clearTokens as clearTokenManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";
@@ -130,18 +130,18 @@ export const MsHeader = () => {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 flex flex-col items-start justify-center gap-2">
-                  {/* 전체 서비스로 돌아가기 */}
+                  {/* 전체 서비스 아이콘 */}
                   <a
-                    href={env.hubUrl}
+                    href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "mb-4 w-full justify-start gap-2 border-gray-300 bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "mb-4 text-primary hover:bg-primary/10",
                     )}
+                    title="전체 서비스"
                   >
-                    <ArrowLeft className="h-4 w-4" />
-                    전체 서비스로 돌아가기
+                    <LayoutGrid className="h-5 w-5" />
                   </a>
 
                   <Separator className="mb-2 bg-gray-200" />
@@ -410,22 +410,22 @@ export const MsHeader = () => {
           <div className="hidden items-center gap-8 lg:flex xl:gap-12">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* 전체 서비스로 돌아가기 */}
+                {/* 전체 서비스 아이콘 */}
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "gap-2 bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900",
+                      "bg-transparent text-primary hover:bg-primary/10",
                     )}
                     asChild
                   >
                     <a
-                      href={env.hubUrl}
+                      href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
                       target="_blank"
                       rel="noopener noreferrer"
+                      title="전체 서비스"
                     >
-                      <ArrowLeft className="h-4 w-4" />
-                      전체 서비스
+                      <LayoutGrid className="h-5 w-5" />
                     </a>
                   </NavigationMenuLink>
                 </NavigationMenuItem>

@@ -35,7 +35,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Menu, ArrowLeft, Bell, Users } from "lucide-react";
+import { Menu, LayoutGrid, Bell, Users } from "lucide-react";
 import { WonCircle } from "./icons";
 import { clearTokens as clearTokenManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";
@@ -137,18 +137,19 @@ export const MockAnalysisHeader = () => {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 flex flex-col items-start justify-center gap-2">
-                  {/* 전체 서비스로 돌아가기 */}
-                  <Link
-                    to="/"
+                  {/* 전체 서비스 아이콘 */}
+                  <a
+                    href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "mb-4 w-full justify-start gap-2 border-gray-300 bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "mb-4 text-primary hover:bg-primary/10",
                     )}
-                    onClick={() => setIsOpen(false)}
+                    title="전체 서비스"
                   >
-                    <ArrowLeft className="h-4 w-4" />
-                    전체 서비스로 돌아가기
-                  </Link>
+                    <LayoutGrid className="h-5 w-5" />
+                  </a>
 
                   <Separator className="mb-2 bg-gray-200" />
 
@@ -243,13 +244,14 @@ export const MockAnalysisHeader = () => {
                     <Link
                       to="/products"
                       className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        "w-full justify-start gap-2 px-1 text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700",
-                      )}
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "text-primary hover:bg-primary/10",
+                    )}
+                    title="이용권 구매"
                       onClick={() => setIsOpen(false)}
                     >
                       <WonCircle className="h-6 w-6" />
-                      이용권 구매
+                      
                     </Link>
                     <Link
                       to="/mock-analysis/notifications"
@@ -330,19 +332,23 @@ export const MockAnalysisHeader = () => {
           <div className="hidden items-center gap-8 lg:flex xl:gap-12">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* 전체 서비스로 돌아가기 */}
+                {/* 전체 서비스 아이콘 */}
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "gap-2 bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900",
+                      "bg-transparent text-primary hover:bg-primary/10",
                     )}
                     asChild
                   >
-                    <Link to="/">
-                      <ArrowLeft className="h-4 w-4" />
-                      전체 서비스
-                    </Link>
+                    <a
+                      href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="전체 서비스"
+                    >
+                      <LayoutGrid className="h-5 w-5" />
+                    </a>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
@@ -449,7 +455,7 @@ export const MockAnalysisHeader = () => {
                 to="/products"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700",
+                  "text-primary hover:bg-primary/10",
                 )}
                 title="이용권 구매"
               >

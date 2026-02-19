@@ -26,7 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Menu, Bell, Users } from "lucide-react";
+import { Menu, Bell, Users, LayoutGrid } from "lucide-react";
 import { WonCircle } from "./icons";
 import { clearTokens as clearTokenManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";
@@ -137,14 +137,15 @@ export const Header = () => {
                 <nav className="mt-4 flex flex-col items-start justify-center gap-4">
                   <Link to="/" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start px-1")} onClick={() => setIsOpen(false)}>🏠 홈</Link>
                   <Separator className="my-2" />
-                  {/* 전체 서비스 버튼 */}
+                  {/* 전체 서비스 아이콘 */}
                   <a
                     href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn(buttonVariants({ variant: "default" }), "w-full bg-blue-600 hover:bg-blue-700")}
+                    className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")}
+                    title="전체 서비스"
                   >
-                    전체 서비스 보기
+                    <LayoutGrid className="h-5 w-5" />
                   </a>
                   <Separator className="my-2" />
                   <div className="w-full space-y-2">
@@ -155,9 +156,8 @@ export const Header = () => {
                   </div>
                   <Separator className="my-2" />
                   <div className="w-full space-y-2">
-                    <Link to="/products" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1 text-blue-600")} onClick={() => setIsOpen(false)}>
+                    <Link to="/products" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")} onClick={() => setIsOpen(false)} title="이용권 구매">
                       <WonCircle className="h-6 w-6" />
-                      이용권 구매
                     </Link>
                     <Link to="/notifications" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
                       <Bell className="h-4 w-4" />
@@ -186,14 +186,15 @@ export const Header = () => {
           </span>
 
           <div className="hidden items-center gap-4 lg:flex">
-            {/* 전체 서비스 버튼 */}
+            {/* 전체 서비스 아이콘 */}
             <a
               href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "ghost" }), "text-blue-600 hover:text-blue-700 hover:bg-blue-50")}
+              className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")}
+              title="전체 서비스"
             >
-              전체 서비스
+              <LayoutGrid className="h-5 w-5" />
             </a>
 
             <Popover>
@@ -212,7 +213,7 @@ export const Header = () => {
               {/* 이용권 구매 */}
               <Link
                 to="/products"
-                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-blue-600 hover:bg-blue-50 hover:text-blue-700")}
+                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")}
                 title="이용권 구매"
               >
                 <WonCircle className="h-6 w-6" />
@@ -272,6 +273,6 @@ export const Header = () => {
           </div>
         </div>
       </div>
-    </header>
+    </header >
   );
 };

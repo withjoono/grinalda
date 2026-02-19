@@ -156,9 +156,8 @@ export const Header = () => {
                   </div>
                   <Separator className="my-2" />
                   <div className="w-full space-y-2">
-                    <Link to="/products" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1 text-blue-600")} onClick={() => setIsOpen(false)}>
+                    <Link to="/products" className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")} onClick={() => setIsOpen(false)} title="이용권 구매">
                       <WonCircle className="h-6 w-6" />
-                      이용권 구매
                     </Link>
                     <Link to="/notifications" className={cn(buttonVariants({ variant: "ghost" }), "w-full justify-start gap-2 px-1")} onClick={() => setIsOpen(false)}>
                       <Bell className="h-4 w-4" />
@@ -212,7 +211,7 @@ export const Header = () => {
               {/* 이용권 구매 */}
               <Link
                 to="/products"
-                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-blue-600 hover:bg-blue-50 hover:text-blue-700")}
+                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-primary hover:bg-primary/10")}
                 title="이용권 구매"
               >
                 <WonCircle className="h-6 w-6" />

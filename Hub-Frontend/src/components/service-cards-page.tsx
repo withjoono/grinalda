@@ -183,25 +183,23 @@ const serviceCategories: ServiceCategory[] = [
     services: [
       {
         id: "teacher-admin",
-        title: "Teacher Admin",
+        title: "선생님용 앱",
         description: "선생님을 위한 학생·수업 관리",
         icon: <Users className="w-5 h-5" />,
         href: TEACHERADMIN_URL,
         color: "#3f8efc",
         features: ["학생 관리", "수업 관리", "학습 현황 모니터링"],
         isExternal: true,
-        allowedRoles: ['teacher'],
       },
       {
         id: "parent-admin",
-        title: "Parent Admin",
+        title: "학부모용 앱",
         description: "학부모를 위한 자녀 학습 현황",
         icon: <School className="w-5 h-5" />,
         href: PARENTADMIN_URL,
         color: "#d946ef",
         features: ["자녀 학습 현황", "수업 알림", "성적 리포트"],
         isExternal: true,
-        allowedRoles: ['parent'],
       },
     ],
   },
@@ -304,29 +302,42 @@ export function ServiceCardsPage() {
         <div style={{
           background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
           borderRadius: 20,
-          padding: '32px 36px',
+          padding: '24px 32px',
           color: '#fff',
-          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 24,
+          textAlign: 'left',
         }}>
-          <p style={{
-            fontSize: 17,
-            fontWeight: 500,
-            lineHeight: 1.8,
-            letterSpacing: '-0.01em',
-            color: 'rgba(255,255,255,0.85)',
-          }}>
-            거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
-            서로 연계될때, 더 큰 시너지를 냅니다.
-          </p>
-          <p style={{
-            fontSize: 15,
-            fontWeight: 600,
-            marginTop: 12,
-            color: '#93c5fd',
-            letterSpacing: '-0.01em',
-          }}>
-            한번의 생기부 업로드로 여러가지 서비스를 받으세요
-          </p>
+          <img
+            src="/images/turtle-teacher.png"
+            alt="거북쌤"
+            style={{ width: 64, height: 64, objectFit: 'contain' }}
+          />
+          <div>
+            <p style={{
+              fontSize: 17,
+              fontWeight: 500,
+              lineHeight: 1.5,
+              letterSpacing: '-0.01em',
+              color: 'rgba(255,255,255,0.95)',
+              margin: 0,
+            }}>
+              거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
+              서로 연계될때, 더 큰 시너지를 냅니다.
+            </p>
+            <p style={{
+              fontSize: 15,
+              fontWeight: 600,
+              marginTop: 6,
+              color: '#93c5fd',
+              letterSpacing: '-0.01em',
+              margin: '6px 0 0 0',
+            }}>
+              한번의 생기부 업로드로 여러가지 서비스를 받으세요
+            </p>
+          </div>
         </div>
       </motion.div>
 
@@ -629,31 +640,23 @@ function Header() {
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden md:flex" style={{ alignItems: 'center', gap: 4 }}>
-          {(memberType === 'teacher') ? (
-            <NavItem title="선생님 앱" isScrolled={isScrolled}>
-              <DropdownItem href={TEACHERADMIN_URL}>Teacher Admin</DropdownItem>
-            </NavItem>
-          ) : (memberType === 'parent') ? (
-            <NavItem title="학부모 앱" isScrolled={isScrolled}>
-              <DropdownItem href={PARENTADMIN_URL}>Parent Admin</DropdownItem>
-            </NavItem>
-          ) : (
-            <>
-              <NavItem title="성적관리 앱" isScrolled={isScrolled}>
-                <DropdownItem href={MYSANGGIBU_URL}>My 생기부</DropdownItem>
-                <DropdownItem href={MYEXAM_URL}>Exam Hub</DropdownItem>
-              </NavItem>
-              <NavItem title="학습관리 앱" isScrolled={isScrolled}>
-                <DropdownItem href={STUDYPLANNER_URL}>Study Planner</DropdownItem>
-                <DropdownItem href={TUTORBOARD_URL}>Tutor Board</DropdownItem>
-                <DropdownItem href={STUDYARENA_URL}>Study Arena</DropdownItem>
-              </NavItem>
-              <NavItem title="입시예측 앱" isScrolled={isScrolled}>
-                <DropdownItem href={SUSI_URL}>수시 예측</DropdownItem>
-                <DropdownItem href={JUNGSI_URL}>정시 예측</DropdownItem>
-              </NavItem>
-            </>
-          )}
+          <NavItem title="성적관리 앱" isScrolled={isScrolled}>
+            <DropdownItem href={MYSANGGIBU_URL}>My 생기부</DropdownItem>
+            <DropdownItem href={MYEXAM_URL}>Exam Hub</DropdownItem>
+          </NavItem>
+          <NavItem title="학습관리 앱" isScrolled={isScrolled}>
+            <DropdownItem href={STUDYPLANNER_URL}>Study Planner</DropdownItem>
+            <DropdownItem href={TUTORBOARD_URL}>Tutor Board</DropdownItem>
+            <DropdownItem href={STUDYARENA_URL}>Study Arena</DropdownItem>
+          </NavItem>
+          <NavItem title="입시예측 앱" isScrolled={isScrolled}>
+            <DropdownItem href={SUSI_URL}>수시 예측</DropdownItem>
+            <DropdownItem href={JUNGSI_URL}>정시 예측</DropdownItem>
+          </NavItem>
+          <NavItem title="사용자별 앱" isScrolled={isScrolled}>
+            <DropdownItem href={TEACHERADMIN_URL}>선생님용 앱</DropdownItem>
+            <DropdownItem href={PARENTADMIN_URL}>학부모용 앱</DropdownItem>
+          </NavItem>
         </nav>
 
         {/* 우측 액션 */}

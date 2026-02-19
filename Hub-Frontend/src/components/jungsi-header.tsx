@@ -35,7 +35,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Menu, ArrowLeft, Bell, Users } from "lucide-react";
+import { Menu, LayoutGrid, Bell, Users } from "lucide-react";
 import { WonCircle } from "./icons";
 import { clearTokens as clearTokenManager } from "@/lib/api/token-manager";
 import { useTokenStore } from "@/stores/atoms/tokens";
@@ -120,18 +120,19 @@ export const JungsiHeader = () => {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 flex flex-col items-start justify-center gap-2">
-                  {/* 전체 서비스로 돌아가기 */}
-                  <Link
-                    to="/"
+                  {/* 전체 서비스 아이콘 */}
+                  <a
+                    href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "mb-4 w-full justify-start gap-2 border-gray-300 text-orange-500 hover:bg-orange-50 hover:text-orange-600",
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "mb-4 text-primary hover:bg-primary/10",
                     )}
-                    onClick={() => setIsOpen(false)}
+                    title="전체 서비스"
                   >
-                    <ArrowLeft className="h-4 w-4" />
-                    전체 서비스로 돌아가기
-                  </Link>
+                    <LayoutGrid className="h-5 w-5" />
+                  </a>
 
                   <Separator className="mb-2" />
 
@@ -334,13 +335,14 @@ export const JungsiHeader = () => {
                     <Link
                       to="/products"
                       className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        "w-full justify-start gap-2 px-1 text-orange-500 hover:bg-orange-50 hover:text-orange-600",
-                      )}
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "text-primary hover:bg-primary/10",
+                    )}
+                    title="이용권 구매"
                       onClick={() => setIsOpen(false)}
                     >
                       <WonCircle className="h-6 w-6" />
-                      이용권 구매
+                      
                     </Link>
                     <Link
                       to="/jungsi/notifications"
@@ -421,19 +423,23 @@ export const JungsiHeader = () => {
           <div className="hidden items-center gap-8 lg:flex xl:gap-12">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* 전체 서비스로 돌아가기 */}
+                {/* 전체 서비스 아이콘 */}
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "gap-2 bg-transparent text-orange-500 hover:bg-orange-50 hover:text-orange-600",
+                      "bg-transparent text-primary hover:bg-primary/10",
                     )}
                     asChild
                   >
-                    <Link to="/">
-                      <ArrowLeft className="h-4 w-4" />
-                      전체 서비스
-                    </Link>
+                    <a
+                      href={import.meta.env.VITE_HUB_URL || "http://localhost:5000"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="전체 서비스"
+                    >
+                      <LayoutGrid className="h-5 w-5" />
+                    </a>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
@@ -649,7 +655,7 @@ export const JungsiHeader = () => {
                 to="/products"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
-                  "text-orange-500 hover:bg-orange-50 hover:text-orange-600",
+                  "text-primary hover:bg-primary/10",
                 )}
                 title="이용권 구매"
               >
