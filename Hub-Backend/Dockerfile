@@ -15,6 +15,10 @@ RUN yarn install --frozen-lockfile
 # Copy source code
 COPY . .
 
+# Generate Prisma client (dummy URL - only provider needed for generation)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=hub"
+RUN npx prisma generate
+
 # Build the application
 RUN yarn build
 
@@ -34,6 +38,11 @@ RUN yarn install --frozen-lockfile --production && yarn cache clean
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
+
+# Copy Prisma schema and generated client
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \

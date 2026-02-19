@@ -4,6 +4,9 @@
 # Include essential build files
 !src/
 !src/**
+!prisma/
+!prisma/**
+!prisma.config.ts
 !package.json
 !yarn.lock
 !tsconfig.json
