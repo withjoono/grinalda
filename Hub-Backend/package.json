@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "gcp-build": "nest build && tsc-alias",
+    "gcp-build": "npx prisma generate && nest build && tsc-alias",
     "build": "nest build && tsc-alias",
     "build:check": "node scripts/check-build.js",
     "clean": "rimraf dist tsconfig.build.tsbuildinfo tsconfig.tsbuildinfo",
