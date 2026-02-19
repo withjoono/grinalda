@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
+import { PrismaService } from 'src/database/prisma.service';
 
 /**
  * 회원 ID 자동 생성 서비스
@@ -11,9 +9,7 @@ import { MemberEntity } from 'src/database/entities/member/member.entity';
 @Injectable()
 export class MemberIdGeneratorService {
     constructor(
-        @InjectRepository(MemberEntity)
-        private membersRepository: Repository<MemberEntity>,
-        private readonly dataSource: DataSource,
+        private prisma: PrismaService,
     ) { }
 
     /**
@@ -36,13 +32,10 @@ export class MemberIdGeneratorService {
         const prefix = `${userTypeCode}${year}${detailCode}${month}${day}`;
 
         // 같은 prefix로 시작하는 기존 ID 중 가장 큰 순번 찾기
-        // CAST(id AS TEXT)를 사용하여 bigint/varchar 모두 지원
-        const result = await this.dataSource.query(
-            `SELECT CAST(id AS TEXT) as id FROM auth_member
-             WHERE CAST(id AS TEXT) LIKE $1
-             ORDER BY CAST(id AS TEXT) DESC LIMIT 1`,
-            [`${prefix}%`],
-        );
+        const result: { id: string }[] = await this.prisma.$queryRaw`
+            SELECT CAST(id AS TEXT) as id FROM hub.auth_member
+             WHERE CAST(id AS TEXT) LIKE ${prefix + '%'}
+             ORDER BY CAST(id AS TEXT) DESC LIMIT 1`;
 
         let seq = 1;
         if (result.length > 0) {

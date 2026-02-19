@@ -33,7 +33,7 @@ import { VerifyCodeDto } from './dtos/verify-code.dto';
 import { RegisterWithEmailDto } from './dtos/register-with-email.dto';
 import { RegisterWithSocialDto } from './dtos/register-with-social';
 import { CurrentMemberId } from './decorators/current-member_id.decorator';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
+
 import { CookieService } from './services/cookie.service';
 import { VerifyTokenDto } from './dtos/verify-token.dto';
 import { FirebaseLoginDto, FirebaseRegisterDto } from './dtos/firebase-auth.dto';
@@ -57,7 +57,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: '사용자 정보 조회 성공',
-    type: MemberEntity,
+    type: Object,
   })
   @ApiResponse({
     status: 401,
@@ -68,7 +68,7 @@ export class AuthController {
     groups: ['me'],
   })
   @Get('me')
-  public getCurrentMember(@CurrentMemberId() memberId: string): Promise<MemberEntity> {
+  public getCurrentMember(@CurrentMemberId() memberId: string): Promise<any> {
     return this.membersService.findMeById(memberId);
   }
 

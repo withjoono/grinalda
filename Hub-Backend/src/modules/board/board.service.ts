@@ -1,141 +1,75 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BoardEntity } from 'src/database/entities/boards/board.entity';
-import { PostEntity } from 'src/database/entities/boards/post.entity';
-import { Repository } from 'typeorm';
+import { PrismaService } from 'src/database/prisma.service';
 import { CreatePostDto } from './dtos/post.dto';
 import { MembersService } from '../members/services/members.service';
-import { CommentEntity } from 'src/database/entities/boards/comment.entity';
 import { CreateCommentDto } from './dtos/comment.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(BoardEntity)
-    private boardRepository: Repository<BoardEntity>,
-    @InjectRepository(PostEntity)
-    private postRepository: Repository<PostEntity>,
-    @InjectRepository(CommentEntity)
-    private commentRepository: Repository<CommentEntity>,
-
+    private prisma: PrismaService,
     private readonly membersService: MembersService,
   ) { }
 
-  async getAllBoards(): Promise<BoardEntity[]> {
-    return this.boardRepository.find();
+  async getAllBoards() {
+    return this.prisma.board.findMany();
   }
 
   async getPostsByBoard(
     boardId: number,
     paginationDto: PaginationDto,
-  ): Promise<{ posts: PostEntity[]; total: number }> {
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+  ) {
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
     const skip = (paginationDto.page - 1) * paginationDto.limit;
-    const [posts, total] = await this.postRepository.findAndCount({
-      where: {
-        board: { id: boardId },
-      },
-      relations: ['member', 'board'],
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        created_at: true,
-        updated_at: true,
-        is_emphasized: true,
-        member: {
-          id: true,
-          nickname: true,
+    const [posts, total] = await Promise.all([
+      this.prisma.post.findMany({
+        where: { board_id: boardId },
+        include: {
+          member: { select: { id: true, nickname: true } },
+          board: { select: { id: true, name: true } },
         },
-        board: {
-          id: true,
-          name: true,
-        },
-      },
-      order: {
-        created_at: 'DESC',
-      },
-      skip,
-      take: paginationDto.limit,
-    });
+        orderBy: { created_at: 'desc' },
+        skip,
+        take: paginationDto.limit,
+      }),
+      this.prisma.post.count({ where: { board_id: boardId } }),
+    ]);
 
     return { posts, total };
   }
 
-  async getEmphasizedPostsByBoard(boardId: number): Promise<PostEntity[]> {
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+  async getEmphasizedPostsByBoard(boardId: number) {
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
-    const posts = await this.postRepository.find({
-      where: {
-        board: { id: boardId },
-        is_emphasized: true,
+    return this.prisma.post.findMany({
+      where: { board_id: boardId, is_emphasized: true },
+      include: {
+        member: { select: { id: true, nickname: true } },
+        board: { select: { id: true, name: true } },
       },
-      relations: ['member', 'board'],
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        created_at: true,
-        updated_at: true,
-        is_emphasized: true,
-        member: {
-          id: true,
-          nickname: true,
-        },
-        board: {
-          id: true,
-          name: true,
-        },
-      },
-      order: {
-        created_at: 'DESC',
-      },
+      orderBy: { created_at: 'desc' },
     });
-
-    return posts;
   }
 
-  async getPostById(boardId: number, postId: number): Promise<PostEntity> {
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+  async getPostById(boardId: number, postId: number) {
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
-    const post = await this.postRepository.findOne({
-      where: {
-        id: postId,
-        board: { id: boardId },
-      },
-      relations: ['member', 'board'],
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        created_at: true,
-        updated_at: true,
-        is_emphasized: true,
-        member: {
-          id: true,
-          nickname: true,
-        },
-        board: {
-          id: true,
-          name: true,
-        },
+    const post = await this.prisma.post.findFirst({
+      where: { id: postId, board_id: boardId },
+      include: {
+        member: { select: { id: true, nickname: true } },
+        board: { select: { id: true, name: true } },
       },
     });
 
@@ -146,20 +80,13 @@ export class BoardService {
     return post;
   }
 
-  async createPost(
-    boardId: number,
-    createPostDto: CreatePostDto,
-    memberId: string,
-  ): Promise<PostEntity> {
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+  async createPost(boardId: number, createPostDto: CreatePostDto, memberId: string) {
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
     const member = await this.membersService.findOneById(memberId);
-
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
@@ -167,24 +94,20 @@ export class BoardService {
     if (board.permission === 'ROLE_ADMIN' && member.role_type !== 'ROLE_ADMIN') {
       throw new ForbiddenException('이 게시판에 글을 작성할 권한이 없습니다.');
     }
-    const post = this.postRepository.create({
-      ...createPostDto,
-      board,
-      member: member,
-    });
 
-    return this.postRepository.save(post);
+    return this.prisma.post.create({
+      data: {
+        title: createPostDto.title,
+        content: createPostDto.content,
+        is_emphasized: createPostDto.is_emphasized,
+        board_id: boardId,
+        member_id: memberId,
+      },
+    });
   }
 
-  async editPost(
-    boardId: number,
-    postId: number,
-    editPostDto: CreatePostDto,
-    memberId: string,
-  ): Promise<PostEntity> {
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+  async editPost(boardId: number, postId: number, editPostDto: CreatePostDto, memberId: string) {
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
@@ -194,21 +117,9 @@ export class BoardService {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
 
-    const post = await this.postRepository.findOne({
-      where: { id: postId, board: { id: boardId } },
-      relations: ['member'],
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        created_at: true,
-        updated_at: true,
-        is_emphasized: true,
-        member: {
-          id: true,
-          nickname: true,
-        },
-      },
+    const post = await this.prisma.post.findFirst({
+      where: { id: postId, board_id: boardId },
+      include: { member: { select: { id: true, nickname: true } } },
     });
     if (!post) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
@@ -222,57 +133,44 @@ export class BoardService {
       throw new ForbiddenException('이 게시판에 글을 수정할 권한이 없습니다.');
     }
 
-    post.title = editPostDto.title;
-    post.content = editPostDto.content;
-    post.is_emphasized = editPostDto.is_emphasized;
-
-    await this.postRepository.save(post);
-    return post;
+    return this.prisma.post.update({
+      where: { id: postId },
+      data: {
+        title: editPostDto.title,
+        content: editPostDto.content,
+        is_emphasized: editPostDto.is_emphasized,
+      },
+    });
   }
 
   async deletePost(boardId: number, postId: number, memberId: string): Promise<void> {
-    // 게시판 존재 확인
-    const board = await this.boardRepository.findOne({
-      where: { id: boardId },
-    });
+    const board = await this.prisma.board.findUnique({ where: { id: boardId } });
     if (!board) {
       throw new NotFoundException('게시판을 찾을 수 없습니다.');
     }
 
-    // 게시글 존재 확인 및 작성자 정보 로드
-    const post = await this.postRepository.findOne({
-      where: { id: postId, board: { id: boardId } },
-      relations: ['member'],
+    const post = await this.prisma.post.findFirst({
+      where: { id: postId, board_id: boardId },
+      include: { member: true },
     });
     if (!post) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
 
-    // 현재 사용자 정보 로드
     const member = await this.membersService.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
 
-    // 권한 확인: 작성자 본인 또는 관리자만 삭제 가능
     if (post.member.id !== member.id && member.role_type !== 'ROLE_ADMIN') {
       throw new ForbiddenException('이 게시글을 삭제할 권한이 없습니다.');
     }
 
-    // 게시글 삭제
-    await this.postRepository.remove(post);
+    await this.prisma.post.delete({ where: { id: postId } });
   }
 
-  async createComment(
-    postId: number,
-    createCommentDto: CreateCommentDto,
-    memberId: string,
-  ): Promise<CommentEntity> {
-    const post = await this.postRepository.findOne({
-      where: {
-        id: postId,
-      },
-    });
+  async createComment(postId: number, createCommentDto: CreateCommentDto, memberId: string) {
+    const post = await this.prisma.post.findUnique({ where: { id: postId } });
     if (!post) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
@@ -282,39 +180,25 @@ export class BoardService {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
-    const comment = this.commentRepository.create({
-      ...createCommentDto,
-      post,
-      member,
-    });
-
-    return this.commentRepository.save(comment);
-  }
-
-  async getCommentsByPost(postId: number): Promise<CommentEntity[]> {
-    const post = await this.postRepository.findOne({
-      where: {
-        id: postId,
+    return this.prisma.comment.create({
+      data: {
+        content: createCommentDto.content,
+        post_id: postId,
+        member_id: memberId,
       },
     });
+  }
+
+  async getCommentsByPost(postId: number) {
+    const post = await this.prisma.post.findUnique({ where: { id: postId } });
     if (!post) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
 
-    return this.commentRepository.find({
-      where: { post: { id: postId } },
-      relations: ['member'],
-      select: {
-        id: true,
-        content: true,
-        created_at: true,
-        updated_at: true,
-        member: {
-          id: true,
-          nickname: true,
-        },
-      },
-      order: { created_at: 'ASC' },
+    return this.prisma.comment.findMany({
+      where: { post_id: postId },
+      include: { member: { select: { id: true, nickname: true } } },
+      orderBy: { created_at: 'asc' },
     });
   }
 }

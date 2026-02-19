@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class AppPermissionDto {
   @ApiProperty({ example: 'premium', description: '구독 플랜' })
-  plan: 'free' | 'basic' | 'premium' | 'none';
+  plan: string;
 
   @ApiProperty({ example: '2025-12-31T23:59:59Z', description: '만료일', required: false })
   expires?: string;

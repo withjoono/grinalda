@@ -1,17 +1,14 @@
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
-
 export class PayHistoryDto {
-  id: PayOrderEntity['id'];
-  cancel_amount: PayOrderEntity['cancel_amount'];
-  paid_amount: PayOrderEntity['paid_amount'];
-  card_name: PayOrderEntity['card_name'];
-  create_dt: PayOrderEntity['update_dt'];
-  order_state: PayOrderEntity['order_state'];
+  id: bigint;
+  cancel_amount: number;
+  paid_amount: number;
+  card_name: string;
+  create_dt: Date;
+  order_state: string;
 
   pay_service: {
-    product_nm: PayServiceEntity['product_nm'];
-    term: PayServiceEntity['term'];
-    product_price: PayServiceEntity['product_price'];
+    product_nm: string;
+    term: Date;
+    product_price: string;
   };
 }

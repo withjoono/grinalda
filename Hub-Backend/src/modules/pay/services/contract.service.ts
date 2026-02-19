@@ -1,58 +1,49 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
-import { PayContractEntity } from 'src/database/entities/pay/pay-contract.entity';
-// TODO: 독립 앱으로 분리 - Officer 엔티티
-// import { OfficerTicketEntity } from 'src/database/entities/officer-evaluation/officer-ticket.entity';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ContractService {
   constructor(
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
+    private readonly prisma: PrismaService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) { }
 
   async handleProductSpecificLogic(
-    queryRunner: any,
-    productId: number,
+    tx: Prisma.TransactionClient,
+    productId: bigint,
     memberId: string,
-    orderId: number,
+    orderId: bigint,
   ) {
     this.logger.warn(
       `상품별 로직 처리 시작: 상품 ID ${productId}, 회원 ID ${memberId}, 주문 ID ${orderId}`,
     );
-    const _productId = Number(productId);
-    const service = await this.findProductById(_productId);
+    const service = await this.findProductById(productId);
 
-    // 상품 타입 코드 기반으로 처리
     const productTypeCode = service.product_type_code;
 
     switch (productTypeCode) {
-      case 'FIXEDTERM': // 기간권 (정시, 수시 기간권 등)
-        await this.contractFixedTermService(queryRunner, service, memberId, orderId);
+      case 'FIXEDTERM':
+        await this.contractFixedTermService(tx, service, memberId, orderId);
         break;
-      case 'TICKET': // 이용권 (사정관 이용권 등)
-        await this.contractOfficerTicket(queryRunner, service, memberId, orderId);
+      case 'TICKET':
+        await this.contractOfficerTicket(tx, service, memberId, orderId);
         break;
-      case 'PACKAGE': // 패키지 (기간권 + 이용권)
-        await this.contractSusiPackage(queryRunner, service, memberId, orderId);
+      case 'PACKAGE':
+        await this.contractSusiPackage(tx, service, memberId, orderId);
         break;
       default:
-        // 타입 코드가 없거나 알 수 없는 경우, 기간권으로 처리
         this.logger.warn(`알 수 없는 상품 타입: ${productTypeCode}, 기간권으로 처리합니다.`);
-        await this.contractFixedTermService(queryRunner, service, memberId, orderId);
+        await this.contractFixedTermService(tx, service, memberId, orderId);
     }
     this.logger.warn(`상품별 로직 처리 완료: 상품 ID ${productId}`);
   }
 
-  private async findProductById(productId: number): Promise<PayServiceEntity> {
-    const product = await this.payServiceRepository.findOne({
-      where: { id: Number(productId) },
+  private async findProductById(productId: bigint) {
+    const product = await this.prisma.paymentService.findUnique({
+      where: { id: productId },
     });
 
     if (!product) {
@@ -63,14 +54,12 @@ export class ContractService {
     return product;
   }
 
-  // 기간권 계약
   private async contractFixedTermService(
-    queryRunner: any,
-    service: PayServiceEntity,
+    tx: Prisma.TransactionClient,
+    service: any,
     memberId: string,
-    orderId: number,
+    orderId: bigint,
   ) {
-    // service.term이 null인 경우 기본 1개월 계약
     let endDate: Date;
     if (service.term) {
       endDate = new Date(service.term);
@@ -79,39 +68,31 @@ export class ContractService {
       endDate.setMonth(endDate.getMonth() + 1);
     }
 
-    const newContract = this.createPayContractEntity(service, memberId, orderId, endDate);
-    await queryRunner.manager.save(PayContractEntity, newContract);
+    await this.createPayContract(tx, service, memberId, orderId, endDate);
     this.logger.warn(
       `기간권 계약 완료: 회원 ID ${memberId}, 상품 ID ${service.id}, 종료일 ${endDate.toISOString()}`,
     );
   }
 
-  // 사정관 이용권 계약
   private async contractOfficerTicket(
-    queryRunner: any,
-    service: PayServiceEntity,
+    tx: Prisma.TransactionClient,
+    service: any,
     memberId: string,
-    orderId: number,
+    orderId: bigint,
   ) {
     const endDate = new Date();
     endDate.setFullYear(endDate.getFullYear() + 100);
 
-    const newContract = this.createPayContractEntity(service, memberId, orderId, endDate);
-    await queryRunner.manager.save(PayContractEntity, newContract);
-
-    // TODO: 독립 앱으로 분리 - Officer 이용권 발급
-    // await this.issueOfficerTicket(queryRunner, memberId);
+    await this.createPayContract(tx, service, memberId, orderId, endDate);
     this.logger.warn(`사정관 이용권 계약 완료: 회원 ID ${memberId}, 상품 ID ${service.id}`);
   }
 
-  // 수시 패키지 계약 (기간권 + 이용권)
   private async contractSusiPackage(
-    queryRunner: any,
-    service: PayServiceEntity,
+    tx: Prisma.TransactionClient,
+    service: any,
     memberId: string,
-    orderId: number,
+    orderId: bigint,
   ) {
-    // service.term이 null인 경우 기본 1개월 계약
     let endDate: Date;
     if (service.term) {
       endDate = new Date(service.term);
@@ -120,92 +101,42 @@ export class ContractService {
       endDate.setMonth(endDate.getMonth() + 1);
     }
 
-    const newContract = this.createPayContractEntity(service, memberId, orderId, endDate);
-    await queryRunner.manager.save(PayContractEntity, newContract);
-
-    // TODO: 독립 앱으로 분리 - Officer 이용권 발급
-    // await this.issueOfficerTicket(queryRunner, memberId);
+    await this.createPayContract(tx, service, memberId, orderId, endDate);
     this.logger.warn(`수시 패키지 계약 완료: 회원 ID ${memberId}, 상품 ID ${service.id}`);
   }
 
-  // 수시 컨설팅 계약 (기간권 + 이용권)
-  private async contractSusiConsulting(
-    queryRunner: any,
-    service: PayServiceEntity,
+  private async createPayContract(
+    tx: Prisma.TransactionClient,
+    service: any,
     memberId: string,
-    orderId: number,
-  ) {
-    // service.term이 null인 경우 기본 1개월 계약
-    let endDate: Date;
-    if (service.term) {
-      endDate = new Date(service.term);
-    } else {
-      endDate = new Date();
-      endDate.setMonth(endDate.getMonth() + 1);
-    }
-
-    const newContract = this.createPayContractEntity(service, memberId, orderId, endDate);
-    await queryRunner.manager.save(PayContractEntity, newContract);
-
-    // TODO: 독립 앱으로 분리 - Officer 이용권 발급
-    // await this.issueOfficerTicket(queryRunner, memberId);
-    this.logger.warn(`수시 컨설팅 계약 완료: 회원 ID ${memberId}, 상품 ID ${service.id}`);
-  }
-
-  // 계약객체 생성
-  private createPayContractEntity(
-    service: PayServiceEntity,
-    memberId: string,
-    orderId: number,
+    orderId: bigint,
     endDate: Date,
-  ): PayContractEntity {
+  ) {
     const today = new Date();
 
-    const newContract = new PayContractEntity();
-    newContract.contract_period_end_dt = endDate;
-    newContract.contract_start_dt = today;
-    newContract.contract_use = 1;
-    newContract.create_dt = today;
-    newContract.product_code = service.product_type_code;
-    newContract.regular_contract_fl = false;
-    newContract.update_dt = today;
-    newContract.member_id = memberId;
-    newContract.order_id = orderId;
-
-    return newContract;
+    await tx.paymentContract.create({
+      data: {
+        contract_period_end_dt: endDate,
+        contract_start_dt: today,
+        contract_use: 1,
+        create_dt: today,
+        product_code: service.product_type_code,
+        regular_contract_fl: false,
+        update_dt: today,
+        member_id: memberId,
+        order_id: orderId,
+      },
+    });
   }
 
-  // TODO: 독립 앱으로 분리 - Officer 이용권 발급
-  // private async issueOfficerTicket(queryRunner: any, memberId: number) {
-  //   let officerTicket = await queryRunner.manager.findOne(OfficerTicketEntity, {
-  //     where: { member_id: memberId },
-  //   });
-
-  //   if (officerTicket) {
-  //     officerTicket.ticket_count += 1;
-  //     this.logger.warn(
-  //       `기존 이용권 업데이트: 회원 ID ${memberId}, 새 이용권 수 ${officerTicket.ticket_count}`,
-  //     );
-  //   } else {
-  //     officerTicket = new OfficerTicketEntity();
-  //     officerTicket.member_id = memberId;
-  //     officerTicket.ticket_count = 1;
-  //     this.logger.warn(`새 이용권 생성: 회원 ID ${memberId}`);
-  //   }
-
-  //   await queryRunner.manager.save(OfficerTicketEntity, officerTicket);
-  //   this.logger.warn(`이용권 발급 완료: 회원 ID ${memberId}`);
-  // }
-
-  // 결제 실패 후처리
   async handleFailedPayment(
-    queryRunner: any,
-    payServiceId: number,
+    tx: Prisma.TransactionClient,
+    payServiceId: bigint,
     memberId: string,
   ): Promise<void> {
     this.logger.warn(`결제 실패 처리 시작: 회원 ID ${memberId}, 상품 ID ${payServiceId}`);
     try {
-      const payOrder = await queryRunner.manager.findOne(PayOrderEntity, {
+      const payOrder = await tx.paymentOrder.findFirst({
         where: {
           pay_service_id: payServiceId,
           member_id: memberId,
@@ -213,17 +144,14 @@ export class ContractService {
       });
 
       if (payOrder) {
-        payOrder.order_state = 'FAILED';
-        payOrder.update_dt = new Date();
-        await queryRunner.manager.save(PayOrderEntity, payOrder);
+        await tx.paymentOrder.update({
+          where: { id: payOrder.id },
+          data: { order_state: 'FAILED', update_dt: new Date() },
+        });
         this.logger.warn(`주문 상태 업데이트: 주문 ID ${payOrder.id}, 새 상태 'FAILED'`);
+
+        await this.cancelContract(tx, payOrder.id, memberId);
       }
-
-      // 추가적인 실패 처리 로직
-      // 예: 실패 알림 전송, 통계 업데이트 등
-
-      // 계약 취소 로직
-      await this.cancelContract(queryRunner, payOrder.id, memberId);
 
       this.logger.warn(`결제 실패 처리 완료: 회원 ID ${memberId}, 상품 ID ${payServiceId}`);
     } catch (error) {
@@ -234,36 +162,14 @@ export class ContractService {
     }
   }
 
-  // 완료된 결제 건 취소 처리
   async handleCancelledPayment(
-    queryRunner: any,
-    payOrderId: number,
+    tx: Prisma.TransactionClient,
+    payOrderId: bigint,
     memberId: string,
   ): Promise<void> {
     this.logger.warn(`결제 취소 처리 시작: 회원 ID ${memberId}, 주문 ID ${payOrderId}`);
     try {
-      // const payOrder = await queryRunner.manager.findOne(PayOrderEntity, {
-      //   where: {
-      //     pay_service_id: payServiceId,
-      //     member_id: memberId,
-      //     order_state: 'COMPLETE',
-      //   },
-      // });
-
-      // if (payOrder) {
-      //   payOrder.order_state = 'CANCEL';
-      //   payOrder.update_dt = new Date();
-      //   await queryRunner.manager.save(PayOrderEntity, payOrder);
-      //   this.logger.warn(
-      //     `주문 상태 업데이트: 주문 ID ${payOrder.id}, 새 상태 'CANCEL'`,
-      //   );
-
-      //   // 계약 취소 로직
-      //   await this.cancelContract(queryRunner, payOrder.id, memberId);
-      // }
-
-      // 계약 취소 로직
-      await this.cancelContract(queryRunner, payOrderId, memberId);
+      await this.cancelContract(tx, payOrderId, memberId);
       this.logger.warn(`결제 취소 처리 완료: 회원 ID ${memberId}, 주문 ID ${payOrderId}`);
     } catch (error) {
       this.logger.error(`결제 취소 처리 중 오류 발생: ${error.message}`, {
@@ -273,39 +179,18 @@ export class ContractService {
     }
   }
 
-  private async cancelContract(queryRunner: any, orderId: number, memberId: string): Promise<void> {
-    const contract = await queryRunner.manager.findOne(PayContractEntity, {
+  private async cancelContract(tx: Prisma.TransactionClient, orderId: bigint, memberId: string): Promise<void> {
+    const contract = await tx.paymentContract.findFirst({
       where: { order_id: orderId, member_id: memberId },
     });
 
     if (contract) {
-      contract.contract_use = 0;
-      contract.update_dt = new Date();
-      await queryRunner.manager.save(PayContractEntity, contract);
+      await tx.paymentContract.update({
+        where: { id: contract.id },
+        data: { contract_use: 0, update_dt: new Date() },
+      });
       this.logger.warn(`계약 상태 업데이트: 계약 ID ${contract.id}, 새 상태 '사용안함'`);
-
-      // 이용권 취소 로직 (필요한 경우)
-      // TODO: 독립 앱으로 분리 - Officer 이용권 취소
-      // if (contract.product_code === 'TICKET' || contract.product_code === 'PACKAGE') {
-      //   await this.cancelOfficerTicket(queryRunner, memberId);
-      // }
     }
     this.logger.warn(`계약 취소 완료: 주문 ID ${orderId}, 회원 ID ${memberId}`);
   }
-
-  // TODO: 독립 앱으로 분리 - Officer 이용권 취소
-  // private async cancelOfficerTicket(queryRunner: any, memberId: number): Promise<void> {
-  //   const officerTicket = await queryRunner.manager.findOne(OfficerTicketEntity, {
-  //     where: { member_id: memberId },
-  //   });
-
-  //   if (officerTicket && officerTicket.ticket_count > 0) {
-  //     officerTicket.ticket_count -= 1;
-  //     await queryRunner.manager.save(OfficerTicketEntity, officerTicket);
-  //     this.logger.warn(
-  //       `이용권 수 감소: 회원 ID ${memberId}, 새 이용권 수 ${officerTicket.ticket_count}`,
-  //     );
-  //   }
-  //   this.logger.warn(`이용권 취소 완료: 회원 ID ${memberId}`);
-  // }
 }

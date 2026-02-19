@@ -1,45 +1,15 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SchoolRecordAttendanceDetailEntity } from 'src/database/entities/schoolrecord/schoolrecord-attendance-detail.entity';
-import { SchoolRecordSelectSubjectEntity } from 'src/database/entities/schoolrecord/schoolrecord-select-subject.entity';
-import { SchoolRecordSubjectLearningEntity } from 'src/database/entities/schoolrecord/schoolrecord-subject-learning.entity';
-import { SchoolRecordVolunteerEntity } from 'src/database/entities/schoolrecord/schoolrecord-volunteer.entity';
-import { DataSource, EntityManager, EntityTarget, ObjectLiteral, Repository } from 'typeorm';
-import { SchoolrecordSportsArtEntity } from 'src/database/entities/schoolrecord/schoolrecord-sport-art.entity';
-import { SchoolRecordCreativeActivityEntity } from 'src/database/entities/schoolrecord/schoolrecord-creative-activity.entity';
-import { SchoolRecordBehaviorOpinionEntity } from 'src/database/entities/schoolrecord/schoolrecord-behavior-opinion.entity';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class SchoolRecordService {
     private readonly logger = new Logger(SchoolRecordService.name);
     constructor(
-        @InjectRepository(SchoolRecordAttendanceDetailEntity)
-        private attendanceRepository: Repository<SchoolRecordAttendanceDetailEntity>,
-        @InjectRepository(SchoolRecordSelectSubjectEntity)
-        private selectSubjectRepository: Repository<SchoolRecordSelectSubjectEntity>,
-        @InjectRepository(SchoolRecordSubjectLearningEntity)
-        private subjectLearningRepository: Repository<SchoolRecordSubjectLearningEntity>,
-        @InjectRepository(SchoolRecordVolunteerEntity)
-        private volunteerRepository: Repository<SchoolRecordVolunteerEntity>,
-        @InjectRepository(SchoolrecordSportsArtEntity)
-        private sportArtRepository: Repository<SchoolrecordSportsArtEntity>,
-        @InjectRepository(SchoolRecordCreativeActivityEntity)
-        private creativeActivityRepository: Repository<SchoolRecordCreativeActivityEntity>,
-        @InjectRepository(SchoolRecordBehaviorOpinionEntity)
-        private behaviorOpinionRepository: Repository<SchoolRecordBehaviorOpinionEntity>,
-        @InjectRepository(MemberEntity)
-        private memberRepository: Repository<MemberEntity>,
-        private readonly dataSource: DataSource,
+        private readonly prisma: PrismaService,
     ) { }
 
-    /**
-     * 멤버의 전체 생기부 데이터 조회
-     */
     async getSchoolRecord(memberId: string) {
-        const member = await this.memberRepository.findOne({
-            where: { id: memberId },
-        });
+        const member = await this.prisma.authMember.findUnique({ where: { id: memberId } });
         if (!member) {
             throw new NotFoundException(`유저를 찾을 수 없습니다. (id: ${memberId})`);
         }
@@ -67,75 +37,72 @@ export class SchoolRecordService {
         };
     }
 
-    async getAttendanceDetails(memberId: string): Promise<SchoolRecordAttendanceDetailEntity[]> {
+    async getAttendanceDetails(memberId: string) {
         try {
-            return await this.attendanceRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbAttendance.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    async getSelectSubjects(memberId: string): Promise<SchoolRecordSelectSubjectEntity[]> {
+    async getSelectSubjects(memberId: string) {
         try {
-            return await this.selectSubjectRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbSelectSubject.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    async getSubjectLearnings(memberId: string): Promise<SchoolRecordSubjectLearningEntity[]> {
+    async getSubjectLearnings(memberId: string) {
         try {
-            return await this.subjectLearningRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbSubjectLearning.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    async getVolunteers(memberId: string): Promise<SchoolRecordVolunteerEntity[]> {
+    async getVolunteers(memberId: string) {
         try {
-            return await this.volunteerRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbVolunteer.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    async getSportArts(memberId: string): Promise<SchoolrecordSportsArtEntity[]> {
-        return await this.sportArtRepository.find({
-            where: { member: { id: memberId } },
+    async getSportArts(memberId: string) {
+        return await this.prisma.sgbSportsArt.findMany({
+            where: { member_id: memberId },
         });
     }
 
-    async getCreativeActivities(memberId: string): Promise<SchoolRecordCreativeActivityEntity[]> {
+    async getCreativeActivities(memberId: string) {
         try {
-            return await this.creativeActivityRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbCreativeActivity.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    async getBehaviorOpinions(memberId: string): Promise<SchoolRecordBehaviorOpinionEntity[]> {
+    async getBehaviorOpinions(memberId: string) {
         try {
-            return await this.behaviorOpinionRepository.find({
-                where: { member: { id: memberId } },
+            return await this.prisma.sgbBehaviorOpinion.findMany({
+                where: { member_id: memberId },
             });
         } catch {
             return [];
         }
     }
 
-    /**
-     * PDF 파싱 결과를 DB에 저장
-     */
     async saveParsedPdfData(
         memberId: string,
         data: {
@@ -155,25 +122,23 @@ export class SchoolRecordService {
             behaviorOpinions?: Array<{ grade: string; content: string }>;
         },
     ): Promise<void> {
-        const member = await this.memberRepository.findOne({
-            where: { id: memberId },
-        });
+        const member = await this.prisma.authMember.findUnique({ where: { id: memberId } });
         if (!member) {
             throw new NotFoundException(`유저를 찾을 수 없습니다.`);
         }
 
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
+        await this.prisma.$transaction(async (tx) => {
             // 기존 기록 삭제 (재업로드 시)
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
+            await tx.sgbSubjectLearning.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSelectSubject.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbCreativeActivity.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbBehaviorOpinion.deleteMany({ where: { member_id: member.id } });
 
             // 일반 교과목 저장
             if (data.subjectLearnings.length > 0) {
-                const subjectLearnings = data.subjectLearnings.map((item) =>
-                    this.subjectLearningRepository.create({
-                        member,
+                await tx.sgbSubjectLearning.createMany({
+                    data: data.subjectLearnings.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         semester: item.semester,
                         main_subject_code: item.mainSubjectCode,
@@ -189,16 +154,15 @@ export class SchoolRecordService {
                         ranking: item.ranking,
                         etc: item.etc,
                         detail_and_specialty: item.detailAndSpecialty || null,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, subjectLearnings);
+                    })),
+                });
             }
 
             // 진로선택 과목 저장
             if (data.selectSubjects.length > 0) {
-                const selectSubjects = data.selectSubjects.map((item) =>
-                    this.selectSubjectRepository.create({
-                        member,
+                await tx.sgbSelectSubject.createMany({
+                    data: data.selectSubjects.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         semester: item.semester,
                         main_subject_code: item.mainSubjectCode,
@@ -215,34 +179,31 @@ export class SchoolRecordService {
                         achievementc: item.achievementC,
                         etc: item.etc,
                         detail_and_specialty: item.detailAndSpecialty || null,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, selectSubjects);
+                    })),
+                });
             }
 
             // 창체 저장
             if (data.creativeActivities && data.creativeActivities.length > 0) {
-                const entities = data.creativeActivities.map((item) =>
-                    this.creativeActivityRepository.create({
-                        member,
+                await tx.sgbCreativeActivity.createMany({
+                    data: data.creativeActivities.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         activity_type: item.activityType,
                         content: item.content,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordCreativeActivityEntity, entities);
+                    })),
+                });
             }
 
             // 행특 저장
             if (data.behaviorOpinions && data.behaviorOpinions.length > 0) {
-                const entities = data.behaviorOpinions.map((item) =>
-                    this.behaviorOpinionRepository.create({
-                        member,
+                await tx.sgbBehaviorOpinion.createMany({
+                    data: data.behaviorOpinions.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         content: item.content,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordBehaviorOpinionEntity, entities);
+                    })),
+                });
             }
         });
 
@@ -251,9 +212,6 @@ export class SchoolRecordService {
         );
     }
 
-    /**
-     * HTML 파싱 결과를 DB에 저장 (출결, 교과, 진로선택, 봉사)
-     */
     async saveHtmlParsedData(
         memberId: string,
         data: {
@@ -277,40 +235,41 @@ export class SchoolRecordService {
             behaviorOpinions?: Array<{ grade: string; content: string }>;
         },
     ): Promise<void> {
-        const member = await this.memberRepository.findOne({ where: { id: memberId } });
+        const member = await this.prisma.authMember.findUnique({ where: { id: memberId } });
         if (!member) {
             throw new NotFoundException(`유저를 찾을 수 없습니다.`);
         }
 
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
+        await this.prisma.$transaction(async (tx) => {
             // 기존 기록 삭제
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordVolunteerEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
+            await tx.sgbSubjectLearning.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSelectSubject.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbVolunteer.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbCreativeActivity.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbBehaviorOpinion.deleteMany({ where: { member_id: member.id } });
 
             // 일반 교과목 저장
             if (data.subjectLearnings.length > 0) {
-                const entities = data.subjectLearnings.map((item) =>
-                    this.subjectLearningRepository.create({
-                        member, grade: item.grade, semester: item.semester,
+                await tx.sgbSubjectLearning.createMany({
+                    data: data.subjectLearnings.map((item) => ({
+                        member_id: member.id,
+                        grade: item.grade, semester: item.semester,
                         main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
                         subject_code: item.subjectCode, subject_name: item.subjectName,
                         unit: item.unit, raw_score: item.rawScore,
                         sub_subject_average: item.subSubjectAverage, standard_deviation: item.standardDeviation,
                         achievement: item.achievement, students_num: item.studentsNum,
                         ranking: item.ranking, etc: item.etc, detail_and_specialty: item.detailAndSpecialty || null,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, entities);
+                    })),
+                });
             }
 
             // 진로선택 과목 저장
             if (data.selectSubjects.length > 0) {
-                const entities = data.selectSubjects.map((item) =>
-                    this.selectSubjectRepository.create({
-                        member, grade: item.grade, semester: item.semester,
+                await tx.sgbSelectSubject.createMany({
+                    data: data.selectSubjects.map((item) => ({
+                        member_id: member.id,
+                        grade: item.grade, semester: item.semester,
                         main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
                         subject_code: item.subjectCode, subject_name: item.subjectName,
                         unit: item.unit, raw_score: item.rawScore,
@@ -318,55 +277,49 @@ export class SchoolRecordService {
                         students_num: item.studentsNum,
                         achievementa: item.achievementA, achievementb: item.achievementB,
                         achievementc: item.achievementC, etc: item.etc, detail_and_specialty: item.detailAndSpecialty || null,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, entities);
+                    })),
+                });
             }
 
             // 봉사활동 저장
             if (data.volunteers.length > 0) {
-                const entities = data.volunteers.map((item) =>
-                    this.volunteerRepository.create({
-                        member, grade: item.grade, date: item.date, place: item.place,
+                await tx.sgbVolunteer.createMany({
+                    data: data.volunteers.map((item) => ({
+                        member_id: member.id,
+                        grade: item.grade, date: item.date, place: item.place,
                         activity_content: item.activityContent, activity_time: item.activityTime,
                         accumulate_time: item.accumulateTime,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordVolunteerEntity, entities);
+                    })),
+                });
             }
 
             // 창체 저장
             if (data.creativeActivities && data.creativeActivities.length > 0) {
-                const entities = data.creativeActivities.map((item) =>
-                    this.creativeActivityRepository.create({
-                        member,
+                await tx.sgbCreativeActivity.createMany({
+                    data: data.creativeActivities.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         activity_type: item.activityType,
                         content: item.content,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordCreativeActivityEntity, entities);
+                    })),
+                });
             }
 
             // 행특 저장
             if (data.behaviorOpinions && data.behaviorOpinions.length > 0) {
-                const entities = data.behaviorOpinions.map((item) =>
-                    this.behaviorOpinionRepository.create({
-                        member,
+                await tx.sgbBehaviorOpinion.createMany({
+                    data: data.behaviorOpinions.map((item) => ({
+                        member_id: member.id,
                         grade: item.grade,
                         content: item.content,
-                    }),
-                );
-                await transactionalEntityManager.save(SchoolRecordBehaviorOpinionEntity, entities);
+                    })),
+                });
             }
         });
 
         this.logger.log(`Saved HTML parsed data for member ${member.id}`);
     }
 
-    /**
-     * 수동 생기부 편집 (Susi 프론트엔드의 폼 기반 저장)
-     */
     async editLifeRecord(
         memberId: string,
         data: {
@@ -392,92 +345,77 @@ export class SchoolRecordService {
             }>;
         },
     ): Promise<void> {
-        const member = await this.memberRepository.findOne({ where: { id: memberId } });
+        const member = await this.prisma.authMember.findUnique({ where: { id: memberId } });
         if (!member) {
             throw new NotFoundException(`유저를 찾을 수 없습니다. (id: ${memberId})`);
         }
 
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
+        await this.prisma.$transaction(async (tx) => {
             // 기존 기록 삭제
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordAttendanceDetailEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
+            await tx.sgbAttendance.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSubjectLearning.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSelectSubject.deleteMany({ where: { member_id: member.id } });
 
             // 출결 저장
             if (data.attendances.length > 0) {
-                const entities = data.attendances.map((a) => this.attendanceRepository.create({ ...a, member }));
-                await transactionalEntityManager.save(SchoolRecordAttendanceDetailEntity, entities);
+                await tx.sgbAttendance.createMany({
+                    data: data.attendances.map((a) => ({ ...a, member_id: member.id })),
+                });
             }
 
             // 일반 교과목 저장
             if (data.subjects.length > 0) {
-                const entities = data.subjects.map((item) => this.subjectLearningRepository.create({
-                    member, grade: item.grade, semester: item.semester,
-                    main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
-                    subject_code: item.subjectCode, subject_name: item.subjectName,
-                    unit: item.unit, raw_score: item.rawScore,
-                    sub_subject_average: item.subSubjectAverage, standard_deviation: item.standardDeviation,
-                    achievement: item.achievement, students_num: item.studentsNum,
-                    ranking: item.ranking, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
-                }));
-                await transactionalEntityManager.save(SchoolRecordSubjectLearningEntity, entities);
+                await tx.sgbSubjectLearning.createMany({
+                    data: data.subjects.map((item) => ({
+                        member_id: member.id,
+                        grade: item.grade, semester: item.semester,
+                        main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
+                        subject_code: item.subjectCode, subject_name: item.subjectName,
+                        unit: item.unit, raw_score: item.rawScore,
+                        sub_subject_average: item.subSubjectAverage, standard_deviation: item.standardDeviation,
+                        achievement: item.achievement, students_num: item.studentsNum,
+                        ranking: item.ranking, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
+                    })),
+                });
             }
 
             // 진로선택 과목 저장
             if (data.selectSubjects.length > 0) {
-                const entities = data.selectSubjects.map((item) => this.selectSubjectRepository.create({
-                    member, grade: item.grade, semester: item.semester,
-                    main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
-                    subject_code: item.subjectCode, subject_name: item.subjectName,
-                    unit: item.unit, raw_score: item.rawScore,
-                    sub_subject_average: item.subSubjectAverage, achievement: item.achievement,
-                    students_num: item.studentsNum,
-                    achievementa: item.achievementa, achievementb: item.achievementb,
-                    achievementc: item.achievementc, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
-                }));
-                await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, entities);
+                await tx.sgbSelectSubject.createMany({
+                    data: data.selectSubjects.map((item) => ({
+                        member_id: member.id,
+                        grade: item.grade, semester: item.semester,
+                        main_subject_code: item.mainSubjectCode, main_subject_name: item.mainSubjectName,
+                        subject_code: item.subjectCode, subject_name: item.subjectName,
+                        unit: item.unit, raw_score: item.rawScore,
+                        sub_subject_average: item.subSubjectAverage, achievement: item.achievement,
+                        students_num: item.studentsNum,
+                        achievementa: item.achievementa, achievementb: item.achievementb,
+                        achievementc: item.achievementc, etc: item.etc, detail_and_specialty: item.detailAndSpecialty,
+                    })),
+                });
             }
         });
 
         this.logger.log(`Edited life record for member ${member.id}`);
     }
 
-    /**
-     * 생기부 데이터 삭제
-     */
     async deleteSchoolRecord(memberId: string): Promise<void> {
-        const member = await this.memberRepository.findOne({ where: { id: memberId } });
+        const member = await this.prisma.authMember.findUnique({ where: { id: memberId } });
         if (!member) {
             throw new NotFoundException(`유저를 찾을 수 없습니다.`);
         }
 
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSubjectLearningEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordSelectSubjectEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordAttendanceDetailEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordVolunteerEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolrecordSportsArtEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordCreativeActivityEntity, member.id);
-            await this.deleteByMemberId(transactionalEntityManager, SchoolRecordBehaviorOpinionEntity, member.id);
+        await this.prisma.$transaction(async (tx) => {
+            await tx.sgbSubjectLearning.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSelectSubject.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbAttendance.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbVolunteer.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbSportsArt.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbCreativeActivity.deleteMany({ where: { member_id: member.id } });
+            await tx.sgbBehaviorOpinion.deleteMany({ where: { member_id: member.id } });
         });
 
         this.logger.log(`Deleted all school records for member ${member.id}`);
-    }
-
-    /**
-     * TypeORM 0.3.x 호환 - member_id 기준 삭제 헬퍼
-     * EntityManager.delete()가 relation/column 기반 criteria 모두 실패하므로
-     * createQueryBuilder를 사용하여 raw SQL column name으로 삭제
-     */
-    private async deleteByMemberId<T extends ObjectLiteral>(
-        em: EntityManager,
-        entity: EntityTarget<T>,
-        memberId: string,
-    ): Promise<void> {
-        await em.createQueryBuilder()
-            .delete()
-            .from(entity)
-            .where('member_id = :memberId', { memberId })
-            .execute();
     }
 }

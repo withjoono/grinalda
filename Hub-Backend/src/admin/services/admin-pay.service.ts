@@ -1,46 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import { AdminPayOrderResponseDto, AdminPayOrderSearchQueryDto } from '../dtos/admin-pay-order.dto';
 
 @Injectable()
 export class AdminPaymentService {
   constructor(
-    @InjectRepository(PayOrderEntity)
-    private readonly payOrderRepository: Repository<PayOrderEntity>,
-  ) {}
+    private readonly prisma: PrismaService,
+  ) { }
 
-  // 모든 주문 조회(admin)
   async getAllOrders(
     searchQueryDto: AdminPayOrderSearchQueryDto,
   ): Promise<AdminPayOrderResponseDto> {
     const { orderState, searchWord, page = 1, pageSize = 10 } = searchQueryDto;
 
-    const queryBuilder = this.payOrderRepository
-      .createQueryBuilder('pay_order')
-      .leftJoin('pay_order.member', 'member')
-      .addSelect(['member.nickname', 'member.email']); // 유저 이름과 이메일에 별칭 추가
+    const where: any = {};
 
     if (orderState) {
-      queryBuilder.andWhere('pay_order.order_state = :orderState', {
-        orderState,
-      });
+      where.order_state = orderState;
     }
 
     if (searchWord) {
-      queryBuilder.andWhere('(member.nickname LIKE :searchWord OR member.email LIKE :searchWord)', {
-        searchWord: `%${searchWord}%`,
-      });
+      where.member = {
+        OR: [
+          { nickname: { contains: searchWord, mode: 'insensitive' } },
+          { email: { contains: searchWord, mode: 'insensitive' } },
+        ],
+      };
     }
 
-    queryBuilder.skip((page - 1) * pageSize).take(pageSize);
-    queryBuilder.orderBy('pay_order.create_dt', 'DESC');
+    const [list, totalCount] = await Promise.all([
+      this.prisma.paymentOrder.findMany({
+        where,
+        include: {
+          member: { select: { nickname: true, email: true } },
+        },
+        orderBy: { create_dt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.paymentOrder.count({ where }),
+    ]);
 
-    const [list, totalCount] = await queryBuilder.getManyAndCount();
-    return {
-      list,
-      totalCount,
-    };
+    return { list, totalCount };
   }
 }

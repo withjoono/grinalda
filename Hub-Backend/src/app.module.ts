@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { PrismaModule } from './database/prisma.module';
 import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
@@ -22,7 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './modules/members/members.module';
 import { AdminModule } from './admin/admin.module';
 import { CommonCodeModule } from './modules/common-code/common-code.module';
-import { DataSource, DataSourceOptions } from 'typeorm';
+
 import { CommonModule } from './common/common.module';
 import { EncryptionModule } from './common/encryption/encryption.module';
 
@@ -66,14 +66,7 @@ import { FirebaseModule } from './firebase/firebase.module';
       ],
       envFilePath: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env.development',
     }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-      dataSourceFactory: async (options: DataSourceOptions) => {
-        const dataSource = new DataSource(options);
-        await dataSource.initialize();
-        return dataSource;
-      },
-    }),
+    PrismaModule,
     WinstonModule.forRoot(winstonConfig),
     CacheModule.registerAsync({
       isGlobal: true,

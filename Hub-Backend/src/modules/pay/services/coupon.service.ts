@@ -1,31 +1,26 @@
 import { Injectable, NotFoundException, GoneException, Inject } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayCouponEntity } from 'src/database/entities/pay/pay-coupon.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CouponService {
   constructor(
-    @InjectRepository(PayCouponEntity)
-    private readonly payCouponRepository: Repository<PayCouponEntity>,
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
+    private readonly prisma: PrismaService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-  ) {}
+  ) { }
 
   async validCoupon({
     coupon_number,
     product_id,
   }: {
     coupon_number: string;
-    product_id: number;
+    product_id: bigint;
   }): Promise<{ discount_price: number; coupon_info: string }> {
     this.logger.warn(`쿠폰 유효성 검사 시작: 쿠폰 번호 ${coupon_number}, 상품 ID ${product_id}`);
     const coupon = await this.findCoupon(coupon_number, product_id);
-    const product = await this.payServiceRepository.findOne({
+    const product = await this.prisma.paymentService.findUnique({
       where: { id: product_id },
     });
     if (!product) {
@@ -42,9 +37,9 @@ export class CouponService {
     };
   }
 
-  private async findCoupon(couponNumber: string, productId?: number): Promise<PayCouponEntity> {
+  private async findCoupon(couponNumber: string, productId?: bigint) {
     // 1. 특정 상품에 적용되는 쿠폰 찾기
-    let coupon = await this.payCouponRepository.findOne({
+    let coupon = await this.prisma.paymentCoupon.findFirst({
       where: {
         coupon_number: couponNumber,
         pay_service_id: productId,
@@ -53,11 +48,12 @@ export class CouponService {
 
     // 2. 없으면 모든 상품에 적용되는 쿠폰(pay_service_id = null) 찾기
     if (!coupon) {
-      coupon = await this.payCouponRepository
-        .createQueryBuilder('coupon')
-        .where('coupon.coupon_number = :couponNumber', { couponNumber })
-        .andWhere('coupon.pay_service_id IS NULL')
-        .getOne();
+      coupon = await this.prisma.paymentCoupon.findFirst({
+        where: {
+          coupon_number: couponNumber,
+          pay_service_id: null,
+        },
+      });
     }
 
     if (!coupon) {
@@ -74,15 +70,17 @@ export class CouponService {
     return coupon;
   }
 
-  async useCoupon(queryRunner: any, couponNumber: string): Promise<PayCouponEntity> {
+  async useCoupon(tx: Prisma.TransactionClient, couponNumber: string) {
     const coupon = await this.findCoupon(couponNumber);
 
-    coupon.number_of_available -= 1;
-    await queryRunner.manager.save(coupon);
+    const updated = await tx.paymentCoupon.update({
+      where: { id: coupon.id },
+      data: { number_of_available: { decrement: 1 } },
+    });
 
     this.logger.warn(
-      `쿠폰 사용 완료: 쿠폰 번호 ${couponNumber}, 남은 수량 ${coupon.number_of_available}`,
+      `쿠폰 사용 완료: 쿠폰 번호 ${couponNumber}, 남은 수량 ${updated.number_of_available}`,
     );
-    return coupon;
+    return updated;
   }
 }

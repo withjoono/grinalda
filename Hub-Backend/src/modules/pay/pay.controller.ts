@@ -116,7 +116,7 @@ export class PaymentController {
   async preRegisterPayment(@Body() body: PayPreRegisterDto, @CurrentMemberId() memberId: string) {
     const { couponNumber, productId } = body;
     const payOrder = await this.paymentService.preRegisterPayment(
-      Number(productId),
+      BigInt(productId),
       memberId,
       couponNumber,
     );
@@ -202,7 +202,7 @@ export class PaymentController {
   async validCoupon(@Body() body: PayValidCouponDto): Promise<PayValidCouponResponseDto> {
     const paymentInfo = await this.couponService.validCoupon({
       coupon_number: body.coupon_number || body.couponNumber,
-      product_id: Number(body.product_id || body.productId),
+      product_id: BigInt(body.product_id || body.productId),
     });
 
     return paymentInfo;
@@ -234,7 +234,7 @@ export class PaymentController {
     const paymentInfo = await this.paymentService.contractFreeService(
       {
         coupon_number: body.coupon_number || body.couponNumber,
-        product_id: Number(body.product_id || body.productId),
+        product_id: BigInt(body.product_id || body.productId),
       },
       memberId,
     );

@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, IsInt } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -8,7 +7,7 @@ export class AdminPayOrderResponseDto {
   @ApiProperty({
     description: '주문 목록',
   })
-  list!: PayOrderEntity[];
+  list!: any[];
 
   @ApiProperty({
     description: '전체 Count',

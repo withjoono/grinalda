@@ -5,14 +5,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { SubjectCodesService } from './services/subject-code.service';
-import { SubjectCodeListEntity } from 'src/database/entities/common-code/subject-code-list-entity';
 
 @Controller('common')
 export class CommonCodeController {
-  constructor(private readonly subjectCodeService: SubjectCodesService) {}
+  constructor(private readonly subjectCodeService: SubjectCodesService) { }
 
   @Get('subject-code')
-  async findAll(): Promise<SubjectCodeListEntity[]> {
+  async findAll(): Promise<any[]> {
     return this.subjectCodeService.findAll();
   }
 

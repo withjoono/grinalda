@@ -31,9 +31,7 @@ import {
 import { CreateSubscriptionDto, UpdateSubscriptionDto } from './dto/create-subscription.dto';
 import { WebhookSubscriptionDto } from './dto/webhook-subscription.dto';
 import { CreateProductMappingDto, UpdateProductMappingDto } from './dto/product-mapping.dto';
-import { AppEntity } from 'src/database/entities/subscription/app.entity';
-import { AppSubscriptionEntity } from 'src/database/entities/subscription/app-subscription.entity';
-import { ProductPermissionMappingEntity } from 'src/database/entities/subscription/product-permission-mapping.entity';
+
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'src/config/config.type';
 
@@ -51,7 +49,7 @@ export class SubscriptionController {
   @Public()
   @ApiOperation({ summary: '모든 앱 목록 조회' })
   @ApiResponse({ status: 200, description: '앱 목록' })
-  async getAllApps(): Promise<AppEntity[]> {
+  async getAllApps(): Promise<any[]> {
     return this.subscriptionService.getAllApps();
   }
 
@@ -60,7 +58,7 @@ export class SubscriptionController {
   @ApiOperation({ summary: '특정 앱 정보 조회' })
   @ApiParam({ name: 'appId', example: 'examhub' })
   @ApiResponse({ status: 200, description: '앱 정보' })
-  async getApp(@Param('appId') appId: string): Promise<AppEntity> {
+  async getApp(@Param('appId') appId: string): Promise<any> {
     return this.subscriptionService.getAppById(appId);
   }
 
@@ -71,7 +69,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '내 구독 목록 조회' })
   @ApiResponse({ status: 200, description: '내 구독 목록' })
-  async getMySubscriptions(@Request() req): Promise<AppSubscriptionEntity[]> {
+  async getMySubscriptions(@Request() req): Promise<any[]> {
     return this.subscriptionService.getMemberSubscriptions(req.user.memberId);
   }
 
@@ -93,7 +91,7 @@ export class SubscriptionController {
   async getMyAppSubscription(
     @Request() req,
     @Param('appId') appId: string,
-  ): Promise<AppSubscriptionEntity | null> {
+  ): Promise<any | null> {
     return this.subscriptionService.getMemberAppSubscription(req.user.memberId, appId);
   }
 
@@ -143,8 +141,8 @@ export class SubscriptionController {
   @ApiResponse({ status: 400, description: '잘못된 요청 데이터' })
   async handleWebhook(@Body() dto: WebhookSubscriptionDto): Promise<{
     success: boolean;
-    subscription: AppSubscriptionEntity;
-    mapping?: ProductPermissionMappingEntity;
+    subscription: any;
+    mapping?: any;
   }> {
     // API Key 검증
     const authConfig = this.configService.get('auth', { infer: true });
@@ -158,7 +156,7 @@ export class SubscriptionController {
       let features = dto.features;
       let expiresAt = dto.expiresAt;
       let usageLimit = dto.usageLimit;
-      let mapping: ProductPermissionMappingEntity | null = null;
+      let mapping: any | null = null;
 
       // 방법 1: externalProductId 제공 시 DB에서 매핑 조회 (권장)
       if (dto.externalProductId) {
@@ -175,8 +173,9 @@ export class SubscriptionController {
 
           // 만료일 계산 (DTO에서 제공하지 않았을 경우)
           if (!dto.expiresAt && mapping.duration_days) {
-            const calculatedExpiresAt = mapping.calculateExpiresAt();
-            expiresAt = calculatedExpiresAt?.toISOString();
+            const today = new Date();
+            today.setDate(today.getDate() + mapping.duration_days);
+            expiresAt = today.toISOString();
           }
         } else {
           throw new BadRequestException(
@@ -222,7 +221,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '구독 생성/갱신 (관리자용)' })
   @ApiResponse({ status: 201, description: '구독 생성됨' })
-  async createSubscription(@Body() dto: CreateSubscriptionDto): Promise<AppSubscriptionEntity> {
+  async createSubscription(@Body() dto: CreateSubscriptionDto): Promise<any> {
     return this.subscriptionService.createOrUpdateSubscription(dto);
   }
 
@@ -237,7 +236,7 @@ export class SubscriptionController {
     @Param('memberId') memberId: string,
     @Param('appId') appId: string,
     @Body() dto: UpdateSubscriptionDto,
-  ): Promise<AppSubscriptionEntity> {
+  ): Promise<any> {
     return this.subscriptionService.updateSubscription(memberId, appId, dto);
   }
 
@@ -251,7 +250,7 @@ export class SubscriptionController {
   async cancelSubscription(
     @Param('memberId') memberId: string,
     @Param('appId') appId: string,
-  ): Promise<AppSubscriptionEntity> {
+  ): Promise<any> {
     return this.subscriptionService.cancelSubscription(memberId, appId);
   }
 
@@ -265,7 +264,7 @@ export class SubscriptionController {
   @ApiResponse({ status: 200, description: '상품-권한 매핑 목록' })
   async getAllProductMappings(
     @Query('appId') appId?: string,
-  ): Promise<ProductPermissionMappingEntity[]> {
+  ): Promise<any[]> {
     return this.subscriptionService.getAllProductMappings(appId);
   }
 
@@ -275,7 +274,7 @@ export class SubscriptionController {
   @ApiOperation({ summary: '특정 상품-권한 매핑 조회 (관리자용)' })
   @ApiParam({ name: 'id', example: 1 })
   @ApiResponse({ status: 200, description: '상품-권한 매핑 정보' })
-  async getProductMapping(@Param('id') id: number): Promise<ProductPermissionMappingEntity> {
+  async getProductMapping(@Param('id') id: number): Promise<any> {
     return this.subscriptionService.getProductMappingById(id);
   }
 
@@ -289,7 +288,7 @@ export class SubscriptionController {
   @ApiResponse({ status: 201, description: '상품-권한 매핑 생성됨' })
   async createProductMapping(
     @Body() dto: CreateProductMappingDto,
-  ): Promise<ProductPermissionMappingEntity> {
+  ): Promise<any> {
     return this.subscriptionService.createProductMapping(dto);
   }
 
@@ -302,7 +301,7 @@ export class SubscriptionController {
   async updateProductMapping(
     @Param('id') id: number,
     @Body() dto: UpdateProductMappingDto,
-  ): Promise<ProductPermissionMappingEntity> {
+  ): Promise<any> {
     return this.subscriptionService.updateProductMapping(id, dto);
   }
 

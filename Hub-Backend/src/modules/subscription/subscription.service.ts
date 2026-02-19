@@ -1,9 +1,5 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AppEntity } from 'src/database/entities/subscription/app.entity';
-import { AppSubscriptionEntity } from 'src/database/entities/subscription/app-subscription.entity';
-import { ProductPermissionMappingEntity } from 'src/database/entities/subscription/product-permission-mapping.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import {
   AppPermissionDto,
   LicenseCheckResponseDto,
@@ -15,99 +11,67 @@ import { CreateProductMappingDto, UpdateProductMappingDto } from './dto/product-
 @Injectable()
 export class SubscriptionService {
   constructor(
-    @InjectRepository(AppEntity)
-    private readonly appRepository: Repository<AppEntity>,
-    @InjectRepository(AppSubscriptionEntity)
-    private readonly subscriptionRepository: Repository<AppSubscriptionEntity>,
-    @InjectRepository(ProductPermissionMappingEntity)
-    private readonly productMappingRepository: Repository<ProductPermissionMappingEntity>,
+    private prisma: PrismaService,
   ) { }
 
   // ==================== 앱 관리 ====================
 
-  /**
-   * 모든 앱 목록 조회
-   */
-  async getAllApps(): Promise<AppEntity[]> {
-    return this.appRepository.find({
+  async getAllApps() {
+    return this.prisma.hubApp.findMany({
       where: { is_active: true },
-      order: { sort_order: 'ASC' },
+      orderBy: { sort_order: 'asc' },
     });
   }
 
-  /**
-   * 앱 정보 조회
-   */
-  async getAppById(appId: string): Promise<AppEntity> {
-    const app = await this.appRepository.findOne({ where: { id: appId } });
+  async getAppById(appId: string) {
+    const app = await this.prisma.hubApp.findUnique({ where: { id: appId } });
     if (!app) {
       throw new NotFoundException(`앱을 찾을 수 없습니다: ${appId}`);
     }
     return app;
   }
 
-  /**
-   * 앱 생성 (관리자용)
-   */
-  async createApp(appData: Partial<AppEntity>): Promise<AppEntity> {
-    const existing = await this.appRepository.findOne({ where: { id: appData.id } });
+  async createApp(appData: { id: string; name: string; description?: string; icon_url?: string; app_url?: string; pricing?: any; features?: any }) {
+    const existing = await this.prisma.hubApp.findUnique({ where: { id: appData.id } });
     if (existing) {
       throw new ConflictException(`이미 존재하는 앱 ID입니다: ${appData.id}`);
     }
-    const app = this.appRepository.create(appData);
-    return this.appRepository.save(app);
+    return this.prisma.hubApp.create({ data: appData });
   }
 
   // ==================== 구독 관리 ====================
 
-  /**
-   * 사용자의 모든 구독 정보 조회
-   */
-  async getMemberSubscriptions(memberId: string): Promise<AppSubscriptionEntity[]> {
-    return this.subscriptionRepository.find({
+  async getMemberSubscriptions(memberId: string) {
+    return this.prisma.hubAppSubscription.findMany({
       where: { member_id: memberId },
-      relations: ['app'],
+      include: { app: true },
     });
   }
 
-  /**
-   * 특정 앱에 대한 사용자 구독 정보 조회
-   */
-  async getMemberAppSubscription(
-    memberId: string,
-    appId: string,
-  ): Promise<AppSubscriptionEntity | null> {
-    return this.subscriptionRepository.findOne({
-      where: { member_id: memberId, app_id: appId },
-      relations: ['app'],
+  async getMemberAppSubscription(memberId: string, appId: string) {
+    return this.prisma.hubAppSubscription.findUnique({
+      where: { member_id_app_id: { member_id: memberId, app_id: appId } },
+      include: { app: true },
     });
   }
 
-  /**
-   * 구독 생성/갱신
-   */
-  async createOrUpdateSubscription(dto: CreateSubscriptionDto): Promise<AppSubscriptionEntity> {
-    // 앱 존재 확인
+  async createOrUpdateSubscription(dto: CreateSubscriptionDto) {
     await this.getAppById(dto.appId);
 
-    let subscription = await this.subscriptionRepository.findOne({
-      where: { member_id: dto.memberId, app_id: dto.appId },
-    });
-
-    if (subscription) {
-      // 기존 구독 업데이트
-      subscription.plan = dto.plan;
-      subscription.status = 'active';
-      subscription.started_at = new Date();
-      subscription.expires_at = dto.expiresAt ? new Date(dto.expiresAt) : null;
-      subscription.payment_order_id = dto.paymentOrderId;
-      subscription.features = dto.features;
-      subscription.usage_limit = dto.usageLimit;
-      subscription.usage_count = 0; // 갱신 시 리셋
-      subscription.auto_renew = dto.autoRenew ?? false;
-    } else {
-      // 새 구독 생성
-      subscription = this.subscriptionRepository.create({
+    return this.prisma.hubAppSubscription.upsert({
+      where: { member_id_app_id: { member_id: dto.memberId, app_id: dto.appId } },
+      update: {
+        plan: dto.plan,
+        status: 'active',
+        started_at: new Date(),
+        expires_at: dto.expiresAt ? new Date(dto.expiresAt) : null,
+        payment_order_id: dto.paymentOrderId,
+        features: dto.features,
+        usage_limit: dto.usageLimit,
+        usage_count: 0,
+        auto_renew: dto.autoRenew ?? false,
+      },
+      create: {
         member_id: dto.memberId,
         app_id: dto.appId,
         plan: dto.plan,
@@ -119,68 +83,65 @@ export class SubscriptionService {
         usage_limit: dto.usageLimit,
         usage_count: 0,
         auto_renew: dto.autoRenew ?? false,
-      });
-    }
-
-    return this.subscriptionRepository.save(subscription);
+      },
+    });
   }
 
-  /**
-   * 구독 상태 업데이트
-   */
-  async updateSubscription(
-    memberId: string,
-    appId: string,
-    dto: UpdateSubscriptionDto,
-  ): Promise<AppSubscriptionEntity> {
+  async updateSubscription(memberId: string, appId: string, dto: UpdateSubscriptionDto) {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
     if (!subscription) {
       throw new NotFoundException(`구독 정보를 찾을 수 없습니다`);
     }
 
-    if (dto.plan) subscription.plan = dto.plan;
-    if (dto.status) subscription.status = dto.status;
-    if (dto.expiresAt) subscription.expires_at = new Date(dto.expiresAt);
-    if (dto.features) subscription.features = dto.features;
-    if (dto.autoRenew !== undefined) subscription.auto_renew = dto.autoRenew;
+    const updateData: Record<string, any> = {};
+    if (dto.plan) updateData.plan = dto.plan;
+    if (dto.status) updateData.status = dto.status;
+    if (dto.expiresAt) updateData.expires_at = new Date(dto.expiresAt);
+    if (dto.features) updateData.features = dto.features;
+    if (dto.autoRenew !== undefined) updateData.auto_renew = dto.autoRenew;
 
-    return this.subscriptionRepository.save(subscription);
+    return this.prisma.hubAppSubscription.update({
+      where: { member_id_app_id: { member_id: memberId, app_id: appId } },
+      data: updateData,
+    });
   }
 
-  /**
-   * 구독 취소
-   */
-  async cancelSubscription(memberId: string, appId: string): Promise<AppSubscriptionEntity> {
+  async cancelSubscription(memberId: string, appId: string) {
     return this.updateSubscription(memberId, appId, { status: 'cancelled' });
   }
 
   // ==================== JWT 권한 정보 ====================
 
   /**
-   * JWT 토큰에 포함할 권한 정보 생성
-   * 모든 앱에 대한 사용자의 구독 상태를 반환
+   * 구독이 유효한지 확인하는 헬퍼 메서드
+   * (기존 AppSubscriptionEntity.isValid() 메서드를 대체)
    */
+  private isSubscriptionValid(subscription: { status: string; expires_at: Date | null }): boolean {
+    if (subscription.status !== 'active') return false;
+    if (subscription.expires_at && new Date() > subscription.expires_at) return false;
+    return true;
+  }
+
   async getMemberPermissions(memberId: string): Promise<PermissionsDto> {
     const subscriptions = await this.getMemberSubscriptions(memberId);
     const apps = await this.getAllApps();
 
     const permissions: PermissionsDto = {};
 
-    // 모든 활성 앱에 대해 권한 정보 생성
     for (const app of apps) {
       const subscription = subscriptions.find((s) => s.app_id === app.id);
+      const features = app.features as any;
 
-      if (subscription && subscription.isValid()) {
+      if (subscription && this.isSubscriptionValid(subscription)) {
         permissions[app.id] = {
           plan: subscription.plan,
           expires: subscription.expires_at?.toISOString(),
-          features: subscription.features || app.features?.[subscription.plan] || [],
+          features: (subscription.features as any) || features?.[subscription.plan] || [],
         };
       } else {
-        // 구독이 없거나 만료된 경우 free 또는 none
         permissions[app.id] = {
-          plan: app.features?.free ? 'free' : 'none',
-          features: app.features?.free || [],
+          plan: features?.free ? 'free' : 'none',
+          features: features?.free || [],
         };
       }
     }
@@ -190,32 +151,27 @@ export class SubscriptionService {
 
   // ==================== 라이선스 확인 API (각 앱용) ====================
 
-  /**
-   * 특정 앱에 대한 라이선스 확인
-   * 각 독립 앱에서 호출하여 사용자 권한 확인
-   */
   async checkLicense(memberId: string, appId: string): Promise<LicenseCheckResponseDto> {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
     const app = await this.getAppById(appId);
+    const features = app.features as any;
 
-    if (!subscription || !subscription.isValid()) {
-      // 무료 플랜 또는 접근 불가
-      const hasFreeAccess = app.features?.free && app.features.free.length > 0;
+    if (!subscription || !this.isSubscriptionValid(subscription)) {
+      const hasFreeAccess = features?.free && features.free.length > 0;
       return {
         hasAccess: hasFreeAccess,
         plan: hasFreeAccess ? 'free' : 'none',
-        features: app.features?.free || [],
+        features: features?.free || [],
       };
     }
 
     const response: LicenseCheckResponseDto = {
       hasAccess: true,
       plan: subscription.plan,
-      features: subscription.features || app.features?.[subscription.plan] || [],
+      features: (subscription.features as any) || features?.[subscription.plan] || [],
       expiresAt: subscription.expires_at?.toISOString(),
     };
 
-    // 티켓제인 경우 남은 사용 횟수 포함
     if (subscription.usage_limit) {
       response.remainingUsage = subscription.usage_limit - subscription.usage_count;
     }
@@ -223,12 +179,9 @@ export class SubscriptionService {
     return response;
   }
 
-  /**
-   * 사용 횟수 증가 (티켓제)
-   */
   async incrementUsage(memberId: string, appId: string): Promise<boolean> {
     const subscription = await this.getMemberAppSubscription(memberId, appId);
-    if (!subscription || !subscription.isValid()) {
+    if (!subscription || !this.isSubscriptionValid(subscription)) {
       return false;
     }
 
@@ -236,62 +189,46 @@ export class SubscriptionService {
       return false;
     }
 
-    subscription.usage_count += 1;
-    await this.subscriptionRepository.save(subscription);
+    await this.prisma.hubAppSubscription.update({
+      where: { member_id_app_id: { member_id: memberId, app_id: appId } },
+      data: { usage_count: { increment: 1 } },
+    });
     return true;
   }
 
   // ==================== 만료 처리 ====================
 
-  /**
-   * 만료된 구독 상태 업데이트 (스케줄러에서 호출)
-   */
   async processExpiredSubscriptions(): Promise<number> {
-    const result = await this.subscriptionRepository
-      .createQueryBuilder()
-      .update(AppSubscriptionEntity)
-      .set({ status: 'expired' })
-      .where('status = :status', { status: 'active' })
-      .andWhere('expires_at < :now', { now: new Date() })
-      .execute();
+    const result = await this.prisma.hubAppSubscription.updateMany({
+      where: {
+        status: 'active',
+        expires_at: { lt: new Date() },
+      },
+      data: { status: 'expired' },
+    });
 
-    return result.affected || 0;
+    return result.count;
   }
 
   // ==================== 상품-권한 매핑 관리 (관리자용) ====================
 
-  /**
-   * 모든 상품-권한 매핑 조회
-   */
-  async getAllProductMappings(appId?: string): Promise<ProductPermissionMappingEntity[]> {
-    const query = this.productMappingRepository.createQueryBuilder('mapping');
-
-    if (appId) {
-      query.where('mapping.app_id = :appId', { appId });
-    }
-
-    return query.orderBy('mapping.created_at', 'DESC').getMany();
+  async getAllProductMappings(appId?: string) {
+    return this.prisma.hubProductPermissionMapping.findMany({
+      where: appId ? { app_id: appId } : undefined,
+      orderBy: { created_at: 'desc' },
+    });
   }
 
-  /**
-   * 특정 상품-권한 매핑 조회
-   */
-  async getProductMappingById(id: number): Promise<ProductPermissionMappingEntity> {
-    const mapping = await this.productMappingRepository.findOne({ where: { id } });
+  async getProductMappingById(id: number) {
+    const mapping = await this.prisma.hubProductPermissionMapping.findUnique({ where: { id: BigInt(id) } });
     if (!mapping) {
       throw new NotFoundException(`상품-권한 매핑을 찾을 수 없습니다: ID ${id}`);
     }
     return mapping;
   }
 
-  /**
-   * 외부 상품 ID로 매핑 조회 (Webhook에서 사용)
-   */
-  async getProductMappingByExternalId(
-    appId: string,
-    externalProductId: string,
-  ): Promise<ProductPermissionMappingEntity | null> {
-    return this.productMappingRepository.findOne({
+  async getProductMappingByExternalId(appId: string, externalProductId: string) {
+    return this.prisma.hubProductPermissionMapping.findFirst({
       where: {
         app_id: appId,
         external_product_id: externalProductId,
@@ -300,17 +237,10 @@ export class SubscriptionService {
     });
   }
 
-  /**
-   * 상품-권한 매핑 생성
-   */
-  async createProductMapping(
-    dto: CreateProductMappingDto,
-  ): Promise<ProductPermissionMappingEntity> {
-    // 앱 존재 확인
+  async createProductMapping(dto: CreateProductMappingDto) {
     await this.getAppById(dto.appId);
 
-    // 중복 확인
-    const existing = await this.productMappingRepository.findOne({
+    const existing = await this.prisma.hubProductPermissionMapping.findFirst({
       where: {
         app_id: dto.appId,
         external_product_id: dto.externalProductId,
@@ -323,46 +253,41 @@ export class SubscriptionService {
       );
     }
 
-    const mapping = this.productMappingRepository.create({
-      app_id: dto.appId,
-      external_product_id: dto.externalProductId,
-      product_name: dto.productName,
-      plan: dto.plan,
-      features: dto.features,
-      duration_days: dto.durationDays,
-      usage_limit: dto.usageLimit,
-      is_active: dto.isActive ?? true,
-      memo: dto.memo,
+    return this.prisma.hubProductPermissionMapping.create({
+      data: {
+        app_id: dto.appId,
+        external_product_id: dto.externalProductId,
+        product_name: dto.productName,
+        plan: dto.plan,
+        features: dto.features,
+        duration_days: dto.durationDays,
+        usage_limit: dto.usageLimit,
+        is_active: dto.isActive ?? true,
+        memo: dto.memo,
+      },
     });
-
-    return this.productMappingRepository.save(mapping);
   }
 
-  /**
-   * 상품-권한 매핑 수정
-   */
-  async updateProductMapping(
-    id: number,
-    dto: UpdateProductMappingDto,
-  ): Promise<ProductPermissionMappingEntity> {
-    const mapping = await this.getProductMappingById(id);
+  async updateProductMapping(id: number, dto: UpdateProductMappingDto) {
+    await this.getProductMappingById(id);
 
-    if (dto.productName) mapping.product_name = dto.productName;
-    if (dto.plan) mapping.plan = dto.plan;
-    if (dto.features) mapping.features = dto.features;
-    if (dto.durationDays !== undefined) mapping.duration_days = dto.durationDays;
-    if (dto.usageLimit !== undefined) mapping.usage_limit = dto.usageLimit;
-    if (dto.isActive !== undefined) mapping.is_active = dto.isActive;
-    if (dto.memo !== undefined) mapping.memo = dto.memo;
+    const updateData: Record<string, any> = {};
+    if (dto.productName) updateData.product_name = dto.productName;
+    if (dto.plan) updateData.plan = dto.plan;
+    if (dto.features) updateData.features = dto.features;
+    if (dto.durationDays !== undefined) updateData.duration_days = dto.durationDays;
+    if (dto.usageLimit !== undefined) updateData.usage_limit = dto.usageLimit;
+    if (dto.isActive !== undefined) updateData.is_active = dto.isActive;
+    if (dto.memo !== undefined) updateData.memo = dto.memo;
 
-    return this.productMappingRepository.save(mapping);
+    return this.prisma.hubProductPermissionMapping.update({
+      where: { id: BigInt(id) },
+      data: updateData,
+    });
   }
 
-  /**
-   * 상품-권한 매핑 삭제
-   */
   async deleteProductMapping(id: number): Promise<void> {
-    const mapping = await this.getProductMappingById(id);
-    await this.productMappingRepository.remove(mapping);
+    await this.getProductMappingById(id);
+    await this.prisma.hubProductPermissionMapping.delete({ where: { id: BigInt(id) } });
   }
 }

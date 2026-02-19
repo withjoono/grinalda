@@ -6,10 +6,7 @@ import {
   Inject,
   forwardRef,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, Not } from 'typeorm';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import * as crypto from 'crypto';
 import { CouponService } from './services/coupon.service';
 import { ContractService } from './services/contract.service';
@@ -17,15 +14,12 @@ import { IamPortService } from './services/iamport.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { MembersService } from '../members/services/members.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PaymentService {
   constructor(
-    @InjectRepository(PayOrderEntity)
-    private readonly payOrderRepository: Repository<PayOrderEntity>,
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    private readonly dataSource: DataSource,
+    private readonly prisma: PrismaService,
     private readonly couponService: CouponService,
     private readonly contractService: ContractService,
     private readonly iamPortService: IamPortService,
@@ -34,28 +28,17 @@ export class PaymentService {
     private readonly membersService: MembersService,
   ) { }
 
-  async getMemberPaymentHistories(memberId: string): Promise<PayOrderEntity[]> {
+  async getMemberPaymentHistories(memberId: string) {
     this.logger.debug('회원 결제 내역 조회 시작', { memberId });
 
-    const orders = await this.payOrderRepository.find({
-      where: { member_id: memberId, order_state: Not('PENDING') },
-      relations: ['pay_service'],
-      select: {
-        id: true,
-        cancel_amount: true,
-        paid_amount: true,
-        card_name: true,
-        create_dt: true,
-        update_dt: true,
-        order_state: true,
-
+    const orders = await this.prisma.paymentOrder.findMany({
+      where: { member_id: memberId, order_state: { not: 'PENDING' } },
+      include: {
         pay_service: {
-          product_nm: true,
-          term: true,
-          product_price: true,
+          select: { product_nm: true, term: true, product_price: true },
         },
       },
-      order: { create_dt: 'DESC' },
+      orderBy: { create_dt: 'desc' },
     });
 
     this.logger.info('회원 결제 내역 조회 완료', {
@@ -65,58 +48,38 @@ export class PaymentService {
     return orders;
   }
 
-  async getMemberPaymentHistory(memberId: string, orderId: number): Promise<PayOrderEntity> {
+  async getMemberPaymentHistory(memberId: string, orderId: number) {
     this.logger.debug('회원 주문 상세 조회 시작', { memberId, orderId });
 
-    const orders = await this.payOrderRepository.findOne({
-      where: { member_id: memberId, id: orderId, order_state: Not('PENDING') },
-      relations: ['pay_service'],
-      select: {
-        id: true,
-        cancel_amount: true,
-        paid_amount: true,
-        card_name: true,
-        card_number: true,
-        create_dt: true,
-        update_dt: true,
-        order_state: true,
-
+    const order = await this.prisma.paymentOrder.findFirst({
+      where: { member_id: memberId, id: orderId, order_state: { not: 'PENDING' } },
+      include: {
         pay_service: {
-          product_nm: true,
-          term: true,
-          product_price: true,
+          select: { product_nm: true, term: true, product_price: true },
         },
       },
-      order: { create_dt: 'DESC' },
     });
 
-    if (!orders) {
-      this.logger.error('결제 내역 조회 실패 - 주문 없음', {
-        memberId,
-        orderId,
-      });
+    if (!order) {
+      this.logger.error('결제 내역 조회 실패 - 주문 없음', { memberId, orderId });
       throw new NotFoundException('결제 내역이 없습니다.');
     }
 
     this.logger.info('회원 주문 상세 조회 완료', {
       memberId,
       orderId,
-      orderState: orders.order_state,
+      orderState: order.order_state,
     });
-    return orders;
+    return order;
   }
 
   private generateMerchantUid(): string {
-    const uuid = crypto.randomUUID().replace(/-/g, ''); // 하이픈 제거
-    const truncatedUuid = uuid.slice(0, 34); // 33자로 자르기 (39 - 6)
-    return `order-${truncatedUuid}`; // 'order-' 접두사 추가 (총 39자)
+    const uuid = crypto.randomUUID().replace(/-/g, '');
+    const truncatedUuid = uuid.slice(0, 34);
+    return `order-${truncatedUuid}`;
   }
 
-  async preRegisterPayment(
-    productId: number,
-    memberId: string,
-    couponNumber?: string,
-  ): Promise<PayOrderEntity> {
+  async preRegisterPayment(productId: bigint, memberId: string, couponNumber?: string) {
     this.logger.warn(
       `회원 ${memberId}의 상품 ${productId} 사전 결제 등록 시작. 쿠폰: ${couponNumber || '없음'}`,
     );
@@ -138,17 +101,18 @@ export class PaymentService {
       throw new BadRequestException('결제 금액이 0원 입니다.');
     }
 
-    const payOrder = this.payOrderRepository.create({
-      merchant_uid: this.generateMerchantUid(),
-      order_state: 'PENDING',
-      paid_amount: finalAmount,
-      member_id: memberId,
-      pay_service_id: product.id,
-      create_dt: new Date(),
-      update_dt: new Date(),
+    const savedOrder = await this.prisma.paymentOrder.create({
+      data: {
+        merchant_uid: this.generateMerchantUid(),
+        order_state: 'PENDING',
+        paid_amount: finalAmount,
+        member_id: memberId,
+        pay_service_id: product.id,
+        create_dt: new Date(),
+        update_dt: new Date(),
+      },
     });
 
-    const savedOrder = await this.payOrderRepository.save(payOrder);
     this.logger.warn(`회원 ${memberId}의 주문 ${savedOrder.id} 사전 등록 완료`);
     return savedOrder;
   }
@@ -159,7 +123,7 @@ export class PaymentService {
     couponNumber?: string,
   ): Promise<any> {
     this.logger.warn(`결제 검증 및 처리 시작. 아임포트 UID: ${impUid}, 주문 번호: ${merchantUid}`);
-    const payOrder = await this.payOrderRepository.findOne({
+    const payOrder = await this.prisma.paymentOrder.findFirst({
       where: { merchant_uid: merchantUid },
     });
 
@@ -170,13 +134,12 @@ export class PaymentService {
 
     if (payOrder.order_state === 'COMPLETE') {
       this.logger.warn(`주문 번호 ${merchantUid}는 이미 처리된 주문입니다.`);
-      // 이미 처리된 경우에도 활성 서비스 반환
       const activeServices = await this.membersService.findActiveServicesById(payOrder.member_id);
       return { activeServices };
     }
 
     const paymentInfo = await this.executeInTransaction(
-      async (queryRunner) => {
+      async (tx) => {
         const paymentData = await this.iamPortService.getPaymentInfo(impUid);
 
         if (paymentData.status !== 'paid') {
@@ -189,22 +152,25 @@ export class PaymentService {
           throw new BadRequestException('결제 금액이 일치하지 않습니다.');
         }
 
-        payOrder.imp_uid = paymentData.imp_uid;
-        payOrder.order_state = 'COMPLETE';
-        payOrder.card_name = paymentData.card_name;
-        payOrder.card_number = paymentData.card_number;
-        payOrder.emb_pg_provider = paymentData.emb_pg_provider;
-        payOrder.update_dt = new Date();
-
-        await queryRunner.manager.save(payOrder);
+        await tx.paymentOrder.update({
+          where: { id: payOrder.id },
+          data: {
+            imp_uid: paymentData.imp_uid,
+            order_state: 'COMPLETE',
+            card_name: paymentData.card_name,
+            card_number: paymentData.card_number,
+            emb_pg_provider: paymentData.emb_pg_provider,
+            update_dt: new Date(),
+          },
+        });
 
         if (couponNumber) {
-          await this.couponService.useCoupon(queryRunner, couponNumber);
+          await this.couponService.useCoupon(tx, couponNumber);
           this.logger.warn(`주문 ${merchantUid}에 쿠폰 ${couponNumber} 사용 완료`);
         }
 
         await this.contractService.handleProductSpecificLogic(
-          queryRunner,
+          tx,
           payOrder.pay_service_id,
           payOrder.member_id,
           payOrder.id,
@@ -217,47 +183,45 @@ export class PaymentService {
       merchantUid,
     );
 
-    // 결제 완료 후 활성 서비스 목록 반환
     const activeServices = await this.membersService.findActiveServicesById(payOrder.member_id);
     this.logger.warn(`결제 완료, 활성 서비스: ${activeServices.join(', ')}`);
     return { ...paymentInfo, activeServices };
   }
 
   async contractFreeService(
-    { coupon_number, product_id }: { coupon_number: string; product_id: number },
+    { coupon_number, product_id }: { coupon_number: string; product_id: bigint },
     memberId: string,
   ): Promise<{ activeServices: string[] }> {
-    await this.executeInTransaction(async (queryRunner) => {
-      const coupon = await this.couponService.useCoupon(queryRunner, coupon_number);
+    await this.prisma.$transaction(async (tx) => {
+      const coupon = await this.couponService.useCoupon(tx, coupon_number);
 
       if (coupon.discount_value !== 100) {
         this.logger.warn(`100% 할인 쿠폰이 아닙니다.`);
         throw new BadRequestException('잘못된 요청입니다.');
       }
 
-      const payOrder = this.payOrderRepository.create({
-        merchant_uid: this.generateMerchantUid(),
-        order_state: 'COMPLETE',
-        paid_amount: 0,
-        card_name: 'free',
-        card_number: 'free',
-        member_id: memberId,
-        pay_service_id: product_id,
-        create_dt: new Date(),
-        update_dt: new Date(),
+      const payOrder = await tx.paymentOrder.create({
+        data: {
+          merchant_uid: this.generateMerchantUid(),
+          order_state: 'COMPLETE',
+          paid_amount: 0,
+          card_name: 'free',
+          card_number: 'free',
+          member_id: memberId,
+          pay_service_id: product_id,
+          create_dt: new Date(),
+          update_dt: new Date(),
+        },
       });
 
-      await queryRunner.manager.save(payOrder);
-
       await this.contractService.handleProductSpecificLogic(
-        queryRunner,
-        Number(product_id),
+        tx,
+        product_id,
         memberId,
         payOrder.id,
       );
     });
 
-    // 결제 완료 후 활성 서비스 목록 반환
     const activeServices = await this.membersService.findActiveServicesById(memberId);
     this.logger.warn(`무료 결제 완료, 활성 서비스: ${activeServices.join(', ')}`);
     return { activeServices };
@@ -267,7 +231,7 @@ export class PaymentService {
     this.logger.warn(
       `웹훅 처리 시작. 아임포트 UID: ${impUid}, 주문 번호: ${merchantUid}, 상태: ${status}`,
     );
-    const payOrder = await this.payOrderRepository.findOne({
+    const payOrder = await this.prisma.paymentOrder.findFirst({
       where: { merchant_uid: merchantUid },
     });
 
@@ -277,7 +241,6 @@ export class PaymentService {
     }
 
     switch (status) {
-      // 결제 승인, 가상계좌 입금, 예약결제 시도
       case 'paid':
         if (payOrder.order_state === 'COMPLETE') {
           this.logger.warn(
@@ -287,12 +250,9 @@ export class PaymentService {
         }
         await this.verifyAndProcessPayment(impUid, merchantUid);
         break;
-
-      // 결제 실패
       case 'failed':
         await this.handleFailedPayment(payOrder, impUid);
         break;
-      // 관리자 콘솔에서 결제 취소
       case 'cancelled':
         await this.handleCancelledPayment(payOrder, impUid);
         break;
@@ -301,89 +261,82 @@ export class PaymentService {
     }
   }
 
-  private async handleFailedPayment(payOrder: PayOrderEntity, impUid: string): Promise<void> {
+  private async handleFailedPayment(payOrder: any, impUid: string): Promise<void> {
     this.logger.warn(
       `실패한 결제 처리 시작. 주문: ${payOrder.merchant_uid}, 아임포트 UID: ${impUid}`,
     );
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
 
     try {
-      const paymentInfo = await this.iamPortService.getPaymentInfo(impUid);
+      await this.prisma.$transaction(async (tx) => {
+        const paymentInfo = await this.iamPortService.getPaymentInfo(impUid);
 
-      if (paymentInfo.status !== 'failed') {
-        this.logger.warn(`아임포트 UID ${impUid}의 결제가 실패 상태가 아닙니다.`);
-        throw new Error('결제가 실패 상태가 아닙니다.');
-      }
+        if (paymentInfo.status !== 'failed') {
+          this.logger.warn(`아임포트 UID ${impUid}의 결제가 실패 상태가 아닙니다.`);
+          throw new Error('결제가 실패 상태가 아닙니다.');
+        }
 
-      payOrder.order_state = 'FAILED';
-      payOrder.update_dt = new Date();
-      await queryRunner.manager.save(payOrder);
+        await tx.paymentOrder.update({
+          where: { id: payOrder.id },
+          data: { order_state: 'FAILED', update_dt: new Date() },
+        });
 
-      // 추가적인 실패 처리 로직
-      await this.contractService.handleFailedPayment(
-        queryRunner,
-        payOrder.pay_service_id,
-        payOrder.member_id,
-      );
+        await this.contractService.handleFailedPayment(
+          tx,
+          payOrder.pay_service_id,
+          payOrder.member_id,
+        );
+      });
 
-      await queryRunner.commitTransaction();
       this.logger.warn(`주문 ${payOrder.merchant_uid}의 실패한 결제 처리 완료`);
     } catch (error) {
-      await queryRunner.rollbackTransaction();
       this.logger.error(`실패한 결제 처리 중 오류 발생: ${error.message}`, {
         stack: error.stack,
       });
       throw new InternalServerErrorException('결제 실패 처리 중 오류가 발생했습니다.');
-    } finally {
-      await queryRunner.release();
     }
   }
 
-  private async handleCancelledPayment(payOrder: PayOrderEntity, impUid: string): Promise<void> {
+  private async handleCancelledPayment(payOrder: any, impUid: string): Promise<void> {
     this.logger.warn(
       `취소된 결제 처리 시작. 주문: ${payOrder.merchant_uid}, 아임포트 UID: ${impUid}`,
     );
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
 
     try {
-      const paymentInfo = await this.iamPortService.getPaymentInfo(impUid);
+      await this.prisma.$transaction(async (tx) => {
+        const paymentInfo = await this.iamPortService.getPaymentInfo(impUid);
 
-      if (paymentInfo.status !== 'cancelled') {
-        this.logger.warn(`아임포트 UID ${impUid}의 결제가 취소 상태가 아닙니다.`);
-        throw new Error('결제가 취소 상태가 아닙니다.');
-      }
+        if (paymentInfo.status !== 'cancelled') {
+          this.logger.warn(`아임포트 UID ${impUid}의 결제가 취소 상태가 아닙니다.`);
+          throw new Error('결제가 취소 상태가 아닙니다.');
+        }
 
-      payOrder.order_state = 'CANCEL';
-      payOrder.cancel_amount = paymentInfo.cancel_amount;
-      payOrder.update_dt = new Date();
-      await queryRunner.manager.save(payOrder);
+        await tx.paymentOrder.update({
+          where: { id: payOrder.id },
+          data: {
+            order_state: 'CANCEL',
+            cancel_amount: paymentInfo.cancel_amount,
+            update_dt: new Date(),
+          },
+        });
 
-      // 추가적인 취소 처리 로직
-      await this.contractService.handleCancelledPayment(
-        queryRunner,
-        payOrder.pay_service_id,
-        payOrder.member_id,
-      );
+        await this.contractService.handleCancelledPayment(
+          tx,
+          payOrder.pay_service_id,
+          payOrder.member_id,
+        );
+      });
 
-      await queryRunner.commitTransaction();
       this.logger.warn(`주문 ${payOrder.merchant_uid}의 취소된 결제 처리 완료`);
     } catch (error) {
-      await queryRunner.rollbackTransaction();
       this.logger.error(`취소된 결제 처리 중 오류 발생: ${error.message}`, {
         stack: error.stack,
       });
       throw new InternalServerErrorException('결제 취소 처리 중 오류가 발생했습니다.');
-    } finally {
-      await queryRunner.release();
     }
   }
 
-  private async findProductById(productId: number): Promise<PayServiceEntity> {
-    const product = await this.payServiceRepository.findOne({
+  private async findProductById(productId: bigint) {
+    const product = await this.prisma.paymentService.findUnique({
       where: { id: productId },
     });
 
@@ -395,31 +348,24 @@ export class PaymentService {
   }
 
   private async executeInTransaction<T>(
-    work: (queryRunner: any) => Promise<T>,
+    work: (tx: Prisma.TransactionClient) => Promise<T>,
     impUid?: string,
     merchantUid?: string,
   ): Promise<T> {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
     try {
-      const result = await work(queryRunner);
-      await queryRunner.commitTransaction();
-      return result;
+      return await this.prisma.$transaction(async (tx) => {
+        return await work(tx);
+      });
     } catch (error) {
-      await queryRunner.rollbackTransaction();
       if (impUid && merchantUid) {
         await this.iamPortService.cancelPayment(impUid, merchantUid, error.message, error);
       }
       throw error;
-    } finally {
-      await queryRunner.release();
     }
   }
 
-  async inquireAndProcessPayment(merchantUid: string): Promise<PayOrderEntity> {
-    const payOrder = await this.payOrderRepository.findOne({
+  async inquireAndProcessPayment(merchantUid: string) {
+    const payOrder = await this.prisma.paymentOrder.findFirst({
       where: { merchant_uid: merchantUid },
     });
 
@@ -434,18 +380,15 @@ export class PaymentService {
     const paymentInfo = await this.iamPortService.getPaymentInfo(payOrder.imp_uid);
 
     if (paymentInfo.status === 'paid') {
-      // 결제가 완료되었지만 처리되지 않은 경우
       await this.verifyAndProcessPayment(payOrder.imp_uid, merchantUid);
-      return this.payOrderRepository.findOne({
+      return this.prisma.paymentOrder.findFirst({
         where: { merchant_uid: merchantUid },
       });
     } else if (paymentInfo.status === 'ready') {
-      // 가상계좌 발급 등 결제 진행 중인 경우
       return payOrder;
     } else {
-      // 결제 실패 또는 취소된 경우
       await this.handleFailedPayment(payOrder, payOrder.imp_uid);
-      return this.payOrderRepository.findOne({
+      return this.prisma.paymentOrder.findFirst({
         where: { merchant_uid: merchantUid },
       });
     }

@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
   Optional,
 } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { PrismaService } from 'src/database/prisma.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { LoginResponseType } from './types/login-response.type';
@@ -47,7 +47,7 @@ export class AuthService {
     private readonly configService: ConfigService<AllConfigType>,
     private readonly httpService: HttpService,
     private readonly smsService: SmsService,
-    private readonly dataSource: DataSource,
+    private readonly prisma: PrismaService,
 
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -733,10 +733,10 @@ export class AuthService {
 
     try {
       // auth_member에서 사용자 정보 조회
-      const member = await this.dataSource.query(
-        `SELECT id, nickname, email, member_type, phone FROM auth_member WHERE id = $1`,
-        [memberId],
-      );
+      const member = await this.prisma.$queryRawUnsafe(
+        `SELECT id, nickname, email, member_type, phone FROM hub.auth_member WHERE id = $1`,
+        memberId,
+      ) as any[];
 
       if (!member || member.length === 0) {
         this.logger.warn(`[SSO Sync] memberId=${memberId} — auth_member에 없음`);
@@ -746,7 +746,7 @@ export class AuthService {
       const m = member[0];
 
       // UPSERT: ON CONFLICT → last_login_at 업데이트
-      await this.dataSource.query(
+      await this.prisma.$queryRawUnsafe(
         `INSERT INTO ${tableName} (${pkCol}, nickname, email, member_type, phone, created_at, last_login_at)
          VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
          ON CONFLICT (${pkCol}) DO UPDATE SET
@@ -755,7 +755,7 @@ export class AuthService {
            member_type = EXCLUDED.member_type,
            phone = EXCLUDED.phone,
            last_login_at = NOW()`,
-        [m.id, m.nickname, m.email, m.member_type, m.phone],
+        m.id, m.nickname, m.email, m.member_type, m.phone,
       );
 
       this.logger.info(`[SSO Sync] ${tableName} — memberId=${memberId} 동기화 완료`);

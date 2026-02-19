@@ -1,40 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
+import { PrismaService } from 'src/database/prisma.service';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import { AdminMemberResponseDto } from '../dtos/admin-member-repsonse.dto';
-import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AdminMemberService {
   constructor(
-    @InjectRepository(MemberEntity)
-    private readonly memberRepository: Repository<MemberEntity>,
-  ) {}
+    private readonly prisma: PrismaService,
+  ) { }
 
   async getAllMembers(commonSearchQueryDto: CommonSearchQueryDto): Promise<AdminMemberResponseDto> {
-    const param = CommonSearchUtils.convertRequestDtoToMapForSearch(
-      commonSearchQueryDto,
-      this.memberRepository,
-    );
+    const { page = 1, pageSize = 10, searchWord, searchField, sortField, sortDirection } = commonSearchQueryDto as any;
 
-    const queryBuilder = this.memberRepository.createQueryBuilder('A');
-
-    if (param.search) {
-      queryBuilder.where(param.search);
+    const where: Prisma.AuthMemberWhereInput = {};
+    if (searchWord && searchField) {
+      where[searchField] = { contains: searchWord, mode: 'insensitive' };
     }
 
-    if (param.searchSort) {
-      queryBuilder.orderBy(param.searchSort.field, param.searchSort.sort);
+    const orderBy: Record<string, string> = {};
+    if (sortField) {
+      orderBy[sortField] = sortDirection || 'asc';
     }
 
-    queryBuilder.skip((param.page - 1) * param.pageSize).take(param.pageSize);
+    const [list, totalCount] = await Promise.all([
+      this.prisma.authMember.findMany({
+        where,
+        orderBy: Object.keys(orderBy).length > 0 ? orderBy : undefined,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.authMember.count({ where }),
+    ]);
 
-    const [list, totalCount] = await queryBuilder.getManyAndCount();
-    return {
-      list: list,
-      totalCount,
-    };
+    return { list, totalCount };
   }
 }

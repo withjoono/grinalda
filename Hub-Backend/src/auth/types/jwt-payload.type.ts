@@ -2,7 +2,7 @@
  * 앱별 권한 정보
  */
 export type AppPermission = {
-  plan: 'free' | 'basic' | 'premium' | 'none';
+  plan: string;
   expires?: string;
   features?: string[];
 };

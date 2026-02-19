@@ -1,16 +1,14 @@
 import { Controller, Get, Post, Body, Param, Patch, Query, Delete } from '@nestjs/common';
 import { BoardService } from './board.service';
-import { PostEntity } from 'src/database/entities/boards/post.entity';
 import { CreatePostDto } from './dtos/post.dto';
 import { CurrentMemberId } from 'src/auth/decorators/current-member_id.decorator';
 import { CreateCommentDto } from './dtos/comment.dto';
-import { CommentEntity } from 'src/database/entities/boards/comment.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('boards')
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardService: BoardService) { }
 
   @Get()
   async getAllBoards() {
@@ -23,7 +21,7 @@ export class BoardController {
     @Param('boardId') boardId: number,
     @Query() paginationDto: PaginationDto,
   ): Promise<{
-    posts: PostEntity[];
+    posts: any[];
     total: number;
     page: number;
     limit: number;
@@ -39,7 +37,7 @@ export class BoardController {
 
   @Get(':boardId/posts/emphasis')
   @Public()
-  async getEmphasizedPostsByBoard(@Param('boardId') boardId: number): Promise<PostEntity[]> {
+  async getEmphasizedPostsByBoard(@Param('boardId') boardId: number): Promise<any[]> {
     const posts = await this.boardService.getEmphasizedPostsByBoard(boardId);
     return posts;
   }
@@ -49,7 +47,7 @@ export class BoardController {
     @Param('boardId') boardId: number,
     @Body() createPostDto: CreatePostDto,
     @CurrentMemberId() memberId: string,
-  ): Promise<PostEntity> {
+  ): Promise<any> {
     return this.boardService.createPost(boardId, createPostDto, memberId);
   }
 
@@ -58,7 +56,7 @@ export class BoardController {
   async getPost(
     @Param('boardId') boardId: number,
     @Param('postId') postId: number,
-  ): Promise<PostEntity> {
+  ): Promise<any> {
     return this.boardService.getPostById(boardId, postId);
   }
 
@@ -68,7 +66,7 @@ export class BoardController {
     @Param('postId') postId: number,
     @Body() createPostDto: CreatePostDto,
     @CurrentMemberId() memberId: string,
-  ): Promise<PostEntity> {
+  ): Promise<any> {
     return this.boardService.editPost(boardId, postId, createPostDto, memberId);
   }
 
@@ -86,12 +84,12 @@ export class BoardController {
     @Param('postId') postId: number,
     @Body() createCommentDto: CreateCommentDto,
     @CurrentMemberId() memberId: string,
-  ): Promise<CommentEntity> {
+  ): Promise<any> {
     return this.boardService.createComment(postId, createCommentDto, memberId);
   }
 
   @Get(':boardId/posts/:postId/comments')
-  async getCommentsByPost(@Param('postId') postId: number): Promise<CommentEntity[]> {
+  async getCommentsByPost(@Param('postId') postId: number): Promise<any[]> {
     return this.boardService.getCommentsByPost(postId);
   }
 }
