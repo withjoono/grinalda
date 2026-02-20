@@ -287,7 +287,7 @@ export function ServiceCardsPage() {
         </div>
       </section>
 
-      {/* ═══════ 소개 배너 ═══════ */}
+      {/* ═══════ 소개 배너 (앱 소개관 + 시너지 메시지) ═══════ */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -299,46 +299,134 @@ export function ServiceCardsPage() {
           padding: '48px 24px 0',
         }}
       >
-        <div style={{
-          background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-          borderRadius: 20,
-          padding: '24px 32px',
-          color: '#fff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 24,
-          textAlign: 'left',
+        <div className="showcase-banner-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)',
+          gap: 16,
+          alignItems: 'stretch',
         }}>
-          <img
-            src="/images/turtle-teacher.png"
-            alt="거북쌤"
-            style={{ width: 64, height: 64, objectFit: 'contain' }}
-          />
-          <div>
-            <p style={{
-              fontSize: 17,
-              fontWeight: 500,
-              lineHeight: 1.5,
-              letterSpacing: '-0.01em',
-              color: 'rgba(255,255,255,0.95)',
-              margin: 0,
-            }}>
-              거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
-              서로 연계될때, 더 큰 시너지를 냅니다.
-            </p>
-            <p style={{
-              fontSize: 15,
-              fontWeight: 600,
-              marginTop: 6,
-              color: '#93c5fd',
-              letterSpacing: '-0.01em',
-              margin: '6px 0 0 0',
-            }}>
-              한번의 생기부 업로드로 여러가지 서비스를 받으세요
-            </p>
+          {/* 왼쪽: 앱 소개관 CTA 카드 */}
+          <Link to="/apps" style={{ textDecoration: 'none' }}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              style={{
+                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%)',
+                borderRadius: 20,
+                padding: '32px 28px',
+                color: '#fff',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: 160,
+              }}
+            >
+              {/* 장식 원 */}
+              <div style={{
+                position: 'absolute', top: -30, right: -30,
+                width: 120, height: 120, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.1)',
+              }} />
+              <div style={{
+                position: 'absolute', bottom: -20, left: -20,
+                width: 80, height: 80, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.06)',
+              }} />
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <span style={{
+                  display: 'inline-block',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: 9999,
+                  background: 'rgba(255,255,255,0.2)',
+                  marginBottom: 12,
+                  letterSpacing: '0.04em',
+                }}>
+                  ✨ APP SHOWCASE
+                </span>
+                <h3 style={{
+                  fontSize: 'clamp(20px, 3.5vw, 24px)',
+                  fontWeight: 800,
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.3,
+                  margin: '0 0 8px',
+                }}>
+                  앱 소개관
+                </h3>
+                <p style={{
+                  fontSize: 14,
+                  color: 'rgba(255,255,255,0.8)',
+                  margin: 0,
+                  lineHeight: 1.5,
+                }}>
+                  거북스쿨의 9개 앱을 한눈에 살펴보세요
+                </p>
+              </div>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                fontSize: 13, fontWeight: 600,
+                color: 'rgba(255,255,255,0.9)',
+                position: 'relative', zIndex: 1,
+                marginTop: 16,
+              }}>
+                자세히 보기 →
+              </div>
+            </motion.div>
+          </Link>
+
+          {/* 오른쪽: 시너지 메시지 */}
+          <div style={{
+            background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+            borderRadius: 20,
+            padding: '28px 24px',
+            color: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 16,
+          }}>
+            <img
+              src="/images/turtle-teacher.png"
+              alt="거북쌤"
+              style={{ width: 52, height: 52, objectFit: 'contain' }}
+            />
+            <div>
+              <p style={{
+                fontSize: 16,
+                fontWeight: 500,
+                lineHeight: 1.6,
+                letterSpacing: '-0.01em',
+                color: 'rgba(255,255,255,0.95)',
+                margin: 0,
+              }}>
+                거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
+                서로 연계될때, 더 큰 시너지를 냅니다.
+              </p>
+              <p style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: '#93c5fd',
+                letterSpacing: '-0.01em',
+                margin: '8px 0 0 0',
+              }}>
+                한번의 생기부 업로드로 여러가지 서비스를 받으세요
+              </p>
+            </div>
           </div>
         </div>
+
+        {/* 모바일: 세로 레이아웃 */}
+        <style>{`
+          @media (max-width: 640px) {
+            .showcase-banner-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </motion.div>
 
       {/* ═══════ Service Grid — 토스 스타일 ═══════ */}
@@ -640,6 +728,21 @@ function Header() {
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden md:flex" style={{ alignItems: 'center', gap: 4 }}>
+          <Link
+            to="/apps"
+            style={{
+              padding: '8px 14px',
+              fontSize: 14,
+              fontWeight: 600,
+              color: isScrolled ? '#6b7280' : 'rgba(255,255,255,0.85)',
+              textDecoration: 'none',
+              borderRadius: 8,
+              transition: 'all 200ms ease',
+            }}
+            className={isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'}
+          >
+            앱 소개관
+          </Link>
           <NavItem title="성적관리 앱" isScrolled={isScrolled}>
             <DropdownItem href={MYSANGGIBU_URL}>My 생기부</DropdownItem>
             <DropdownItem href={MYEXAM_URL}>Exam Hub</DropdownItem>
@@ -657,21 +760,6 @@ function Header() {
             <DropdownItem href={TEACHERADMIN_URL}>선생님용 앱</DropdownItem>
             <DropdownItem href={PARENTADMIN_URL}>학부모용 앱</DropdownItem>
           </NavItem>
-          <Link
-            to="/apps"
-            style={{
-              padding: '8px 14px',
-              fontSize: 14,
-              fontWeight: 600,
-              color: isScrolled ? '#6b7280' : 'rgba(255,255,255,0.85)',
-              textDecoration: 'none',
-              borderRadius: 8,
-              transition: 'all 200ms ease',
-            }}
-            className={isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'}
-          >
-            앱 소개관
-          </Link>
         </nav>
 
         {/* 우측 액션 */}
