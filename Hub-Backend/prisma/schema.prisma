@@ -183,7 +183,7 @@ model PaymentContract {
   contract_use           Int?
   create_dt              DateTime? @db.Timestamp()
   product_code           String    @db.VarChar(200)
-  regular_contract_fl    Boolean
+  regular_contract_fl    Boolean @default(false)
   update_dt              DateTime? @db.Timestamp()
   member_id              String?   @db.VarChar(30)
   order_id               BigInt?

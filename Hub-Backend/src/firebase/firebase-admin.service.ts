@@ -10,7 +10,7 @@ export class FirebaseAdminService implements OnModuleInit {
   private app: App;
   private auth: Auth;
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   onModuleInit() {
     this.initializeFirebase();
@@ -30,6 +30,11 @@ export class FirebaseAdminService implements OnModuleInit {
       const serviceAccountPath = this.configService.get<string>('FIREBASE_SERVICE_ACCOUNT_PATH');
       const serviceAccountJson = this.configService.get<string>('FIREBASE_SERVICE_ACCOUNT_JSON');
 
+      // 개별 환경변수 (app.yaml에서 설정)
+      const projectId = this.configService.get<string>('FIREBASE_PROJECT_ID');
+      const privateKey = this.configService.get<string>('FIREBASE_PRIVATE_KEY');
+      const clientEmail = this.configService.get<string>('FIREBASE_CLIENT_EMAIL');
+
       if (serviceAccountPath) {
         // 파일 경로로 초기화
         // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -42,6 +47,16 @@ export class FirebaseAdminService implements OnModuleInit {
         const serviceAccount = JSON.parse(serviceAccountJson);
         this.app = admin.initializeApp({
           credential: admin.credential.cert(serviceAccount),
+        });
+      } else if (projectId && privateKey && clientEmail) {
+        // 개별 환경변수로 초기화 (App Engine app.yaml 등)
+        this.logger.log(`Firebase Admin SDK initializing with individual env vars (project: ${projectId})`);
+        this.app = admin.initializeApp({
+          credential: admin.credential.cert({
+            projectId,
+            privateKey: privateKey.replace(/\\n/g, '\n'),
+            clientEmail,
+          }),
         });
       } else {
         // 기본 credentials 사용 (Google Cloud 환경)
