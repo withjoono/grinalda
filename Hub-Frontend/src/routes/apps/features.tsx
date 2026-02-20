@@ -33,6 +33,13 @@ const totalFeatures = appFeatureCatalog.reduce(
     0,
 );
 
+function featureSlug(name: string): string {
+    return name
+        .replace(/[\s/]+/g, "-")
+        .replace(/[()&]/g, "")
+        .toLowerCase();
+}
+
 function FeatureCatalogPage() {
     return (
         <div style={{ background: "#fafafa", minHeight: "100vh" }}>
@@ -374,84 +381,101 @@ function AppFeatureSection({
                 }}
             >
                 {features.map((feature, fi) => (
-                    <motion.div
+                    <a
                         key={fi}
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.3, delay: fi * 0.03 }}
-                        viewport={{ once: true }}
-                        style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            gap: 12,
-                            padding: "14px 20px",
-                            borderBottom: fi < features.length - 1 ? "1px solid #f9fafb" : "none",
-                            transition: "background 150ms ease",
-                        }}
-                        className="hover:bg-gray-50/80"
+                        href={`/apps/${app.id}#${featureSlug(feature.name)}`}
+                        style={{ textDecoration: "none", color: "inherit" }}
                     >
-                        {/* Number */}
-                        <span
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ duration: 0.3, delay: fi * 0.03 }}
+                            viewport={{ once: true }}
                             style={{
-                                fontSize: 11,
-                                fontWeight: 700,
-                                color: "#d1d5db",
-                                minWidth: 20,
-                                paddingTop: 2,
-                                textAlign: "right",
-                                fontVariantNumeric: "tabular-nums",
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: 12,
+                                padding: "14px 20px",
+                                borderBottom: fi < features.length - 1 ? "1px solid #f9fafb" : "none",
+                                transition: "background 150ms ease",
+                                cursor: "pointer",
                             }}
+                            className="hover:bg-gray-50/80"
                         >
-                            {String(fi + 1).padStart(2, "0")}
-                        </span>
-
-                        {/* Content */}
-                        <div style={{ flex: 1 }}>
-                            <div
+                            {/* Number */}
+                            <span
                                 style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 8,
-                                    flexWrap: "wrap",
+                                    fontSize: 11,
+                                    fontWeight: 700,
+                                    color: "#d1d5db",
+                                    minWidth: 20,
+                                    paddingTop: 2,
+                                    textAlign: "right",
+                                    fontVariantNumeric: "tabular-nums",
                                 }}
                             >
-                                <span
+                                {String(fi + 1).padStart(2, "0")}
+                            </span>
+
+                            {/* Content */}
+                            <div style={{ flex: 1 }}>
+                                <div
                                     style={{
-                                        fontSize: 14,
-                                        fontWeight: 600,
-                                        color: "#1f2937",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                        flexWrap: "wrap",
                                     }}
                                 >
-                                    {feature.name}
-                                </span>
-                                {feature.tag && (
                                     <span
                                         style={{
-                                            fontSize: 10,
-                                            fontWeight: 700,
-                                            padding: "2px 7px",
-                                            borderRadius: 6,
-                                            background: tagColors[feature.tag]?.bg || "#f3f4f6",
-                                            color: tagColors[feature.tag]?.text || "#6b7280",
-                                            letterSpacing: "0.02em",
+                                            fontSize: 14,
+                                            fontWeight: 600,
+                                            color: "#1f2937",
                                         }}
                                     >
-                                        {feature.tag}
+                                        {feature.name}
                                     </span>
-                                )}
+                                    {feature.tag && (
+                                        <span
+                                            style={{
+                                                fontSize: 10,
+                                                fontWeight: 700,
+                                                padding: "2px 7px",
+                                                borderRadius: 6,
+                                                background: tagColors[feature.tag]?.bg || "#f3f4f6",
+                                                color: tagColors[feature.tag]?.text || "#6b7280",
+                                                letterSpacing: "0.02em",
+                                            }}
+                                        >
+                                            {feature.tag}
+                                        </span>
+                                    )}
+                                </div>
+                                <p
+                                    style={{
+                                        fontSize: 13,
+                                        color: "#9ca3af",
+                                        margin: "3px 0 0",
+                                        lineHeight: 1.5,
+                                    }}
+                                >
+                                    {feature.description}
+                                </p>
                             </div>
-                            <p
+
+                            {/* Arrow hint */}
+                            <ArrowRight
                                 style={{
-                                    fontSize: 13,
-                                    color: "#9ca3af",
-                                    margin: "3px 0 0",
-                                    lineHeight: 1.5,
+                                    width: 14,
+                                    height: 14,
+                                    color: "#e5e7eb",
+                                    marginTop: 4,
+                                    flexShrink: 0,
                                 }}
-                            >
-                                {feature.description}
-                            </p>
-                        </div>
-                    </motion.div>
+                            />
+                        </motion.div>
+                    </a>
                 ))}
             </div>
         </motion.section>

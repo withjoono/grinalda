@@ -15,7 +15,9 @@ import {
     Users as UsersIcon,
 } from "lucide-react";
 import { getAppById, appShowcaseData, type AppShowcaseItem } from "@/constants/app-showcase-data";
+import { appFeatureCatalog, type FeatureItem } from "@/constants/app-feature-catalog";
 import { generateSSOUrl, getSSOServiceId } from "@/lib/utils/sso-helper";
+import { ListChecks } from "lucide-react";
 
 export const Route = createFileRoute("/apps/$appId")({
     component: AppDetailPage,
@@ -71,6 +73,9 @@ function AppDetailPage() {
 
             {/* ═══════ Highlights Section ═══════ */}
             <HighlightsSection app={app} />
+
+            {/* ═══════ All Features Catalog ═══════ */}
+            <AllFeaturesSection app={app} />
 
             {/* ═══════ Related Apps ═══════ */}
             {relatedApps.length > 0 && (
@@ -522,6 +527,199 @@ function HighlightsSection({ app }: { app: AppShowcaseItem }) {
                         </span>
                     </motion.div>
                 ))}
+            </div>
+        </section>
+    );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// All Features Catalog Section (with anchors)
+// ═══════════════════════════════════════════════════════════════
+const catalogTagColors: Record<string, { bg: string; text: string }> = {
+    핵심: { bg: "#dbeafe", text: "#1d4ed8" },
+    신규: { bg: "#dcfce7", text: "#15803d" },
+    연계: { bg: "#fef3c7", text: "#b45309" },
+    AI: { bg: "#f3e8ff", text: "#7c3aed" },
+};
+
+function featureSlug(name: string): string {
+    return name
+        .replace(/[\s/]+/g, "-")
+        .replace(/[()&]/g, "")
+        .toLowerCase();
+}
+
+function AllFeaturesSection({ app }: { app: AppShowcaseItem }) {
+    const catalog = appFeatureCatalog.find((c) => c.appId === app.id);
+    if (!catalog || catalog.features.length === 0) return null;
+
+    return (
+        <section
+            style={{
+                background: "#fff",
+                borderTop: "1px solid #f3f4f6",
+                borderBottom: "1px solid #f3f4f6",
+            }}
+        >
+            <div style={{ maxWidth: 960, margin: "0 auto", padding: "56px 24px" }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            marginBottom: 8,
+                        }}
+                    >
+                        <ListChecks style={{ width: 20, height: 20, color: app.color }} />
+                        <h2
+                            style={{
+                                fontSize: 22,
+                                fontWeight: 700,
+                                color: "#111827",
+                                letterSpacing: "-0.02em",
+                            }}
+                        >
+                            전체 기능 목록
+                        </h2>
+                    </div>
+                    <p style={{ fontSize: 14, color: "#9ca3af", marginBottom: 28 }}>
+                        {app.title}의 모든 기능 {catalog.features.length}개를 확인하세요.
+                    </p>
+                </motion.div>
+
+                {/* Feature list */}
+                <div
+                    style={{
+                        background: "#fafafa",
+                        borderRadius: 16,
+                        border: "1px solid #f3f4f6",
+                        overflow: "hidden",
+                    }}
+                >
+                    {catalog.features.map((feature, idx) => (
+                        <motion.div
+                            key={idx}
+                            id={featureSlug(feature.name)}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ duration: 0.3, delay: idx * 0.02 }}
+                            viewport={{ once: true }}
+                            style={{
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: 16,
+                                padding: "18px 20px",
+                                borderBottom:
+                                    idx < catalog.features.length - 1
+                                        ? "1px solid #f3f4f6"
+                                        : "none",
+                                scrollMarginTop: 80,
+                                transition: "background 200ms ease",
+                            }}
+                            className="hover:bg-white"
+                        >
+                            {/* Number badge */}
+                            <div
+                                style={{
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: 10,
+                                    background: `${app.color}10`,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: 12,
+                                    fontWeight: 700,
+                                    color: app.color,
+                                    flexShrink: 0,
+                                    fontVariantNumeric: "tabular-nums",
+                                }}
+                            >
+                                {String(idx + 1).padStart(2, "0")}
+                            </div>
+
+                            {/* Content */}
+                            <div style={{ flex: 1 }}>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                        flexWrap: "wrap",
+                                        marginBottom: 4,
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            fontSize: 15,
+                                            fontWeight: 600,
+                                            color: "#1f2937",
+                                        }}
+                                    >
+                                        {feature.name}
+                                    </span>
+                                    {feature.tag && (
+                                        <span
+                                            style={{
+                                                fontSize: 10,
+                                                fontWeight: 700,
+                                                padding: "2px 8px",
+                                                borderRadius: 6,
+                                                background:
+                                                    catalogTagColors[feature.tag]?.bg || "#f3f4f6",
+                                                color:
+                                                    catalogTagColors[feature.tag]?.text || "#6b7280",
+                                                letterSpacing: "0.02em",
+                                            }}
+                                        >
+                                            {feature.tag}
+                                        </span>
+                                    )}
+                                </div>
+                                <p
+                                    style={{
+                                        fontSize: 13,
+                                        color: "#9ca3af",
+                                        margin: 0,
+                                        lineHeight: 1.5,
+                                    }}
+                                >
+                                    {feature.description}
+                                </p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Link to full catalog */}
+                <div style={{ marginTop: 20, textAlign: "center" }}>
+                    <Link
+                        to="/apps/features"
+                        style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            fontSize: 13,
+                            fontWeight: 600,
+                            color: app.color,
+                            textDecoration: "none",
+                            padding: "8px 16px",
+                            borderRadius: 10,
+                            border: `1px solid ${app.color}25`,
+                            transition: "all 200ms ease",
+                        }}
+                        className="hover:shadow-sm"
+                    >
+                        전체 앱 기능 카탈로그 보기
+                        <ArrowRight style={{ width: 14, height: 14 }} />
+                    </Link>
+                </div>
             </div>
         </section>
     );
