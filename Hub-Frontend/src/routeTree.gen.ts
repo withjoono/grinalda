@@ -25,6 +25,7 @@ import { Route as JungsiRouteRouteImport } from './routes/jungsi/route'
 import { Route as GradeAnalysisRouteRouteImport } from './routes/grade-analysis/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as AppsIndexRouteImport } from './routes/apps/index'
 import { Route as AccountLinkageIndexRouteImport } from './routes/account-linkage/index'
 import { Route as UsersLayoutRouteImport } from './routes/users/_layout'
 import { Route as TestLoginDebugRouteImport } from './routes/test/login-debug'
@@ -43,6 +44,7 @@ import { Route as EvaluationLayoutRouteImport } from './routes/evaluation/_layou
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AppsAppIdRouteImport } from './routes/apps/$appId'
 import { Route as AccountLinkageAcceptRouteImport } from './routes/account-linkage/accept'
 import { Route as MembersMyGroupRouteRouteImport } from './routes/members/my-group/route'
 import { Route as MembersMyGroupLayoutRouteImport } from './routes/members/my-group/_layout'
@@ -384,6 +386,11 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsIndexRoute = AppsIndexRouteImport.update({
+  id: '/apps/',
+  path: '/apps/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountLinkageIndexRoute = AccountLinkageIndexRouteImport.update({
   id: '/account-linkage/',
   path: '/account-linkage/',
@@ -620,6 +627,11 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsAppIdRoute = AppsAppIdRouteImport.update({
+  id: '/apps/$appId',
+  path: '/apps/$appId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountLinkageAcceptRoute = AccountLinkageAcceptRouteImport.update({
@@ -1083,6 +1095,7 @@ export interface FileRoutesByFullPath {
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupLayoutRouteWithChildren
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
+  '/apps/$appId': typeof AppsAppIdRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1121,6 +1134,7 @@ export interface FileRoutesByFullPath {
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
   '/account-linkage': typeof AccountLinkageIndexRoute
+  '/apps': typeof AppsIndexRoute
   '/products': typeof ProductsIndexRoute
   '/analysis': typeof AnalysisIndexLazyRoute
   '/evaluation/': typeof EvaluationIndexLazyRoute
@@ -1194,6 +1208,7 @@ export interface FileRoutesByTo {
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupLayoutIndexRoute
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
+  '/apps/$appId': typeof AppsAppIdRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1235,6 +1250,7 @@ export interface FileRoutesByTo {
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
   '/account-linkage': typeof AccountLinkageIndexRoute
+  '/apps': typeof AppsIndexRoute
   '/products': typeof ProductsIndexRoute
   '/analysis': typeof AnalysisIndexLazyRoute
   '/mock-apply': typeof MockApplyIndexLazyRoute
@@ -1310,6 +1326,7 @@ export interface FileRoutesById {
   '/j': typeof JRoute
   '/members/my-group': typeof MembersMyGroupRouteRouteWithChildren
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
+  '/apps/$appId': typeof AppsAppIdRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1355,6 +1372,7 @@ export interface FileRoutesById {
   '/official/guide': typeof OfficialGuideLazyRoute
   '/try/jungsi-prediction': typeof TryJungsiPredictionLazyRoute
   '/account-linkage/': typeof AccountLinkageIndexRoute
+  '/apps/': typeof AppsIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/analysis/': typeof AnalysisIndexLazyRoute
   '/evaluation/': typeof EvaluationIndexLazyRoute
@@ -1437,6 +1455,7 @@ export interface FileRouteTypes {
     | '/j'
     | '/members/my-group'
     | '/account-linkage/accept'
+    | '/apps/$appId'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1475,6 +1494,7 @@ export interface FileRouteTypes {
     | '/official/guide'
     | '/try/jungsi-prediction'
     | '/account-linkage'
+    | '/apps'
     | '/products'
     | '/analysis'
     | '/evaluation/'
@@ -1548,6 +1568,7 @@ export interface FileRouteTypes {
     | '/j'
     | '/members/my-group'
     | '/account-linkage/accept'
+    | '/apps/$appId'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1589,6 +1610,7 @@ export interface FileRouteTypes {
     | '/official/guide'
     | '/try/jungsi-prediction'
     | '/account-linkage'
+    | '/apps'
     | '/products'
     | '/analysis'
     | '/mock-apply'
@@ -1663,6 +1685,7 @@ export interface FileRouteTypes {
     | '/j'
     | '/members/my-group'
     | '/account-linkage/accept'
+    | '/apps/$appId'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1708,6 +1731,7 @@ export interface FileRouteTypes {
     | '/official/guide'
     | '/try/jungsi-prediction'
     | '/account-linkage/'
+    | '/apps/'
     | '/products/'
     | '/analysis/'
     | '/evaluation/'
@@ -1789,6 +1813,7 @@ export interface RootRouteChildren {
   JRoute: typeof JRoute
   MembersMyGroupRouteRoute: typeof MembersMyGroupRouteRouteWithChildren
   AccountLinkageAcceptRoute: typeof AccountLinkageAcceptRoute
+  AppsAppIdRoute: typeof AppsAppIdRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
@@ -1812,6 +1837,7 @@ export interface RootRouteChildren {
   OfficialFaqLazyRoute: typeof OfficialFaqLazyRoute
   OfficialGuideLazyRoute: typeof OfficialGuideLazyRoute
   AccountLinkageIndexRoute: typeof AccountLinkageIndexRoute
+  AppsIndexRoute: typeof AppsIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   AnalysisIndexLazyRoute: typeof AnalysisIndexLazyRoute
   AuthOauthCallbackRoute: typeof AuthOauthCallbackRoute
@@ -1996,6 +2022,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/': {
+      id: '/apps/'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account-linkage/': {
@@ -2290,6 +2323,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/$appId': {
+      id: '/apps/$appId'
+      path: '/apps/$appId'
+      fullPath: '/apps/$appId'
+      preLoaderRoute: typeof AppsAppIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account-linkage/accept': {
@@ -3046,6 +3086,7 @@ const rootRouteChildren: RootRouteChildren = {
   JRoute: JRoute,
   MembersMyGroupRouteRoute: MembersMyGroupRouteRouteWithChildren,
   AccountLinkageAcceptRoute: AccountLinkageAcceptRoute,
+  AppsAppIdRoute: AppsAppIdRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
@@ -3069,6 +3110,7 @@ const rootRouteChildren: RootRouteChildren = {
   OfficialFaqLazyRoute: OfficialFaqLazyRoute,
   OfficialGuideLazyRoute: OfficialGuideLazyRoute,
   AccountLinkageIndexRoute: AccountLinkageIndexRoute,
+  AppsIndexRoute: AppsIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   AnalysisIndexLazyRoute: AnalysisIndexLazyRoute,
   AuthOauthCallbackRoute: AuthOauthCallbackRoute,

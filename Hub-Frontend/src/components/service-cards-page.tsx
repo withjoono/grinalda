@@ -657,6 +657,21 @@ function Header() {
             <DropdownItem href={TEACHERADMIN_URL}>선생님용 앱</DropdownItem>
             <DropdownItem href={PARENTADMIN_URL}>학부모용 앱</DropdownItem>
           </NavItem>
+          <Link
+            to="/apps"
+            style={{
+              padding: '8px 14px',
+              fontSize: 14,
+              fontWeight: 600,
+              color: isScrolled ? '#6b7280' : 'rgba(255,255,255,0.85)',
+              textDecoration: 'none',
+              borderRadius: 8,
+              transition: 'all 200ms ease',
+            }}
+            className={isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/10'}
+          >
+            앱 소개관
+          </Link>
         </nav>
 
         {/* 우측 액션 */}
@@ -791,6 +806,7 @@ function Header() {
               <MobileNavLink href={JUNGSI_URL} onClick={() => setMobileOpen(false)}>정시 예측</MobileNavLink>
             </MobileNavSection>
             <div style={{ borderTop: '1px solid var(--color-border-light)', margin: '8px 0', paddingTop: 8 }}>
+              <MobileNavLink href="/apps" onClick={() => setMobileOpen(false)}>앱 소개관</MobileNavLink>
               <MobileNavLink href="/products" onClick={() => setMobileOpen(false)}>이용권 구매</MobileNavLink>
               <MobileNavLink href="/notifications" onClick={() => setMobileOpen(false)}>알림 설정</MobileNavLink>
               <MobileNavLink href="/account-linkage" onClick={() => setMobileOpen(false)}>계정연동</MobileNavLink>

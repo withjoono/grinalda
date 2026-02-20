@@ -50,6 +50,7 @@ import { OAuthModule } from './oauth/oauth.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
 import { SchoolRecordModule } from './modules/schoolrecord/schoolrecord.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { KyokwaSubjectsModule } from './modules/kyokwa-subjects/kyokwa-subjects.module';
 
 @Module({
   imports: [
@@ -140,6 +141,7 @@ import { FirebaseModule } from './firebase/firebase.module';
     ChatbotModule, // 챗봇 모듈 (FAQ, 용어사전, 매뉴얼 기반 Q&A)
     SubscriptionModule, // 앱 구독/권한 관리 모듈 (JWT에 앱별 권한 포함)
     SchoolRecordModule, // 생기부 중앙 저장소 모듈
+    KyokwaSubjectsModule, // 교과/과목 조회 모듈 (2015/2022)
   ],
   controllers: [AppController],
   providers: [
