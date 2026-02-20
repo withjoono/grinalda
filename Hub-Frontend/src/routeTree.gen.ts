@@ -44,6 +44,7 @@ import { Route as EvaluationLayoutRouteImport } from './routes/evaluation/_layou
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AppsFeaturesRouteImport } from './routes/apps/features'
 import { Route as AppsAppIdRouteImport } from './routes/apps/$appId'
 import { Route as AccountLinkageAcceptRouteImport } from './routes/account-linkage/accept'
 import { Route as MembersMyGroupRouteRouteImport } from './routes/members/my-group/route'
@@ -629,6 +630,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsFeaturesRoute = AppsFeaturesRouteImport.update({
+  id: '/apps/features',
+  path: '/apps/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppsAppIdRoute = AppsAppIdRouteImport.update({
   id: '/apps/$appId',
   path: '/apps/$appId',
@@ -1096,6 +1102,7 @@ export interface FileRoutesByFullPath {
   '/members/my-group': typeof MembersMyGroupLayoutRouteWithChildren
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/apps/$appId': typeof AppsAppIdRoute
+  '/apps/features': typeof AppsFeaturesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1209,6 +1216,7 @@ export interface FileRoutesByTo {
   '/members/my-group': typeof MembersMyGroupLayoutIndexRoute
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/apps/$appId': typeof AppsAppIdRoute
+  '/apps/features': typeof AppsFeaturesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1327,6 +1335,7 @@ export interface FileRoutesById {
   '/members/my-group': typeof MembersMyGroupRouteRouteWithChildren
   '/account-linkage/accept': typeof AccountLinkageAcceptRoute
   '/apps/$appId': typeof AppsAppIdRoute
+  '/apps/features': typeof AppsFeaturesRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -1456,6 +1465,7 @@ export interface FileRouteTypes {
     | '/members/my-group'
     | '/account-linkage/accept'
     | '/apps/$appId'
+    | '/apps/features'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1569,6 +1579,7 @@ export interface FileRouteTypes {
     | '/members/my-group'
     | '/account-linkage/accept'
     | '/apps/$appId'
+    | '/apps/features'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1686,6 +1697,7 @@ export interface FileRouteTypes {
     | '/members/my-group'
     | '/account-linkage/accept'
     | '/apps/$appId'
+    | '/apps/features'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
@@ -1814,6 +1826,7 @@ export interface RootRouteChildren {
   MembersMyGroupRouteRoute: typeof MembersMyGroupRouteRouteWithChildren
   AccountLinkageAcceptRoute: typeof AccountLinkageAcceptRoute
   AppsAppIdRoute: typeof AppsAppIdRoute
+  AppsFeaturesRoute: typeof AppsFeaturesRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
@@ -2323,6 +2336,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/features': {
+      id: '/apps/features'
+      path: '/apps/features'
+      fullPath: '/apps/features'
+      preLoaderRoute: typeof AppsFeaturesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/apps/$appId': {
@@ -3087,6 +3107,7 @@ const rootRouteChildren: RootRouteChildren = {
   MembersMyGroupRouteRoute: MembersMyGroupRouteRouteWithChildren,
   AccountLinkageAcceptRoute: AccountLinkageAcceptRoute,
   AppsAppIdRoute: AppsAppIdRoute,
+  AppsFeaturesRoute: AppsFeaturesRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
