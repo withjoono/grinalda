@@ -153,7 +153,7 @@ function TryIndexPage() {
             무료 체험
           </Badge>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            G Skool 서비스를 무료로 체험해보세요
+            거북스쿨 서비스를 무료로 체험해보세요
           </h1>
           <p className="text-white/80 text-lg max-w-2xl mx-auto">
             각 서비스별로 제한된 횟수 내에서 무료로 체험하실 수 있습니다.

@@ -424,7 +424,7 @@ function RealtimeHeatmapPromo() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              G Skool 실시간 히트맵이{" "}
+              거북스쿨 실시간 히트맵이{" "}
               <span style={{ color: primaryColor }}>한 번에 해결</span>합니다
             </h2>
           </div>

@@ -235,7 +235,7 @@ function ReportPage() {
             {/* Footer */}
             <div className="mt-8 pt-4 border-t border-gray-200 text-center text-gray-400 text-xs">
               <p>본 리포트는 {today} 기준으로 생성되었습니다.</p>
-              <p>G Skool 정시 예측 서비스 | www.gskool.kr</p>
+              <p>거북스쿨 정시 예측 서비스 | www.gskool.kr</p>
             </div>
           </div>
         </div>

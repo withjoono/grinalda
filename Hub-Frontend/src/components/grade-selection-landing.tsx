@@ -38,14 +38,14 @@ export function GradeSelectionLanding() {
           {/* 마스코트 캐릭터 이미지 */}
           <img
             src="/images/turtle-mascot.png"
-            alt="G Skool 마스코트"
+            alt="거북스쿨 마스코트"
             className="w-48 h-48 sm:w-56 sm:h-56 object-contain drop-shadow-lg"
           />
 
           {/* 말풍선 */}
           <div className="relative bg-white rounded-2xl px-6 py-5 shadow-lg border border-gray-100 max-w-md">
             <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-              G Skool 앱 학생용 페이지입니다. 학년을 선택하시면, 다음 로그인부터 자동으로 그 학년용 앱이 보여집니다.
+              거북스쿨 앱 학생용 페이지입니다. 학년을 선택하시면, 다음 로그인부터 자동으로 그 학년용 앱이 보여집니다.
               상단 탭을 통해서, 다른 학년으로 전환도 가능합니다
             </p>
             {/* 말풍선 꼬리 (왼쪽) */}

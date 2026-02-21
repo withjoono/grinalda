@@ -13,7 +13,7 @@ function ServicePolicy() {
         <h3 className="text-xl font-semibold">제1조(목적)</h3>
         <div className="space-y-2 text-sm text-gray-600">
           <p>
-            이 약관은 (주)G Skool (이하 '회사' 라고 합니다)가 제공하는 제반
+            이 약관은 (주)거북스쿨 (이하 '회사' 라고 합니다)가 제공하는 제반
             서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항,
             기타 필요한 사항을 규정함을 목적으로 합니다.
           </p>
@@ -88,7 +88,7 @@ function ServicePolicy() {
         <h3 className="text-xl font-semibold">제4조(약관의 효력과 변경)</h3>
         <div className="space-y-2 text-sm text-gray-600">
           <p>
-            이 약관은 (주)G Skool(이)가 제공하는 모든 인터넷서비스에 게시하여
+            이 약관은 (주)거북스쿨(이)가 제공하는 모든 인터넷서비스에 게시하여
             공시합니다. 회사는 '전자상거래등에서의 소비자보호에 관한 법률(이하
             '전자상거래법'이라 함)', '약관의 규제에 관한 법률(이하'
             약관규제법'이라 함)', '정보통신망 이용촉진 및 정보보호 등에 관한

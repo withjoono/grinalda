@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// G Skool 통합 디자인 시스템
+// 거북스쿨 통합 디자인 시스템
 import "../fe-shared-packages/packages/design-system/index.css";
 import "./index.css";
 

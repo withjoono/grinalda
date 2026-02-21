@@ -46,7 +46,7 @@ export const JungsiProgramSection = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             2026년 <span style={{ color: theme.primary }}>정시 프로그램</span>
           </h2>
-          <p className="text-gray-500">G Skool만의 차별화된 정시 예측 서비스</p>
+          <p className="text-gray-500">거북스쿨만의 차별화된 정시 예측 서비스</p>
         </div>
 
         {/* 프로그램 카드 */}

@@ -199,7 +199,7 @@ export function RegisterWithSocialForm({ className }: Props) {
       // 회원가입 성공 후 me 쿼리 캐시 무효화
       await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
       clearSocialData(); // 소셜 로그인 임시 데이터 삭제
-      toast.success("G Skool에 가입해주셔서 감사합니다! 😄");
+      toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
       setIsLoading(false);
       // 회원 유형에 따라 해당 앱으로 리다이렉트
       if (memberType === "teacher") {

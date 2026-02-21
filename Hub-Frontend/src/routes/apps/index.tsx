@@ -1,7 +1,7 @@
 /**
  * /apps — 앱 소개관 목록 페이지
  *
- * G Skool의 모든 앱을 카테고리별로 소개하는 페이지입니다.
+ * 거북스쿨의 모든 앱을 카테고리별로 소개하는 페이지입니다.
  * 로그인 여부와 관계없이 접근 가능합니다.
  */
 
@@ -79,7 +79,7 @@ function AppsShowcasePage() {
                             marginBottom: 12,
                         }}
                     >
-                        G Skool의 모든 앱을
+                        거북스쿨의 모든 앱을
                         <br />
                         한눈에 살펴보세요
                     </h1>
@@ -180,7 +180,7 @@ function AppsShowcasePage() {
                             marginBottom: 24,
                         }}
                     >
-                        G Skool 계정 하나로 모든 앱을 이용할 수 있습니다.
+                        거북스쿨 계정 하나로 모든 앱을 이용할 수 있습니다.
                     </p>
                     <Link
                         to="/auth/login"

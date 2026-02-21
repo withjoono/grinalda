@@ -204,7 +204,7 @@ function SusiPromo() {
                 2027 <span className="text-olive-500">수시 합격 예측</span> 서비스
               </h1>
               <p className="text-lg text-gray-600 mb-6">
-                G Skool만의 단계별 필터링 검색으로<br />
+                거북스쿨만의 단계별 필터링 검색으로<br />
                 나에게 가장 유리한 전형을 찾아보세요
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
@@ -274,7 +274,7 @@ function SusiPromo() {
                 </h3>
               </div>
               <p>
-                300개 이상의 대학의 모든 전형을 펼처두고 G Skool만의 단계별
+                300개 이상의 대학의 모든 전형을 펼처두고 거북스쿨만의 단계별
                 필터링 검색을 통해 나에게 가장 유리한 전형을 5단계 필터링을 통해
                 탐색하는 <b className="text-olive-500">부분 유료 서비스</b>
                 입니다.

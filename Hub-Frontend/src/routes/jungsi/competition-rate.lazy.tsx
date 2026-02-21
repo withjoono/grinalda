@@ -44,7 +44,7 @@ function PublicCompetitionRatePage() {
         <div className="mt-8 flex justify-center">
           <Link to="/jungsi">
             <Button size="lg" className="gap-2">
-              G Skool 정시 서비스 자세히 알아보기
+              거북스쿨 정시 서비스 자세히 알아보기
               <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>

@@ -21,7 +21,7 @@ export const Features = () => {
     {
       title: "단계별 필터링 검색",
       description:
-        "300개 이상의 대학의 모든 전형을 펼처두고 G Skool만의 단계별 필터링 검색을 통해 원하는 전형을 찾아보세요.",
+        "300개 이상의 대학의 모든 전형을 펼처두고 거북스쿨만의 단계별 필터링 검색을 통해 원하는 전형을 찾아보세요.",
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 md:col-span-2 dark:border-neutral-800",
     },

@@ -135,7 +135,7 @@ export class SmsService {
       branch: branch || 'default',
     });
     await this._saveCodeToCache(phone, code);
-    let message = `[(주)]G Skool 본인확인 인증번호 [${code}]를 화면에 입력해주세요.`;
+    let message = `[(주)]거북스쿨 본인확인 인증번호 [${code}]를 화면에 입력해주세요.`;
     if (branch === 'ida') {
       message = `대치IDA학원 본인확인 인증번호 [${code}]를 화면에 입력해주세요.`;
     }

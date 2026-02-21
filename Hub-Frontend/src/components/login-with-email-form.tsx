@@ -184,7 +184,7 @@ export function LoginWithEmailForm({ className }: Props) {
           }
         }
 
-        toast.success("환영합니다. G Skool입니다. 😄");
+        toast.success("환영합니다. 거북스쿨입니다. 😄");
         navigate({ to: "/" });
       } else {
         toast.error(loginData.error || "로그인에 실패했습니다.");

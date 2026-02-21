@@ -85,7 +85,7 @@ export const JungsiHeader = () => {
                 2026 정시
               </span>
               <span className="text-[10px] text-orange-500 lg:text-xs">
-                G Skool
+                거북스쿨
               </span>
             </div>
           </Link>
@@ -115,7 +115,7 @@ export const JungsiHeader = () => {
                     />
                     <div className="flex flex-col items-start">
                       <span className="text-base font-bold text-gray-900">2026 정시</span>
-                      <span className="text-xs text-orange-500">G Skool</span>
+                      <span className="text-xs text-orange-500">거북스쿨</span>
                     </div>
                   </SheetTitle>
                 </SheetHeader>

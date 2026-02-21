@@ -103,7 +103,7 @@ async function bootstrap() {
 
   if (!isProduction || swaggerEnabled) {
     const config = new DocumentBuilder()
-      .setTitle('G Skool API')
+      .setTitle('거북스쿨 API')
       .setDescription(
         '대학 입시 컨설팅 서비스를 위한 교육 플랫폼 REST API\n\n' +
         '## 주요 기능\n' +
@@ -160,7 +160,7 @@ async function bootstrap() {
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document, {
-      customSiteTitle: 'G Skool API 문서',
+      customSiteTitle: '거북스쿨 API 문서',
       customfavIcon: 'https://nestjs.com/img/logo-small.svg',
       customJs: [
         'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui-bundle.min.js',
