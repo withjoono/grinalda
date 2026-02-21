@@ -23,6 +23,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { meQueryKeys } from "@/stores/server/features/me/queries";
 import { setTokens as setTokensInStorage } from "@/lib/api/token-manager";
 import { useAuthStore } from "@/stores/client/use-auth-store";
+import { getSSOServiceId } from "@/lib/utils/sso-helper";
 
 interface Props {
   className?: string;
@@ -158,7 +159,7 @@ export function LoginWithEmailForm({ className }: Props) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`,
               },
-              body: JSON.stringify({ targetService: 'examhub' }),
+              body: JSON.stringify({ targetService: getSSOServiceId(redirectUrl) || 'unknown' }),
             });
 
             const ssoData = await ssoResponse.json();
