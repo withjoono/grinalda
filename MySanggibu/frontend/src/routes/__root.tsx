@@ -35,8 +35,10 @@ function RootLayout() {
       const ssoSuccess = await processSSOLogin();
       if (ssoSuccess) {
         toast.success('Hub에서 자동 로그인되었습니다.');
-        // 토큰 저장 후 페이지를 새로고침하여 모든 컴포넌트가 로그인 상태로 렌더링
-        setTimeout(() => window.location.reload(), 500);
+        // 토큰 저장 후 대시보드로 이동 (full navigation으로 auth 상태 반영)
+        setTimeout(() => {
+          window.location.href = '/ms/dashboard';
+        }, 500);
       }
       setIsSSOLoading(false);
     };

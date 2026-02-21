@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useGetCurrentUser } from "@/stores/server/features/me/queries";
 import { auth, provider } from "@/lib/utils/firebase/firebase";
 import { setTokens } from "@/lib/api/token-manager";
+import { getSSOServiceId } from "@/lib/utils/sso-helper";
 
 interface Props {
   isPending?: boolean;
@@ -110,6 +111,36 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         // 3. 학생(또는 기타)일 경우: Hub 로그인 진행
         // 토큰을 localStorage에 저장 (쿠키는 포트 간 공유 안 됨)
         setTokens(accessToken, refreshToken);
+
+        // SSO 리다이렉트 처리: redirect URL이 있으면 SSO 코드 생성 후 리다이렉트
+        const searchParams = new URLSearchParams(window.location.search);
+        const redirectUrl = searchParams.get("redirect") || searchParams.get("redirect_uri");
+        if (redirectUrl) {
+          try {
+            const targetService = getSSOServiceId(redirectUrl) || 'unknown';
+            const ssoResponse = await fetch(`${import.meta.env.VITE_API_URL_HUB || 'http://localhost:4000'}/auth/sso/generate-code`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ targetService }),
+            });
+            const ssoData = await ssoResponse.json();
+            if (ssoResponse.ok && (ssoData.success !== false)) {
+              const ssoCode = ssoData.data?.code || ssoData.code;
+              if (ssoCode) {
+                const targetUrl = new URL(redirectUrl);
+                targetUrl.searchParams.set('sso_code', ssoCode);
+                toast.success("로그인 성공! 앱으로 이동합니다...");
+                window.location.href = targetUrl.toString();
+                return;
+              }
+            }
+          } catch (ssoError) {
+            console.error("❌ SSO 리다이렉트 에러:", ssoError);
+          }
+        }
 
         toast.success("환영합니다. G Skool입니다. 😄");
         await user.refetch();

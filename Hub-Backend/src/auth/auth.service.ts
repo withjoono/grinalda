@@ -613,6 +613,7 @@ export class AuthService {
   /**
    * SSO 코드 생성
    * Hub에서 다른 서비스로 이동 시 일회용 코드 발급
+   * ⚠️ DB 기반 저장 (다중 인스턴스 환경에서도 안전)
    *
    * @param memberId 현재 로그인한 사용자 ID
    * @param targetService 대상 서비스 식별자 (susi, jungsi 등)
@@ -623,79 +624,120 @@ export class AuthService {
     const crypto = require('crypto');
     const code = `SSO_${crypto.randomBytes(32).toString('base64url')}`;
 
-    // 2. 사용자의 토큰 조회
+    // 2. 사용자의 토큰 생성
     const permissions = await this.getMemberPermissions(memberId);
     const accessToken = this.jwtService.createAccessToken(memberId, permissions);
     const refreshToken = this.jwtService.createRefreshToken(memberId);
     const tokenExpiry = this.jwtService.getTokenExpiryTime();
 
-    // 3. Redis에 코드와 토큰 매핑 저장 (5분 TTL)
-    const cacheKey = `sso_code:${code}`;
-    const cacheValue = JSON.stringify({
-      memberId,
-      targetService,
-      accessToken,
-      refreshToken,
-      tokenExpiry,
-      createdAt: Date.now(),
-    });
+    // 3. DB에 SSO 코드 저장 (테이블 자동 생성)
+    try {
+      await this.ensureSsoCodesTable();
 
-    await this.cacheManager.set(
-      cacheKey,
-      cacheValue,
-      5 * 60 * 1000, // 5분 (밀리초)
-    );
+      const ssoData = JSON.stringify({
+        memberId,
+        targetService,
+        accessToken,
+        refreshToken,
+        tokenExpiry,
+        createdAt: Date.now(),
+      });
 
-    this.logger.info(`[SSO 코드 생성] memberId=${memberId}, targetService=${targetService}, code=${code.substring(0, 20)}...`);
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5분 후 만료
+
+      await this.prisma.$executeRawUnsafe(
+        `INSERT INTO hub.sso_codes (code, sso_data, expires_at) VALUES ($1, $2, $3)`,
+        code, ssoData, expiresAt,
+      );
+
+      this.logger.info(`[SSO 코드 생성] memberId=${memberId}, targetService=${targetService}, code=${code.substring(0, 20)}...`);
+    } catch (error) {
+      this.logger.error(`[SSO 코드 생성 실패] DB 저장 에러: ${error.message}`);
+      throw error;
+    }
 
     return code;
   }
 
   /**
+   * SSO 코드 테이블 자동 생성 (없으면 생성)
+   */
+  private async ensureSsoCodesTable(): Promise<void> {
+    await this.prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS hub.sso_codes (
+        code VARCHAR(255) PRIMARY KEY,
+        sso_data TEXT NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+  }
+
+  /**
    * SSO 코드 검증 및 토큰 발급
    * 다른 서비스에서 Hub로 코드 검증 요청
+   * ⚠️ DB 기반 조회 (다중 인스턴스 환경에서도 안전)
    *
    * @param code SSO 일회용 코드
    * @param serviceId 요청 서비스 식별자 (보안 검증용)
    * @returns 토큰 정보
    */
   async verifySsoCode(code: string, serviceId: string): Promise<LoginResponseType> {
-    const cacheKey = `sso_code:${code}`;
+    try {
+      await this.ensureSsoCodesTable();
 
-    // 1. Redis에서 코드 조회
-    const cacheValue = await this.cacheManager.get<string>(cacheKey);
+      // 1. DB에서 코드 조회 (만료 체크 포함)
+      const rows = await this.prisma.$queryRawUnsafe<Array<{ sso_data: string }>>(
+        `SELECT sso_data FROM hub.sso_codes WHERE code = $1 AND expires_at > NOW()`,
+        code,
+      );
 
-    if (!cacheValue) {
-      this.logger.warn(`[SSO 코드 검증 실패] code=${code.substring(0, 20)}... - 코드 없음 또는 만료`);
-      throw new UnauthorizedException('SSO 코드가 유효하지 않거나 만료되었습니다.');
+      if (!rows || rows.length === 0) {
+        this.logger.warn(`[SSO 코드 검증 실패] code=${code.substring(0, 20)}... - 코드 없음 또는 만료`);
+        throw new UnauthorizedException('SSO 코드가 유효하지 않거나 만료되었습니다.');
+      }
+
+      // 2. 코드 파싱
+      const ssoData = JSON.parse(rows[0].sso_data);
+
+      // 3. 서비스 검증 (보안: 요청한 서비스와 코드에 저장된 대상 서비스가 일치하는지)
+      if (ssoData.targetService !== serviceId) {
+        this.logger.warn(`[SSO 코드 검증 실패] 서비스 불일치: 요청=${serviceId}, 저장=${ssoData.targetService}`);
+        throw new UnauthorizedException('잘못된 서비스에서의 SSO 요청입니다.');
+      }
+
+      // 4. 즉시 코드 삭제 (일회용)
+      await this.prisma.$executeRawUnsafe(
+        `DELETE FROM hub.sso_codes WHERE code = $1`,
+        code,
+      );
+
+      // 만료된 오래된 코드도 정리
+      await this.prisma.$executeRawUnsafe(
+        `DELETE FROM hub.sso_codes WHERE expires_at < NOW()`,
+      );
+
+      // 5. 활성 서비스 조회
+      const activeServices = await this.membersService.findActiveServicesById(ssoData.memberId);
+
+      this.logger.info(`[SSO 코드 검증 성공] memberId=${ssoData.memberId}, serviceId=${serviceId}`);
+
+      // 6. 앱별 auth_member 테이블에 사용자 기록 동기화
+      await this.syncAppAuthMember(ssoData.memberId, serviceId);
+
+      return {
+        accessToken: ssoData.accessToken,
+        refreshToken: ssoData.refreshToken,
+        tokenExpiry: ssoData.tokenExpiry,
+        activeServices,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      this.logger.error(`[SSO 코드 검증 실패] DB 조회 에러: ${error.message}`);
+      throw new UnauthorizedException('SSO 코드 검증 중 오류가 발생했습니다.');
     }
-
-    // 2. 코드 파싱
-    const ssoData = JSON.parse(cacheValue);
-
-    // 3. 서비스 검증 (보안: 요청한 서비스와 코드에 저장된 대상 서비스가 일치하는지)
-    if (ssoData.targetService !== serviceId) {
-      this.logger.warn(`[SSO 코드 검증 실패] 서비스 불일치: 요청=${serviceId}, 저장=${ssoData.targetService}`);
-      throw new UnauthorizedException('잘못된 서비스에서의 SSO 요청입니다.');
-    }
-
-    // 4. 즉시 코드 삭제 (일회용)
-    await this.cacheManager.del(cacheKey);
-
-    // 5. 활성 서비스 조회
-    const activeServices = await this.membersService.findActiveServicesById(ssoData.memberId);
-
-    this.logger.info(`[SSO 코드 검증 성공] memberId=${ssoData.memberId}, serviceId=${serviceId}`);
-
-    // 6. 앱별 auth_member 테이블에 사용자 기록 동기화
-    await this.syncAppAuthMember(ssoData.memberId, serviceId);
-
-    return {
-      accessToken: ssoData.accessToken,
-      refreshToken: ssoData.refreshToken,
-      tokenExpiry: ssoData.tokenExpiry,
-      activeServices,
-    };
   }
 
   // ==========================================
