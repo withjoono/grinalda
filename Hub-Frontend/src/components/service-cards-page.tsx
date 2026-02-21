@@ -591,8 +591,7 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
         borderRadius: 20,
         padding: 24,
         border: '1px solid var(--color-border-light)',
-        cursor: service.disabled ? 'not-allowed' : 'pointer',
-        opacity: service.disabled ? 0.5 : 1,
+        cursor: service.disabled ? 'default' : 'pointer',
         transition: 'all 250ms ease',
         position: 'relative',
       }}
