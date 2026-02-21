@@ -71,6 +71,7 @@ interface ServiceCard {
   disabled?: boolean;
   isExternal?: boolean;
   allowedRoles?: Array<'student' | 'teacher' | 'parent'>;
+  comingSoon?: string; // e.g. "'26년 6월 론칭"
 }
 
 interface ServiceCategory {
@@ -174,6 +175,17 @@ const serviceCategories: ServiceCategory[] = [
         features: ["대학별 유불리 (특허)", "모의지원 기반 정시 시뮬레이션", "계정연동 선생님 상담"],
         isExternal: true,
       },
+      {
+        id: "mock-application",
+        title: "모의지원 앱",
+        description: "수시/정시 모의지원 앱",
+        icon: <ClipboardList className="w-5 h-5" />,
+        href: "",
+        color: "#6366f1",
+        features: ["무료 모의지원 앱", "수시/정시 예상 경쟁율 분석", "모의지원 합불 예측"],
+        disabled: true,
+        comingSoon: "'26년 6월 론칭",
+      },
     ],
   },
   {
@@ -204,7 +216,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         id: "hakwon-admin",
-        title: "학원 어드민",
+        title: "학원용 앱",
         description: "학원 회원 관리 앱",
         icon: <School className="w-5 h-5" />,
         href: HAKWONADMIN_URL,
@@ -437,6 +449,10 @@ export function ServiceCardsPage() {
           @media (max-width: 640px) {
             .showcase-banner-grid { grid-template-columns: 1fr !important; }
           }
+          @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+          }
         `}</style>
       </motion.div>
 
@@ -582,6 +598,26 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
       }}
       className="hover:shadow-md hover:-translate-y-0.5 transition-all"
     >
+      {/* Coming Soon 배지 */}
+      {service.comingSoon && (
+        <div style={{
+          position: 'absolute',
+          top: 12,
+          right: 12,
+          background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+          color: '#fff',
+          fontSize: 11,
+          fontWeight: 800,
+          padding: '4px 10px',
+          borderRadius: 9999,
+          letterSpacing: '0.02em',
+          boxShadow: '0 2px 8px rgba(239,68,68,0.3)',
+          animation: 'pulse-badge 2s infinite',
+        }}>
+          🚀 {service.comingSoon}
+        </div>
+      )}
+
       {/* 아이콘 + 타이틀 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <div style={{
@@ -640,7 +676,7 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
       </ul>
 
       {/* 바로가기 링크 */}
-      {!service.disabled && (
+      {!service.disabled && !service.comingSoon && (
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -651,6 +687,19 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
           color: service.color,
         }}>
           바로가기 <ArrowRight style={{ width: 14, height: 14 }} />
+        </div>
+      )}
+
+      {/* Coming Soon 푸터 텍스트 */}
+      {service.comingSoon && (
+        <div style={{
+          marginTop: 16,
+          fontSize: 13,
+          fontWeight: 600,
+          color: '#9ca3af',
+          textAlign: 'center',
+        }}>
+          준비 중입니다
         </div>
       )}
     </div>
@@ -770,7 +819,7 @@ function Header() {
           <NavItem title="사용자별 앱" isScrolled={isScrolled}>
             <DropdownItem href={TEACHERADMIN_URL}>선생님용 앱</DropdownItem>
             <DropdownItem href={PARENTADMIN_URL}>학부모용 앱</DropdownItem>
-            <DropdownItem href={HAKWONADMIN_URL}>학원 어드민</DropdownItem>
+            <DropdownItem href={HAKWONADMIN_URL}>학원용 앱</DropdownItem>
           </NavItem>
         </nav>
 
