@@ -867,7 +867,7 @@ function BottomCTA({ app }: { app: AppShowcaseItem }) {
                         margin: "0 auto 28px",
                     }}
                 >
-                    거북스쿨 계정으로 바로 사용할 수 있습니다.
+                    G Skool 계정으로 바로 사용할 수 있습니다.
                 </p>
                 <div
                     style={{

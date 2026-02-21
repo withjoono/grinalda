@@ -63,6 +63,7 @@ const SSO_SERVICE_MAP: Record<string, string> = {
   'http://localhost:3007': 'mysanggibu',
   'http://localhost:3019': 'parentadmin',
   'http://localhost:3020': 'teacheradmin',
+  'http://localhost:3021': 'hakwonadmin',
 };
 
 /**
@@ -81,6 +82,7 @@ export function getSSOServiceId(href: string): string | null {
   const mysanggibuUrl = import.meta.env.VITE_MYSANGGIBU_URL || 'http://localhost:3007';
   const parentadminUrl = import.meta.env.VITE_PARENTADMIN_URL || 'http://localhost:3019';
   const teacheradminUrl = import.meta.env.VITE_TEACHERADMIN_URL || 'http://localhost:3020';
+  const hakwonadminUrl = import.meta.env.VITE_HAKWONADMIN_URL || 'http://localhost:3021';
 
   if (href.startsWith(susiUrl)) return 'susi';
   if (href.startsWith(jungsiUrl)) return 'jungsi';
@@ -91,6 +93,7 @@ export function getSSOServiceId(href: string): string | null {
   if (href.startsWith(mysanggibuUrl)) return 'mysanggibu';
   if (href.startsWith(parentadminUrl)) return 'parentadmin';
   if (href.startsWith(teacheradminUrl)) return 'teacheradmin';
+  if (href.startsWith(hakwonadminUrl)) return 'hakwonadmin';
 
   return null;
 }

@@ -61,7 +61,7 @@ function OAuthCallback() {
       tokens.tokenExpiry ?? Math.floor(Date.now() / 1000) + 7200
     );
 
-    toast.success('환영합니다. 거북스쿨입니다.');
+    toast.success('환영합니다. G Skool입니다.');
 
     // 메인 페이지로 리다이렉트
     navigate({ to: '/' });

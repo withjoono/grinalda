@@ -29,8 +29,8 @@ export const Route = createLazyFileRoute("/jungsi/")({
 const bannerSlides = [
   {
     id: 1,
-    title: "거북스쿨 예측의 정확성",
-    description: "타사와는 다른 거북스쿨만의 정확한 정시 예측 시스템",
+    title: "G Skool 예측의 정확성",
+    description: "타사와는 다른 G Skool만의 정확한 정시 예측 시스템",
     features: ["타사 현황 환산으로 실제 지원자 표본 수집", "무료 모의지원 어플로 무장한 표본 확대", "과거 컷라인 데이터 분석에 7차에 걸친 예측컷 업데이트"],
     image: "/images/3D/우승 트로피.png",
     bgColor: "#fe5e41",
@@ -85,7 +85,7 @@ const programs = [
 const consultingFeatures = [
   { title: "단계별 필터링 프로세스로 본인에게 최적의 대학 제시(특허출원)" },
   { title: "특정 대학/학과의 나에게 '유불리한 점수 차이' 제시(특허출원)" },
-  { title: "계정 공유로 주변 선생님, 지인과 함께 거북스쿨 정시 서비스를 공유하면서 협의 가능" },
+  { title: "계정 공유로 주변 선생님, 지인과 함께 G Skool 정시 서비스를 공유하면서 협의 가능" },
   { title: "AI 정시 컨설팅 챗봇 이용 가능(12월 둘째주까지)" },
   { title: "대치동 22년 학원장의 '정시 컨설팅 노하우'를 집대성" },
 ];
@@ -592,7 +592,7 @@ function JungsiPromo({
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               2026년 <span style={{ color: primaryColor }}>정시 프로그램</span>
             </h2>
-            <p className="text-gray-500">거북스쿨만의 차별화된 정시 예측 서비스</p>
+            <p className="text-gray-500">G Skool만의 차별화된 정시 예측 서비스</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
@@ -677,12 +677,12 @@ function JungsiPromo({
         </div>
       </div>
 
-      {/* 거북스쿨 정시 서비스 특징 - 대제목 */}
+      {/* G Skool 정시 서비스 특징 - 대제목 */}
       <div className="w-full bg-white py-12 border-t border-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-black text-gray-900">
-              거북스쿨 <span style={{ color: primaryColor }}>정시 서비스 특징</span>
+              G Skool <span style={{ color: primaryColor }}>정시 서비스 특징</span>
             </h2>
             <div className="mt-4 flex justify-center">
               <div className="w-16 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
@@ -994,7 +994,7 @@ function JungsiPromo({
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               정시 서비스 <span style={{ color: primaryColor }}>영상 안내</span>
             </h2>
-            <p className="text-gray-500">거북스쿨 정시 서비스 사용법을 영상으로 확인하세요</p>
+            <p className="text-gray-500">G Skool 정시 서비스 사용법을 영상으로 확인하세요</p>
           </div>
           <div className="flex flex-col gap-8 md:flex-row max-w-5xl mx-auto">
             <div className="flex-1">

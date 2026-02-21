@@ -357,7 +357,7 @@ function JungsiPredictionTryPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              거북스쿨 정시 예측의 신뢰성
+              G Skool 정시 예측의 신뢰성
             </h2>
             <p className="text-gray-600">
               수많은 수험생들이 선택한 정시 합격 예측 서비스

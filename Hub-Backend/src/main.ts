@@ -103,7 +103,7 @@ async function bootstrap() {
 
   if (!isProduction || swaggerEnabled) {
     const config = new DocumentBuilder()
-      .setTitle('거북스쿨 (TurtleSchool) API')
+      .setTitle('G Skool API')
       .setDescription(
         '대학 입시 컨설팅 서비스를 위한 교육 플랫폼 REST API\n\n' +
         '## 주요 기능\n' +
@@ -160,7 +160,7 @@ async function bootstrap() {
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document, {
-      customSiteTitle: '거북스쿨 API 문서',
+      customSiteTitle: 'G Skool API 문서',
       customfavIcon: 'https://nestjs.com/img/logo-small.svg',
       customJs: [
         'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui-bundle.min.js',
@@ -222,6 +222,8 @@ async function bootstrap() {
       'https://tutorboard-front.web.app',
       'https://parent-admin-479305.web.app',
       'https://teacher-front.web.app',
+      // Hub Frontend 프로덕션 도메인
+      'https://ts-front-479305.web.app',
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true, // 자격 증명 허용

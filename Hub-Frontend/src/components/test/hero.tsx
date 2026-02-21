@@ -64,7 +64,7 @@ export const Hero = () => {
         className="dark:text-muted-dark relative z-10 mx-auto mt-6 max-w-3xl text-center text-base text-foreground/60 md:text-xl"
       >
         <Balancer>
-          거북스쿨은 수시/정시 지원 전략부터 멘토의 전문적인 평가까지 제공하여
+          G Skool은 수시/정시 지원 전략부터 멘토의 전문적인 평가까지 제공하여
           여러분의 대학 입시를 완벽하게 지원합니다.
         </Balancer>
       </motion.p>

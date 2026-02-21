@@ -111,7 +111,7 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         // 토큰을 localStorage에 저장 (쿠키는 포트 간 공유 안 됨)
         setTokens(accessToken, refreshToken);
 
-        toast.success("환영합니다. 거북스쿨입니다. 😄");
+        toast.success("환영합니다. G Skool입니다. 😄");
         await user.refetch();
 
         // Hub 메인으로 이동

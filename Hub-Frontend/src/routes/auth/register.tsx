@@ -20,7 +20,7 @@ function Register() {
               회원가입
             </h2>
             <p className="text-slate-500 text-sm">
-              거북스쿨의 모든 서비스를 이용해보세요
+              G Skool의 모든 서비스를 이용해보세요
             </p>
           </div>
 
@@ -32,7 +32,7 @@ function Register() {
         </div>
 
         <div className="text-center text-xs text-slate-400">
-          © {new Date().getFullYear()} Turtle School. All rights reserved.
+          © {new Date().getFullYear()} G Skool. All rights reserved.
         </div>
       </div>
     </div>

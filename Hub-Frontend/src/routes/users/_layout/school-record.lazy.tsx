@@ -19,7 +19,7 @@ function SchoolRecord() {
       <div>
         <h3 className="text-lg font-medium">생기부 등록</h3>
         <p className="text-sm text-muted-foreground">
-          안내에 따라 PDF혹은 HTML로 생기부를 등록하세요. 거북스쿨 시스템을 통해
+          안내에 따라 PDF혹은 HTML로 생기부를 등록하세요. G Skool 시스템을 통해
           대학별 환산식에 따라 내 성적을 계산해서 한눈에 표시할 수 있어요.
           생기부 등록 후 사정관 평가를 진행한 뒤{" "}
           <Link className="text-blue-500" to="/susi/comprehensive">

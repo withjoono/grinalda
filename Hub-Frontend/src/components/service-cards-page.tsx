@@ -57,6 +57,7 @@ const STUDYARENA_URL = import.meta.env.VITE_STUDYARENA_URL || "http://localhost:
 const MYSANGGIBU_URL = import.meta.env.VITE_MYSANGGIBU_URL || "http://localhost:3007";
 const PARENTADMIN_URL = import.meta.env.VITE_PARENTADMIN_URL || "http://localhost:3019";
 const TEACHERADMIN_URL = import.meta.env.VITE_TEACHERADMIN_URL || "http://localhost:3020";
+const HAKWONADMIN_URL = import.meta.env.VITE_HAKWONADMIN_URL || "http://localhost:3021";
 
 // ───────────────────────────── 서비스 데이터 (토스 스타일 색상) ─────────────────────────────
 interface ServiceCard {
@@ -178,7 +179,7 @@ const serviceCategories: ServiceCategory[] = [
   {
     id: "user-specific",
     title: "사용자별 앱",
-    description: "선생님과 학부모를 위한 전용 앱",
+    description: "선생님, 학부모, 학원을 위한 전용 앱",
     icon: <Users className="w-5 h-5" />,
     services: [
       {
@@ -199,6 +200,16 @@ const serviceCategories: ServiceCategory[] = [
         href: PARENTADMIN_URL,
         color: "#d946ef",
         features: ["자녀 학습 현황", "수업 알림", "성적 리포트"],
+        isExternal: true,
+      },
+      {
+        id: "hakwon-admin",
+        title: "학원 어드민",
+        description: "학원 회원 관리 앱",
+        icon: <School className="w-5 h-5" />,
+        href: HAKWONADMIN_URL,
+        color: "#10b981",
+        features: ["수강 관리", "출석 관리", "성적·결제 관리"],
         isExternal: true,
       },
     ],
@@ -365,7 +376,7 @@ export function ServiceCardsPage() {
                   margin: 0,
                   lineHeight: 1.5,
                 }}>
-                  거북스쿨의 9개 앱을 한눈에 살펴보세요
+                  G Skool의 9개 앱을 한눈에 살펴보세요
                 </p>
               </div>
               <div style={{
@@ -405,7 +416,7 @@ export function ServiceCardsPage() {
                 color: 'rgba(255,255,255,0.95)',
                 margin: 0,
               }}>
-                거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
+                G Skool 앱들은 각각 독립적인 앱이지만,<br />
                 서로 연계될때, 더 큰 시너지를 냅니다.
               </p>
               <p style={{
@@ -723,7 +734,7 @@ function Header() {
             fontSize: 17,
             color: isScrolled ? 'var(--color-primary)' : '#fff',
             letterSpacing: '-0.02em',
-          }}>거북스쿨</span>
+          }}>G Skool</span>
         </Link>
 
         {/* 데스크탑 네비게이션 */}
@@ -759,6 +770,7 @@ function Header() {
           <NavItem title="사용자별 앱" isScrolled={isScrolled}>
             <DropdownItem href={TEACHERADMIN_URL}>선생님용 앱</DropdownItem>
             <DropdownItem href={PARENTADMIN_URL}>학부모용 앱</DropdownItem>
+            <DropdownItem href={HAKWONADMIN_URL}>학원 어드민</DropdownItem>
           </NavItem>
         </nav>
 
