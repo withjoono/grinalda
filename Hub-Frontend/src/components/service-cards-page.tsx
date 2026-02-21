@@ -597,25 +597,7 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
       }}
       className="hover:shadow-md hover:-translate-y-0.5 transition-all"
     >
-      {/* Coming Soon 배지 */}
-      {service.comingSoon && (
-        <div style={{
-          position: 'absolute',
-          top: 12,
-          right: 12,
-          background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-          color: '#fff',
-          fontSize: 11,
-          fontWeight: 800,
-          padding: '4px 10px',
-          borderRadius: 9999,
-          letterSpacing: '0.02em',
-          boxShadow: '0 2px 8px rgba(239,68,68,0.3)',
-          animation: 'pulse-badge 2s infinite',
-        }}>
-          🚀 {service.comingSoon}
-        </div>
-      )}
+
 
       {/* 아이콘 + 타이틀 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
@@ -693,10 +675,13 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
       {service.comingSoon && (
         <div style={{
           marginTop: 16,
-          fontSize: 13,
-          fontWeight: 600,
-          color: '#9ca3af',
+          fontSize: 14,
+          fontWeight: 800,
+          background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
           textAlign: 'center',
+          letterSpacing: '0.02em',
         }}>
           🚀 {service.comingSoon}
         </div>
