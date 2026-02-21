@@ -323,7 +323,7 @@ function OAuthConsent() {
 
         <div className="border-t px-6 py-4">
           <p className="text-center text-xs text-gray-500">
-            이 앱은 거북스쿨 Hub를 통해 인증됩니다.
+            이 앱은 G Skool Hub를 통해 인증됩니다.
           </p>
         </div>
       </Card>

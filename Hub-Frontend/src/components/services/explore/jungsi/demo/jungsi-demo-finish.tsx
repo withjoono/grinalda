@@ -20,7 +20,7 @@ export const JungsiDemoFinish = () => {
           무료 체험이 완료되었습니다!
         </h1>
         <p className="mb-8 text-lg text-gray-600">
-          거북스쿨의 대학별 유불리 기능을 체험해주셔서 감사합니다.
+          G Skool의 대학별 유불리 기능을 체험해주셔서 감사합니다.
         </p>
 
         {/* 체험 결과 요약 */}

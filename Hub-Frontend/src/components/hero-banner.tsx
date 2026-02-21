@@ -23,8 +23,8 @@ import { useGradeStore, gradeThemes } from "@/stores/client/use-grade-store";
 const grade3Slides = [
   {
     id: 1,
-    title: "거북스쿨 예측의 정확성",
-    description: "타사와는 다른 거북스쿨만의 정확한 정시 예측 시스템",
+    title: "G Skool 예측의 정확성",
+    description: "타사와는 다른 G Skool만의 정확한 정시 예측 시스템",
     features: ["타사 현황 환산으로 실제 지원자 표본 수집", "무료 모의지원 어플로 무장한 표본 확대", "과거 컷라인 데이터 분석에 7차에 걸친 예측컷 업데이트"],
     image: "/images/3D/우승 트로피.png",
     bgColor: "#fe5e41", // 주황색
@@ -218,7 +218,7 @@ export const HeroBanner = () => {
             <Card className="h-[280px] border-gray-100 shadow-sm flex flex-col">
               <CardHeader className="pb-2">
                 <CardTitle className="text-center text-sm text-gray-500">
-                  거북스쿨에 오신걸 환영합니다
+                  G Skool에 오신걸 환영합니다
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 flex-1 flex flex-col justify-center">

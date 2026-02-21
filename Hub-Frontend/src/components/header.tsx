@@ -117,7 +117,7 @@ export const Header = () => {
         <div className="container flex h-14 w-screen items-center justify-between lg:h-16">
           <Link to="/" className="flex shrink-0 items-center gap-3">
             <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
-            <div className="text-base font-medium text-primary lg:text-lg">거북스쿨</div>
+            <div className="text-base font-medium text-primary lg:text-lg">G Skool</div>
           </Link>
 
           <span className="flex lg:hidden">
@@ -131,7 +131,7 @@ export const Header = () => {
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-3">
                     <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
-                    <div className="text-base font-medium text-primary lg:text-lg">거북스쿨</div>
+                    <div className="text-base font-medium text-primary lg:text-lg">G Skool</div>
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-4 flex flex-col items-start justify-center gap-4">

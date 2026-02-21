@@ -388,7 +388,7 @@ export function ServiceCardsPage() {
                   margin: 0,
                   lineHeight: 1.5,
                 }}>
-                  거북스쿨의 9개 앱을 한눈에 살펴보세요
+                  G Skool의 9개 앱을 한눈에 살펴보세요
                 </p>
               </div>
               <div style={{
@@ -428,7 +428,7 @@ export function ServiceCardsPage() {
                 color: 'rgba(255,255,255,0.95)',
                 margin: 0,
               }}>
-                거북스쿨 앱들은 각각 독립적인 앱이지만,<br />
+                G Skool 앱들은 각각 독립적인 앱이지만,<br />
                 서로 연계될때, 더 큰 시너지를 냅니다.
               </p>
               <p style={{
@@ -783,7 +783,7 @@ function Header() {
             fontSize: 17,
             color: isScrolled ? 'var(--color-primary)' : '#fff',
             letterSpacing: '-0.02em',
-          }}>거북스쿨</span>
+          }}>G Skool</span>
         </Link>
 
         {/* 데스크탑 네비게이션 */}

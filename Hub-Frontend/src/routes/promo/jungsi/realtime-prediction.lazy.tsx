@@ -143,7 +143,7 @@ function RealtimePredictionPromo() {
 
           {/* 핵심 메시지 */}
           <p className="text-xl md:text-2xl text-orange-100 text-center max-w-3xl mx-auto mb-8 leading-relaxed">
-            "거북스쿨은 <span className="text-white font-bold">작년 데이터가 아니라</span>,{" "}
+            "G Skool은 <span className="text-white font-bold">작년 데이터가 아니라</span>,{" "}
             <span className="text-white font-bold">지금 이 순간</span> 지원 상황을 보고 예측합니다."
           </p>
 
@@ -272,7 +272,7 @@ function RealtimePredictionPromo() {
 
                 <div className="bg-orange-50 rounded-2xl p-6 border-2 border-orange-300 relative">
                   <div className="absolute -top-3 left-6 px-3 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                    거북스쿨
+                    G Skool
                   </div>
                   <div className="flex items-center gap-3 mb-3 mt-2">
                     <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">

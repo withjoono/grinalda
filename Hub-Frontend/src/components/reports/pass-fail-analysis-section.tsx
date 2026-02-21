@@ -24,7 +24,7 @@ export const PassFailAnalysisSection = ({
             target="_blank"
             className="text-blue-500"
           >
-            거북스쿨 카페
+            G Skool 카페
           </a>
           에서 매일 공지하도록 하겠습니다.
         </p>

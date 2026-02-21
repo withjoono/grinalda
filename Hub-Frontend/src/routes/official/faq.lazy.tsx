@@ -118,13 +118,13 @@ function FAQPage() {
               </li>
 
               <li className="font-semibold">
-                거북스쿨에 업로드
+                G Skool에 업로드
                 <p className="mt-1 font-normal">
-                  다음 단계를 따라 거북스쿨에 업로드합니다:
+                  다음 단계를 따라 G Skool에 업로드합니다:
                 </p>
                 <ol className="list-alpha mt-2 pl-5">
                   <li>
-                    1. 거북스쿨 오른쪽 상단의 마이페이지(본인 이름)를
+                    1. G Skool 오른쪽 상단의 마이페이지(본인 이름)를
                     클릭합니다.
                   </li>
                   <li>2. 하단 메뉴에서 '생기부/성적 입력' 메뉴를 찾습니다.</li>

@@ -127,7 +127,7 @@ function FeatureCatalogPage() {
                                 marginBottom: 10,
                             }}
                         >
-                            거북스쿨 전체 기능 카탈로그
+                            G Skool 전체 기능 카탈로그
                         </h1>
                         <p
                             style={{
@@ -231,7 +231,7 @@ function FeatureCatalogPage() {
                         모든 기능을 직접 체험해보세요
                     </h2>
                     <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 24 }}>
-                        거북스쿨 계정 하나로 {totalFeatures}개 기능을 이용할 수 있습니다.
+                        G Skool 계정 하나로 {totalFeatures}개 기능을 이용할 수 있습니다.
                     </p>
                     <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
                         <Link

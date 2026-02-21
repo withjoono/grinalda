@@ -12,7 +12,7 @@ export const Footer = () => {
             <img
               className="h-auto w-16 sm:w-20 rounded-xl"
               src="/logo.png"
-              alt="거북스쿨 로고"
+              alt="G Skool 로고"
             />
             <span className="text-base sm:text-lg font-semibold text-foreground">
               {"(주)거북스쿨"}
