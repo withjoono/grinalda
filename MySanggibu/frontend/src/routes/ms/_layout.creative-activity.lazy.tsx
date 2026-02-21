@@ -1,8 +1,12 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { useGetSchoolRecords } from "@/stores/server/features/me/queries";
+import type {
+  ISchoolRecordCreativeActivity,
+  ISchoolRecordBehaviorOpinion,
+} from "@/stores/server/features/me/interfaces";
 
 export const Route = createLazyFileRoute("/ms/_layout/creative-activity")({
   component: CreativeActivityPage,
@@ -14,38 +18,13 @@ type ActivityType = "autonomous" | "club" | "career";
 // 학년
 type Grade = "1" | "2" | "3";
 
-// 활동 카드 인터페이스
-interface ActivityEntry {
-  id: number;
-  title: string;
-  content: string;
-  hours?: number;
-}
-
-// 학년별 활동 데이터 (placeholder)
-const PLACEHOLDER_DATA: Record<ActivityType, Record<Grade, ActivityEntry[]>> = {
-  autonomous: {
-    "1": [],
-    "2": [],
-    "3": [],
-  },
-  club: {
-    "1": [],
-    "2": [],
-    "3": [],
-  },
-  career: {
-    "1": [],
-    "2": [],
-    "3": [],
-  },
-};
-
-// 행동특성 및 종합의견 placeholder 데이터
-const BEHAVIOR_PLACEHOLDER_DATA: Record<Grade, string> = {
-  "1": "",
-  "2": "",
-  "3": "",
+// 활동 유형 매핑 (DB activityType → 탭 key)
+const ACTIVITY_TYPE_MAP: Record<string, ActivityType> = {
+  "자치활동": "autonomous",
+  "자율활동": "autonomous",
+  "동아리활동": "club",
+  "봉사활동": "career", // 봉사활동은 진로와 함께 표시
+  "진로활동": "career",
 };
 
 const ACTIVITY_LABELS: Record<
@@ -76,21 +55,22 @@ const GRADE_LABELS: Record<Grade, string> = {
 };
 
 // 활동 카드 컴포넌트
-function ActivityCard({ entry }: { entry: ActivityEntry }) {
+function ActivityCard({
+  activity,
+}: {
+  activity: ISchoolRecordCreativeActivity;
+}) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
-          <h4 className="text-sm font-bold text-gray-900">{entry.title}</h4>
+          <h4 className="text-sm font-bold text-gray-900">
+            {activity.activityType || "창의적 체험활동"}
+          </h4>
           <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-gray-700">
-            {entry.content}
+            {activity.content || "내용이 없습니다."}
           </p>
         </div>
-        {entry.hours !== undefined && (
-          <span className="shrink-0 rounded-full bg-olive-100 px-2.5 py-1 text-xs font-semibold text-olive-700">
-            {entry.hours}시간
-          </span>
-        )}
       </div>
     </div>
   );
@@ -99,11 +79,11 @@ function ActivityCard({ entry }: { entry: ActivityEntry }) {
 // 학년별 섹션 컴포넌트
 function GradeSection({
   grade,
-  entries,
+  activities,
   activityType,
 }: {
   grade: Grade;
-  entries: ActivityEntry[];
+  activities: ISchoolRecordCreativeActivity[];
   activityType: ActivityType;
 }) {
   const info = ACTIVITY_LABELS[activityType];
@@ -115,14 +95,14 @@ function GradeSection({
           {GRADE_LABELS[grade]}
         </h3>
         <span className="rounded-full bg-olive-100 px-2.5 py-0.5 text-xs font-medium text-olive-700">
-          {entries.length}건
+          {activities.length}건
         </span>
       </div>
 
-      {entries.length > 0 ? (
+      {activities.length > 0 ? (
         <div className="space-y-3">
-          {entries.map((entry) => (
-            <ActivityCard key={entry.id} entry={entry} />
+          {activities.map((activity) => (
+            <ActivityCard key={activity.id} activity={activity} />
           ))}
         </div>
       ) : (
@@ -138,11 +118,28 @@ function GradeSection({
 }
 
 // 행동특성 및 종합의견 섹션 컴포넌트
-function BehaviorSection() {
+function BehaviorSection({
+  behaviorOpinions,
+}: {
+  behaviorOpinions: ISchoolRecordBehaviorOpinion[];
+}) {
   const [selectedGrade, setSelectedGrade] = useState<Grade>("1");
 
-  // TODO: 실제 데이터 연동 시 아래 placeholder를 API 데이터로 교체
-  const behaviorData = BEHAVIOR_PLACEHOLDER_DATA;
+  // 학년별로 데이터 그룹핑
+  const behaviorByGrade = useMemo(() => {
+    const grouped: Record<Grade, ISchoolRecordBehaviorOpinion[]> = {
+      "1": [],
+      "2": [],
+      "3": [],
+    };
+    behaviorOpinions.forEach((bo) => {
+      const grade = bo.grade as Grade;
+      if (grade && grouped[grade]) {
+        grouped[grade].push(bo);
+      }
+    });
+    return grouped;
+  }, [behaviorOpinions]);
 
   return (
     <div className="space-y-4">
@@ -162,10 +159,17 @@ function BehaviorSection() {
         {(["1", "2", "3"] as Grade[]).map((grade) => (
           <TabsContent key={grade} value={grade}>
             <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-              {behaviorData[grade] ? (
-                <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700">
-                  {behaviorData[grade]}
-                </p>
+              {behaviorByGrade[grade].length > 0 ? (
+                <div className="space-y-4">
+                  {behaviorByGrade[grade].map((bo) => (
+                    <p
+                      key={bo.id}
+                      className="whitespace-pre-wrap text-sm leading-relaxed text-gray-700"
+                    >
+                      {bo.content}
+                    </p>
+                  ))}
+                </div>
               ) : (
                 <div className="flex min-h-[160px] flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-6">
                   <span className="text-3xl">📝</span>
@@ -189,9 +193,31 @@ function BehaviorSection() {
 
 function CreativeActivityPage() {
   const [selectedTab, setSelectedTab] = useState<ActivityType>("autonomous");
+  const { data: schoolRecords } = useGetSchoolRecords();
 
-  // TODO: 실제 데이터 연동 시 아래 placeholder를 API 데이터로 교체
-  const data = PLACEHOLDER_DATA;
+  const creativeActivities = schoolRecords?.creativeActivities || [];
+  const behaviorOpinions = schoolRecords?.behaviorOpinions || [];
+
+  // 활동 유형 + 학년별로 데이터 그룹핑
+  const groupedData = useMemo(() => {
+    const grouped: Record<ActivityType, Record<Grade, ISchoolRecordCreativeActivity[]>> = {
+      autonomous: { "1": [], "2": [], "3": [] },
+      club: { "1": [], "2": [], "3": [] },
+      career: { "1": [], "2": [], "3": [] },
+    };
+
+    creativeActivities.forEach((activity) => {
+      const activityType = activity.activityType
+        ? ACTIVITY_TYPE_MAP[activity.activityType] || "autonomous"
+        : "autonomous";
+      const grade = activity.grade as Grade;
+      if (grade && grouped[activityType]?.[grade]) {
+        grouped[activityType][grade].push(activity);
+      }
+    });
+
+    return grouped;
+  }, [creativeActivities]);
 
   const grades: Grade[] = ["1", "2", "3"];
 
@@ -242,7 +268,7 @@ function CreativeActivityPage() {
                 <GradeSection
                   key={grade}
                   grade={grade}
-                  entries={data[type][grade]}
+                  activities={groupedData[type][grade]}
                   activityType={type}
                 />
               ))}
@@ -263,7 +289,7 @@ function CreativeActivityPage() {
         </p>
       </div>
 
-      <BehaviorSection />
+      <BehaviorSection behaviorOpinions={behaviorOpinions} />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import { hubApiClient } from "../../hub-api-client";
 import {
   ISchoolRecordAttendance,
+  ISchoolRecordBehaviorOpinion,
+  ISchoolRecordCreativeActivity,
   ISchoolRecordSelectSubject,
   ISchoolRecordSubject,
   ISchoolRecordVolunteer,
@@ -69,6 +71,8 @@ const fetchAllSchoolRecordsAPI = async (memberId: string): Promise<{
   selectSubjects: ISchoolRecordSelectSubject[];
   subjectLearnings: ISchoolRecordSubject[];
   volunteers: ISchoolRecordVolunteer[];
+  creativeActivities: ISchoolRecordCreativeActivity[];
+  behaviorOpinions: ISchoolRecordBehaviorOpinion[];
 } | null> => {
   try {
     const res = await hubApiClient.get(`/schoolrecord/${memberId}`);

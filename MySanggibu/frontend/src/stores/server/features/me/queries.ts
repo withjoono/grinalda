@@ -51,12 +51,16 @@ export const useGetSchoolRecords = () => {
       const selectSubjects = data?.selectSubjects || [];
       const subjects = data?.subjectLearnings || [];
       const volunteers = data?.volunteers || [];
+      const creativeActivities = data?.creativeActivities || [];
+      const behaviorOpinions = data?.behaviorOpinions || [];
 
       return {
         attendance,
         selectSubjects,
         subjects,
         volunteers,
+        creativeActivities,
+        behaviorOpinions,
         isEmpty:
           attendance.length === 0 &&
           selectSubjects.length === 0 &&
