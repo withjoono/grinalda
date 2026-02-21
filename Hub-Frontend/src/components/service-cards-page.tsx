@@ -698,7 +698,7 @@ function ServiceCardItem({ service }: { service: ServiceCard }) {
           color: '#9ca3af',
           textAlign: 'center',
         }}>
-          준비 중입니다
+          🚀 {service.comingSoon}
         </div>
       )}
     </div>
