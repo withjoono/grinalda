@@ -181,8 +181,17 @@ export class AiPdfParserService {
     private extractSection(text: string, startMarker: string, endMarker: string): string {
         try {
             let pattern: RegExp;
-            if (startMarker === '^') {
+            if (startMarker === '^' && endMarker === '$') {
+                // 전체 텍스트
+                return text.trim();
+            } else if (startMarker === '^') {
                 pattern = new RegExp(`(.*?)${this.escapeRegex(endMarker)}`, 's');
+            } else if (endMarker === '$') {
+                // '$'는 문자열 끝까지 추출
+                pattern = new RegExp(
+                    `${this.escapeRegex(startMarker)}(.*)$`,
+                    's',
+                );
             } else {
                 pattern = new RegExp(
                     `${this.escapeRegex(startMarker)}(.*?)${this.escapeRegex(endMarker)}`,
@@ -358,10 +367,35 @@ ${JSON.stringify(content)}`;
     ): ParsedAcademicRecords {
         const merged: ParsedAcademicRecords = { academic_records: {} };
         for (const result of results) {
-            if (result?.academic_records) {
+            if (!result) continue;
+
+            // 성적 데이터 머지
+            if (result.academic_records) {
                 for (const [grade, gradeData] of Object.entries(result.academic_records)) {
                     if (!merged.academic_records[grade]) {
                         merged.academic_records[grade] = gradeData;
+                    }
+                }
+            }
+
+            // 창체 데이터 머지
+            if (result.creative_activities) {
+                if (!merged.creative_activities) merged.creative_activities = {};
+                for (const [yearKey, activities] of Object.entries(result.creative_activities)) {
+                    if (!merged.creative_activities[yearKey]) {
+                        merged.creative_activities[yearKey] = activities;
+                    } else {
+                        merged.creative_activities[yearKey].push(...activities);
+                    }
+                }
+            }
+
+            // 행특 데이터 머지
+            if (result.behavior_opinions) {
+                if (!merged.behavior_opinions) merged.behavior_opinions = {};
+                for (const [yearKey, content] of Object.entries(result.behavior_opinions)) {
+                    if (!merged.behavior_opinions[yearKey]) {
+                        merged.behavior_opinions[yearKey] = content;
                     }
                 }
             }
