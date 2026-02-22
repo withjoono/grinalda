@@ -178,23 +178,39 @@ export class AiPdfParserService {
         }
     }
 
+    /**
+     * 한글 마커를 유연한 정규식 패턴으로 변환
+     * PDF 텍스트 추출 시 글자 사이 공백이 다양하게 들어갈 수 있으므로
+     * 각 글자 사이에 \s* 를 넣어 유연하게 매칭
+     * 예: '세 부 능 력 및 특 기 사 항' → 세\s*부\s*능\s*력\s*및\s*특\s*기\s*사\s*항
+     */
+    private markerToFlexPattern(marker: string): string {
+        // 마커에서 공백을 모두 제거하고 각 글자 사이에 \s*를 삽입
+        const chars = marker.replace(/\s+/g, '').split('');
+        return chars.map(c => this.escapeRegex(c)).join('\\s*');
+    }
+
     private extractSection(text: string, startMarker: string, endMarker: string): string {
         try {
             let pattern: RegExp;
             if (startMarker === '^' && endMarker === '$') {
                 // 전체 텍스트
                 return text.trim();
-            } else if (startMarker === '^') {
-                pattern = new RegExp(`(.*?)${this.escapeRegex(endMarker)}`, 's');
+            }
+
+            const startPattern = startMarker === '^' ? '' : this.markerToFlexPattern(startMarker);
+            const endPattern = endMarker === '$' ? '' : this.markerToFlexPattern(endMarker);
+
+            if (startMarker === '^') {
+                pattern = new RegExp(`(.*?)${endPattern}`, 's');
             } else if (endMarker === '$') {
-                // '$'는 문자열 끝까지 추출
                 pattern = new RegExp(
-                    `${this.escapeRegex(startMarker)}(.*)$`,
+                    `${startPattern}(.*)$`,
                     's',
                 );
             } else {
                 pattern = new RegExp(
-                    `${this.escapeRegex(startMarker)}(.*?)${this.escapeRegex(endMarker)}`,
+                    `${startPattern}(.*?)${endPattern}`,
                     's',
                 );
             }
@@ -238,7 +254,7 @@ export class AiPdfParserService {
 
     splitByYear(
         text: string,
-    ): Array<{ year: string; content: Record<string, { '1학기': string; '2학기': string }> }> {
+    ): Array<{ year: string; content: Record<string, { '1학기': string; '2학기': string }>; setukRawText: string }> {
         const yearPattern = /\[(\d)학년\]/g;
         const yearStarts: Array<{ pos: number; year: string }> = [];
         let match: RegExpExecArray | null;
@@ -251,36 +267,238 @@ export class AiPdfParserService {
         const yearChunks: Array<{
             year: string;
             content: Record<string, { '1학기': string; '2학기': string }>;
+            setukRawText: string;
         }> = [];
         for (let i = 0; i < yearStarts.length; i++) {
             const startPos = yearStarts[i].pos;
             const nextPos = i + 1 < yearStarts.length ? yearStarts[i + 1].pos : text.length;
             const yearContent = text.substring(startPos, nextPos).trim();
             const year = yearStarts[i].year;
+
+            // 세특 섹션 원본 텍스트 추출 (GPT 없이 직접 파싱용)
+            // 세특은 '창의적' 전까지만 가져감 (그 이후는 창체/행특)
+            let setukRawText = this.extractSection(yearContent, '세부능력및특기사항', '창의적');
+            if (!setukRawText.trim()) {
+                // 창의적체험활동이 없는 경우 행동특성까지 시도
+                setukRawText = this.extractSection(yearContent, '세부능력및특기사항', '행동특성');
+            }
+            if (!setukRawText.trim()) {
+                // 둘 다 없으면 끝까지
+                setukRawText = this.extractSection(yearContent, '세부능력및특기사항', '$');
+            }
+
             const sections = {
-                일반: this.extractSection(yearContent, '^', '세 부 능 력 및 특 기 사 항'),
-                진로선택: this.extractSection(yearContent, '진로 선택 과목', '세 부 능 력 및 특 기 사 항'),
-                체육예술: this.extractSection(yearContent, '체육ㆍ예술', '세 부 능 력 및 특 기 사 항'),
-                세특: this.extractSection(yearContent, '세 부 능 력 및 특 기 사 항', '$'),
-                창체: this.extractSection(yearContent, '창의적', '행동특성'),
-                행특: this.extractSection(yearContent, '행동특성', '$'),
+                일반: this.extractSection(yearContent, '^', '세부능력및특기사항'),
+                진로선택: this.extractSection(yearContent, '진로선택과목', '세부능력및특기사항'),
+                체육예술: this.extractSection(yearContent, '체육ㆍ예술', '세부능력및특기사항'),
+                // 세특/창체/행특은 GPT로 보내지 않음 - 모두 직접 파싱
             };
+
+            this.logger.log(`[${year}학년] 섹션 추출 결과:`);
+            this.logger.log(`[SECTION_DEBUG] year=${year} ilban=${sections.일반.length} jinro=${sections.진로선택.length} pe=${sections.체육예술.length} setuk=${setukRawText.length}`);
+            for (const [name, content] of Object.entries(sections)) {
+                this.logger.log(`  ${name}: ${content ? `${content.length}자 - ${content.substring(0, 80)}...` : '(비어있음)'}`);
+            }
+            this.logger.log(`  세특(직접파싱): ${setukRawText ? setukRawText.length + '자' : '(비어있음)'}`);
+
             const processedSections: Record<string, { '1학기': string; '2학기': string }> = {};
             for (const [sectionName, sectionContent] of Object.entries(sections)) {
                 if (sectionContent.trim()) {
-                    if (sectionName === '세특' || sectionName === '창체' || sectionName === '행특') {
-                        // 학기 구분 없이 통으로 전달
-                        processedSections[sectionName] = { '1학기': sectionContent, '2학기': '' };
-                    } else {
-                        processedSections[sectionName] = this.processSemesterData(sectionContent);
-                    }
+                    processedSections[sectionName] = this.processSemesterData(sectionContent);
                 }
             }
             if (Object.keys(processedSections).length > 0) {
-                yearChunks.push({ year: `${year}학년`, content: processedSections });
+                yearChunks.push({ year: `${year}학년`, content: processedSections, setukRawText });
             }
         }
         return yearChunks;
+    }
+
+    /**
+     * 세특 섹션 텍스트에서 직접 [과목명, 세특내용]을 추출
+     * GPT 없이 정규식으로 파싱 → 토큰 한도 없이 전체 내용 보존
+     * 
+     * 실제 PDF 형식: "과목명 세특: 세특내용..." 또는 "과목명: 세특내용..."
+     * 세특 텍스트에는 학기 번호가 없음 → 과목명으로만 매칭
+     * @returns Map<과목명, 세특내용>
+     */
+    private parseSetukFromText(
+        setukText: string,
+        knownSubjects: string[],
+    ): Map<string, string> {
+        const result = new Map<string, string>();
+        if (!setukText || !setukText.trim()) return result;
+
+        // 과목명을 유연하게 매칭하기 위해 공백 제거 후 정규식 패턴 생성
+        // 길이가 긴 과목부터 먼저 매칭 ("영어 독해와 작문"이 "영어"보다 우선)
+        const sortedSubjects = [...new Set(knownSubjects)]
+            .filter(s => s && s.length > 0)
+            .sort((a, b) => b.length - a.length);
+
+        if (sortedSubjects.length === 0) return result;
+
+        // 각 과목명을 유연하게 매칭하는 패턴 (글자 사이 공백 허용)
+        const subjectPatterns = sortedSubjects.map(s => {
+            const chars = s.replace(/\s+/g, '').split('');
+            return chars.map(c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s*');
+        });
+        const subjectAlternation = subjectPatterns.join('|');
+
+        // 패턴: 과목명 + 선택적 "세특" + 콜론(:) + 공백 + 세특내용
+        // 또는: 줄 시작에서 과목명 + 콜론(:)
+        const entryPattern = new RegExp(
+            `(${subjectAlternation})(?:\\s*세특)?\\s*:\\s*`,
+            'g',
+        );
+
+        const entries: Array<{ subjectName: string; startIdx: number; matchIdx: number }> = [];
+        let m: RegExpExecArray | null;
+        while ((m = entryPattern.exec(setukText)) !== null) {
+            // 원본 과목명 복원 (공백 제거)
+            const rawMatch = m[1];
+            const normalizedMatch = rawMatch.replace(/\s+/g, '');
+            // knownSubjects에서 가장 일치하는 과목명 찾기
+            const matchedSubject = sortedSubjects.find(
+                s => s.replace(/\s+/g, '') === normalizedMatch,
+            ) || normalizedMatch;
+
+            entries.push({
+                subjectName: matchedSubject,
+                startIdx: m.index + m[0].length,
+                matchIdx: m.index,
+            });
+        }
+
+        this.logger.log(`  세특 직접파싱: ${entries.length}개 과목명 경계 발견`);
+
+        // 각 엔트리의 세특 텍스트 추출 (다음 엔트리의 과목명 시작까지)
+        for (let i = 0; i < entries.length; i++) {
+            const endIdx = i + 1 < entries.length
+                ? entries[i + 1].matchIdx
+                : setukText.length;
+            const content = setukText.substring(entries[i].startIdx, endIdx).trim();
+            // 과목명으로만 키 설정 (학기 정보 없음)
+            const key = entries[i].subjectName;
+            result.set(key, content);
+            this.logger.log(`  세특 직접파싱: ${key} = ${content.substring(0, 60)}... (${content.length}자)`);
+        }
+
+        return result;
+    }
+
+    /**
+     * 전체 PDF 텍스트에서 창의적체험활동 직접 추출
+     * 학년별로 추출: [N학년] 블록과 무관하게 전체 텍스트에서 찾음
+     */
+    private parseChangcheFromText(fullText: string): Array<{ grade: string; activityType: string; content: string }> {
+        const results: Array<{ grade: string; activityType: string; content: string }> = [];
+
+        // 전체 텍스트에서 '창의적 체험활동상황' 섹션 추출
+        const changcheSection = this.extractSection(fullText, '창의적', '행동특성');
+        if (!changcheSection.trim()) {
+            this.logger.log('[CHANGCHE] changche section not found in full text');
+            return results;
+        }
+        this.logger.log(`[CHANGCHE] found section: ${changcheSection.length} chars`);
+        this.logger.log(`[CHANGCHE] first 200 chars: ${changcheSection.substring(0, 200)}`);
+
+        // 학년별로 분리 시도: [N학년] 패턴
+        const yearPattern = /\[(\d)학년\]/g;
+        const yearBlocks: Array<{ year: string; startIdx: number }> = [];
+        let m: RegExpExecArray | null;
+        while ((m = yearPattern.exec(changcheSection)) !== null) {
+            yearBlocks.push({ year: m[1], startIdx: m.index + m[0].length });
+        }
+
+        const processBlock = (blockText: string, grade: string) => {
+            const activityTypes = ['자치활동', '동아리활동', '봉사활동', '진로활동'];
+            // 활동유형 경계 찾기
+            const boundaries: Array<{ type: string; idx: number }> = [];
+            for (const actType of activityTypes) {
+                const flexPattern = this.markerToFlexPattern(actType);
+                const pat = new RegExp(flexPattern, 'g');
+                let am: RegExpExecArray | null;
+                while ((am = pat.exec(blockText)) !== null) {
+                    boundaries.push({ type: actType, idx: am.index + am[0].length });
+                }
+            }
+            boundaries.sort((a, b) => a.idx - b.idx);
+
+            if (boundaries.length > 0) {
+                for (let i = 0; i < boundaries.length; i++) {
+                    const endIdx = i + 1 < boundaries.length ? boundaries[i + 1].idx - boundaries[i + 1].type.length - 2 : blockText.length;
+                    const content = blockText.substring(boundaries[i].idx, endIdx).replace(/^[\s:]+/, '').trim();
+                    if (content) {
+                        results.push({ grade, activityType: boundaries[i].type, content });
+                        this.logger.log(`[CHANGCHE] grade=${grade} ${boundaries[i].type}: ${content.substring(0, 60)}... (${content.length} chars)`);
+                    }
+                }
+            } else {
+                // 활동유형이 없으면 전체를 하나로
+                const content = blockText.trim();
+                if (content) {
+                    results.push({ grade, activityType: '자치활동', content });
+                    this.logger.log(`[CHANGCHE] grade=${grade} fallback: ${content.substring(0, 60)}... (${content.length} chars)`);
+                }
+            }
+        };
+
+        if (yearBlocks.length > 0) {
+            for (let i = 0; i < yearBlocks.length; i++) {
+                const endIdx = i + 1 < yearBlocks.length ? yearBlocks[i + 1].startIdx - `[${yearBlocks[i + 1].year}학년]`.length : changcheSection.length;
+                const blockText = changcheSection.substring(yearBlocks[i].startIdx, endIdx);
+                processBlock(blockText, yearBlocks[i].year);
+            }
+        } else {
+            // 학년 패턴 없으면 전체를 1학년으로 처리
+            processBlock(changcheSection, '1');
+        }
+
+        return results;
+    }
+
+    /**
+     * 전체 PDF 텍스트에서 행동특성및종합의견 직접 추출
+     */
+    private parseHaengtteukFromText(fullText: string): Array<{ grade: string; content: string }> {
+        const results: Array<{ grade: string; content: string }> = [];
+
+        // 전체 텍스트에서 '행동특성 및 종합의견' 섹션 추출 (맨 마지막 섹션)
+        const haengtteukSection = this.extractSection(fullText, '행동특성', '$');
+        if (!haengtteukSection.trim()) {
+            this.logger.log('[HAENGTTEUK] section not found in full text');
+            return results;
+        }
+        this.logger.log(`[HAENGTTEUK] found section: ${haengtteukSection.length} chars`);
+        this.logger.log(`[HAENGTTEUK] first 200 chars: ${haengtteukSection.substring(0, 200)}`);
+
+        // 학년별로 분리: [N학년] 패턴
+        const yearPattern = /\[(\d)학년\]/g;
+        const yearStarts: Array<{ pos: number; year: string }> = [];
+        let hm: RegExpExecArray | null;
+        while ((hm = yearPattern.exec(haengtteukSection)) !== null) {
+            yearStarts.push({ pos: hm.index + hm[0].length, year: hm[1] });
+        }
+
+        if (yearStarts.length > 0) {
+            for (let i = 0; i < yearStarts.length; i++) {
+                const endPos = i + 1 < yearStarts.length ? yearStarts[i + 1].pos - `[${yearStarts[i + 1].year}학년]`.length : haengtteukSection.length;
+                const content = haengtteukSection.substring(yearStarts[i].pos, endPos).trim();
+                if (content) {
+                    results.push({ grade: yearStarts[i].year, content });
+                    this.logger.log(`[HAENGTTEUK] grade=${yearStarts[i].year}: ${content.substring(0, 60)}... (${content.length} chars)`);
+                }
+            }
+        } else {
+            // 학년 패턴이 없으면 전체를 하나로 처리
+            const content = haengtteukSection.trim();
+            if (content) {
+                results.push({ grade: '1', content });
+                this.logger.log(`[HAENGTTEUK] single block: ${content.substring(0, 60)}... (${content.length} chars)`);
+            }
+        }
+
+        return results;
     }
 
     private async processChunk(chunk: {
@@ -292,10 +510,11 @@ export class AiPdfParserService {
         }
         const prompt = this.buildPrompt(chunk.year, chunk.content);
         try {
+            this.logger.log(`[${chunk.year}] GPT 요청 (성적 데이터만, 세특 제외)`);
             const response = await this.openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 messages: [{ role: 'user', content: prompt }],
-                max_tokens: 4096,
+                max_tokens: 8192,
                 temperature: 0,
                 response_format: { type: 'json_object' },
             });
@@ -326,18 +545,17 @@ export class AiPdfParserService {
 1. 일반 과목: 텍스트의 "일반" 섹션에 있는 과목
 2. 진로선택 과목: 텍스트의 "진로선택" 섹션에 있는 과목
 3. 체육예술 과목: 텍스트의 "체육예술" 섹션에 있는 과목
-4. 세부능력 및 특기사항(세특): "세특" 섹션에 있는 텍스트를 분석하여 해당 과목의 "세부능력 및 특기사항" 필드에 매핑해주세요. 과목명이 정확히 일치하지 않아도 문맥상 유사하면 매핑하세요.
 
-각 섹션은 동일한 섹션에서의 데이터만 포함해야 합니다.
+중요: 세부능력및특기사항, 창의적체험활동, 행동특성은 별도로 처리하므로 포함하지 마세요.
 
 반드시 아래 형식의 JSON으로만 응답해주세요:
 {
     "academic_records": {
         "${year}": {
             "1학기": {
-                "일반": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "표준편차": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "세부능력및특기사항": "string"}],
-                "진로선택": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "성취도분포비율A": "string", "성취도분포비율B": "string", "성취도분포비율C": "string", "세부능력및특기사항": "string"}],
-                "체육예술": [{"교과명": "string", "과목명": "string", "단위수": "string", "성취도": "string", "세부능력및특기사항": "string"}]
+                "일반": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "표준편차": "string", "성취도": "string", "수강자수": "string", "석차등급": "string"}],
+                "진로선택": [{"교과명": "string", "과목명": "string", "단위수": "string", "원점수": "string", "과목평균": "string", "성취도": "string", "수강자수": "string", "석차등급": "string", "성취도분포비율A": "string", "성취도분포비율B": "string", "성취도분포비율C": "string"}],
+                "체육예술": [{"교과명": "string", "과목명": "string", "단위수": "string", "성취도": "string"}]
             },
             "2학기": {"일반": [], "진로선택": [], "체육예술": []}
         }
@@ -354,9 +572,6 @@ export class AiPdfParserService {
 7. 교과는 반드시 다음 배열 중 하나: ["국어", "수학", "영어", "사회(역사/도덕포함)", "과학", "기술・가정/제2외국어/한문/교양", "한국사", "체육", "예술", ...]
 8. 입력 수와 출력 수는 동일해야 합니다.
 9. "성취도"와 "석차등급"은 "P"일 수 있으며 원점수/과목평균/표준편차/수강자수는 존재하지 않을 수 있습니다.
-10. "세부능력및특기사항"은 해당 과목에 대한 서술형 평가 내용입니다. 내용이 길면 전체를 포함하세요. 줄바꿈은 \\n으로 표현하세요.
-11. "창체" 섹션이 있으면 "creative_activities" 키에 학년별 배열로 반환하세요: {"활동유형": "자치활동|동아리활동|봉사활동|진로활동", "특기사항": "내용"}
-12. "행특" 섹션이 있으면 "behavior_opinions" 키에 학년별 문자열로 반환하세요: {"${year}": "행동특성 및 종합의견 내용"}
 
 텍스트:
 ${JSON.stringify(content)}`;
@@ -403,17 +618,58 @@ ${JSON.stringify(content)}`;
         return merged;
     }
 
-    async parseGrades(pdfBuffer: Buffer): Promise<ParsedAcademicRecords> {
+    async parseGrades(pdfBuffer: Buffer): Promise<{ aiResult: ParsedAcademicRecords; setukMaps: Map<string, Map<string, string>>; fullText: string }> {
         const text = await this.extractTextFromPdf(pdfBuffer);
         const chunks = this.splitByYear(text);
         this.logger.log(`PDF 파싱 시작: ${chunks.length}개 학년 발견`);
+        this.logger.log(`[FULL_TEXT_DEBUG] total length=${text.length}, has changche=${text.includes('창의적') || text.includes('창 의 적')}, has haengtteuk=${text.includes('행동특성') || text.includes('행 동 특 성')}`);
+
+        // GPT로 성적 데이터 파싱 (세특 제외)
         const results = await Promise.all(chunks.map((chunk) => this.processChunk(chunk)));
         const validResults = results.filter((r) => r !== null);
         if (validResults.length === 0) {
             throw new Error('성적 정보 추출 실패');
         }
         this.logger.log(`PDF 파싱 완료: ${validResults.length}개 학년 처리됨`);
-        return this.mergeResults(validResults);
+        const aiResult = this.mergeResults(validResults);
+
+        // 세특 직접 파싱: 각 학년별로 과목명을 수집하고 세특 텍스트에서 직접 추출
+        const setukMaps = new Map<string, Map<string, string>>(); // key: "학년"
+        for (let i = 0; i < chunks.length; i++) {
+            const chunk = chunks[i];
+            const yearKey = chunk.year.replace('학년', '');
+            const gptResult = validResults[i];
+
+            // GPT 결과에서 과목명 수집
+            const knownSubjects: string[] = [];
+            if (gptResult?.academic_records) {
+                for (const yearData of Object.values(gptResult.academic_records)) {
+                    for (const semData of Object.values(yearData)) {
+                        if (semData.일반) knownSubjects.push(...semData.일반.map(r => r.과목명));
+                        if (semData.진로선택) knownSubjects.push(...semData.진로선택.map(r => r.과목명));
+                        if (semData.체육예술) knownSubjects.push(...semData.체육예술.map(r => r.과목명));
+                    }
+                }
+            }
+
+            if (chunk.setukRawText && knownSubjects.length > 0) {
+                this.logger.log(`[${chunk.year}] 세특 직접 파싱 시작 - ${knownSubjects.length}개 과목`);
+                this.logger.log(`[${chunk.year}] 과목 목록: ${JSON.stringify(knownSubjects)}`);
+                // 디버그: 세특 rawText 전체를 500자씩 로깅
+                const rawLen = chunk.setukRawText.length;
+                this.logger.log(`[${chunk.year}] 세특 rawText 길이: ${rawLen}자`);
+                for (let ci = 0; ci < Math.min(rawLen, 2000); ci += 500) {
+                    this.logger.log(`[${chunk.year}] 세특 rawText[${ci}-${ci + 500}]: ${chunk.setukRawText.substring(ci, ci + 500)}`);
+                }
+                const setukMap = this.parseSetukFromText(chunk.setukRawText, knownSubjects);
+                setukMaps.set(yearKey, setukMap);
+                this.logger.log(`[${chunk.year}] 세특 직접 파싱 완료 - ${setukMap.size}개 매핑`);
+            } else {
+                this.logger.log(`[${chunk.year}] 세특 파싱 스킵: rawText=${!!chunk.setukRawText}, subjects=${knownSubjects.length}`);
+            }
+        }
+
+        return { aiResult, setukMaps, fullText: text };
     }
 
     async parse(pdfBuffer: Buffer): Promise<{
@@ -432,11 +688,22 @@ ${JSON.stringify(content)}`;
         creativeActivities: Array<{ grade: string; activityType: string; content: string }>;
         behaviorOpinions: Array<{ grade: string; content: string }>;
     }> {
-        const aiResult = await this.parseGrades(pdfBuffer);
-        return this.convertToLegacyFormat(aiResult);
+        const { aiResult, setukMaps, fullText } = await this.parseGrades(pdfBuffer);
+        const legacy = this.convertToLegacyFormat(aiResult, setukMaps);
+
+        // 창체/행특 직접 파싱 (전체 텍스트에서)
+        const creativeActivities = this.parseChangcheFromText(fullText);
+        const behaviorOpinions = this.parseHaengtteukFromText(fullText);
+        this.logger.log(`[DIRECT_PARSE] creative_activities=${creativeActivities.length}, behavior_opinions=${behaviorOpinions.length}`);
+
+        return {
+            ...legacy,
+            creativeActivities: legacy.creativeActivities.length > 0 ? legacy.creativeActivities : creativeActivities,
+            behaviorOpinions: legacy.behaviorOpinions.length > 0 ? legacy.behaviorOpinions : behaviorOpinions,
+        };
     }
 
-    private convertToLegacyFormat(aiResult: ParsedAcademicRecords) {
+    private convertToLegacyFormat(aiResult: ParsedAcademicRecords, setukMaps: Map<string, Map<string, string>> = new Map()) {
         const subjectLearnings: Array<{
             grade: string; semester: string; mainSubjectCode: string; mainSubjectName: string;
             subjectCode: string; subjectName: string; unit: string; rawScore: string;
@@ -451,6 +718,21 @@ ${JSON.stringify(content)}`;
         }> = [];
         const creativeActivities: Array<{ grade: string; activityType: string; content: string }> = [];
         const behaviorOpinions: Array<{ grade: string; content: string }> = [];
+
+        // 세특 매핑 헬퍼: setukMaps에서 학년+과목명으로 세특 내용 검색
+        // 세특 텍스트에 학기 구분이 없으므로, 과목명으로만 매칭
+        const findSetuk = (grade: string, _semester: string, subjectName: string): string => {
+            const yearMap = setukMaps.get(grade);
+            if (!yearMap) return '';
+            // 정확히 매칭
+            if (yearMap.has(subjectName)) return yearMap.get(subjectName)!;
+            // 공백 제거 후 매칭 시도
+            const normalized = subjectName.replace(/\s+/g, '');
+            for (const [k, v] of yearMap.entries()) {
+                if (k.replace(/\s+/g, '') === normalized) return v;
+            }
+            return '';
+        };
 
         for (const [yearKey, yearData] of Object.entries(aiResult.academic_records)) {
             const grade = yearKey.replace('학년', '');
@@ -469,7 +751,7 @@ ${JSON.stringify(content)}`;
                             subSubjectAverage: record.과목평균 || '', standardDeviation: record.표준편차 || '',
                             achievement: record.성취도 || '', studentsNum: record.수강자수 || '',
                             ranking: record.석차등급 || '', etc: '',
-                            detailAndSpecialty: record.세부능력및특기사항 || '',
+                            detailAndSpecialty: findSetuk(grade, semester, subjectName),
                         });
                     }
                 }
@@ -485,7 +767,7 @@ ${JSON.stringify(content)}`;
                             unit: record.단위수 || '', rawScore: '', subSubjectAverage: '',
                             standardDeviation: '', achievement: record.성취도 || 'P',
                             studentsNum: '', ranking: '', etc: '',
-                            detailAndSpecialty: record.세부능력및특기사항 || '',
+                            detailAndSpecialty: findSetuk(grade, semester, subjectName),
                         });
                     }
                 }
@@ -504,7 +786,7 @@ ${JSON.stringify(content)}`;
                             achievementA: record.성취도분포비율A || '',
                             achievementB: record.성취도분포비율B || '',
                             achievementC: record.성취도분포비율C || '', etc: '',
-                            detailAndSpecialty: record.세부능력및특기사항 || '',
+                            detailAndSpecialty: findSetuk(grade, semester, subjectName),
                         });
                     }
                 }

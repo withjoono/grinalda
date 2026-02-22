@@ -3,6 +3,14 @@ if (process.env.NODE_ENV !== 'production') {
   require('tsconfig-paths/register');
 }
 
+// BigInt JSON 직렬화 지원 (Prisma BigInt 필드 → JSON 응답)
+// Prisma는 BigInt ID를 반환하는데, JSON.stringify는 BigInt를 직렬화할 수 없어서
+// 이 패치 없이는 500 Internal Server Error가 발생함
+(BigInt.prototype as any).toJSON = function () {
+  const int = Number(this);
+  return int >= Number.MIN_SAFE_INTEGER && int <= Number.MAX_SAFE_INTEGER ? int : this.toString();
+};
+
 // Sentry 초기화 (애플리케이션 시작 전에 로드)
 import './instrumentation';
 

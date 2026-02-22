@@ -14,27 +14,33 @@ export class SchoolRecordService {
             throw new NotFoundException(`유저를 찾을 수 없습니다. (id: ${memberId})`);
         }
 
-        const [subjectLearnings, selectSubjects, attendanceDetails, volunteers, sportArts, creativeActivities, behaviorOpinions] =
-            await Promise.all([
-                this.getSubjectLearnings(memberId),
-                this.getSelectSubjects(memberId),
-                this.getAttendanceDetails(memberId),
-                this.getVolunteers(memberId),
-                this.getSportArts(memberId),
-                this.getCreativeActivities(memberId),
-                this.getBehaviorOpinions(memberId),
-            ]);
+        try {
+            const [subjectLearnings, selectSubjects, attendanceDetails, volunteers, sportArts, creativeActivities, behaviorOpinions] =
+                await Promise.all([
+                    this.getSubjectLearnings(memberId),
+                    this.getSelectSubjects(memberId),
+                    this.getAttendanceDetails(memberId),
+                    this.getVolunteers(memberId),
+                    this.getSportArts(memberId),
+                    this.getCreativeActivities(memberId),
+                    this.getBehaviorOpinions(memberId),
+                ]);
 
-        return {
-            memberId,
-            subjectLearnings,
-            selectSubjects,
-            attendanceDetails,
-            volunteers,
-            sportArts,
-            creativeActivities,
-            behaviorOpinions,
-        };
+            return {
+                memberId,
+                subjectLearnings,
+                selectSubjects,
+                attendanceDetails,
+                volunteers,
+                sportArts,
+                creativeActivities,
+                behaviorOpinions,
+            };
+        } catch (err) {
+            this.logger.error(`[getSchoolRecord] Error for ${memberId}: ${err?.message || err}`);
+            this.logger.error(`[getSchoolRecord] Stack: ${err?.stack || 'no stack'}`);
+            throw err;
+        }
     }
 
     async getAttendanceDetails(memberId: string) {
@@ -78,9 +84,13 @@ export class SchoolRecordService {
     }
 
     async getSportArts(memberId: string) {
-        return await this.prisma.sgbSportsArt.findMany({
-            where: { member_id: memberId },
-        });
+        try {
+            return await this.prisma.sgbSportsArt.findMany({
+                where: { member_id: memberId },
+            });
+        } catch {
+            return [];
+        }
     }
 
     async getCreativeActivities(memberId: string) {
