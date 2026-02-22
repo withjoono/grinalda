@@ -21,10 +21,18 @@ import {
     ApiConsumes,
     ApiBody,
 } from '@nestjs/swagger';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { SchoolRecordService } from './schoolrecord.service';
 import { SchoolRecordHtmlParserService } from './parsers/html-parser.service';
 import { AiPdfParserService } from './parsers/ai-pdf-parser.service';
+import { Hub2015KyokwaSubject } from 'src/database/entities/hub-2015-kyokwa-subject.entity';
+import { Hub2022KyokwaSubject } from 'src/database/entities/hub-2022-kyokwa-subject.entity';
+import { SubjectCodeMapping } from './parsers/schoolrecord-parser.types';
+
+/** 2015 개정 교육과정 대상 유저 ID 접두사 */
+const CURRICULUM_2015_PREFIXES = ['ss_26H3', 'ss_26H4', 'ss_26H0'];
 
 @ApiTags('SchoolRecord')
 @ApiBearerAuth()
@@ -37,12 +45,31 @@ export class SchoolRecordController {
         private readonly schoolRecordService: SchoolRecordService,
         private readonly htmlParserService: SchoolRecordHtmlParserService,
         private readonly aiPdfParserService: AiPdfParserService,
+        @InjectRepository(Hub2015KyokwaSubject)
+        private readonly hub2015Repository: Repository<Hub2015KyokwaSubject>,
+        @InjectRepository(Hub2022KyokwaSubject)
+        private readonly hub2022Repository: Repository<Hub2022KyokwaSubject>,
     ) { }
 
     /**
+     * memberId 기반으로 적합한 교육과정의 과목 코드 매핑 배열 생성
+     */
+    private async getSubjectCodeMappings(memberId: string): Promise<SubjectCodeMapping[]> {
+        const is2015 = CURRICULUM_2015_PREFIXES.some((prefix) => memberId.startsWith(prefix));
+        const hubData = is2015
+            ? await this.hub2015Repository.find()
+            : await this.hub2022Repository.find();
+
+        return hubData.map((hub) => ({
+            mainSubjectName: hub.kyokwa,
+            mainSubjectCode: hub.kyokwa_code,
+            subjectName: hub.subject_name,
+            subjectCode: hub.id, // hub ID를 과목 코드로 사용 (e.g., 15H0111)
+        }));
+    }
+
+    /**
      * snake_case → camelCase 변환 유틸리티
-     * 기존 Susi 백엔드는 humps 라이브러리를 사용했으나 Hub는 raw entity를 반환하므로
-     * 프론트엔드 호환성을 위해 수동 변환
      */
     private snakeToCamel(str: string): string {
         return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
@@ -92,7 +119,8 @@ export class SchoolRecordController {
         }
 
         const htmlContent = file.buffer.toString('utf-8');
-        const result = this.htmlParserService.parseAll(htmlContent);
+        const subjectCodeMappings = await this.getSubjectCodeMappings(memberId);
+        const result = this.htmlParserService.parseAll(htmlContent, subjectCodeMappings);
         await this.schoolRecordService.saveHtmlParsedData(memberId, result);
 
         return {
