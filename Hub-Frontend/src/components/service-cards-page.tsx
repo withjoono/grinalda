@@ -415,9 +415,9 @@ export function ServiceCardsPage() {
             gap: 16,
           }}>
             <img
-              src="/images/turtle-teacher.png"
+              src="/images/geobuk-hiphop.png"
               alt="거북쌤"
-              style={{ width: 52, height: 52, objectFit: 'contain' }}
+              style={{ width: 64, height: 64, objectFit: 'contain' }}
             />
             <div>
               <p style={{
@@ -496,49 +496,6 @@ export function ServiceCardsPage() {
         ))}
       </div>
 
-      {/* ═══════════════════ SYNERGY SECTION — 앱 연계 시너지 ═══════════════════ */}
-      <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #f3e8ff 100%)' }}>
-        <div className="container mx-auto px-4 relative z-10 flex flex-col lg:flex-row-reverse items-center justify-center gap-10 lg:gap-16">
-          {/* Character Image — hip-hop turtle */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 50 }}
-            whileInView={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="flex-shrink-0"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-purple-400 blur-[80px] opacity-20 rounded-full" />
-              <img src="/images/geobuk-hiphop.png" alt="G Skool 시너지" className="relative w-44 md:w-56 lg:w-72 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" />
-            </div>
-          </motion.div>
-
-          {/* Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="bg-white/80 backdrop-blur-sm p-8 md:p-10 rounded-[2rem] shadow-xl border border-white/50 relative max-w-2xl"
-          >
-            <div className="relative z-10 space-y-5 text-gray-700 leading-relaxed text-lg break-keep">
-              <p className="font-bold text-2xl text-gray-900">
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">G Skool</span> 앱들의 시너지
-              </p>
-              <p>
-                G Skool 앱들은 각각 <span className="font-bold text-gray-900">독립적인 앱</span>이지만,<br />
-                서로 연계될때, <span className="font-bold text-purple-600">더 큰 시너지</span>를 냅니다.
-              </p>
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-5 rounded-xl border border-blue-100">
-                <p className="font-bold text-indigo-700 text-lg flex items-center gap-2">
-                  <span className="text-2xl">📄</span>
-                  한번의 생기부 업로드로<br className="md:hidden" /> 여러가지 서비스를 받으세요
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ═══════════════════ FOOTER MESSAGE WITH CHARACTER ═══════════════════ */}
       <section className="bg-gray-50 py-24 relative overflow-hidden border-t border-gray-100">
