@@ -1,13 +1,11 @@
-runtime: custom
-env: flex
+runtime: nodejs22
+
+instance_class: F2
 
 automatic_scaling:
-  min_num_instances: 1
-  max_num_instances: 10
-  cpu_utilization:
-    target_utilization: 0.65
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.65
 
-resources:
-  cpu: 1
-  memory_gb: 1
-  disk_size_gb: 10
+env_variables:
+  NODE_ENV: "production"
