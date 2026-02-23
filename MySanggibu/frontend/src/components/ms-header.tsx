@@ -257,6 +257,16 @@ export const MsHeader = () => {
                       전형탐색
                     </div>
                     <Link
+                      to="/ms/target-university"
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      🎯 목표 대학 설정
+                    </Link>
+                    <Link
                       to="/ms/subject"
                       className={cn(
                         buttonVariants({ variant: "ghost" }),
@@ -562,6 +572,12 @@ export const MsHeader = () => {
                   <NavigationMenuContent>
                     <div className="p-4 md:w-[350px]">
                       <div className="flex flex-col gap-2">
+                        <Link
+                          to="/ms/target-university"
+                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
+                        >
+                          <span className="text-sm font-medium">🎯 목표 대학 설정</span>
+                        </Link>
                         <Link
                           to="/ms/subject"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
