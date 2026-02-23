@@ -85,6 +85,9 @@ const OfficialNoticePostIdLazyRouteImport = createFileRoute(
 const OfficerLayoutProfileLazyRouteImport = createFileRoute(
   '/officer/_layout/profile',
 )()
+const MsLayoutTargetUniversityLazyRouteImport = createFileRoute(
+  '/ms/_layout/target-university',
+)()
 const MsLayoutSubjectLazyRouteImport = createFileRoute('/ms/_layout/subject')()
 const MsLayoutSetukLazyRouteImport = createFileRoute('/ms/_layout/setuk')()
 const MsLayoutSchoolRecordLazyRouteImport = createFileRoute(
@@ -480,6 +483,14 @@ const OfficerLayoutProfileLazyRoute =
   } as any).lazy(() =>
     import('./routes/officer/_layout/profile.lazy').then((d) => d.Route),
   )
+const MsLayoutTargetUniversityLazyRoute =
+  MsLayoutTargetUniversityLazyRouteImport.update({
+    id: '/target-university',
+    path: '/target-university',
+    getParentRoute: () => MsLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/ms/_layout.target-university.lazy').then((d) => d.Route),
+  )
 const MsLayoutSubjectLazyRoute = MsLayoutSubjectLazyRouteImport.update({
   id: '/subject',
   path: '/subject',
@@ -853,6 +864,7 @@ export interface FileRoutesByFullPath {
   '/ms/school-record': typeof MsLayoutSchoolRecordLazyRoute
   '/ms/setuk': typeof MsLayoutSetukLazyRoute
   '/ms/subject': typeof MsLayoutSubjectLazyRoute
+  '/ms/target-university': typeof MsLayoutTargetUniversityLazyRoute
   '/officer/profile': typeof OfficerLayoutProfileLazyRoute
   '/official/notice/$postId': typeof OfficialNoticePostIdLazyRoute
   '/users/additional-file': typeof UsersLayoutAdditionalFileLazyRoute
@@ -933,6 +945,7 @@ export interface FileRoutesByTo {
   '/ms/school-record': typeof MsLayoutSchoolRecordLazyRoute
   '/ms/setuk': typeof MsLayoutSetukLazyRoute
   '/ms/subject': typeof MsLayoutSubjectLazyRoute
+  '/ms/target-university': typeof MsLayoutTargetUniversityLazyRoute
   '/officer/profile': typeof OfficerLayoutProfileLazyRoute
   '/official/notice/$postId': typeof OfficialNoticePostIdLazyRoute
   '/users/additional-file': typeof UsersLayoutAdditionalFileLazyRoute
@@ -1025,6 +1038,7 @@ export interface FileRoutesById {
   '/ms/_layout/school-record': typeof MsLayoutSchoolRecordLazyRoute
   '/ms/_layout/setuk': typeof MsLayoutSetukLazyRoute
   '/ms/_layout/subject': typeof MsLayoutSubjectLazyRoute
+  '/ms/_layout/target-university': typeof MsLayoutTargetUniversityLazyRoute
   '/officer/_layout/profile': typeof OfficerLayoutProfileLazyRoute
   '/official/notice/$postId': typeof OfficialNoticePostIdLazyRoute
   '/users/_layout/additional-file': typeof UsersLayoutAdditionalFileLazyRoute
@@ -1112,6 +1126,7 @@ export interface FileRouteTypes {
     | '/ms/school-record'
     | '/ms/setuk'
     | '/ms/subject'
+    | '/ms/target-university'
     | '/officer/profile'
     | '/official/notice/$postId'
     | '/users/additional-file'
@@ -1192,6 +1207,7 @@ export interface FileRouteTypes {
     | '/ms/school-record'
     | '/ms/setuk'
     | '/ms/subject'
+    | '/ms/target-university'
     | '/officer/profile'
     | '/official/notice/$postId'
     | '/users/additional-file'
@@ -1283,6 +1299,7 @@ export interface FileRouteTypes {
     | '/ms/_layout/school-record'
     | '/ms/_layout/setuk'
     | '/ms/_layout/subject'
+    | '/ms/_layout/target-university'
     | '/officer/_layout/profile'
     | '/official/notice/$postId'
     | '/users/_layout/additional-file'
@@ -1710,6 +1727,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OfficerLayoutProfileLazyRouteImport
       parentRoute: typeof OfficerLayoutRoute
     }
+    '/ms/_layout/target-university': {
+      id: '/ms/_layout/target-university'
+      path: '/target-university'
+      fullPath: '/ms/target-university'
+      preLoaderRoute: typeof MsLayoutTargetUniversityLazyRouteImport
+      parentRoute: typeof MsLayoutRoute
+    }
     '/ms/_layout/subject': {
       id: '/ms/_layout/subject'
       path: '/subject'
@@ -2055,6 +2079,7 @@ interface MsLayoutRouteChildren {
   MsLayoutSchoolRecordLazyRoute: typeof MsLayoutSchoolRecordLazyRoute
   MsLayoutSetukLazyRoute: typeof MsLayoutSetukLazyRoute
   MsLayoutSubjectLazyRoute: typeof MsLayoutSubjectLazyRoute
+  MsLayoutTargetUniversityLazyRoute: typeof MsLayoutTargetUniversityLazyRoute
 }
 
 const MsLayoutRouteChildren: MsLayoutRouteChildren = {
@@ -2072,6 +2097,7 @@ const MsLayoutRouteChildren: MsLayoutRouteChildren = {
   MsLayoutSchoolRecordLazyRoute: MsLayoutSchoolRecordLazyRoute,
   MsLayoutSetukLazyRoute: MsLayoutSetukLazyRoute,
   MsLayoutSubjectLazyRoute: MsLayoutSubjectLazyRoute,
+  MsLayoutTargetUniversityLazyRoute: MsLayoutTargetUniversityLazyRoute,
 }
 
 const MsLayoutRouteWithChildren = MsLayoutRoute._addFileChildren(

@@ -167,6 +167,15 @@ const serviceGroups: {
       labelColor: "text-indigo-600",
       items: [
         {
+          icon: Target,
+          title: "목표대학 설정",
+          description: "목표 대학 · 계열별 모집단위 설정",
+          href: "/ms/target-university",
+          color: "text-rose-600",
+          bgColor: "bg-rose-50",
+          borderColor: "border-rose-100",
+        },
+        {
           icon: Building2,
           title: "관심대학",
           description: "관심대학 저장 및 비교",
