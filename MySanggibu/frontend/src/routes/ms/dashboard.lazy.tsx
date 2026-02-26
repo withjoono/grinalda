@@ -171,39 +171,6 @@ const serviceGroups: {
         },
       ],
     },
-    {
-      label: "전략과 지원",
-      labelColor: "text-indigo-600",
-      items: [
-        {
-          icon: Target,
-          title: "목표대학 설정",
-          description: "목표 대학 · 계열별 모집단위 설정",
-          href: "/ms/target-university",
-          color: "text-rose-600",
-          bgColor: "bg-rose-50",
-          borderColor: "border-rose-100",
-        },
-        {
-          icon: Building2,
-          title: "관심대학",
-          description: "관심대학 저장 및 비교",
-          href: "/ms/interest",
-          color: "text-indigo-600",
-          bgColor: "bg-indigo-50",
-          borderColor: "border-indigo-100",
-        },
-        {
-          icon: Crosshair,
-          title: "모의지원",
-          description: "수시 모의지원 조합 관리",
-          href: "/ms/combination",
-          color: "text-sky-600",
-          bgColor: "bg-sky-50",
-          borderColor: "border-sky-100",
-        },
-      ],
-    },
   ];
 
 /* ─── 시작 가이드 단계 ─── */

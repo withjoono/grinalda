@@ -310,34 +310,6 @@ export const MsHeader = () => {
 
                   <Separator className="my-2 bg-gray-200" />
 
-                  <div className="w-full space-y-1">
-                    <div className="px-1 py-2 text-sm font-semibold text-olive-500">
-                      전략과지원
-                    </div>
-                    <Link
-                      to="/ms/interest"
-                      className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
-                      )}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      🏫 관심대학
-                    </Link>
-                    <Link
-                      to="/ms/combination"
-                      className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
-                      )}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      🎯 모의지원
-                    </Link>
-                  </div>
-
-                  <Separator className="my-2 bg-gray-200" />
-
                   {/* 사용자 메뉴 */}
                   <div className="w-full space-y-2">
                     <Link
@@ -611,35 +583,6 @@ export const MsHeader = () => {
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <span className="text-sm font-medium">✍️ 논술 전형 탐색</span>
-                        </Link>
-                      </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                {/* 전략과지원 */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger
-                    className="bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 data-[state=open]:bg-gray-100"
-                    onPointerMove={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
-                    onPointerLeave={(e: React.PointerEvent<HTMLButtonElement>) => e.preventDefault()}
-                  >
-                    전략과지원
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="p-4 md:w-[300px]">
-                      <div className="flex flex-col gap-2">
-                        <Link
-                          to="/ms/interest"
-                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
-                        >
-                          <span className="text-sm font-medium">🏫 관심대학</span>
-                        </Link>
-                        <Link
-                          to="/ms/combination"
-                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
-                        >
-                          <span className="text-sm font-medium">🎯 모의지원</span>
                         </Link>
                       </div>
                     </div>
