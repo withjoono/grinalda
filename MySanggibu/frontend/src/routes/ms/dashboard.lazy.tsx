@@ -110,6 +110,15 @@ const serviceGroups: {
           borderColor: "border-fuchsia-100",
         },
         {
+          icon: ClipboardList,
+          title: "출결",
+          description: "학년별 출결 현황 조회",
+          href: "/ms/attendance",
+          color: "text-cyan-600",
+          bgColor: "bg-cyan-50",
+          borderColor: "border-cyan-100",
+        },
+        {
           icon: BookOpen,
           title: "세특",
           description: "세부능력 및 특기사항 관리",

@@ -229,6 +229,16 @@ export const MsHeader = () => {
                       📑 생기부 평가 내역
                     </Link>
                     <Link
+                      to="/ms/attendance"
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      📋 출결
+                    </Link>
+                    <Link
                       to="/ms/setuk"
                       className={cn(
                         buttonVariants({ variant: "ghost" }),
@@ -542,6 +552,12 @@ export const MsHeader = () => {
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <span className="text-sm font-medium">📑 생기부 평가 내역</span>
+                        </Link>
+                        <Link
+                          to="/ms/attendance"
+                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
+                        >
+                          <span className="text-sm font-medium">📋 출결</span>
                         </Link>
                         <Link
                           to="/ms/setuk"
