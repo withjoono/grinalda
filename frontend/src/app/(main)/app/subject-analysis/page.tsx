@@ -4,6 +4,7 @@ import { LoadingSection } from '@/components/status/loading-section';
 import { ErrorSection } from '@/components/status/error-section';
 import { useMySchoolRecord } from '@/apis/hooks/use-school-record';
 import { useMemo } from 'react';
+import GradeTrendCharts from './grade-trend-charts';
 
 const GRADE_LABELS: Record<number, string> = {
     1: '1학년',
@@ -137,6 +138,13 @@ export default function SubjectAnalysisPage() {
                                     </div>
                                 );
                             })}
+                    </div>
+                )}
+
+                {/* 성적추이 그래프 */}
+                {hasSubjects && (
+                    <div className='mb-8'>
+                        <GradeTrendCharts subjects={data!.subjects} />
                     </div>
                 )}
 
