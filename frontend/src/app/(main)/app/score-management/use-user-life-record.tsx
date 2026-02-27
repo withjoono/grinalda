@@ -446,47 +446,101 @@ export const useUserLifeRecord = ({
 
           // 세특 (detail_specialties) → subject.note 에 매핑
           if (res.data?.detail_specialties && res.data.detail_specialties.length > 0) {
-            const ds = res.data.detail_specialties;
+            const ds = res.data.detail_specialties as Array<{
+              grade: number; semester: number; subject_name: string; content: string;
+            }>;
+            console.log('[세특 매핑] detail_specialties:', ds.length, '건');
+            console.log('[세특 매핑] subject names:', ds.map(d => `${d.grade}-${d.semester}: ${d.subject_name}`));
+
+            // 과목명 정규화 함수 (공백, 특수문자 제거)
+            const normalizeName = (name: string) =>
+              name.replace(/\s+/g, '').replace(/[·ㆍ・]/g, '').toLowerCase().trim();
+
             // subjectData의 note에 세특 content 매핑
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const updatedSubjects: any = { ...subjectData };
+            let matchCount = 0;
             for (const gradeKey of [1, 2, 3] as const) {
               if (updatedSubjects[gradeKey]) {
                 updatedSubjects[gradeKey] = updatedSubjects[gradeKey].map(
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (sub: any) => {
-                    const match = ds.find(
+                    // 1차: grade + semester + name 정확 매칭
+                    let match = ds.find(
                       (d) =>
                         d.grade === sub.grade &&
                         d.semester === sub.semester &&
-                        d.subject_name.trim() === sub.subjectName.trim()
+                        normalizeName(d.subject_name) === normalizeName(sub.subjectName)
                     );
-                    return match ? { ...sub, note: match.content } : sub;
+                    // 2차: grade + name만 (semester 무시)
+                    if (!match) {
+                      match = ds.find(
+                        (d) =>
+                          d.grade === sub.grade &&
+                          normalizeName(d.subject_name) === normalizeName(sub.subjectName)
+                      );
+                    }
+                    // 3차: grade + 부분 매칭 (includes)
+                    if (!match) {
+                      match = ds.find(
+                        (d) =>
+                          d.grade === sub.grade &&
+                          (normalizeName(d.subject_name).includes(normalizeName(sub.subjectName)) ||
+                            normalizeName(sub.subjectName).includes(normalizeName(d.subject_name)))
+                      );
+                    }
+                    if (match) {
+                      matchCount++;
+                      return { ...sub, note: match.content };
+                    }
+                    return sub;
                   }
                 );
               }
             }
+            console.log(`[세특 매핑] 일반교과 매칭: ${matchCount}건`);
             setSubjects(updatedSubjects);
 
             // selectSubjectData에도 매핑
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const updatedSelectSubjects: any = { ...selectSubjectData };
+            let selectMatchCount = 0;
             for (const gradeKey of [1, 2, 3] as const) {
               if (updatedSelectSubjects[gradeKey]) {
                 updatedSelectSubjects[gradeKey] = updatedSelectSubjects[gradeKey].map(
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (sub: any) => {
-                    const match = ds.find(
+                    let match = ds.find(
                       (d) =>
                         d.grade === sub.grade &&
                         d.semester === sub.semester &&
-                        d.subject_name.trim() === sub.subjectName.trim()
+                        normalizeName(d.subject_name) === normalizeName(sub.subjectName)
                     );
-                    return match ? { ...sub, note: match.content } : sub;
+                    if (!match) {
+                      match = ds.find(
+                        (d) =>
+                          d.grade === sub.grade &&
+                          normalizeName(d.subject_name) === normalizeName(sub.subjectName)
+                      );
+                    }
+                    if (!match) {
+                      match = ds.find(
+                        (d) =>
+                          d.grade === sub.grade &&
+                          (normalizeName(d.subject_name).includes(normalizeName(sub.subjectName)) ||
+                            normalizeName(sub.subjectName).includes(normalizeName(d.subject_name)))
+                      );
+                    }
+                    if (match) {
+                      selectMatchCount++;
+                      return { ...sub, note: match.content };
+                    }
+                    return sub;
                   }
                 );
               }
             }
+            console.log(`[세특 매핑] 진로선택 매칭: ${selectMatchCount}건`);
             setSelectSubjects(updatedSelectSubjects);
           }
 
