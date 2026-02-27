@@ -246,6 +246,23 @@ export class SchoolRecordService {
         achievementC: string;
         etc: string;
       }>;
+      attendances?: Array<{
+        grade: string;
+        class_days: number | null;
+        absent_disease: number | null;
+        absent_unrecognized: number | null;
+        absent_etc: number | null;
+        late_disease: number | null;
+        late_unrecognized: number | null;
+        late_etc: number | null;
+        leave_early_disease: number | null;
+        leave_early_unrecognized: number | null;
+        leave_early_etc: number | null;
+        result_disease: number | null;
+        result_unrecognized: number | null;
+        result_early_etc: number | null;
+        etc: string | null;
+      }>;
     },
   ): Promise<void> {
     const member = await this.memberRepository.findOne({
@@ -261,6 +278,9 @@ export class SchoolRecordService {
         member: { id: member.id },
       });
       await transactionalEntityManager.delete(SchoolRecordSelectSubjectEntity, {
+        member: { id: member.id },
+      });
+      await transactionalEntityManager.delete(SchoolRecordAttendanceDetailEntity, {
         member: { id: member.id },
       });
 
@@ -312,10 +332,35 @@ export class SchoolRecordService {
         );
         await transactionalEntityManager.save(SchoolRecordSelectSubjectEntity, selectSubjects);
       }
+
+      // 출결 저장
+      if (data.attendances && data.attendances.length > 0) {
+        const attendances = data.attendances.map((item) =>
+          this.attendanceRepository.create({
+            member,
+            grade: item.grade,
+            class_days: item.class_days,
+            absent_disease: item.absent_disease,
+            absent_unrecognized: item.absent_unrecognized,
+            absent_etc: item.absent_etc,
+            late_disease: item.late_disease,
+            late_unrecognized: item.late_unrecognized,
+            late_etc: item.late_etc,
+            leave_early_disease: item.leave_early_disease,
+            leave_early_unrecognized: item.leave_early_unrecognized,
+            leave_early_etc: item.leave_early_etc,
+            result_disease: item.result_disease,
+            result_unrecognized: item.result_unrecognized,
+            result_early_etc: item.result_early_etc,
+            etc: item.etc,
+          }),
+        );
+        await transactionalEntityManager.save(SchoolRecordAttendanceDetailEntity, attendances);
+      }
     });
 
     this.logger.log(
-      `Saved PDF parsed data for member ${member.id}: ${data.subjectLearnings.length} subjects, ${data.selectSubjects.length} select subjects`,
+      `Saved PDF parsed data for member ${member.id}: ${data.subjectLearnings.length} subjects, ${data.selectSubjects.length} select subjects, ${data.attendances?.length || 0} attendances`,
     );
   }
 

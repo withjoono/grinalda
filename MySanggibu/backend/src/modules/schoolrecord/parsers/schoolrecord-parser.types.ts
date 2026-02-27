@@ -25,6 +25,7 @@ export interface ParsedSubjectLearning {
   studentsNum: string;
   ranking: string;
   etc: string;
+  detailAndSpecialty?: string;
 }
 
 export interface ParsedSelectSubject {
@@ -43,6 +44,7 @@ export interface ParsedSelectSubject {
   achievementB: string;
   achievementC: string;
   etc: string;
+  detailAndSpecialty?: string;
 }
 
 export interface ParsedVolunteer {
@@ -54,15 +56,50 @@ export interface ParsedVolunteer {
   accumulateTime: string;
 }
 
+export interface ParsedCreativeActivity {
+  grade: string;
+  activityType: string; // 자치활동, 동아리활동, 봉사활동, 진로활동
+  content: string;
+}
+
+export interface ParsedBehaviorOpinion {
+  grade: string;
+  content: string;
+}
+
+export interface ParsedAttendance {
+  grade: string;
+  class_days: number | null;
+  absent_disease: number | null;
+  absent_unrecognized: number | null;
+  absent_etc: number | null;
+  late_disease: number | null;
+  late_unrecognized: number | null;
+  late_etc: number | null;
+  leave_early_disease: number | null;
+  leave_early_unrecognized: number | null;
+  leave_early_etc: number | null;
+  result_disease: number | null;
+  result_unrecognized: number | null;
+  result_early_etc: number | null;
+  etc: string | null;
+}
+
 export interface ParsedSchoolRecord {
   subjectLearnings: ParsedSubjectLearning[];
   selectSubjects: ParsedSelectSubject[];
   volunteers: ParsedVolunteer[];
+  creativeActivities: ParsedCreativeActivity[];
+  behaviorOpinions: ParsedBehaviorOpinion[];
+  attendances: ParsedAttendance[];
 }
 
 export interface ParsedSchoolRecordPdf {
   subjectLearnings: ParsedSubjectLearning[];
   selectSubjects: ParsedSelectSubject[];
+  creativeActivities: ParsedCreativeActivity[];
+  behaviorOpinions: ParsedBehaviorOpinion[];
+  attendances: ParsedAttendance[];
 }
 
 // 과목 목록 (PDF 파싱용)

@@ -12,6 +12,9 @@ import {
   ParsedSubjectLearning,
   ParsedSelectSubject,
   ParsedVolunteer,
+  ParsedCreativeActivity,
+  ParsedBehaviorOpinion,
+  ParsedAttendance,
   ParsedSchoolRecord,
   DEFAULT_MAIN_SUBJECT_CODE,
   DEFAULT_SUBJECT_CODE_LEARNING,
@@ -36,8 +39,11 @@ export class SchoolRecordHtmlParserService {
       const subjectLearnings = this.parseSubjectLearning($, mainMappingTable, mappingTable);
       const selectSubjects = this.parseSelectSubject($, mainMappingTable, mappingTable);
       const volunteers = this.parseVolunteer($);
+      const creativeActivities = this.parseCreativeActivities($);
+      const behaviorOpinions = this.parseBehaviorOpinions($);
+      const attendances = this.parseAttendance($);
 
-      return { subjectLearnings, selectSubjects, volunteers };
+      return { subjectLearnings, selectSubjects, volunteers, creativeActivities, behaviorOpinions, attendances };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       this.logger.error('HTML 파싱 오류:', error);
@@ -66,6 +72,49 @@ export class SchoolRecordHtmlParserService {
     return { mainMappingTable, mappingTable };
   }
 
+  private findDetailAndSpecialtyMap($: cheerio.CheerioAPI): Map<string, string> {
+    const map = new Map<string, string>();
+
+    $('table').each((_, table) => {
+      const headers = $(table).find('thead th').map((_, th) => $(th).text().trim()).get();
+      const hasSubject = headers.some(h => h.includes('과목'));
+      const hasDetail = headers.some(h => h.includes('세부능력') && h.includes('특기사항'));
+
+      if (hasSubject && hasDetail) {
+        const hasSemester = headers.some(h => h.includes('학기'));
+
+        $(table).find('tbody tr').each((__, tr) => {
+          const tds = $(tr).children('td');
+          if (tds.length < 2) return;
+
+          let semester = '';
+          let subjectName = '';
+          let content = '';
+
+          if (hasSemester && tds.length >= 3) {
+            semester = $(tds.get(0)).text().trim();
+            subjectName = $(tds.get(1)).text().trim().replace(/\s/g, '');
+            content = $(tds.get(2)).text().trim();
+          } else {
+            subjectName = $(tds.get(0)).text().trim().replace(/\s/g, '');
+            content = $(tds.get(1)).text().trim();
+          }
+
+          if (subjectName && content) {
+            const key = semester ? `${semester}-${subjectName}` : subjectName;
+            if (map.has(key)) {
+              map.set(key, map.get(key) + '\n' + content);
+            } else {
+              map.set(key, content);
+            }
+          }
+        });
+      }
+    });
+
+    return map;
+  }
+
   /**
    * 교과학습발달상황 (일반교과목) 파싱
    */
@@ -75,6 +124,8 @@ export class SchoolRecordHtmlParserService {
     mappingTable: Map<string, string>,
   ): ParsedSubjectLearning[] {
     const result: ParsedSubjectLearning[] = [];
+
+    const detailMap = this.findDetailAndSpecialtyMap($);
 
     // 가능한 요소 ID 목록 시도
     const possibleIds = [
@@ -155,6 +206,8 @@ export class SchoolRecordHtmlParserService {
           const ranking = $(children.get(6)).text().trim();
           const etc = $(children.get(7)).text().trim();
 
+          const detailAndSpecialty = detailMap.get(`${semester}-${subjectName}`) || detailMap.get(subjectName);
+
           result.push({
             grade: String(grade),
             semester,
@@ -170,6 +223,7 @@ export class SchoolRecordHtmlParserService {
             studentsNum,
             ranking,
             etc,
+            detailAndSpecialty,
           });
         });
       });
@@ -189,6 +243,8 @@ export class SchoolRecordHtmlParserService {
     mappingTable: Map<string, string>,
   ): ParsedSelectSubject[] {
     const result: ParsedSelectSubject[] = [];
+
+    const detailMap = this.findDetailAndSpecialtyMap($);
 
     // 가능한 요소 ID 목록 시도
     const possibleIds = [
@@ -270,6 +326,8 @@ export class SchoolRecordHtmlParserService {
 
           const etc = $(children.get(7)).text().trim();
 
+          const detailAndSpecialty = detailMap.get(`${semester}-${subjectName}`) || detailMap.get(subjectName);
+
           result.push({
             grade: String(grade),
             semester,
@@ -286,6 +344,7 @@ export class SchoolRecordHtmlParserService {
             achievementB,
             achievementC,
             etc,
+            detailAndSpecialty,
           });
         });
       });
@@ -373,5 +432,170 @@ export class SchoolRecordHtmlParserService {
   private extractPercentage(text: string): string {
     const match = text.match(/\(([^)]+)\)/);
     return match ? match[1] : '';
+  }
+
+  /**
+   * 창의적 체험활동상황 파싱
+   * NEIS HTML 테이블에서 "창의적 체험활동상황" 섹션을 찾아
+   * 학년, 활동유형(자치활동/동아리활동/봉사활동/진로활동), 특기사항을 파싱
+   */
+  private parseCreativeActivities($: cheerio.CheerioAPI): ParsedCreativeActivity[] {
+    const result: ParsedCreativeActivity[] = [];
+
+    $('table').each((_, table) => {
+      const caption = $(table).find('caption').text().trim();
+      const headerText = $(table).find('thead').text().trim();
+      const fullText = caption + ' ' + headerText;
+
+      // "창의적 체험활동상황" 테이블 식별
+      if (!fullText.includes('창의적') && !fullText.includes('체험활동')) {
+        return; // continue
+      }
+
+      const headers = $(table).find('thead th').map((_, th) => $(th).text().trim()).get();
+      const hasActivityType = headers.some(h => h.includes('영역') || h.includes('활동'));
+      const hasContent = headers.some(h => h.includes('특기사항') || h.includes('내용'));
+
+      if (!hasActivityType && !hasContent) return;
+
+      let currentGrade = '';
+
+      $(table).find('tbody tr').each((__, tr) => {
+        const tds = $(tr).children('td');
+        if (tds.length < 2) return;
+
+        const cells = tds.map((___, td) => $(td).text().trim()).get();
+
+        if (tds.length >= 3) {
+          // [학년, 활동유형, 특기사항]
+          const gradeText = cells[0];
+          if (/^\d$/.test(gradeText)) {
+            currentGrade = gradeText;
+          }
+          const activityType = cells[cells.length - 2] || '';
+          const content = cells[cells.length - 1] || '';
+
+          if (content) {
+            result.push({
+              grade: currentGrade || gradeText,
+              activityType: activityType.replace(/\s/g, ''),
+              content,
+            });
+          }
+        } else if (tds.length === 2) {
+          // [활동유형, 특기사항] (학년은 이전 행에서 rowspan으로)
+          const activityType = cells[0] || '';
+          const content = cells[1] || '';
+
+          if (content) {
+            result.push({
+              grade: currentGrade,
+              activityType: activityType.replace(/\s/g, ''),
+              content,
+            });
+          }
+        }
+      });
+    });
+
+    return result;
+  }
+
+  /**
+   * 행동특성 및 종합의견 파싱
+   * NEIS HTML에서 "행동특성 및 종합의견" 섹션을 찾아 학년별 내용을 파싱
+   */
+  private parseBehaviorOpinions($: cheerio.CheerioAPI): ParsedBehaviorOpinion[] {
+    const result: ParsedBehaviorOpinion[] = [];
+
+    $('table').each((_, table) => {
+      const caption = $(table).find('caption').text().trim();
+      const headerText = $(table).find('thead').text().trim();
+      const fullText = caption + ' ' + headerText;
+
+      // "행동특성 및 종합의견" 테이블 식별
+      if (!fullText.includes('행동특성') && !fullText.includes('종합의견')) {
+        return; // continue
+      }
+
+      $(table).find('tbody tr').each((__, tr) => {
+        const tds = $(tr).children('td');
+        if (tds.length < 2) return;
+
+        const cells = tds.map((___, td) => $(td).text().trim()).get();
+
+        // [학년, 내용] 형태
+        const grade = cells[0] || '';
+        const content = cells[cells.length - 1] || '';
+
+        if (/^\d$/.test(grade) && content) {
+          result.push({ grade, content });
+        }
+      });
+    });
+
+    return result;
+  }
+
+  /**
+   * 출결상황 파싱
+   * NEIS HTML에서 "출결상황" 테이블을 찾아 학년별 결석/지각/조퇴/결과 일수를 파싱
+   *
+   * NEIS 출결상황 테이블 헤더 구조:
+   * | 학년 | 수업일수 | 결석일수(질병/무단/기타) | 지각(질병/무단/기타) | 조퇴(질병/무단/기타) | 결과(질병/무단/기타) | 특기사항 |
+   */
+  private parseAttendance($: cheerio.CheerioAPI): ParsedAttendance[] {
+    const result: ParsedAttendance[] = [];
+
+    $('table').each((_, table) => {
+      const caption = $(table).find('caption').text().trim();
+      const headerText = $(table).find('thead').text().trim();
+      const fullText = caption + ' ' + headerText;
+
+      // "출결상황" 테이블 식별
+      if (!fullText.includes('출결')) {
+        return; // continue
+      }
+
+      $(table).find('tbody tr').each((__, tr) => {
+        const tds = $(tr).children('td');
+        if (tds.length < 2) return;
+
+        const cells = tds.map((___, td) => $(td).text().trim()).get();
+
+        // 학년 검증 (첫 번째 셀이 1~6 사이 숫자)
+        const grade = cells[0] || '';
+        if (!/^\d$/.test(grade)) return;
+
+        // NEIS 출결상황 테이블 컬럼 순서:
+        // [학년, 수업일수, 결석-질병, 결석-무단, 결석-기타, 지각-질병, 지각-무단, 지각-기타, 조퇴-질병, 조퇴-무단, 조퇴-기타, 결과-질병, 결과-무단, 결과-기타, 특기사항]
+        const parseNum = (val: string): number | null => {
+          const n = parseInt(val, 10);
+          return isNaN(n) ? null : n;
+        };
+
+        if (cells.length >= 14) {
+          result.push({
+            grade,
+            class_days: parseNum(cells[1]),
+            absent_disease: parseNum(cells[2]),
+            absent_unrecognized: parseNum(cells[3]),
+            absent_etc: parseNum(cells[4]),
+            late_disease: parseNum(cells[5]),
+            late_unrecognized: parseNum(cells[6]),
+            late_etc: parseNum(cells[7]),
+            leave_early_disease: parseNum(cells[8]),
+            leave_early_unrecognized: parseNum(cells[9]),
+            leave_early_etc: parseNum(cells[10]),
+            result_disease: parseNum(cells[11]),
+            result_unrecognized: parseNum(cells[12]),
+            result_early_etc: parseNum(cells[13]),
+            etc: cells[14] || null,
+          });
+        }
+      });
+    });
+
+    return result;
   }
 }
