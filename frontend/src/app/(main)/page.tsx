@@ -9,20 +9,20 @@ export default function Home() {
     id: 1,
     imageUrl:
       'https://grinalda-s3.s3.amazonaws.com/banner/1732412649284.jpg',
-    link: '/special-event',
+    link: '/app',
   };
   const cardBannerData1 = [
     {
       id: 1,
       imageUrl:
         'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
-      link: '/card1',
+      link: '/app',
     },
     {
       id: 2,
       imageUrl:
         'https://grinalda-s3.s3.amazonaws.com/banner/1712561995280.png',
-      link: '/card2',
+      link: '/app',
     },
   ];
 
@@ -31,13 +31,13 @@ export default function Home() {
       id: 1,
       imageUrl:
         'https://grinalda-s3.s3.amazonaws.com/banner/1712562149011.png',
-      link: '/card1',
+      link: '/app',
     },
     {
       id: 2,
       imageUrl:
         'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
-      link: '/card2',
+      link: '/app',
     },
   ];
 
