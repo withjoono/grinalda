@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { USER_API } from "./apis";
-import { ISchoolRecord, ISchoolRecordSubject } from "./interfaces";
+import { ISchoolRecord, ISchoolRecordAttendance, ISchoolRecordSubject } from "./interfaces";
 
 export const meQueryKeys = {
   all: ["me"] as const,
@@ -35,6 +35,30 @@ export const useGetActiveServices = () => {
 };
 
 /**
+ * Hub API의 camelCase 출결 필드를 프론트엔드 snake_case 인터페이스로 변환
+ * Hub Controller의 convertKeysToCamel()이 DB snake_case → camelCase로 변환하므로,
+ * 프론트엔드에서 사용하는 snake_case 형태로 다시 매핑
+ */
+const normalizeAttendance = (att: any): ISchoolRecordAttendance => ({
+  id: att.id,
+  grade: att.grade,
+  class_days: att.classDays ?? att.class_days ?? null,
+  absent_disease: att.absentDisease ?? att.absent_disease ?? null,
+  absent_unrecognized: att.absentUnrecognized ?? att.absent_unrecognized ?? null,
+  absent_etc: att.absentEtc ?? att.absent_etc ?? null,
+  late_disease: att.lateDisease ?? att.late_disease ?? null,
+  late_unrecognized: att.lateUnrecognized ?? att.late_unrecognized ?? null,
+  late_etc: att.lateEtc ?? att.late_etc ?? null,
+  leave_early_disease: att.leaveEarlyDisease ?? att.leave_early_disease ?? null,
+  leave_early_unrecognized: att.leaveEarlyUnrecognized ?? att.leave_early_unrecognized ?? null,
+  leave_early_etc: att.leaveEarlyEtc ?? att.leave_early_etc ?? null,
+  result_disease: att.resultDisease ?? att.result_disease ?? null,
+  result_unrecognized: att.resultUnrecognized ?? att.result_unrecognized ?? null,
+  result_early_etc: att.resultEarlyEtc ?? att.result_early_etc ?? null,
+  etc: att.etc ?? null,
+});
+
+/**
  * [생기부] 통합 데이터 조회 (Hub 중앙 API 사용)
  * Hub-Backend의 단일 엔드포인트로 전체 데이터를 한 번에 조회합니다.
  */
@@ -47,7 +71,8 @@ export const useGetSchoolRecords = () => {
       if (!currentUser) throw new Error("User not found");
       const data = await USER_API.fetchAllSchoolRecordsAPI(currentUser.id);
 
-      const attendance = data?.attendanceDetails || [];
+      const rawAttendance = data?.attendanceDetails || [];
+      const attendance = rawAttendance.map(normalizeAttendance);
       const selectSubjects = data?.selectSubjects || [];
       const subjects = data?.subjectLearnings || [];
       const volunteers = data?.volunteers || [];

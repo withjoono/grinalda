@@ -6,8 +6,6 @@ import {
   ISchoolRecordSelectSubject,
   ISchoolRecordSubject,
   ISchoolRecordVolunteer,
-  ISchoolRecordCreativeActivity,
-  ISchoolRecordBehaviorOpinion,
   IUser,
 } from "./interfaces";
 
