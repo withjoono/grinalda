@@ -96,19 +96,11 @@ import { WinstonModule } from 'nest-winston';
             keyPrefix: 'susi-',
             ttl: 300000, // 5분
           });
-<<<<<<< Updated upstream
           console.log('✅ MySanggibu: Redis 연결됨');
           return { store, ttl: 300000 };
         } catch (error) {
           console.warn('⚠️ MySanggibu: Redis 연결 실패, 인메모리 캐시 사용:', error.message);
           return { ttl: 300000 };
-=======
-          console.log('✅ Susi: Redis 연결됨 (prefix: susi-)');
-          return { store, ttl: 300000 };
-        } catch (err) {
-          console.warn('⚠️ Redis 연결 실패, 인메모리 캐시 사용:', err.message);
-          return { ttl: 300000 }; // 기본 in-memory cache
->>>>>>> Stashed changes
         }
       },
     }),

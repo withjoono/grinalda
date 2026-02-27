@@ -56,32 +56,12 @@ export class AuthController implements OnModuleInit {
   ) { }
 
   onModuleInit() {
-<<<<<<< Updated upstream
-    // OAuth state 저장을 위한 Redis 클라이언트 초기화
-=======
     // OAuth state 저장을 위한 Redis 클라이언트 초기화 (graceful fallback)
->>>>>>> Stashed changes
     try {
       this.redis = new Redis({
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(process.env.REDIS_PORT || '6379', 10),
         keyPrefix: 'susi-oauth:',
-<<<<<<< Updated upstream
-        connectTimeout: 3000,
-        lazyConnect: true,
-      });
-      this.redis.connect().then(() => {
-        console.log('✅ [OAuth] Redis 클라이언트 연결됨');
-      }).catch((err) => {
-        console.warn('⚠️ [OAuth] Redis 연결 실패 (OAuth 기능 제한됨):', err.message);
-      });
-      this.redis.on('error', (err) => {
-        console.error('❌ [OAuth] Redis 연결 오류:', err.message);
-      });
-    } catch (err) {
-      console.warn('⚠️ [OAuth] Redis 초기화 실패:', err.message);
-    }
-=======
         lazyConnect: true,
         maxRetriesPerRequest: 3,
         retryStrategy(times) {
@@ -147,7 +127,6 @@ export class AuthController implements OnModuleInit {
     if (!entry) return null;
     if (Date.now() > entry.expiry) return null;
     return entry.value;
->>>>>>> Stashed changes
   }
 
   @ApiOperation({

@@ -184,23 +184,7 @@ async function bootstrap() {
     console.log('Swagger documentation: disabled (production mode)');
   }
 
-<<<<<<< Updated upstream
   // CORS는 NestFactory.create()에서 설정됨 (Helmet보다 먼저 적용되어야 함)
-=======
-  app.enableCors({
-    origin: [
-      // 프로덕션 도메인
-      'https://ts-front-479305.web.app', // Susi 프론트엔드 배포
-      'https://www.geobukschool.kr',
-      'https://geobukschool.kr',
-      'https://ms-front.web.app', // MySanggibu 프론트엔드
-      // 로컬 개발 환경
-      'http://localhost:3007', // MS 프론트엔드
-    ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    credentials: true, // 자격 증명 허용
-  });
->>>>>>> Stashed changes
 
   const appPort = process.env.PORT || configService.getOrThrow('app', { infer: true }).port;
   await app.listen(appPort, '127.0.0.1');
@@ -211,10 +195,6 @@ async function bootstrap() {
   console.log(`Sentry DSN configured: ${!!process.env.SENTRY_DSN}`);
 }
 bootstrap();
-
-
-
-
 
 
 
