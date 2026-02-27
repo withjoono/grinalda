@@ -8,20 +8,20 @@ export default function Home() {
   const subBannerData = {
     id: 1,
     imageUrl:
-      'https://grinalda.co.kr/_next/image?url=https%3A%2F%2Fgrinalda-s3.s3.amazonaws.com%2Fbanner%2F1732412649284.jpg&w=2048&q=75',
+      'https://grinalda-s3.s3.amazonaws.com/banner/1732412649284.jpg',
     link: '/special-event',
   };
   const cardBannerData1 = [
     {
       id: 1,
       imageUrl:
-        'https://grinalda.co.kr/_next/image?url=https%3A%2F%2Fgrinalda-s3.s3.amazonaws.com%2Fbanner%2F1712562064644.jpg&w=1920&q=75',
+        'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
       link: '/card1',
     },
     {
       id: 2,
       imageUrl:
-        'https://grinalda.co.kr/_next/image?url=https%3A%2F%2Fgrinalda-s3.s3.amazonaws.com%2Fbanner%2F1712561995280.png&w=1920&q=75',
+        'https://grinalda-s3.s3.amazonaws.com/banner/1712561995280.png',
       link: '/card2',
     },
   ];
@@ -30,13 +30,13 @@ export default function Home() {
     {
       id: 1,
       imageUrl:
-        'https://grinalda.co.kr/_next/image?url=https%3A%2F%2Fgrinalda-s3.s3.amazonaws.com%2Fbanner%2F1712562149011.png&w=1920&q=75',
+        'https://grinalda-s3.s3.amazonaws.com/banner/1712562149011.png',
       link: '/card1',
     },
     {
       id: 2,
       imageUrl:
-        'https://grinalda.co.kr/_next/image?url=https%3A%2F%2Fgrinalda-s3.s3.amazonaws.com%2Fbanner%2F1712562064644.jpg&w=1920&q=75',
+        'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
       link: '/card2',
     },
   ];
