@@ -7,21 +7,18 @@ import SubBanner from './_components/sub-banner';
 export default function Home() {
   const subBannerData = {
     id: 1,
-    imageUrl:
-      'https://grinalda-s3.s3.amazonaws.com/banner/1732412649284.jpg',
+    imageUrl: '/banners/banner3.png',
     link: '/app',
   };
   const cardBannerData1 = [
     {
       id: 1,
-      imageUrl:
-        'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
+      imageUrl: '/banners/banner4.png',
       link: '/app',
     },
     {
       id: 2,
-      imageUrl:
-        'https://grinalda-s3.s3.amazonaws.com/banner/1712561995280.png',
+      imageUrl: '/banners/banner3.png',
       link: '/app',
     },
   ];
@@ -29,14 +26,12 @@ export default function Home() {
   const cardBannerData2 = [
     {
       id: 1,
-      imageUrl:
-        'https://grinalda-s3.s3.amazonaws.com/banner/1712562149011.png',
+      imageUrl: '/banners/banner3.png',
       link: '/app',
     },
     {
       id: 2,
-      imageUrl:
-        'https://grinalda-s3.s3.amazonaws.com/banner/1712562064644.jpg',
+      imageUrl: '/banners/banner4.png',
       link: '/app',
     },
   ];

@@ -9,6 +9,7 @@ const getDomain = () => {
 
 export class Api {
   static instance: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_SERVER_DOMAIN || '',
     headers: {
       'Content-Type': 'application/json',
     },
