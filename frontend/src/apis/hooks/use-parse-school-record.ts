@@ -74,6 +74,15 @@ interface ParsedSchoolRecordData {
       };
     };
   };
+  creative_activities?: {
+    grade: number;
+    activity_type: string;
+    content: string;
+  }[];
+  behavior_opinions?: {
+    grade: number;
+    content: string;
+  }[];
 }
 
 export const useParseSchoolRecord = () => {

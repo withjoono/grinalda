@@ -4,6 +4,8 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import {
   SchoolRecordAttendance,
+  SchoolRecordCreativeActivityInput,
+  SchoolRecordBehaviorOpinionInput,
   SchoolRecordSelectSubjectInput,
   SchoolRecordSubjectInput,
   useMySchoolRecord,
@@ -93,6 +95,12 @@ export const useUserLifeRecord = ({
     2: makeInitialAttendanceItem(2),
     3: makeInitialAttendanceItem(3),
   });
+  const [creativeActivities, setCreativeActivities] = useState<
+    SchoolRecordCreativeActivityInput[]
+  >([]);
+  const [behaviorOpinions, setBehaviorOpinions] = useState<
+    SchoolRecordBehaviorOpinionInput[]
+  >([]);
 
   useEffect(() => {
     if (schoolRecord) {
@@ -163,133 +171,133 @@ export const useUserLifeRecord = ({
             1: [
               ...(res.data.academic_records['1학년']?.['1학기']
                 ? res.data.academic_records['1학년']['1학기'].일반.map(
-                    (item) => ({
-                      grade: 1,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 1,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['1학년']?.['2학기']
                 ? res.data.academic_records['1학년']['2학기'].일반.map(
-                    (item) => ({
-                      grade: 1,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 1,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
             2: [
               ...(res.data.academic_records['2학년']?.['1학기']
                 ? res.data.academic_records['2학년']['1학기'].일반.map(
-                    (item) => ({
-                      grade: 2,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 2,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['2학년']?.['2학기']
                 ? res.data.academic_records['2학년']['2학기'].일반.map(
-                    (item) => ({
-                      grade: 2,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 2,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
             3: [
               ...(res.data.academic_records['3학년']?.['1학기']
                 ? res.data.academic_records['3학년']['1학기'].일반.map(
-                    (item) => ({
-                      grade: 3,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 3,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['3학년']?.['2학기']
                 ? res.data.academic_records['3학년']['2학기'].일반.map(
-                    (item) => ({
-                      grade: 3,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.과목명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      standardDeviation: Number(item.표준편차) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      gradeRank: Number(item.석차등급) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 3,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.과목명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    standardDeviation: Number(item.표준편차) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    gradeRank: Number(item.석차등급) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
           };
@@ -297,145 +305,167 @@ export const useUserLifeRecord = ({
             1: [
               ...(res.data.academic_records['1학년']?.['1학기']
                 ? res.data.academic_records['1학년']['1학기'].진로선택.map(
-                    (item) => ({
-                      grade: 1,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 1,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['1학년']?.['2학기']
                 ? res.data.academic_records['1학년']['2학기'].진로선택.map(
-                    (item) => ({
-                      grade: 1,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 1,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
             2: [
               ...(res.data.academic_records['2학년']?.['1학기']
                 ? res.data.academic_records['2학년']['1학기'].진로선택.map(
-                    (item) => ({
-                      grade: 2,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 2,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['2학년']?.['2학기']
                 ? res.data.academic_records['2학년']['2학기'].진로선택.map(
-                    (item) => ({
-                      grade: 2,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 2,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
             3: [
               ...(res.data.academic_records['3학년']?.['1학기']
                 ? res.data.academic_records['3학년']['1학기'].진로선택.map(
-                    (item) => ({
-                      grade: 3,
-                      semester: 1,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 3,
+                    semester: 1,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
               ...(res.data.academic_records['3학년']?.['2학기']
                 ? res.data.academic_records['3학년']['2학기'].진로선택.map(
-                    (item) => ({
-                      grade: 3,
-                      semester: 2,
-                      subjectGroupId:
-                        subjectNameToIdMapper[
-                          normalizeSubjectName(item.교과명)
-                        ],
-                      subjectName: item.교과명,
-                      units: Number(item.단위수) || 0,
-                      score: Number(item.원점수) || 0,
-                      average: Number(item.과목평균) || 0,
-                      achievement: item.성취도 || '',
-                      numberOfStudents: Number(item.수강자수) || 0,
-                      achievementRatioA: Number(item.성취도분포비율A) || 0,
-                      achievementRatioB: Number(item.성취도분포비율B) || 0,
-                      achievementRatioC: Number(item.성취도분포비율C) || 0,
-                      note: '',
-                    })
-                  )
+                  (item) => ({
+                    grade: 3,
+                    semester: 2,
+                    subjectGroupId:
+                      subjectNameToIdMapper[
+                      normalizeSubjectName(item.교과명)
+                      ],
+                    subjectName: item.교과명,
+                    units: Number(item.단위수) || 0,
+                    score: Number(item.원점수) || 0,
+                    average: Number(item.과목평균) || 0,
+                    achievement: item.성취도 || '',
+                    numberOfStudents: Number(item.수강자수) || 0,
+                    achievementRatioA: Number(item.성취도분포비율A) || 0,
+                    achievementRatioB: Number(item.성취도분포비율B) || 0,
+                    achievementRatioC: Number(item.성취도분포비율C) || 0,
+                    note: '',
+                  })
+                )
                 : []),
             ],
           };
           setSubjects(subjectData);
-
           setSelectSubjects(selectSubjectData);
+
+          // 창체/행특 데이터 저장
+          if (res.data?.creative_activities) {
+            setCreativeActivities(
+              res.data.creative_activities.map(
+                (item: { grade: number; activity_type: string; content: string }) => ({
+                  grade: item.grade,
+                  activityType: item.activity_type,
+                  content: item.content || '',
+                })
+              )
+            );
+          }
+          if (res.data?.behavior_opinions) {
+            setBehaviorOpinions(
+              res.data.behavior_opinions.map(
+                (item: { grade: number; content: string }) => ({
+                  grade: item.grade,
+                  content: item.content || '',
+                })
+              )
+            );
+          }
 
           setIsDirty(true);
           toast.success('성적을 확인하고 저장 버튼을 눌러주세요.');
@@ -611,6 +641,8 @@ export const useUserLifeRecord = ({
               achievementRatioC: subject.achievementRatioC,
               note: subject.note || '',
             })),
+          creativeActivities,
+          behaviorOpinions,
         },
       });
 
