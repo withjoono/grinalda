@@ -160,7 +160,7 @@ export const useUserLifeRecord = ({
 
   const onClickParseSchoolRecord = useCallback(
     async (file: File) => {
-      if (!schoolRecord || isUploading || !subjectNameToIdMapper) return;
+      if (isUploading || !subjectNameToIdMapper) return;
 
       try {
         setIsUploading(true);
