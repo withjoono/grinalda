@@ -444,6 +444,52 @@ export const useUserLifeRecord = ({
           setSubjects(subjectData);
           setSelectSubjects(selectSubjectData);
 
+          // 세특 (detail_specialties) → subject.note 에 매핑
+          if (res.data?.detail_specialties && res.data.detail_specialties.length > 0) {
+            const ds = res.data.detail_specialties;
+            // subjectData의 note에 세특 content 매핑
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const updatedSubjects: any = { ...subjectData };
+            for (const gradeKey of [1, 2, 3] as const) {
+              if (updatedSubjects[gradeKey]) {
+                updatedSubjects[gradeKey] = updatedSubjects[gradeKey].map(
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (sub: any) => {
+                    const match = ds.find(
+                      (d) =>
+                        d.grade === sub.grade &&
+                        d.semester === sub.semester &&
+                        d.subject_name.trim() === sub.subjectName.trim()
+                    );
+                    return match ? { ...sub, note: match.content } : sub;
+                  }
+                );
+              }
+            }
+            setSubjects(updatedSubjects);
+
+            // selectSubjectData에도 매핑
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const updatedSelectSubjects: any = { ...selectSubjectData };
+            for (const gradeKey of [1, 2, 3] as const) {
+              if (updatedSelectSubjects[gradeKey]) {
+                updatedSelectSubjects[gradeKey] = updatedSelectSubjects[gradeKey].map(
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (sub: any) => {
+                    const match = ds.find(
+                      (d) =>
+                        d.grade === sub.grade &&
+                        d.semester === sub.semester &&
+                        d.subject_name.trim() === sub.subjectName.trim()
+                    );
+                    return match ? { ...sub, note: match.content } : sub;
+                  }
+                );
+              }
+            }
+            setSelectSubjects(updatedSelectSubjects);
+          }
+
           // 창체/행특 데이터 저장
           if (res.data?.creative_activities) {
             setCreativeActivities(

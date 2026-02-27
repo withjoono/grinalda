@@ -83,6 +83,12 @@ interface ParsedSchoolRecordData {
     grade: number;
     content: string;
   }[];
+  detail_specialties?: {
+    grade: number;
+    semester: number;
+    subject_name: string;
+    content: string;
+  }[];
 }
 
 export const useParseSchoolRecord = () => {
