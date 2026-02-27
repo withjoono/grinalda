@@ -1,42 +1,43 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { ApiRoutes, AdminApiRoutes, PageRoutes } from './../constants/routes';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { compile } from 'path-to-regexp';
+
+type ExtractRouteStrings<T> = T extends string
+  ? T
+  : T extends object
+    ? ExtractRouteStrings<T[keyof T]>
+    : never;
+
+export const toUrl = (
+  path:
+    | ExtractRouteStrings<typeof AdminApiRoutes>
+    | ExtractRouteStrings<typeof ApiRoutes>
+    | ExtractRouteStrings<typeof PageRoutes>,
+  params?: object
+) => {
+  return compile(path, { encode: encodeURIComponent })(params);
+};
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function toUrl(path: string, params?: Record<string, string | number>) {
-  if (!params) return path;
-  return Object.entries(params).reduce(
-    (url, [key, value]) => url.replace(`:${key}`, String(value)),
-    path,
-  );
+export function generateAvatarFallback(string: string) {
+  const names = string.split(' ').filter((name: string) => name);
+  const mapped = names.map((name: string) => name.charAt(0).toUpperCase());
+
+  return mapped.join('');
 }
 
-export const getRiskText = (risk: number): string => {
-  switch (risk) {
-    case 10:
-      return "😆 안전(+5단계)";
-    case 9:
-      return "😆 안전(+4단계)";
-    case 8:
-      return "👍 적정(+3단계)";
-    case 7:
-      return "👍 적정(+2단계)";
-    case 6:
-      return "👊 소신(+1단계)";
-    case 5:
-      return "👊 소신(-1단계)";
-    case 4:
-      return "😓 위험(-2단계)";
-    case 3:
-      return "😓 위험(-3단계)";
-    case 2:
-      return "💀 결격(-4단계)";
-    case 1:
-    default:
-      return "💀 결격(-5단계)";
-  }
-};
+export function formatPrice(price: number) {
+  return new Intl.NumberFormat('ko-KR').format(price);
+}
 
-
+export function normalizeSubjectName(name: string) {
+  // 공백, 점, 모든 특수문자 제거 (･ ,· 등)
+  return name
+    .replace(/[^\w\s가-힣]/g, '') // 한글, 영문, 숫자, 공백을 제외한 모든 문자 제거
+    .replace(/\s+/g, ' ') // 연속된 공백을 하나의 공백으로 변경
+    .replace(/[ ]/g, ''); // 공백 제거
+}
