@@ -155,6 +155,11 @@ export const AdminApiRoutes = {
       DELETE: '/inquiries/:id/replies/:replyId',
     },
   },
+  SCHOOL_RECORD: {
+    GET: '/school-records/my',
+    SAVE: '/school-records/save',
+    DELETE: '/school-records/delete',
+  },
 } as const;
 
 export const PageRoutes = {
