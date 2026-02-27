@@ -41,6 +41,7 @@ const sidebarNavItems = [
     children: [
       { title: '세특', href: PageRoutes.APP_SETUK },
       { title: '창체·행특', href: PageRoutes.APP_CREATIVE_ACTIVITY },
+      { title: '출결', href: PageRoutes.APP_ATTENDANCE },
     ],
   },
   {

@@ -174,6 +174,7 @@ export const PageRoutes = {
   APP_SUBJECT_ANALYSIS: '/app/subject-analysis', // 교과분석
   APP_SETUK: '/app/non-subject/setuk', // 비교과분석 - 세특
   APP_CREATIVE_ACTIVITY: '/app/non-subject/creative-activity', // 비교과분석 - 창체·행특
+  APP_ATTENDANCE: '/app/non-subject/attendance', // 비교과분석 - 출결
   APP_EXPLORE: '/app/explore', // 전형탐색
   APP_BOOKMARK: '/app/bookmark', // 모의지원
 
