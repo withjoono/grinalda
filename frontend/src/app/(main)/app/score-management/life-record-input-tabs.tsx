@@ -291,6 +291,8 @@ export const LifeRecordInputTabs = () => {
     );
   }
 
+  const hasData = subjects.length > 0 || selectSubjects.length > 0;
+
   return (
     <div className='pb-20'>
       {isUploading ? (
@@ -310,53 +312,82 @@ export const LifeRecordInputTabs = () => {
         </div>
       ) : null}
 
-      {/* 생기부 PDF 업로드 섹션 */}
-      <section className='mb-6'>
-        <div className='rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6 text-center transition-colors hover:border-primary/50'>
-          <p className='mb-2 text-3xl'>📄</p>
-          <p className='mb-1 text-sm font-medium'>
-            PDF 생기부를 업로드하여 성적을 자동으로 불러옵니다
-          </p>
-          <p className='mb-4 text-xs text-muted-foreground'>
-            업로드 후 아래에서 성적을 확인하고 수정할 수 있습니다
-          </p>
-          <input
-            type='file'
-            accept='.pdf'
-            onChange={onChangeFile}
-            className='hidden'
-            id='file'
-          />
-          <Button
-            type='button'
-            onClick={handleParseSchoolRecord}
-            className='gap-2'
-          >
-            📎 생기부 PDF 업로드
-          </Button>
-        </div>
-      </section>
+      <input
+        type='file'
+        accept='.pdf'
+        onChange={onChangeFile}
+        className='hidden'
+        id='file'
+      />
 
-      {renderGradeButtons}
-      <div className='flex w-full flex-col items-center space-y-2 py-4'>
-        <div className='w-full space-y-4 pt-4'>
-          {renderAttendanceSection}
-          {renderSubjectSection}
-          {renderSelectSubjectSection}
-          <div className='flex justify-end gap-2'>
-            <Button onClick={onClickSaveGrade}>저장하기</Button>
-          </div>
-          <div className='flex flex-col items-end text-sm text-foreground/50'>
-            <p className='text-right text-sm text-red-500'>
-              성적 수정 시 확정된 모의지원 데이터가 초기화됩니다.
+      {/* 생기부 PDF 업로드 섹션 */}
+      {hasData ? (
+        <section className='mb-6'>
+          <div className='rounded-lg border-2 border-solid border-green-500/30 bg-green-50 p-6 text-center dark:bg-green-950/20'>
+            <p className='mb-2 text-3xl'>✅</p>
+            <p className='mb-1 text-sm font-medium text-green-700 dark:text-green-400'>
+              생기부 업로드 완료
             </p>
-            <p>
-              성적 불러오기 후 누락된 과목 및 성적을 수정하고{' '}
-              <b>저장하기 버튼을 눌러주세요</b>
+            <p className='mb-4 text-xs text-muted-foreground'>
+              아래에서 성적을 확인하고 수정한 뒤 저장해주세요
             </p>
+            <Button
+              variant='outline'
+              type='button'
+              onClick={handleParseSchoolRecord}
+              className='gap-2 text-xs'
+              size='sm'
+            >
+              📎 다시 업로드
+            </Button>
           </div>
-        </div>
-      </div>
+        </section>
+      ) : (
+        <section className='mb-6'>
+          <div className='rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6 text-center transition-colors hover:border-primary/50'>
+            <p className='mb-2 text-3xl'>📄</p>
+            <p className='mb-1 text-sm font-medium'>
+              PDF 생기부를 업로드하여 성적을 자동으로 불러옵니다
+            </p>
+            <p className='mb-4 text-xs text-muted-foreground'>
+              업로드 후 아래에서 성적을 확인하고 수정할 수 있습니다
+            </p>
+            <Button
+              type='button'
+              onClick={handleParseSchoolRecord}
+              className='gap-2'
+            >
+              📎 생기부 PDF 업로드
+            </Button>
+          </div>
+        </section>
+      )}
+
+      {/* 데이터가 있을 때만 성적 섹션 표시 */}
+      {hasData && (
+        <>
+          {renderGradeButtons}
+          <div className='flex w-full flex-col items-center space-y-2 py-4'>
+            <div className='w-full space-y-4 pt-4'>
+              {renderAttendanceSection}
+              {renderSubjectSection}
+              {renderSelectSubjectSection}
+              <div className='flex justify-end gap-2'>
+                <Button onClick={onClickSaveGrade}>저장하기</Button>
+              </div>
+              <div className='flex flex-col items-end text-sm text-foreground/50'>
+                <p className='text-right text-sm text-red-500'>
+                  성적 수정 시 확정된 모의지원 데이터가 초기화됩니다.
+                </p>
+                <p>
+                  성적 불러오기 후 누락된 과목 및 성적을 수정하고{' '}
+                  <b>저장하기 버튼을 눌러주세요</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
