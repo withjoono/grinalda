@@ -752,7 +752,7 @@ export const useUserLifeRecord = ({
       console.error('Save error:', error);
       toast.error('성적 저장에 실패했습니다.');
     }
-  }, [isDirty, attendances, selectSubjects, subjects, saveSchoolRecord]);
+  }, [isDirty, attendances, selectSubjects, subjects, saveSchoolRecord, creativeActivities, behaviorOpinions]);
 
   const currentSubjects = useMemo(
     () => subjects[currentGrade] || [],
