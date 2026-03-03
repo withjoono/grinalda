@@ -20,10 +20,6 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { CoreFieldsService } from '../services/core-fields.service';
-import { MajorFieldEntity } from 'src/database/entities/core/major-field.entity';
-import { MidFieldEntity } from 'src/database/entities/core/mid-field.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
-import { GeneralFieldEntity } from 'src/database/entities/core/general-field.entity';
 import {
   CreateGeneralFieldDto,
   CreateMajorFieldDto,

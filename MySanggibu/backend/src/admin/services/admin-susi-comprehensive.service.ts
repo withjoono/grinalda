@@ -1,3 +1,4 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import * as XLSX from 'xlsx';
@@ -9,7 +10,6 @@ import {
   isExcelTime,
 } from 'src/common/utils/excel-utils';
 import { SusiComprehensiveService } from 'src/modules/susi/services/susi-comprehensive.service';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import { AdminSusiComprehensiveResponseDto } from '../dtos/admin-susi-comprehensive-response.dto';
 import { comprehensiveExcelFieldMapping } from '../excel-mapper/comprehensive-excel-field-mapper';
 

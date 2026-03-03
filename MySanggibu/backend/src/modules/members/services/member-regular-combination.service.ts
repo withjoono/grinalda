@@ -1,21 +1,13 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
 import {
   CreateMemberRegularCombinationDto,
   UpdateMemberRegularCombinationDto,
 } from '../dtos/regular-combination.dto';
-import { MemberRegularCombinationEntity } from 'src/database/entities/member/member-regular-combination.entity';
 
 @Injectable()
 export class MemberRegularCombinationService {
-  constructor(
-    @InjectRepository(MemberRegularCombinationEntity)
-    private combinationRepository: Repository<MemberRegularCombinationEntity>,
-    @InjectRepository(RegularAdmissionEntity)
-    private regularAdmissionRepository: Repository<RegularAdmissionEntity>,
-  ) { }
+  constructor(  ) { }
 
   async create(
     memberId: string,

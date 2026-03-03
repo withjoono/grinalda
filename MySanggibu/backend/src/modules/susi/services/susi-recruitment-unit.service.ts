@@ -1,15 +1,10 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { SusiRecruitmentUnitEntity } from 'src/database/entities/susi/susi-recruitment-unit.entity';
 import { RecruitmentUnitQueryDto } from '../dtos/recruitment-unit-query.dto';
 
 @Injectable()
 export class SusiRecruitmentUnitService {
-  constructor(
-    @InjectRepository(SusiRecruitmentUnitEntity)
-    private readonly recruitmentUnitRepository: Repository<SusiRecruitmentUnitEntity>,
-  ) {}
+  constructor(  ) {}
 
   /**
    * 수시 모집단위 목록 조회 (필터링, 페이징)

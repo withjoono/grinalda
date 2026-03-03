@@ -1,9 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
-import { SusiKyokwaRecruitmentEntity } from 'src/database/entities/susi/susi-kyokwa-recruitment.entity';
-import { SusiKyokwaIpkyulEntity } from 'src/database/entities/susi/susi-kyokwa-ipkyul.entity';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 /**
@@ -13,14 +8,7 @@ import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
  */
 @Injectable()
 export class SusiKyokwaService {
-  constructor(
-    @InjectRepository(SuSiSubjectEntity)
-    private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
-    @InjectRepository(SusiKyokwaRecruitmentEntity)
-    private readonly recruitmentRepository: Repository<SusiKyokwaRecruitmentEntity>,
-    @InjectRepository(SusiKyokwaIpkyulEntity)
-    private readonly ipkyulRepository: Repository<SusiKyokwaIpkyulEntity>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  constructor(    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   /**

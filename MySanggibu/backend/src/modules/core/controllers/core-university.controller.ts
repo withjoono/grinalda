@@ -21,7 +21,6 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { CoreUniversityService } from '../services/core-university.service';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateUniversityDto, UpdateUniversityDto } from '../dtos/university.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';

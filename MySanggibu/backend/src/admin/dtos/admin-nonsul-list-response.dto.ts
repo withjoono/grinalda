@@ -1,6 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { NonsulListEntity } from 'src/database/entities/nonsul/nonsul-list.entity';
-import { NonsulLowestGradeListEntity } from 'src/database/entities/nonsul/nonsul-lowest-grade-list.entity';
 
 export class AdminNonsulListResponse {
   @ApiProperty({

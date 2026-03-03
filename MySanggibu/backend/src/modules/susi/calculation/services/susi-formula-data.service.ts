@@ -1,6 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { SusiCalculationFormulaEntity } from '../../../../database/entities/susi/susi-calculation-formula.entity';
 import { CalculationFormula } from '../types';
 
@@ -19,10 +18,7 @@ export class SusiFormulaDataService implements OnModuleInit {
   private dataLoaded = false;
   private loadingPromise: Promise<void> | null = null;
 
-  constructor(
-    @InjectRepository(SusiCalculationFormulaEntity)
-    private readonly formulaRepository: Repository<SusiCalculationFormulaEntity>,
-  ) {}
+  constructor(  ) {}
 
   async onModuleInit(): Promise<void> {
     // 모듈 초기화 시 데이터 프리로드

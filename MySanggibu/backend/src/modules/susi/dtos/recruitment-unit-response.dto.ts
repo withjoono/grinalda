@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SusiRecruitmentUnitEntity } from 'src/database/entities/susi/susi-recruitment-unit.entity';
 
 export class RecruitmentUnitResponseDto {
   @ApiProperty({ description: '복합 ID (예: 26-U001211)' })

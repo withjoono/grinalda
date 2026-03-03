@@ -1,17 +1,9 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { MemberRegularInterestsEntity } from 'src/database/entities/member/member-regular-interests';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
 
 @Injectable()
 export class MemberRegularInterestsService {
-  constructor(
-    @InjectRepository(MemberRegularInterestsEntity)
-    private readonly memberRegularInterestsRepository: Repository<MemberRegularInterestsEntity>,
-    @InjectRepository(RegularAdmissionEntity)
-    private readonly regularAdmissionRepository: Repository<RegularAdmissionEntity>,
-  ) {}
+  constructor(  ) {}
 
   async addInterest(
     memberId: number,

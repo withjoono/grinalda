@@ -1,6 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
 import { SchoolRecordSubjectLearningEntity } from '../../../../database/entities/schoolrecord/schoolrecord-subject-learning.entity';
 import { SusiUserCalculatedScoreEntity } from '../../../../database/entities/susi/susi-user-calculated-score.entity';
 import { SusiUserRecruitmentScoreEntity } from '../../../../database/entities/susi/susi-user-recruitment-score.entity';
@@ -28,16 +27,7 @@ import {
 export class SusiCalculationService {
   private readonly logger = new Logger(SusiCalculationService.name);
 
-  constructor(
-    @InjectRepository(SchoolRecordSubjectLearningEntity)
-    private readonly subjectLearningRepository: Repository<SchoolRecordSubjectLearningEntity>,
-    @InjectRepository(SusiUserCalculatedScoreEntity)
-    private readonly calculatedScoreRepository: Repository<SusiUserCalculatedScoreEntity>,
-    @InjectRepository(SusiUserRecruitmentScoreEntity)
-    private readonly recruitmentScoreRepository: Repository<SusiUserRecruitmentScoreEntity>,
-    @InjectRepository(SuSiSubjectEntity)
-    private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
-    private readonly formulaDataService: SusiFormulaDataService,
+  constructor(    private readonly formulaDataService: SusiFormulaDataService,
     private readonly gradeCalculationService: SusiGradeCalculationService,
   ) { }
 

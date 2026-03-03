@@ -1,19 +1,14 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
-import { Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 
 @Injectable()
 export class AdminSusiPassRecordService {
-  constructor(
-    @InjectRepository(SusiPassRecordEntity)
-    private readonly susiPassRecordRepository: Repository<SusiPassRecordEntity>,
-  ) {}
+  constructor(  ) {}
 
   // 합불 사례 전체조회 (admin)
   async getAdminRankingPassFail(commonSearchQueryDto: CommonSearchQueryDto) {

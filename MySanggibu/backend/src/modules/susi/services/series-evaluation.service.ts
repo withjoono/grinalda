@@ -1,10 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UniversityLevelEntity } from 'src/database/entities/susi/university-level.entity';
-import { SeriesEvaluationCriteriaHumanitiesEntity } from 'src/database/entities/susi/series-evaluation-criteria-humanities.entity';
-import { SeriesEvaluationCriteriaScienceEntity } from 'src/database/entities/susi/series-evaluation-criteria-science.entity';
-import { SusiCategorySubjectNecessityEntity } from 'src/database/entities/susi/susi-category-subject-necessity.entity';
 import {
   CalculateSeriesEvaluationRequestDto,
   CalculateSeriesEvaluationResponseDto,
@@ -15,16 +10,7 @@ import {
 
 @Injectable()
 export class SeriesEvaluationService {
-  constructor(
-    @InjectRepository(UniversityLevelEntity)
-    private readonly universityLevelRepository: Repository<UniversityLevelEntity>,
-    @InjectRepository(SeriesEvaluationCriteriaHumanitiesEntity)
-    private readonly humanitiesCriteriaRepository: Repository<SeriesEvaluationCriteriaHumanitiesEntity>,
-    @InjectRepository(SeriesEvaluationCriteriaScienceEntity)
-    private readonly scienceCriteriaRepository: Repository<SeriesEvaluationCriteriaScienceEntity>,
-    @InjectRepository(SusiCategorySubjectNecessityEntity)
-    private readonly categorySubjectNecessityRepository: Repository<SusiCategorySubjectNecessityEntity>,
-  ) {}
+  constructor(  ) {}
 
   /**
    * 대학명으로 레벨 조회

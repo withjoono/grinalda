@@ -1,8 +1,6 @@
 // core-admission-category.service.ts
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AdmissionCategoryEntity } from 'src/database/entities/core/admission-category.entity';
-import { Repository } from 'typeorm';
 import {
   CreateAdmissionCategoryDto,
   UpdateAdmissionCategoryDto,
@@ -10,10 +8,7 @@ import {
 
 @Injectable()
 export class CoreAdmissionCategoryService {
-  constructor(
-    @InjectRepository(AdmissionCategoryEntity)
-    private admissionCategoryRepository: Repository<AdmissionCategoryEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAll(): Promise<AdmissionCategoryEntity[]> {
     return this.admissionCategoryRepository.find();

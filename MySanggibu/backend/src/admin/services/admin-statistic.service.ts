@@ -1,20 +1,9 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { PayContractEntity } from 'src/database/entities/pay/pay-contract.entity';
 
 @Injectable()
 export class AdminStatisticService {
-  constructor(
-    @InjectRepository(MemberEntity)
-    private readonly memberRepository: Repository<MemberEntity>,
-    @InjectRepository(PayOrderEntity)
-    private readonly payOrderRepository: Repository<PayOrderEntity>,
-    @InjectRepository(PayContractEntity)
-    private readonly payContractRepository: Repository<PayContractEntity>,
-  ) {}
+  constructor(  ) {}
 
   async getRecentSignUps(): Promise<Record<string, number>> {
     const result = await this.memberRepository

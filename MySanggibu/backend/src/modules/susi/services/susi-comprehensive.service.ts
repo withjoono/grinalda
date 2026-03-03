@@ -1,24 +1,15 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, Repository } from 'typeorm';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import { SusiComprehensiveStep1ResponseDto } from '../dtos/susi-comprehensive-step-1.dto';
 import { SusiComprehensiveStep2ResponseDto } from '../dtos/susi-comprehensive-step-2.dto';
 import { SusiComprehensiveStep3ResponseDto } from '../dtos/susi-comprehensive-step-3.dto';
 import { SusiComprehensiveStep4ResponseDto } from '../dtos/susi-comprehensive-step-4.dto';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 
 @Injectable()
 export class SusiComprehensiveService {
-  constructor(
-    @InjectRepository(SusiComprehensiveEntity)
-    private readonly susiComprehensiveRepository: Repository<SusiComprehensiveEntity>,
-    @InjectRepository(SusiPassRecordEntity)
-    private readonly susiPassRecordRepository: Repository<SusiPassRecordEntity>,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(  ) {}
 
   // 수시 교과 목록 전체 조회 (admin)
   async getAllSusiComprehensive(commonSearchQueryDto: CommonSearchQueryDto) {

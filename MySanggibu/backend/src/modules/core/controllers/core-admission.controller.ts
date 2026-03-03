@@ -26,7 +26,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { CoreAdmissionService } from '../services/core-admission.service';
-import { AdmissionEntity } from 'src/database/entities/core/admission.entity';
 import { CreateAdmissionDto, UpdateAdmissionDto } from '../dtos/admission.dto';
 
 @ApiTags('core')

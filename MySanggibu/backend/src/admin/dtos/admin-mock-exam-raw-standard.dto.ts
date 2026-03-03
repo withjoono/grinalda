@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity';
 
 export class AdminMockExamRawToStandardResponseDto {
   @ApiProperty({

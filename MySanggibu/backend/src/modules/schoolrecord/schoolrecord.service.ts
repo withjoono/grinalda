@@ -1,36 +1,11 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SchoolRecordAttendanceDetailEntity } from 'src/database/entities/schoolrecord/schoolrecord-attendance-detail.entity';
-import { SchoolRecordSelectSubjectEntity } from 'src/database/entities/schoolrecord/schoolrecord-select-subject.entity';
-import { SchoolRecordSubjectLearningEntity } from 'src/database/entities/schoolrecord/schoolrecord-subject-learning.entity';
-import { SchoolRecordVolunteerEntity } from 'src/database/entities/schoolrecord/schoolrecord-volunteer.entity';
-import { DataSource, QueryRunner, Repository } from 'typeorm';
-import { SchoolrecordSportsArtEntity } from 'src/database/entities/schoolrecord/schoolrecord-sport-art.entity';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { EditLifeRecordDto } from '../members/dtos/edit-life-record.dto';
 // import { AwsUploadService } from 'src/aws-upload/aws-upload.service';
-import { MemberUploadFileListEntity } from 'src/database/entities/member/member-file';
 
 @Injectable()
 export class SchoolRecordService {
   private readonly logger = new Logger(SchoolRecordService.name);
-  constructor(
-    @InjectRepository(SchoolRecordAttendanceDetailEntity)
-    private attendanceRepository: Repository<SchoolRecordAttendanceDetailEntity>,
-    @InjectRepository(SchoolRecordSelectSubjectEntity)
-    private selectSubjectRepository: Repository<SchoolRecordSelectSubjectEntity>,
-    @InjectRepository(SchoolRecordSubjectLearningEntity)
-    private subjectLearningRepository: Repository<SchoolRecordSubjectLearningEntity>,
-    @InjectRepository(SchoolRecordVolunteerEntity)
-    private volunteerRepository: Repository<SchoolRecordVolunteerEntity>,
-    @InjectRepository(SchoolrecordSportsArtEntity)
-    private sportArtRepository: Repository<SchoolrecordSportsArtEntity>,
-    @InjectRepository(MemberEntity)
-    private memberRepository: Repository<MemberEntity>,
-    @InjectRepository(MemberUploadFileListEntity)
-    private memberUploadFileListRepository: Repository<MemberUploadFileListEntity>,
-    private readonly dataSource: DataSource,
-    // private readonly awsUploadService: AwsUploadService,
+  constructor(    // private readonly awsUploadService: AwsUploadService,
   ) { }
 
   async getMemberUploadFiles(

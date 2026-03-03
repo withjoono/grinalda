@@ -1,19 +1,10 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
-import { PayContractEntity } from 'src/database/entities/pay/pay-contract.entity';
-import { OfficerTicketEntity } from 'src/database/entities/officer-evaluation/officer-ticket.entity';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Injectable()
 export class ContractService {
-  constructor(
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  constructor(    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async handleProductSpecificLogic(

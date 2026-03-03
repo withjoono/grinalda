@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddApplicationRateHistoryTable1767500000000 implements MigrationInterface {
   name = 'AddApplicationRateHistoryTable1767500000000';

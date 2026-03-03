@@ -1,18 +1,13 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
-import { In, Repository } from 'typeorm';
 import { CreateUniversityDto, UpdateUniversityDto } from '../dtos/university.dto';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
 
 @Injectable()
 export class CoreUniversityService {
-  constructor(
-    @InjectRepository(UniversityEntity)
-    private universityRepository: Repository<UniversityEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAll(
     query: PaginationDto,

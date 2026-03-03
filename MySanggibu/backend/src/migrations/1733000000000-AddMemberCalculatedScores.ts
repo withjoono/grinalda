@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 export class AddMemberCalculatedScores1733000000000 implements MigrationInterface {
   name = 'AddMemberCalculatedScores1733000000000';

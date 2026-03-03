@@ -1,6 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StoreService } from './store.service';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('store')

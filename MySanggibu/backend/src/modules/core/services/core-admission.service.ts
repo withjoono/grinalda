@@ -1,29 +1,12 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
-import { AdmissionEntity } from 'src/database/entities/core/admission.entity';
-import { AdmissionMethodEntity } from 'src/database/entities/core/admission-method.entity';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
-import { AdmissionCategoryEntity } from 'src/database/entities/core/admission-category.entity';
-import { AdmissionSubtypeEntity } from 'src/database/entities/core/admission-subtype.entity';
 import { CreateAdmissionDto, UpdateAdmissionDto } from '../dtos/admission.dto';
 
 @Injectable()
 export class CoreAdmissionService {
-  constructor(
-    @InjectRepository(AdmissionEntity)
-    private admissionRepository: Repository<AdmissionEntity>,
-    @InjectRepository(AdmissionMethodEntity)
-    private admissionMethodRepository: Repository<AdmissionMethodEntity>,
-    @InjectRepository(UniversityEntity)
-    private universityRepository: Repository<UniversityEntity>,
-    @InjectRepository(AdmissionCategoryEntity)
-    private admissionCategoryRepository: Repository<AdmissionCategoryEntity>,
-    @InjectRepository(AdmissionSubtypeEntity)
-    private admissionSubtypeRepository: Repository<AdmissionSubtypeEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAllByUniversity(universityId: number): Promise<AdmissionEntity[]> {
     return this.admissionRepository.find({

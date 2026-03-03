@@ -2,7 +2,6 @@ import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { CurrentMemberId } from 'src/auth/decorators/current-member_id.decorator';
 import { OfficerService } from '../services/officer.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { OfficerListEntity } from 'src/database/entities/officer-evaluation/officer-list.entity';
 import { UpdateOfficerProfileResponseDto } from '../dtos/update-officer-profile.dto';
 
 @Controller('officer')

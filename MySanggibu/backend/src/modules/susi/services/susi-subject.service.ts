@@ -1,6 +1,4 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, Repository } from 'typeorm';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import { SusiSubjectStep1ResponseDto } from '../dtos/susi-subject-step-1.dto';
@@ -9,20 +7,12 @@ import { SusiSubjectStep3ResponseDto } from '../dtos/susi-subject-step-3.dto';
 import { SusiSubjectStep4ResponseDto } from '../dtos/susi-subject-step-4.dto';
 import { SusiSubjectStep5ResponseDto } from '../dtos/susi-subject-step-5.dto';
 import { SusiSubjectDetailResponseDto } from '../dtos/susi-subject-detail.dto';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { SusiSubjectGroupData } from '../dtos/susi-subject-group.dto';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 
 @Injectable()
 export class SusiSubjectService {
-  constructor(
-    @InjectRepository(SuSiSubjectEntity)
-    private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
-    @InjectRepository(SusiPassRecordEntity)
-    private readonly susiPassRecordRepository: Repository<SusiPassRecordEntity>,
-    private readonly dataSource: DataSource,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  constructor(    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   // 수시 교과 목록 전체 조회 (admin)

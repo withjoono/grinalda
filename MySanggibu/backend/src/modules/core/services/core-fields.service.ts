@@ -1,10 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { GeneralFieldEntity } from 'src/database/entities/core/general-field.entity';
-import { MajorFieldEntity } from 'src/database/entities/core/major-field.entity';
-import { MidFieldEntity } from 'src/database/entities/core/mid-field.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
-import { DataSource, Repository } from 'typeorm';
 import {
   CreateGeneralFieldDto,
   CreateMajorFieldDto,
@@ -20,17 +15,7 @@ import * as fs from 'fs';
 
 @Injectable()
 export class CoreFieldsService {
-  constructor(
-    @InjectRepository(MajorFieldEntity)
-    private majorFieldRepository: Repository<MajorFieldEntity>,
-    @InjectRepository(MidFieldEntity)
-    private midFieldRepository: Repository<MidFieldEntity>,
-    @InjectRepository(MinorFieldEntity)
-    private minorFieldRepository: Repository<MinorFieldEntity>,
-    @InjectRepository(GeneralFieldEntity)
-    private generalFieldRepository: Repository<GeneralFieldEntity>,
-    @InjectDataSource() private dataSource: DataSource,
-  ) {}
+  constructor(    @InjectDataSource()  ) {}
 
   // MajorField CRUD
   async getAllMajorFields(): Promise<MajorFieldEntity[]> {

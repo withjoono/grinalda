@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddCategoryColumnsToSurvey1738484000000
   implements MigrationInterface

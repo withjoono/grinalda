@@ -1,22 +1,16 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterWithEmailDto } from 'src/auth/dtos/register-with-email.dto';
 import { RegisterWithSocialDto } from 'src/auth/dtos/register-with-social';
 import { SocialUser } from 'src/auth/types/social-user.type';
 import { BcryptService } from 'src/common/bcrypt/bcrypt.service';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
-import { DataSource, Repository } from 'typeorm';
 import { EditProfileDto } from '../dtos/edit-profile.dto';
 
 @Injectable()
 export class MembersService {
   private readonly logger = new Logger(MembersService.name);
 
-  constructor(
-    @InjectRepository(MemberEntity)
-    private membersRepository: Repository<MemberEntity>,
-    private readonly dataSource: DataSource,
-    private bcryptService: BcryptService,
+  constructor(    private bcryptService: BcryptService,
   ) { }
 
   findOneByEmail(email: string): Promise<MemberEntity | null> {

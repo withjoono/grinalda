@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsNumber } from 'class-validator';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 
 export class SusiComprehensiveStep4QueryDto {
   @IsArray()

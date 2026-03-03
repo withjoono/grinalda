@@ -1,23 +1,9 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AdmissionEntity } from 'src/database/entities/core/admission.entity';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
-import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class ExploreSearchService {
-  constructor(
-    @InjectRepository(UniversityEntity)
-    private universityRepository: Repository<UniversityEntity>,
-    @InjectRepository(AdmissionEntity)
-    private admissionRepository: Repository<AdmissionEntity>,
-    @InjectRepository(RecruitmentUnitEntity)
-    private recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-    @InjectRepository(RegularAdmissionEntity)
-    private readonly regularAdmissionRepository: Repository<RegularAdmissionEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findUniversityByName(name: string) {
     return this.universityRepository.find({

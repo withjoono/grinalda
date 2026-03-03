@@ -1,4 +1,3 @@
-import { OfficerEvaluationEntity } from 'src/database/entities/officer-evaluation/officer-evaluation.entity';
 
 export interface GetOfficerEvaluationsResponseDto {
   id: OfficerEvaluationEntity['id'];

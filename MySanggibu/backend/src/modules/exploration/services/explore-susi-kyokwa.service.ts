@@ -1,9 +1,6 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Inject, NotFoundException, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-import { SusiKyokwaRecruitmentEntity } from 'src/database/entities/susi/susi-kyokwa-recruitment.entity';
-import { SusiKyokwaIpkyulEntity } from 'src/database/entities/susi/susi-kyokwa-ipkyul.entity';
 
 /**
  * 수시 교과전형 탐색 서비스
@@ -15,12 +12,7 @@ import { SusiKyokwaIpkyulEntity } from 'src/database/entities/susi/susi-kyokwa-i
 export class ExploreSusiKyokwaService {
   private readonly logger = new Logger(ExploreSusiKyokwaService.name);
 
-  constructor(
-    @InjectRepository(SusiKyokwaRecruitmentEntity)
-    private readonly susiKyokwaRecruitmentRepository: Repository<SusiKyokwaRecruitmentEntity>,
-    @InjectRepository(SusiKyokwaIpkyulEntity)
-    private readonly susiKyokwaIpkyulRepository: Repository<SusiKyokwaIpkyulEntity>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  constructor(    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) { }
 
   /**

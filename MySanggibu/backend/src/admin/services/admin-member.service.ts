@@ -1,17 +1,12 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import { AdminMemberResponseDto } from '../dtos/admin-member-repsonse.dto';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 
 @Injectable()
 export class AdminMemberService {
-  constructor(
-    @InjectRepository(MemberEntity)
-    private readonly memberRepository: Repository<MemberEntity>,
-  ) {}
+  constructor(  ) {}
 
   async getAllMembers(commonSearchQueryDto: CommonSearchQueryDto): Promise<AdminMemberResponseDto> {
     const param = CommonSearchUtils.convertRequestDtoToMapForSearch(

@@ -19,7 +19,6 @@ import {
   SusiSubjectStep5ResponseDto,
 } from '../dtos/susi-subject-step-5.dto';
 import { SusiSubjectDetailResponseDto } from '../dtos/susi-subject-detail.dto';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('[유저] 수시 교과 Step 1 ~ 5')

@@ -1,10 +1,3 @@
-import { SubjectCodeListEntity } from 'src/database/entities/common-code/subject-code-list-entity';
-import { AdmissionSubtypeEntity } from 'src/database/entities/core/admission-subtype.entity';
-import { AdmissionSubtypeCategoryEntity } from 'src/database/entities/core/admission-subtype-category.entity';
-import { GeneralFieldEntity } from 'src/database/entities/core/general-field.entity';
-import { MajorFieldEntity } from 'src/database/entities/core/major-field.entity';
-import { MidFieldEntity } from 'src/database/entities/core/mid-field.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
 
 export class StaticDataDto {
   subjectCodes: SubjectCodeListEntity[]; // 교과 코드

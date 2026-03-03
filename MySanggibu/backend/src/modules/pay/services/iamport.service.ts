@@ -2,10 +2,6 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, catchError } from 'rxjs';
 import { AxiosError } from 'axios';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { DataSource, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PayCancelLogEntity } from 'src/database/entities/pay/pay-cancel-log.entity';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'src/config/config.type';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -14,12 +10,9 @@ import { Logger } from 'winston';
 @Injectable()
 export class IamPortService {
   constructor(
+    private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService<AllConfigType>,
-    @InjectRepository(PayCancelLogEntity)
-    private readonly payCancelLogRepository: Repository<PayCancelLogEntity>,
-    private readonly dataSource: DataSource,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly configService: ConfigService<AllConfigType>,    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   // [포트원] 엑세스 토큰 가져오기

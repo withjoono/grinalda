@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
 
 export class AdminMemberResponseDto {
   @ApiProperty({

@@ -17,7 +17,6 @@ import {
   CreateMemberRegularCombinationDto,
   UpdateMemberRegularCombinationDto,
 } from '../dtos/regular-combination.dto';
-import { MemberRegularCombinationEntity } from 'src/database/entities/member/member-regular-combination.entity';
 
 @ApiTags('members')
 @Controller('members/:memberId/regular-combinations')

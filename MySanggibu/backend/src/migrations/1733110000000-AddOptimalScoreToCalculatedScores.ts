@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddOptimalScoreToCalculatedScores1733110000000 implements MigrationInterface {
   name = 'AddOptimalScoreToCalculatedScores1733110000000';

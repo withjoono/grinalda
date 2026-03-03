@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddPreviousResultColumns1765003406925 implements MigrationInterface {
   name = 'AddPreviousResultColumns1765003406925';

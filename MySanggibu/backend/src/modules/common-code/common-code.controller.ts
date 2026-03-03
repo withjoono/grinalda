@@ -5,7 +5,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { SubjectCodesService } from './services/subject-code.service';
-import { SubjectCodeListEntity } from 'src/database/entities/common-code/subject-code-list-entity';
 
 @Controller('common')
 export class CommonCodeController {

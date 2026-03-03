@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 export class AddSusiCalculationTables1768000000000 implements MigrationInterface {
   name = 'AddSusiCalculationTables1768000000000';

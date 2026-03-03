@@ -1,44 +1,12 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Inject } from '@nestjs/common';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { StaticDataDto } from './static-data.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SubjectCodeListEntity } from 'src/database/entities/common-code/subject-code-list-entity';
-import { Repository } from 'typeorm';
-import { GeneralFieldEntity } from 'src/database/entities/core/general-field.entity';
-import { MajorFieldEntity } from 'src/database/entities/core/major-field.entity';
-import { MidFieldEntity } from 'src/database/entities/core/mid-field.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
-import { AdmissionSubtypeEntity } from 'src/database/entities/core/admission-subtype.entity';
-import { AdmissionSubtypeCategoryEntity } from 'src/database/entities/core/admission-subtype-category.entity';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
-import { AdmissionEntity } from 'src/database/entities/core/admission.entity';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
 
 @Injectable()
 export class StaticDataService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    @InjectRepository(SubjectCodeListEntity)
-    private subjectCodeRepository: Repository<SubjectCodeListEntity>,
-    @InjectRepository(GeneralFieldEntity)
-    private generalFieldRepository: Repository<GeneralFieldEntity>,
-    @InjectRepository(MajorFieldEntity)
-    private majorFieldRepository: Repository<MajorFieldEntity>,
-    @InjectRepository(MidFieldEntity)
-    private midFieldRepository: Repository<MidFieldEntity>,
-    @InjectRepository(MinorFieldEntity)
-    private minorFieldRepository: Repository<MinorFieldEntity>,
-    @InjectRepository(AdmissionSubtypeEntity)
-    private admissionSubtypeRepository: Repository<AdmissionSubtypeEntity>,
-    @InjectRepository(AdmissionSubtypeCategoryEntity)
-    private admissionSubtypeCategoryRepository: Repository<AdmissionSubtypeCategoryEntity>,
-    @InjectRepository(UniversityEntity)
-    private universityRepository: Repository<UniversityEntity>,
-    @InjectRepository(AdmissionEntity)
-    private admissionRepository: Repository<AdmissionEntity>,
-    @InjectRepository(RecruitmentUnitEntity)
-    private recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-  ) { }
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,  ) { }
 
   async getStaticData(): Promise<StaticDataDto> {
     // Temporarily disable cache to get fresh data from database

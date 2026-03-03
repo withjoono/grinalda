@@ -24,7 +24,6 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
 import {
   CreateRegularAdmissionDto,
   UpdateRegularAdmissionDto,

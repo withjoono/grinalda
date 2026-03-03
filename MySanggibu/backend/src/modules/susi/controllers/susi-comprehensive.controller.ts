@@ -17,12 +17,10 @@ import {
   SusiComprehensiveStep3QueryDto,
   SusiComprehensiveStep3ResponseDto,
 } from '../dtos/susi-comprehensive-step-3.dto';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import {
   SusiComprehensiveStep4QueryDto,
   SusiComprehensiveStep4ResponseDto,
 } from '../dtos/susi-comprehensive-step-4.dto';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 
 @ApiTags('ms')
 @Controller('ms/comprehensive')

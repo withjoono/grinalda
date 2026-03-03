@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /**
  * Add Update Timestamp Triggers Migration

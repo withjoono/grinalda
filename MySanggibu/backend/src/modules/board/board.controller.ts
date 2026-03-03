@@ -1,10 +1,8 @@
 import { Controller, Get, Post, Body, Param, Patch, Query, Delete } from '@nestjs/common';
 import { BoardService } from './board.service';
-import { PostEntity } from 'src/database/entities/boards/post.entity';
 import { CreatePostDto } from './dtos/post.dto';
 import { CurrentMemberId } from 'src/auth/decorators/current-member_id.decorator';
 import { CreateCommentDto } from './dtos/comment.dto';
-import { CommentEntity } from 'src/database/entities/boards/comment.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Public } from 'src/auth/decorators/public.decorator';
 

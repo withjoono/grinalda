@@ -1,9 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, In } from 'typeorm';
-import { SusiJonghapIpkyulEntity } from 'src/database/entities/susi/susi-jonghap-ipkyul.entity';
-import { SusiJonghapRecruitmentEntity } from 'src/database/entities/susi/susi-jonghap-recruitment.entity';
-import { SusiJonghapSpecialEntity } from 'src/database/entities/susi/susi-jonghap-special.entity';
 
 /**
  * 2027학년도 수시 종합전형 서비스
@@ -13,14 +9,7 @@ import { SusiJonghapSpecialEntity } from 'src/database/entities/susi/susi-jongha
  */
 @Injectable()
 export class SusiJonghap2027Service {
-  constructor(
-    @InjectRepository(SusiJonghapIpkyulEntity)
-    private readonly ipkyulRepository: Repository<SusiJonghapIpkyulEntity>,
-    @InjectRepository(SusiJonghapRecruitmentEntity)
-    private readonly recruitmentRepository: Repository<SusiJonghapRecruitmentEntity>,
-    @InjectRepository(SusiJonghapSpecialEntity)
-    private readonly specialRepository: Repository<SusiJonghapSpecialEntity>,
-  ) {}
+  constructor(  ) {}
 
   // ========== 입시결과 (Ipkyul) ==========
 

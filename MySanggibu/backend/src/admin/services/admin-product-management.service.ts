@@ -1,26 +1,11 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, DataSource, In } from 'typeorm';
-import { PayProductEntity } from 'src/database/entities/pay/pay-product.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
-import { PayServiceProductEntity } from 'src/database/entities/pay/pay-service-product.entity';
-import { PayCouponEntity } from 'src/database/entities/pay/pay-coupon.entity';
 import { AdminSearchDto, CreateServiceDto } from '../dtos/admin-product.dto';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos/admin-coupon.dto';
 
 @Injectable()
 export class AdminProductManagementService {
-  constructor(
-    @InjectRepository(PayProductEntity)
-    private readonly productRepository: Repository<PayProductEntity>,
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    @InjectRepository(PayServiceProductEntity)
-    private readonly serviceProductRepository: Repository<PayServiceProductEntity>,
-    @InjectRepository(PayCouponEntity)
-    private readonly couponRepository: Repository<PayCouponEntity>,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(  ) {}
 
   // ==================== 상품 (Product) ====================
 

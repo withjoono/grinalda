@@ -1,15 +1,10 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
 import { AdminPayOrderResponseDto, AdminPayOrderSearchQueryDto } from '../dtos/admin-pay-order.dto';
 
 @Injectable()
 export class AdminPaymentService {
-  constructor(
-    @InjectRepository(PayOrderEntity)
-    private readonly payOrderRepository: Repository<PayOrderEntity>,
-  ) {}
+  constructor(  ) {}
 
   // 모든 주문 조회(admin)
   async getAllOrders(

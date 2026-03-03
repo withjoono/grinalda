@@ -1,17 +1,11 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
-import { SubjectCodeListEntity } from 'src/database/entities/common-code/subject-code-list-entity';
 
 @Injectable()
 export class SubjectCodesService {
-  constructor(
-    @InjectRepository(SubjectCodeListEntity)
-    private readonly subjectCodeRepository: Repository<SubjectCodeListEntity>,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(  ) {}
 
   async findAll(): Promise<SubjectCodeListEntity[]> {
     return await this.subjectCodeRepository.find();

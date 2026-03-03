@@ -1,24 +1,13 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BoardEntity } from 'src/database/entities/boards/board.entity';
-import { PostEntity } from 'src/database/entities/boards/post.entity';
-import { Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/post.dto';
 import { MembersService } from '../members/services/members.service';
-import { CommentEntity } from 'src/database/entities/boards/comment.entity';
 import { CreateCommentDto } from './dtos/comment.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(BoardEntity)
-    private boardRepository: Repository<BoardEntity>,
-    @InjectRepository(PostEntity)
-    private postRepository: Repository<PostEntity>,
-    @InjectRepository(CommentEntity)
-    private commentRepository: Repository<CommentEntity>,
-
     private readonly membersService: MembersService,
   ) {}
 

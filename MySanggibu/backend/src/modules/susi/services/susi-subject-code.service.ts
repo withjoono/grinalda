@@ -1,16 +1,12 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
-import { SusiSubjectCodeEntity } from 'src/database/entities/susi/susi-subject-code.entity';
 
 /**
  * 2015 개정 교육과정 교과/과목 코드 서비스
  */
 @Injectable()
 export class SusiSubjectCodeService {
-  constructor(
-    @InjectRepository(SusiSubjectCodeEntity)
-    private readonly repository: Repository<SusiSubjectCodeEntity>,
+  constructor(    private readonly repository: Repository<SusiSubjectCodeEntity>,
   ) {}
 
   /**

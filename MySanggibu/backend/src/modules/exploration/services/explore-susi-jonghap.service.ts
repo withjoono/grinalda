@@ -1,11 +1,6 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Inject, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
-import { SusiJonghapRecruitmentEntity } from 'src/database/entities/susi/susi-jonghap-recruitment.entity';
-import { SusiJonghapIpkyulEntity } from 'src/database/entities/susi/susi-jonghap-ipkyul.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
 
 /**
  * 수시 종합전형 탐색 서비스
@@ -17,16 +12,7 @@ import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity'
 export class ExploreSusiJonghapService {
   private readonly logger = new Logger(ExploreSusiJonghapService.name);
 
-  constructor(
-    @InjectRepository(RecruitmentUnitEntity)
-    private readonly recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-    @InjectRepository(SusiJonghapRecruitmentEntity)
-    private readonly susiJonghapRecruitmentRepository: Repository<SusiJonghapRecruitmentEntity>,
-    @InjectRepository(SusiJonghapIpkyulEntity)
-    private readonly susiJonghapIpkyulRepository: Repository<SusiJonghapIpkyulEntity>,
-    @InjectRepository(MinorFieldEntity)
-    private readonly minorFieldRepository: Repository<MinorFieldEntity>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  constructor(    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) { }
 
   /**

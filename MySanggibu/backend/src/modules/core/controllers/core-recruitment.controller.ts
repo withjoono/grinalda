@@ -23,7 +23,6 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { CoreRecruitmentUnitService } from '../services/core-recruitment.service';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
 import { CreateRecruitmentUnitDto, UpdateRecruitmentUnitDto } from '../dtos/recruitment.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';

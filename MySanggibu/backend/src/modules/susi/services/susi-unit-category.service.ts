@@ -1,14 +1,9 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { SusiUnitCategoryEntity } from 'src/database/entities/susi/susi-unit-category.entity';
 
 @Injectable()
 export class SusiUnitCategoryService {
-  constructor(
-    @InjectRepository(SusiUnitCategoryEntity)
-    private readonly unitCategoryRepository: Repository<SusiUnitCategoryEntity>,
-  ) {}
+  constructor(  ) {}
 
   /**
    * ID로 모집단위 계열 조회

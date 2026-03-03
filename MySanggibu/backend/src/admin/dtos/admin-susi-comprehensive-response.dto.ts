@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 
 export class AdminSusiComprehensiveResponseDto {
   @ApiProperty({

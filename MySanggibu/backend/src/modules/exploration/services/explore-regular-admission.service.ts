@@ -1,8 +1,6 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Inject } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
 
 @Injectable()
 export class ExploreRegularService {
@@ -17,10 +15,7 @@ export class ExploreRegularService {
   // 유효한 admission_type 목록 (가, 나, 다, 군외)
   private readonly VALID_ADMISSION_TYPES = ['가', '나', '다', '군외'];
 
-  constructor(
-    @InjectRepository(RegularAdmissionEntity)
-    private readonly regularAdmissionRepository: Repository<RegularAdmissionEntity>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  constructor(    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   /**

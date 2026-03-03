@@ -1,7 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { SusiCategorySubjectNecessityEntity } from 'src/database/entities/susi/susi-category-subject-necessity.entity';
 
 /**
  * 과목 이름 → 과목 코드 매핑
@@ -54,9 +52,7 @@ export interface ICompatibilityData {
 
 @Injectable()
 export class SusiCategorySubjectNecessityService {
-  constructor(
-    @InjectRepository(SusiCategorySubjectNecessityEntity)
-    private readonly repository: Repository<SusiCategorySubjectNecessityEntity>,
+  constructor(    private readonly repository: Repository<SusiCategorySubjectNecessityEntity>,
   ) {}
 
   /**

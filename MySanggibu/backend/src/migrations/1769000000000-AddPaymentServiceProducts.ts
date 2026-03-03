@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddPaymentServiceProducts1769000000000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

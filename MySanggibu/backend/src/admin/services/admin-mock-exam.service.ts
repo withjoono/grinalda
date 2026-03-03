@@ -1,9 +1,7 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
-import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity';
 import { getSubjectCode } from '../excel-mapper/subject-code-mapper';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
@@ -11,10 +9,7 @@ import { AdminMockExamRawToStandardResponseDto } from '../dtos/admin-mock-exam-r
 
 @Injectable()
 export class AdminMockExamService {
-  constructor(
-    @InjectRepository(MockexamRawToStandardEntity)
-    private readonly mockexamRawToStandardRepository: Repository<MockexamRawToStandardEntity>,
-  ) {}
+  constructor(  ) {}
 
   // 원점수 변환표 조회 (admin)
   async getAdminMockExamRawToStandards(

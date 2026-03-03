@@ -1,19 +1,11 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, GoneException, Inject } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PayCouponEntity } from 'src/database/entities/pay/pay-coupon.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Injectable()
 export class CouponService {
-  constructor(
-    @InjectRepository(PayCouponEntity)
-    private readonly payCouponRepository: Repository<PayCouponEntity>,
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  constructor(    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async validCoupon({

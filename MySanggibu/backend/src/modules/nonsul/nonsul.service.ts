@@ -1,20 +1,12 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { NonsulListEntity } from 'src/database/entities/nonsul/nonsul-list.entity';
-import { NonsulLowestGradeListEntity } from 'src/database/entities/nonsul/nonsul-lowest-grade-list.entity';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import { AdminNonsulListResponse } from 'src/admin/dtos/admin-nonsul-list-response.dto';
 
 @Injectable()
 export class NonsulService {
-  constructor(
-    @InjectRepository(NonsulListEntity)
-    private readonly nonsulListRepository: Repository<NonsulListEntity>,
-    @InjectRepository(NonsulLowestGradeListEntity)
-    private readonly nonsulLowestGradeListRepository: Repository<NonsulLowestGradeListEntity>,
-  ) {}
+  constructor(  ) {}
 
   async getNonsulListWithLowestGrade(
     commonSearchQueryDto: CommonSearchQueryDto,

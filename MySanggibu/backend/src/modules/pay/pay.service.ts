@@ -6,10 +6,6 @@ import {
   Inject,
   forwardRef,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, Not } from 'typeorm';
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
 import * as crypto from 'crypto';
 import { CouponService } from './services/coupon.service';
 import { ContractService } from './services/contract.service';
@@ -20,13 +16,7 @@ import { MembersService } from '../members/services/members.service';
 
 @Injectable()
 export class PaymentService {
-  constructor(
-    @InjectRepository(PayOrderEntity)
-    private readonly payOrderRepository: Repository<PayOrderEntity>,
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    private readonly dataSource: DataSource,
-    private readonly couponService: CouponService,
+  constructor(    private readonly couponService: CouponService,
     private readonly contractService: ContractService,
     private readonly iamPortService: IamPortService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,

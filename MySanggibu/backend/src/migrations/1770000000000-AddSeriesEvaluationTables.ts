@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddSeriesEvaluationTables1770000000000
   implements MigrationInterface

@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { SusiUnitCategoryService } from '../services/susi-unit-category.service';
-import { SusiUnitCategoryEntity } from 'src/database/entities/susi/susi-unit-category.entity';
 import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('[유저] 수시 모집단위 계열 분류')

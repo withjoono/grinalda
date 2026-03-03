@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { HttpModule } from '@nestjs/axios';
@@ -8,7 +7,7 @@ import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { PrismaModule } from './database/prisma.module';
 import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { HubAuthGuard } from './guards/hub-auth.guard';
@@ -26,7 +25,7 @@ import { AdminModule } from './admin/admin.module';
 import { NonsulModule } from './modules/nonsul/nonsul.module';
 import { SusiModule } from './modules/susi/susi.module';
 import { CommonCodeModule } from './modules/common-code/common-code.module';
-import { DataSource, DataSourceOptions } from 'typeorm';
+
 import { CommonModule } from './common/common.module';
 import { EncryptionModule } from './common/encryption/encryption.module';
 import { SchoolRecordModule } from './modules/schoolrecord/schoolrecord.module';
@@ -70,14 +69,7 @@ import { WinstonModule } from 'nest-winston';
       ],
       envFilePath: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env.development',
     }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-      dataSourceFactory: async (options: DataSourceOptions) => {
-        const dataSource = new DataSource(options);
-        await dataSource.initialize();
-        return dataSource;
-      },
-    }),
+    PrismaModule,
     WinstonModule.forRoot(winstonConfig),
     HttpModule.register({
       timeout: 5000,

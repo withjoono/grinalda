@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 
 // 관심대학 관련 데이터 조회
 export class InterestSusiSubjectResponse {

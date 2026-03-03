@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { SusiCalculationController } from './susi-calculation.controller';
 import { SusiCalculationService } from './services/susi-calculation.service';
 import { SusiFormulaDataService } from './services/susi-formula-data.service';
@@ -14,13 +13,6 @@ import { CommonModule } from '../../../common/common.module';
 @Module({
   imports: [
     CommonModule,
-    TypeOrmModule.forFeature([
-      SchoolRecordSubjectLearningEntity,
-      SusiCalculationFormulaEntity,
-      SusiUserCalculatedScoreEntity,
-      SusiUserRecruitmentScoreEntity,
-      SuSiSubjectEntity,
-    ]),
   ],
   controllers: [SusiCalculationController],
   providers: [

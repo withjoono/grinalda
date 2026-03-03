@@ -1,9 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, In } from 'typeorm';
-import { SusiKyokwaCutEntity } from 'src/database/entities/susi/susi-kyokwa-cut.entity';
-import { SusiKyokwaRecruitmentEntity } from 'src/database/entities/susi/susi-kyokwa-recruitment.entity';
-import { SusiKyokwaSpecialEntity } from 'src/database/entities/susi/susi-kyokwa-special.entity';
 
 /**
  * 2027학년도 수시 교과전형 서비스
@@ -13,14 +9,7 @@ import { SusiKyokwaSpecialEntity } from 'src/database/entities/susi/susi-kyokwa-
  */
 @Injectable()
 export class SusiKyokwa2027Service {
-  constructor(
-    @InjectRepository(SusiKyokwaCutEntity)
-    private readonly cutRepository: Repository<SusiKyokwaCutEntity>,
-    @InjectRepository(SusiKyokwaRecruitmentEntity)
-    private readonly recruitmentRepository: Repository<SusiKyokwaRecruitmentEntity>,
-    @InjectRepository(SusiKyokwaSpecialEntity)
-    private readonly specialRepository: Repository<SusiKyokwaSpecialEntity>,
-  ) {}
+  constructor(  ) {}
 
   // ========== 입시결과 (Cut) ==========
 

@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SusiPassRecordEntity } from 'src/database/entities/susi/susi-pass-record.entity';
 
 export class AdminSusiPassRecordResponseDto {
   @ApiProperty({

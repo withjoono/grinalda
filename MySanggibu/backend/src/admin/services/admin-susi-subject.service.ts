@@ -1,3 +1,4 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';
 import * as XLSX from 'xlsx';
@@ -9,7 +10,6 @@ import {
   isExcelDate,
   isExcelTime,
 } from 'src/common/utils/excel-utils';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 import { SusiSubjectService } from 'src/modules/susi/services/susi-subject.service';
 import { subjectExcelFieldMapping } from '../excel-mapper/subject-excel-field-mapper';
 

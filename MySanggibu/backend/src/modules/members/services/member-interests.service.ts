@@ -1,25 +1,11 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MemberInterestsEntity } from 'src/database/entities/member/member-interests';
-import { In, Repository } from 'typeorm';
 import { InterestSusiSubjectResponse } from '../dtos/interest-susi-subject-response';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 import { InterestSusiComprehensiveResponse } from '../dtos/interest-susi-comprehensive-response';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
 
 @Injectable()
 export class MemberInterestsService {
-  constructor(
-    @InjectRepository(MemberInterestsEntity)
-    private readonly memberInterestsRepository: Repository<MemberInterestsEntity>,
-    @InjectRepository(SuSiSubjectEntity)
-    private readonly susiSubjectRepository: Repository<SuSiSubjectEntity>,
-    @InjectRepository(SusiComprehensiveEntity)
-    private readonly susiComprehensiveRepository: Repository<SusiComprehensiveEntity>,
-    @InjectRepository(RecruitmentUnitEntity)
-    private readonly recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-  ) { }
+  constructor(  ) { }
 
   async addInterest(
     memberId: number,

@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Delete, Body, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CoreAdmissionCategoryService } from '../services/core-admission-category.service';
-import { AdmissionCategoryEntity } from 'src/database/entities/core/admission-category.entity';
 import {
   CreateAdmissionCategoryDto,
   UpdateAdmissionCategoryDto,

@@ -1,26 +1,15 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
-import { RegularAdmissionEntity } from 'src/database/entities/core/regular-admission.entity';
-import { UniversityEntity } from 'src/database/entities/core/university.entity';
 import {
   CreateRegularAdmissionDto,
   UpdateRegularAdmissionDto,
 } from '../dtos/regular-admission.dto';
-import { RegularAdmissionPreviousResultEntity } from 'src/database/entities/core/regular-admission-previous-result.entity';
 
 @Injectable()
 export class CoreRegularAdmissionService {
-  constructor(
-    @InjectRepository(RegularAdmissionEntity)
-    private regularAdmissionRepository: Repository<RegularAdmissionEntity>,
-    @InjectRepository(RegularAdmissionPreviousResultEntity)
-    private regularAdmissionPreviousResultRepository: Repository<RegularAdmissionPreviousResultEntity>,
-    @InjectRepository(UniversityEntity)
-    private universityRepository: Repository<UniversityEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAll(): Promise<RegularAdmissionEntity[]> {
     return this.regularAdmissionRepository.find({

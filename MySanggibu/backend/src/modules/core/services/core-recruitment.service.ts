@@ -1,40 +1,13 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
 import { CreateRecruitmentUnitDto, UpdateRecruitmentUnitDto } from '../dtos/recruitment.dto';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
-import { RecruitmentUnitScoreEntity } from 'src/database/entities/core/recruitment-unit-score.entity';
-import { AdmissionEntity } from 'src/database/entities/core/admission.entity';
-import { GeneralFieldEntity } from 'src/database/entities/core/general-field.entity';
-import { MinorFieldEntity } from 'src/database/entities/core/minor-field.entity';
-import { RecruitmentUnitPreviousResultEntity } from 'src/database/entities/core/recruitment-unit-previous-result.entity';
-import { RecruitmentUnitInterviewEntity } from 'src/database/entities/core/recruitment-unit-interview.entity';
-import { RecruitmentUnitMinimumGradeEntity } from 'src/database/entities/core/recruitment-unit-minimum_grade.entity';
 import { parseFloatWithPrecision } from 'src/common/utils/excel-utils';
-import { RecruitmentUnitPassFailRecordsEntity } from 'src/database/entities/core/recruitment-unit-pass-fail-record.entity';
 
 @Injectable()
 export class CoreRecruitmentUnitService {
-  constructor(
-    @InjectRepository(RecruitmentUnitEntity)
-    private recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-    @InjectRepository(RecruitmentUnitPreviousResultEntity)
-    private recruitmentUnitPreviousResultRepository: Repository<RecruitmentUnitPreviousResultEntity>,
-    @InjectRepository(RecruitmentUnitScoreEntity)
-    private recruitmentUnitScoreRepository: Repository<RecruitmentUnitScoreEntity>,
-    @InjectRepository(RecruitmentUnitInterviewEntity)
-    private recruitmentUnitInterviewRepository: Repository<RecruitmentUnitInterviewEntity>,
-    @InjectRepository(RecruitmentUnitMinimumGradeEntity)
-    private recruitmentUnitMinimumRepository: Repository<RecruitmentUnitMinimumGradeEntity>,
-    @InjectRepository(AdmissionEntity)
-    private admissionRepository: Repository<AdmissionEntity>,
-    @InjectRepository(GeneralFieldEntity)
-    private generalFieldRepository: Repository<GeneralFieldEntity>,
-    @InjectRepository(MinorFieldEntity)
-    private minorFieldRepository: Repository<MinorFieldEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAllByAdmission(admissionId: number): Promise<RecruitmentUnitEntity[]> {
     return this.recruitmentUnitRepository.find({

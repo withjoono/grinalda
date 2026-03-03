@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsNumber } from 'class-validator';
-import { SusiComprehensiveEntity } from 'src/database/entities/susi/susi-comprehensive.entity';
 
 export class SusiComprehensiveStep2QueryDto {
   @IsArray()

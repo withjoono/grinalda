@@ -1,4 +1,3 @@
-import { OfficerListEntity } from 'src/database/entities/officer-evaluation/officer-list.entity';
 
 export class GetOfficerListResponseDto {
   officer_id: OfficerListEntity['member_id'];

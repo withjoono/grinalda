@@ -1,8 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { RecruitmentUnitEntity } from 'src/database/entities/core/recruitment-unit.entity';
-import { MemberRecruitmentUnitCombinationEntity } from 'src/database/entities/member/member-recruitment-unit-combination.entity';
-import { In, Repository } from 'typeorm';
 import {
   CreateMemberRecruitmentUnitCombinationDto,
   UpdateMemberRecruitmentUnitCombinationDto,
@@ -10,12 +7,7 @@ import {
 
 @Injectable()
 export class MemberRecruitmentUnitCombinationService {
-  constructor(
-    @InjectRepository(MemberRecruitmentUnitCombinationEntity)
-    private combinationRepository: Repository<MemberRecruitmentUnitCombinationEntity>,
-    @InjectRepository(RecruitmentUnitEntity)
-    private recruitmentUnitRepository: Repository<RecruitmentUnitEntity>,
-  ) { }
+  constructor(  ) { }
 
   async create(
     memberId: string,

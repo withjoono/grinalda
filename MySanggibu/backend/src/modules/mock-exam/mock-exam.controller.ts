@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { MockExamService } from './mock-exam.service';
-import { MockexamRawScoreEntity } from 'src/database/entities/mock-exam/mockexam-raw-score.entity';
 import {
   CreateMockExamRawScoreDto,
   CreateMockExamStandardScoreDto,

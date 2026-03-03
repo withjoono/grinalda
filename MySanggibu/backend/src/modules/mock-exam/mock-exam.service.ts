@@ -1,20 +1,14 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MockexamRawScoreEntity } from 'src/database/entities/mock-exam/mockexam-raw-score.entity';
-import { MockexamScheduleEntity } from 'src/database/entities/mock-exam/mockexam-schedule.entity';
-import { MockexamScoreEntity } from 'src/database/entities/mock-exam/mockexam-score.entity';
-import { Repository } from 'typeorm';
 import {
   CreateMockExamRawScoreDto,
   CreateMockExamStandardScoreDto,
 } from './dtos/create-mockexam-score.dto';
-import { MockexamRawToStandardEntity } from 'src/database/entities/mock-exam/mockexam-raw-to-standard.entity';
 import {
   GetMockExamStandardScoreDto,
   GetMockExamStandardScoresResponseDto,
   GRADE_BASED_SUBJECTS,
 } from './dtos/get-mockexam-standard-score.dto';
-import { MockexamStandardScoreEntity } from 'src/database/entities/mock-exam/mockexam-standard-score.entity';
 
 
 // 과목코드 → 과목 카테고리 매핑
@@ -32,19 +26,7 @@ const SUBJECT_CATEGORY_MAP: Record<string, string> = {
 
 @Injectable()
 export class MockExamService {
-  constructor(
-    @InjectRepository(MockexamRawScoreEntity)
-    private mockexamRawScoreRepository: Repository<MockexamRawScoreEntity>,
-    @InjectRepository(MockexamScoreEntity)
-    private mockexamScoreRepository: Repository<MockexamScoreEntity>,
-    @InjectRepository(MockexamScheduleEntity)
-    private mockexamScheduleRepository: Repository<MockexamScheduleEntity>,
-
-    @InjectRepository(MockexamRawToStandardEntity)
-    private mockexamRawToStandardRepository: Repository<MockexamRawToStandardEntity>,
-    @InjectRepository(MockexamStandardScoreEntity)
-    private mockexamStandardRepository: Repository<MockexamStandardScoreEntity>,
-  ) { }
+  constructor(  ) { }
 
   // 모의고사 원점수 목록 조회
   async getMockexamRawScoresByMemberId(memberId: string | number): Promise<MockexamRawScoreEntity[]> {

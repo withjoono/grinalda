@@ -1,15 +1,9 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
-import { Repository, DataSource } from 'typeorm';
 
 @Injectable()
 export class StoreService {
-  constructor(
-    @InjectRepository(PayServiceEntity)
-    private readonly payServiceRepository: Repository<PayServiceEntity>,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(  ) {}
 
   async findAll(): Promise<PayServiceEntity[]> {
     return await this.payServiceRepository.find();

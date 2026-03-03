@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateSusiRecruitmentUnitsTable1737250000000 implements MigrationInterface {
   name = 'CreateSusiRecruitmentUnitsTable1737250000000';

@@ -34,7 +34,6 @@ import { VerifyCodeDto } from './dtos/verify-code.dto';
 import { RegisterWithEmailDto } from './dtos/register-with-email.dto';
 import { RegisterWithSocialDto } from './dtos/register-with-social';
 import { CurrentMemberId } from './decorators/current-member_id.decorator';
-import { MemberEntity } from 'src/database/entities/member/member.entity';
 import { CookieService } from './services/cookie.service';
 import { OAuthClientService } from './services/oauth-client.service';
 import { Inject, OnModuleInit } from '@nestjs/common';
@@ -48,6 +47,7 @@ export class AuthController implements OnModuleInit {
   private memoryStore: Map<string, { value: string; expiry: number }> = new Map();
 
   constructor(
+    private readonly prisma: PrismaService,
     private readonly service: AuthService,
     private readonly smsService: SmsService,
     private readonly membersService: MembersService,

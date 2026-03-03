@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsNumber } from 'class-validator';
-import { SuSiSubjectEntity } from 'src/database/entities/susi/susi-subject.entity';
 
 export class SusiSubjectStep4QueryDto {
   @IsArray()

@@ -1,5 +1,3 @@
-import { PayOrderEntity } from 'src/database/entities/pay/pay-order.entity';
-import { PayServiceEntity } from 'src/database/entities/pay/pay-service.entity';
 
 export class PayHistoryDto {
   id: PayOrderEntity['id'];

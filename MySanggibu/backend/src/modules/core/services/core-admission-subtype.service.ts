@@ -1,7 +1,5 @@
+import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AdmissionSubtypeEntity } from 'src/database/entities/core/admission-subtype.entity';
-import { Repository } from 'typeorm';
 import {
   CreateAdmissionSubtypeDto,
   UpdateAdmissionSubtypeDto,
@@ -9,10 +7,7 @@ import {
 
 @Injectable()
 export class CoreAdmissionSubtypeService {
-  constructor(
-    @InjectRepository(AdmissionSubtypeEntity)
-    private admissionSubtypeRepository: Repository<AdmissionSubtypeEntity>,
-  ) {}
+  constructor(  ) {}
 
   async findAll(): Promise<AdmissionSubtypeEntity[]> {
     return this.admissionSubtypeRepository.find({

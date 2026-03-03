@@ -1,4 +1,3 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateSusiCategorySubjectNecessityTable1737270000000
   implements MigrationInterface
