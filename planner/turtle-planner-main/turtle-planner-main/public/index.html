@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>플래너 앱</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .planner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .planner h1 {
+            text-align: center;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .task input[type="text"] {
+            width: 80%;
+            padding: 5px;
+        }
+        .task button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="planner">
+        <h1>플래너</h1>
+        <div class="task">
+            <input type="text" placeholder="할 일을 입력하세요">
+            <button>추가</button>
+        </div>
+        <ul id="taskList">
+            <!-- 할 일 목록이 여기에 추가됩니다 -->
+        </ul>
+    </div>
+    <script>
+        const taskInput = document.querySelector('.task input');
+        const taskList = document.getElementById('taskList');
+        const addButton = document.querySelector('.task button');
+
+        addButton.addEventListener('click', () => {
+            const taskText = taskInput.value.trim();
+            if (taskText !== '') {
+                const li = document.createElement('li');
+                li.textContent = taskText;
+                taskList.appendChild(li);
+                taskInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html> 

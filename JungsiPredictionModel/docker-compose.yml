@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 데이터베이스
+  db:
+    image: postgres:15-alpine
+    container_name: jungsi_db
+    environment:
+      POSTGRES_USER: ${DB_USER:-jungsi}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-jungsi_password}
+      POSTGRES_DB: ${DB_NAME:-jungsi_prediction}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-jungsi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis 캐시 (선택사항)
+  redis:
+    image: redis:7-alpine
+    container_name: jungsi_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # API 서버
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jungsi_api
+    environment:
+      - ENV=production
+      - DEBUG=false
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER:-jungsi}:${DB_PASSWORD:-jungsi_password}@db:5432/${DB_NAME:-jungsi_prediction}
+      - REDIS_URL=redis://redis:6379
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID:-}
+      - GCP_LOCATION=${GCP_LOCATION:-us-central1}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-}
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+    restart: unless-stopped
+
+  # 크롤러 스케줄러 (선택사항)
+  crawler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jungsi_crawler
+    command: ["python", "main.py", "crawl"]
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER:-jungsi}:${DB_PASSWORD:-jungsi_password}@db:5432/${DB_NAME:-jungsi_prediction}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - crawler
+    restart: "no"
+
+  # RAG 인덱서 (선택사항)
+  indexer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jungsi_indexer
+    command: ["python", "main.py", "index"]
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER:-jungsi}:${DB_PASSWORD:-jungsi_password}@db:5432/${DB_NAME:-jungsi_prediction}
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID:-}
+      - GCP_LOCATION=${GCP_LOCATION:-us-central1}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - indexer
+    restart: "no"
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: jungsi_network

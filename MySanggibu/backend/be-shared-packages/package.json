@@ -2,7 +2,7 @@
   "name": "geobuk-shared",
   "version": "1.0.0",
   "private": true,
-  "description": "거북스쿨 마이크로서비스 공유 패키지",
+  "description": "G Skool 마이크로서비스 공유 패키지",
   "workspaces": [
     "packages/*"
   ],

@@ -1,0 +1,27 @@
+{
+  "name": "거북스쿨",
+  "short_name": "거북스쿨",
+  "icons": [
+    {
+      "src": "https://img.ingipsy.com/manifest/pwa-logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.ingipsy.com/manifest/pwa-logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.ingipsy.com/manifest/pwa-logo-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "description": "거북스쿨을 홈 화면에 추가합니다.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

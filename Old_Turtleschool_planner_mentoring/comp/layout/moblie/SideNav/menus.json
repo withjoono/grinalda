@@ -1,0 +1,255 @@
+{
+    "quick": {
+        "title": "퀵메뉴",
+        "menu": [
+            {
+                "title": "정시 컨설팅",
+                "sub": [
+                    {
+                        "title": "성적 입력",
+                        "uri": "/regular/scoreInput",
+                        "status": true
+                    },
+                    {
+                        "title": "성적 분석",
+                        "uri": "/regular/analyse",
+                        "status": true
+                    },
+                    {
+                        "title": "가군 컨설팅",
+                        "uri": "/regular/firstConsulting",
+                        "status": true
+                    },
+                    {
+                        "title": "나군 컨설팅",
+                        "uri": "/regular/secondConsulting",
+                        "status": true
+                    },
+                    {
+                        "title": "다군 컨설팅",
+                        "uri": "/regular/thirdConsulting",
+                        "status": true
+                    },
+                    {
+                        "title": "모의지원",
+                        "uri": "/regular/mockApply",
+                        "status": true
+                    }
+                ]
+            }
+        ]
+    },
+    "planner": {
+        "title": "플래너/멘토링",
+        "menu": [
+            {
+                "title": "플래너/멘토링",
+                "sub": [
+                    {
+                        "title": "학습계획 / 수업계획",
+                        "uri": ""
+                    },
+                    {
+                        "title": "학습현황 / 수업현황",
+                        "uri": ""
+                    },
+                    {
+                        "title": "멘토 관리반",
+                        "uri": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "grademanage": {
+        "title": "성적관리",
+        "menu": [
+            {
+                "title": "내신 성적관리",
+                "sub": [
+                    {
+                        "title": "성적 입력",
+                        "uri": "/gpa/infoform"
+                    },
+                    {
+                        "title": "교과 분석",
+                        "uri": "/gpa/mygrade"
+                    },
+                    {
+                        "title": "비교과 분석",
+                        "uri": "/gpa/graph"
+                    },
+                    {
+                        "title": "학종 컨설팅",
+                        "uri": ""
+                    },
+                    {
+                        "title": "교과 컨설팅",
+                        "uri": ""
+                    },
+                    {
+                        "title": "논술 컨설팅",
+                        "uri": ""
+                    },
+                    {
+                        "title": "목표대학",
+                        "uri": ""
+                    }
+                ]
+            },
+            {
+                "title": "모의 성적관리",
+                "sub": [
+                    {
+                        "title": "채점하기 / 점수입력",
+                        "uri": ""
+                    },
+                    {
+                        "title": "성적 분석 / 변동 추이",
+                        "uri": ""
+                    },
+                    {
+                        "title": "오답 / 최약 분석",
+                        "uri": ""
+                    },
+                    {
+                        "title": "대학 예측 및 검색",
+                        "uri": ""
+                    },
+                    {
+                        "title": "목표 대학",
+                        "uri": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "prediction": {
+        "title": "수시/정시 컨설팅",
+        "menu": [
+            {
+                "title": "수시 컨설팅",
+                "sub": [
+                    {
+                        "title": "성적 입력",
+                        "uri": "/early/input"
+                    },
+                    {
+                        "title": "교과 분석",
+                        "uri": "/early/analysis"
+                    },
+                    {
+                        "title": "비교과 분석",
+                        "uri": ""
+                    },
+                    {
+                        "title": "학종 컨설팅",
+                        "uri": ""
+                    },
+                    {
+                        "title": "교과 컨설팅",
+                        "uri": ""
+                    },
+                    {
+                        "title": "논술 컨설팅",
+                        "uri": "/nonsul/lib",
+                        "status": true
+                    },
+                    {
+                        "title": "수시전략과 모의지원",
+                        "uri": ""
+                    }
+                ]
+            },
+            {
+                "title": "정시 컨설팅",
+                "sub": [
+                    {
+                        "title": "성적 입력",
+                        "uri": "/regular/scoreInput",
+                        "status": true
+                    },
+                    {
+                        "title": "성적 분석",
+                        "uri": "/regular/analyse",
+                        "status": true
+                    },
+                    {
+                        "title": "가군 컨설팅",
+                        "uri": "/regular/firstConsulting",
+                        "status": true
+                    },
+                    {
+                        "title": "나군 컨설팅",
+                        "uri": "/regular/secondConsulting",
+                        "status": true
+                    },
+                    {
+                        "title": "다군 컨설팅",
+                        "uri": "/regular/thirdConsulting",
+                        "status": true
+                    }
+                ]
+            }
+        ]
+    },
+    "myclass": {
+        "title": "마이클래스",
+        "menu": [
+            {
+                "title": "마이클래스",
+                "sub": [
+                    {
+                        "title": "플래너 관리반",
+                        "uri": "/myclass/planner"
+                    },
+                    {
+                        "title": "생기부 관리반",
+                        "uri": ""
+                    },
+                    {
+                        "title": "클리너 관리반",
+                        "uri": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "butler": {
+        "title": "입시버틀러",
+        "menu": [
+            {
+                "title": "입시버틀러"
+            }
+        ]
+    },
+    "mypage": {
+        "title": "마이페이지",
+        "menu": [
+            {
+                "title": "마이페이지",
+                "sub": [
+                    {
+                        "title": "내 정보",
+                        "uri": "/setting/Setting",
+                        "status": true
+                    },
+                    {
+                        "title": "계정 연동 관리",
+                        "uri": "/linkage",
+                        "status": true
+                    },
+                    {
+                        "title": "멘토, 멘티 수락/신청",
+                        "uri": "/linkage",
+                        "status": true
+                    },
+                    {
+                        "title": "나의 이용권",
+                        "uri": ""
+                    }
+                ]
+            }
+        ]
+    }
+}

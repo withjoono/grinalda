@@ -1,0 +1,13 @@
+.admin {
+	background-color: #EEFBFF;
+    min-height: 100vh;
+    height: 100%;
+	padding: 80px 0;
+    width: 90%;
+    margin: auto;
+	display: flex;
+	flex-direction: column;
+}
+.admin input{
+	
+}

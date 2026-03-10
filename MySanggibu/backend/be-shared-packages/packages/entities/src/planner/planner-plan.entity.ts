@@ -6,13 +6,13 @@ import {
   Index,
 } from 'typeorm';
 import { BaseEntity } from '../common/base.entity';
-import { MemberEntity } from '../member/member.entity';
+import { SpMemberEntity } from '../member/sp-member.entity';
 import { PlanType } from '@geobuk/shared-types';
 
 /**
  * 플래너 장기계획 엔티티
  */
-@Entity('planner_plan_tb')
+@Entity('sp_plan')
 @Index(['memberId'])
 export class PlannerPlanEntity extends BaseEntity {
   @Column({ name: 'member_id', type: 'bigint' })
@@ -65,9 +65,9 @@ export class PlannerPlanEntity extends BaseEntity {
   isItemDone: boolean;
 
   // 관계
-  @ManyToOne(() => MemberEntity, { onDelete: 'CASCADE' })
+  @ManyToOne(() => SpMemberEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'member_id' })
-  member: MemberEntity;
+  member: SpMemberEntity;
 
   /**
    * 진행률 계산 (0-100)
@@ -77,3 +77,4 @@ export class PlannerPlanEntity extends BaseEntity {
     return Math.min(Math.round((this.done / this.total) * 100), 100);
   }
 }
+

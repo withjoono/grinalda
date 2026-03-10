@@ -7,13 +7,13 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MemberEntity } from '../member/member.entity';
+import { SpMemberEntity } from '../member/sp-member.entity';
 import { PlannerClassEntity } from './planner-class.entity';
 
 /**
  * 플래너 학생관리 엔티티 (멘토-학생 연결)
  */
-@Entity('planner_management_tb')
+@Entity('sp_management')
 @Index(['classId', 'studentId'], { unique: true })
 @Index(['studentId'])
 export class PlannerManagementEntity {
@@ -34,7 +34,7 @@ export class PlannerManagementEntity {
   @JoinColumn({ name: 'class_id' })
   class: PlannerClassEntity;
 
-  @ManyToOne(() => MemberEntity, { onDelete: 'CASCADE' })
+  @ManyToOne(() => SpMemberEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'student_id' })
-  student: MemberEntity;
+  student: SpMemberEntity;
 }

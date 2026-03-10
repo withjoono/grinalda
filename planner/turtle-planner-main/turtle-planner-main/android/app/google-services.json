@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "123649812074",
+    "project_id": "turtle-planner",
+    "storage_bucket": "turtle-planner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123649812074:android:ccb16f8a4bd1f552534c13",
+        "android_client_info": {
+          "package_name": "com.turtleskool.turtle_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123649812074-6c6lra1m6bouac57sikated6s120ec61.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turtleskool.turtle_planner",
+            "certificate_hash": "424c418a2aa5b074c7b22736db02c3ad1d3321aa"
+          }
+        },
+        {
+          "client_id": "123649812074-g3gmc92snta1ll3sgmpmn3jvl4vim4tu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbPCyA8Ei_Y2aTFv-nWX_LFyb_zzAYLCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123649812074-g3gmc92snta1ll3sgmpmn3jvl4vim4tu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "123649812074-7rn6601vrignsmvme3u96uts72ecm6it.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.turtleskool.turtlePlanner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

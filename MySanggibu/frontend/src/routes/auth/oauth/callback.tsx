@@ -34,7 +34,7 @@ function OAuthCallback() {
     // Zustand 스토어에 토큰 저장 (localStorage에 자동 persist)
     setTokens(accessToken, refreshToken, parseInt(tokenExpiry, 10));
 
-    toast.success('환영합니다. 거북스쿨 수시입니다. 😄');
+    toast.success('환영합니다. T Skool 수시입니다. 😄');
 
     // 메인 페이지로 리다이렉트
     navigate({ to: '/' });

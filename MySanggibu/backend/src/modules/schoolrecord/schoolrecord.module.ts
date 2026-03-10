@@ -7,17 +7,20 @@ import { AiAnalysisService } from './ai-analysis.service';
 import { AiAnalysisController } from './ai-analysis.controller';
 import { AiBuildService } from './ai-build.service';
 import { AiBuildController } from './ai-build.controller';
+import { SemesterEvalService } from './semester-eval.service';
+import { SemesterEvalController } from './semester-eval.controller';
 
 @Module({
   imports: [
   ],
-  controllers: [SchoolRecordController, AiAnalysisController, AiBuildController],
+  controllers: [SchoolRecordController, AiAnalysisController, AiBuildController, SemesterEvalController],
   providers: [
     SchoolRecordService,
     SchoolRecordHtmlParserService,
     AiPdfParserService,
     AiAnalysisService,
     AiBuildService,
+    SemesterEvalService,
   ],
   exports: [
     SchoolRecordService,
@@ -25,6 +28,8 @@ import { AiBuildController } from './ai-build.controller';
     AiPdfParserService,
     AiAnalysisService,
     AiBuildService,
+    SemesterEvalService,
   ],
 })
 export class SchoolRecordModule { }
+

@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Models (학습된 모델은 대용량)
+models/*.pkl
+models/*.joblib
+models/*.bin
+models/**/*.pkl
+models/**/*.joblib
+
+# Data (크롤링 데이터)
+data/*.json
+data/*.csv
+data/*.parquet
+data/cache/
+
+# Test
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# MyPy
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Google Cloud
+*.json
+!package.json
+credentials/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Alembic
+alembic/versions/*.pyc

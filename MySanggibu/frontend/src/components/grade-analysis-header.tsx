@@ -102,7 +102,7 @@ export const GradeAnalysisHeader = () => {
                 성적 분석
               </span>
               <span className="text-[10px] text-rose-600 lg:text-xs">
-                거북스쿨
+                T Skool
               </span>
             </div>
           </Link>
@@ -132,7 +132,7 @@ export const GradeAnalysisHeader = () => {
                     />
                     <div className="flex flex-col items-start">
                       <span className="text-base font-bold">성적 분석</span>
-                      <span className="text-xs text-rose-600">거북스쿨</span>
+                      <span className="text-xs text-rose-600">T Skool</span>
                     </div>
                   </SheetTitle>
                 </SheetHeader>

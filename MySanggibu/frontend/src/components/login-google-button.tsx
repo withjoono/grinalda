@@ -10,6 +10,7 @@ import { socialLoginFetch } from "@/stores/server/features/auth/apis";
 import { auth, provider } from "@/lib/utils/firebase/firebase";
 import { USER_API } from "@/stores/server/features/me/apis";
 import { setTokens } from "@/lib/api/token-manager";
+import { env } from "@/lib/config/env";
 
 interface Props {
   isPending?: boolean;
@@ -31,11 +32,12 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
       const idToken = await result.user.getIdToken();
 
       // 3. Firebase 토큰으로 백엔드 로그인
-      const response = await fetch('/api-hub/auth/firebase/login', {
+      const response = await fetch(`${env.apiUrlHub}/auth/firebase/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ idToken }),
       });
 
@@ -54,7 +56,7 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         toast.warning("🎓 회원가입이 필요합니다.\n추가 정보를 입력해주세요.", {
           duration: 6000,
         });
-        window.location.href = "http://localhost:3000/auth/register";
+        window.location.href = `${env.hubUrl}/auth/register`;
         return;
       }
 
@@ -66,11 +68,11 @@ export const GoogleLoginButton = ({ isPending, buttonText = "구글 로그인" }
         // 토큰을 localStorage에 저장 (쿠키는 포트 간 공유 안 됨)
         setTokens(loginData.data.accessToken, loginData.data.refreshToken);
 
-        toast.success("환영합니다. 거북스쿨입니다. 😄");
+        toast.success("환영합니다. T Skool입니다. 😄");
         await user.refetch();
 
         // Hub 메인으로 이동
-        window.location.href = "http://localhost:3000";
+        window.location.href = env.hubUrl;
       } else {
         toast.error(loginData.message || "로그인에 실패했습니다.");
       }

@@ -132,7 +132,7 @@ export const Header = () => {
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-3">
                     <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
-                    <div className="text-base font-medium text-primary lg:text-lg">거북스쿨</div>
+                    <div className="text-base font-medium text-primary lg:text-lg">T Skool</div>
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-4 flex flex-col items-start justify-center gap-4">

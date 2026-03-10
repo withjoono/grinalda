@@ -1,0 +1,46 @@
+.Setting_page {
+    background-color: #ffffff;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.Setting_content {
+    width: 90%;
+    margin: auto;
+}
+
+.Setting_section {
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 24px;
+    margin: 24px 0;
+}
+
+.Setting_section_title {
+    font-weight: bold;
+    color: #fede01;
+}
+
+.Setting_section_content {
+    font-size: 0.8em;
+}
+
+.Setting_content_name {
+    margin: 12px 0;
+}
+
+.Setting_content_version {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Setting_section_flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Setting_content_name_additional {
+    border-top: 1px solid lightgrey;
+    font-size: 0.8em;
+    color: grey;
+} 

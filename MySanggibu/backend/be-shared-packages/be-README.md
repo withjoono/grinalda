@@ -1,6 +1,6 @@
-# 거북스쿨 공유 패키지 (Geobuk Shared Packages)
+# T Skool 공유 패키지 (Geobuk Shared Packages)
 
-거북스쿨 마이크로서비스 아키텍처를 위한 공유 패키지 모노레포입니다.
+T Skool 마이크로서비스 아키텍처를 위한 공유 패키지 모노레포입니다.
 
 ## 📦 패키지 목록
 

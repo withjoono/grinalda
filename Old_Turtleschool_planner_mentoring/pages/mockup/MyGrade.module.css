@@ -1,0 +1,153 @@
+.MyGrade_prediction_page{
+    background-color: #ffffff;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.MyGrade_prediction_detail {
+    width: 90%;
+    margin: auto;
+    padding: 20px 0;
+}
+
+.MyGrade_section {
+    margin: 6px 0;
+}
+
+.MyGrade_link_title{
+    color: #fede01;
+    font-weight: bold;
+}
+
+.MyGrade_grade_table{
+    margin: 4px 0;
+    padding: 0;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.MyGrade_grade_table div {
+	display: flex;
+	flex-direction: column;
+}
+.MyGrade_grade_table div div {
+	flex-direction: row;
+	justify-content: space-between;
+	border: 1px solid #e9e9e9;
+	border-radius: 8px;
+	padding: 2em;
+	padding-bottom: 0.8em;
+	padding-top: 0.8em;
+	font-size: 12px;
+	color: #555555;
+	margin-bottom: 12px;
+}
+
+
+.MyGrade_grade_table table {
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.MyGrade_grade_table table tbody tr{
+    border-bottom: 1px solid #C2BEBE;
+    font-size: 12px;
+    text-align: center;
+}
+
+.MyGrade_grade_table table tbody tr:last-child{
+    border-bottom: 0
+}
+
+.MyGrade_grade_table table tbody tr td{
+    padding: 6px;
+}
+
+.MyGrade_sort_tap {
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.MyGrade_sort_tap select {
+    width: 100%;
+    text-align-last: center;
+    background-color: #ffffff;
+    padding: 4px;
+}
+
+.MyGrade_btn_tab {
+    width: 100%;
+    height: 24px;
+}
+
+.MyGrade_complete_btn{
+    float: right;
+    border: 0;
+    border-radius: 10px;
+    padding: 4px 12px;
+    background-color: #fede01;
+    color: white;
+    font-size: 12px;
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, .2);
+}
+
+.MyGrade_buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+	margin: auto;
+}
+
+.MyGrade_buttons > button {
+	height: 30px;
+	width: 72px;
+	margin: 6px;
+	background-color: #fefefe;
+	color:#2d2d2d;
+	border: 1px solid #eeeeee;
+	border-radius: 4px;
+	box-shadow: 0px 2px 0px 0 rgba(0, 0, 0, 0.1);
+}
+
+.MyGrade_select_box {
+    display: flex;
+}
+
+.MyGrade_select_box input {
+    padding: 6px;
+}
+
+.MyGrade_select_region {
+    width: 40%;
+    margin-right: 5%;
+}
+
+.MyGrade_select_sort {
+    width: 25%;
+    margin-right: 5%;
+}
+
+.MyGrade_select_apply_type {
+    width: 25%;
+}
+
+.MyGrade_select_region select, .MyGrade_select_sort select, .MyGrade_select_apply_type select {
+    width: 100%;
+    padding: 6px;
+}
+
+.MyGrade_search_btn {
+    margin: 24px 0;
+    text-align: center;
+}
+
+.MyGrade_search_btn button {
+    width: 20%;
+    background-color: #ffffff;
+    border: 1px solid #505050;
+    border-radius: 6px;
+    padding: 4px;
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, .2);
+}

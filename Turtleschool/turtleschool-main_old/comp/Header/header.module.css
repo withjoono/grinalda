@@ -1,0 +1,256 @@
+.header {
+  position: fixed;
+  height: 7.8rem;
+  z-index: 10;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.content {
+  height: 100%;
+  border-bottom: 1px #d9d9d9 solid;
+}
+.content > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+}
+.content > div:first-child {
+  width: 100%;
+  height: 3.2rem;
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.manager {
+  background-color: #ed936f;
+  border: 1px solid #fcbf77;
+  color: white;
+  height: 1.8rem;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-right: -2rem;
+}
+.flex > * {
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 1rem;
+  font-weight: 800;
+  align-items: center;
+  width: 64rem;
+  z-index: 10;
+}
+.inputForm {
+  width: 24rem;
+}
+
+.position {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+}
+.backer {
+  height: 0;
+  position: absolute;
+  visibility: hidden;
+}
+.backerOn {
+  position: absolute;
+  width: 100%;
+  height: 22.5rem;
+  top: 4.6rem;
+  background-color: #ffffff;
+  padding: 2.2rem 0px;
+}
+.center_align {
+  width: 64rem;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+}
+.goin {
+  transform: translateY(0px);
+  transition: transform 0.3s ease-out;
+}
+
+.goaway {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+}
+
+.backer_container {
+  width: 46.8rem;
+  margin: 2rem auto;
+}
+
+.backer_horizontal {
+  display: flex;
+  align-items: stretch;
+  min-height: 3rem;
+  flex-wrap: wrap;
+}
+
+.backer_cell {
+  width: 30%;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  min-height: 3rem;
+  cursor: pointer;
+  justify-content: space-around;
+  font-weight: bold;
+}
+.backer_cell:hover {
+  color: red;
+}
+
+.backer_vertical {
+  width: 22%;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  font-weight: bold;
+}
+
+.backer_vertical_cell {
+  width: 100%;
+  padding: 1rem 0 2rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-around;
+}
+
+.backer_vertical_cell:hover {
+  color: red;
+}
+
+.backer_cell:first-child .backer_vertical:first-child {
+  padding-left: 0;
+}
+
+.backer_cell:last-child .backer_vertical:last-child {
+  padding-right: 0;
+  border: 0;
+}
+
+.backer_ttl {
+  line-height: 1.75rem;
+  font-size: 1.2rem;
+  color: #08aca5;
+  margin-bottom: 2rem;
+}
+
+.menu_active {
+  color: #de6b3d;
+  border-radius: 0.3rem;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 2.4rem;
+}
+
+.menu_container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10rem;
+  transition: 300ms ease-in-out;
+}
+
+.menu_title {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.4rem;
+  white-space: nowrap;
+}
+
+/* 서브 메뉴 파란 줄 */
+.menu_line {
+  width: 1.75rem;
+  height: 0.25rem;
+  /* Sub_Color_02_3D94DE; */
+  margin-top: 0.4rem;
+  background: #3d94de;
+}
+
+.menu_sub_title {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #1c4bc3;
+  line-height: 2.4rem;
+  white-space: nowrap;
+}
+.menu_sub_contents {
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 1.2rem;
+  margin-top: 1.1rem;
+  white-space: nowrap;
+}
+
+.menu_sub_contents:hover {
+  font-weight: bold;
+}
+
+.menu_Box {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: 300ms ease-in-out;
+  z-index: 10;
+}
+
+.subMenu_Box {
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  top: 4.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+  transition: 300ms ease-in-out;
+  font-weight: 500;
+  transform: translateY(-1rem);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.subMenu_Box p:hover {
+  color: orange;
+  transition: 100ms ease-in-out;
+}
+
+.menu_Box:hover > .subMenu_Box {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 300ms ease-in-out;
+  visibility: visible;
+}

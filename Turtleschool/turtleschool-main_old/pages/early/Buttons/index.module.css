@@ -1,0 +1,29 @@
+.buttonBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3rem;
+    padding-bottom: 7rem;
+}
+.buttonBox .button{
+    padding: 1.2em 2.8em;
+    margin: 0 0.5em;
+    font: 600 1rem 'NanumSquare';
+    border-radius: 100px;
+    border-color: #e9e9e9;
+    border-style: hidden;
+    background-color: inherit;
+    transform: skew(-0.1deg);
+    cursor: pointer;
+}
+
+.buttonBox .activeButton {
+    font-weight: bold;
+    background-color: #f2ce77;
+}
+
+.buttonBox .disableButton {
+    background-color: #e9e9e9;
+    color: #9a9a9a;
+}

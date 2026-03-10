@@ -70,7 +70,7 @@ export function ServiceCardsPage() {
       <div className="container mx-auto px-4 pt-16 pb-8">
         <div className="text-center max-w-2xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            거북스쿨에 오신 것을 환영합니다
+            G Skool에 오신 것을 환영합니다
           </h1>
           <p className="text-gray-600 text-lg">
             원하는 서비스를 선택하여 입시 준비를 시작하세요

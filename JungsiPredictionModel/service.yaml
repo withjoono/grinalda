@@ -1,0 +1,98 @@
+# Cloud Run Service Configuration
+# 이 파일로 서비스 설정을 관리합니다
+# 적용: gcloud run services replace service.yaml --region=asia-northeast3
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: jungsi-prediction-api
+  labels:
+    cloud.googleapis.com/location: asia-northeast3
+  annotations:
+    run.googleapis.com/description: "정시 합격 예측 ML 서비스"
+    run.googleapis.com/ingress: all
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        # 오토스케일링 설정
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+
+        # CPU 할당 (요청 처리 시에만)
+        run.googleapis.com/cpu-throttling: "true"
+
+        # 시작 CPU 부스트
+        run.googleapis.com/startup-cpu-boost: "true"
+
+        # Cloud SQL 연결 (필요시 주석 해제)
+        # run.googleapis.com/cloudsql-instances: PROJECT:REGION:INSTANCE
+
+    spec:
+      # 동시성 설정
+      containerConcurrency: 80
+
+      # 타임아웃
+      timeoutSeconds: 300
+
+      # 서비스 계정
+      serviceAccountName: jungsi-prediction-sa
+
+      containers:
+        - name: jungsi-prediction-api
+          # 이미지 (배포 시 자동 업데이트)
+          image: asia-northeast3-docker.pkg.dev/PROJECT_ID/cloud-run/jungsi-prediction-api:latest
+
+          ports:
+            - name: http1
+              containerPort: 8080
+
+          # 리소스 설정
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2Gi
+
+          # 환경변수
+          env:
+            - name: ENV
+              value: "production"
+            - name: DEBUG
+              value: "false"
+            - name: PORT
+              value: "8080"
+            - name: GCP_LOCATION
+              value: "asia-northeast3"
+
+            # Secret Manager에서 가져오기 (필요시 주석 해제)
+            # - name: DATABASE_URL
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: database-url
+            #       key: latest
+
+          # 시작 프로브
+          startupProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 5
+
+          # 활성 프로브
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 10
+
+  # 트래픽 설정
+  traffic:
+    - percent: 100
+      latestRevision: true

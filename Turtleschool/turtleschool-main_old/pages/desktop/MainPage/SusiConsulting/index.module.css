@@ -1,0 +1,70 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3%;
+}
+
+.container {
+  width: 1280px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.textbox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.youtubebox {
+  width: 100%;
+}
+
+.iframeContainer {
+  border: 0.625rem solid;
+}
+
+.title {
+  padding: 5%;
+}
+
+.title p {
+  font-size: 2.7rem;
+  padding-bottom: 1%;
+  font-weight: 900;
+  text-align: left;
+}
+
+.title p span {
+  color: #fb7210;
+}
+.content {
+  padding-top: 5%;
+  padding-bottom: 10%;
+}
+
+.content p {
+  padding: 4%;
+  font-size: 1.25rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 3%;
+  font-weight: 500;
+}
+
+.button a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.35rem;
+}

@@ -1,0 +1,9 @@
+.advice {
+    padding: 0.8em 1.5em;
+    background-color: #ffecbd;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transform: skew(-0.1deg);
+    line-height: 20px;
+    margin: 36px 0px;
+}

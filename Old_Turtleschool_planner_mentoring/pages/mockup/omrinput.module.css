@@ -1,0 +1,47 @@
+.buttons {
+	margin: 1.2em -0.4em 0.8em 0;
+	display: flex;
+	flex-wrap:wrap;
+	align-items: flex-start;
+}
+.buttons > div {
+	border: 0;
+	border-radius: 10px;
+	margin: 0 0.4em 0.4em 0;
+	flex: 1 0 21%;
+	max-width: 25%;
+	text-align:center;
+	padding: 0.4em 0;
+	box-sizing: border-box;
+	box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+	font-size: 0.9em;
+}
+
+.submit {
+	background-color: #fede01;
+	margin: 1em auto;
+	width: 60%;
+	padding: 0.3em;
+	font-size:1.2em;
+	font-weight:bold;
+	color:white;
+	border-radius: 20px;
+	text-align: center;
+}
+
+.ttl {
+	font-size:22px;
+	line-height: 32px;
+}
+.txt {
+	font-size: 18px;
+	line-height: 26px;
+}
+.flex {
+	display: flex;
+}
+
+.active {
+	background-color: #DE6B3D !important;
+	color: white;
+}

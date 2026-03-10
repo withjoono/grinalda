@@ -1,7 +1,7 @@
 {
   "name": "@geobuk/common-utils",
   "version": "1.0.0",
-  "description": "거북스쿨 공통 유틸리티",
+  "description": "G Skool 공통 유틸리티",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

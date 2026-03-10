@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "comp/regular/MockApply/index.js",
+    "src/utils.js",
+    "components/organisms/card/productCard.jsx",
+    "comp/regular/EarlyRegularStrategy/useEarlyRegualrStrategy.js"
+, "pages/api/csat/after_test/insert.js", "pages/api/interestUniv/index.ts"  ],
+  "exclude": ["node_modules"]
+}

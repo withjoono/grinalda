@@ -1,0 +1,33 @@
+{
+  "name": "a0-project",
+  "version": "1.0.0",
+  "license": "0BSD",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx expo start",
+    "android": "npx expo run:android",
+    "ios": "npx expo run:ios",
+    "web": "npx expo start --web",
+    "build:android": "eas build --platform android",
+    "build:ios": "eas build --platform ios",
+    "build:preview": "eas build --platform android --profile preview",
+    "publish": "npx expo publish"
+  },
+  "dependencies": {
+    "expo": "^52.0.46",
+    "react": "18.3.1",
+    "react-native": "0.76.9",
+    "react-dom": "18.3.1",
+    "react-native-web": "~0.19.6",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.11.0",
+    "react-native-safe-area-context": "^4.11.1",
+    "react-native-screens": "^4.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.14",
+    "typescript": "^5.1.3"
+  }
+}

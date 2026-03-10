@@ -1,7 +1,7 @@
 {
   "name": "@geobuk/shared-entities",
   "version": "1.0.0",
-  "description": "거북스쿨 공유 TypeORM 엔티티",
+  "description": "G Skool 공유 TypeORM 엔티티",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

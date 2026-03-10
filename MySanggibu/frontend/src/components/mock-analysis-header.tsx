@@ -102,7 +102,7 @@ export const MockAnalysisHeader = () => {
                 모의고사 분석
               </span>
               <span className="text-[10px] text-indigo-600 lg:text-xs">
-                거북스쿨
+                T Skool
               </span>
             </div>
           </Link>
@@ -132,7 +132,7 @@ export const MockAnalysisHeader = () => {
                     />
                     <div className="flex flex-col items-start">
                       <span className="text-base font-bold">모의고사 분석</span>
-                      <span className="text-xs text-indigo-600">거북스쿨</span>
+                      <span className="text-xs text-indigo-600">T Skool</span>
                     </div>
                   </SheetTitle>
                 </SheetHeader>

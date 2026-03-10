@@ -1,0 +1,21 @@
+.container {
+  height: 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 15px;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  z-index: 10000;
+}
+
+.left_container {
+  width: 24px;
+  height: 24px;
+}
+
+.right_container {
+  width: 24px;
+  height: 24px;
+}

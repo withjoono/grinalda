@@ -166,7 +166,7 @@ export function RegisterWithEmailForm({ className }: Props) {
       if (result.success) {
         // 회원가입 성공 후 me 쿼리 캐시 무효화
         await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
-        toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
+        toast.success("T Skool에 가입해주셔서 감사합니다! 😄");
         navigate({ to: "/" });
       } else {
         toast.error(result.error);

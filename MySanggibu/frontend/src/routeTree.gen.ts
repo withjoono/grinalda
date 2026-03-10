@@ -40,6 +40,9 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthOauthCallbackRouteImport } from './routes/auth/oauth/callback'
 
+const UsersRouteImport = createFileRoute('/users')()
+const OfficerRouteImport = createFileRoute('/officer')()
+const EvaluationRouteImport = createFileRoute('/evaluation')()
 const TryIndexLazyRouteImport = createFileRoute('/try/')()
 const ScoreAnalysisIndexLazyRouteImport = createFileRoute('/score-analysis/')()
 const MsIndexLazyRouteImport = createFileRoute('/ms/')()
@@ -95,6 +98,9 @@ const MsLayoutPerformanceLazyRouteImport = createFileRoute(
   '/ms/_layout/performance',
 )()
 const MsLayoutNonsulLazyRouteImport = createFileRoute('/ms/_layout/nonsul')()
+const MsLayoutMaterialAnalysisLazyRouteImport = createFileRoute(
+  '/ms/_layout/material-analysis',
+)()
 const MsLayoutKyokwaLazyRouteImport = createFileRoute('/ms/_layout/kyokwa')()
 const MsLayoutJonghapLazyRouteImport = createFileRoute('/ms/_layout/jonghap')()
 const MsLayoutInterestLazyRouteImport = createFileRoute(
@@ -102,6 +108,9 @@ const MsLayoutInterestLazyRouteImport = createFileRoute(
 )()
 const MsLayoutEvaluationListLazyRouteImport = createFileRoute(
   '/ms/_layout/evaluation-list',
+)()
+const MsLayoutEvaluationLazyRouteImport = createFileRoute(
+  '/ms/_layout/evaluation',
 )()
 const MsLayoutCreativeActivityLazyRouteImport = createFileRoute(
   '/ms/_layout/creative-activity',
@@ -115,6 +124,7 @@ const MsLayoutCompatibilityLazyRouteImport = createFileRoute(
 const MsLayoutCombinationLazyRouteImport = createFileRoute(
   '/ms/_layout/combination',
 )()
+const MsLayoutBuildLazyRouteImport = createFileRoute('/ms/_layout/build')()
 const MsLayoutAttendanceLazyRouteImport = createFileRoute(
   '/ms/_layout/attendance',
 )()
@@ -182,6 +192,21 @@ const OfficerLayoutApplyEvaluationIdLazyRouteImport = createFileRoute(
   '/officer/_layout/apply/$evaluationId',
 )()
 
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerRoute = OfficerRouteImport.update({
+  id: '/officer',
+  path: '/officer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvaluationRoute = EvaluationRouteImport.update({
+  id: '/evaluation',
+  path: '/evaluation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -262,9 +287,9 @@ const GradeAnalysisIndexLazyRoute = GradeAnalysisIndexLazyRouteImport.update({
   import('./routes/grade-analysis/index.lazy').then((d) => d.Route),
 )
 const EvaluationIndexLazyRoute = EvaluationIndexLazyRouteImport.update({
-  id: '/evaluation/',
-  path: '/evaluation/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => EvaluationRoute,
 } as any).lazy(() =>
   import('./routes/evaluation/index.lazy').then((d) => d.Route),
 )
@@ -347,9 +372,8 @@ const naverRedirectLazyRoute = naverRedirectLazyRouteImport
   } as any)
   .lazy(() => import('./routes/(naver)/redirect.lazy').then((d) => d.Route))
 const UsersLayoutRoute = UsersLayoutRouteImport.update({
-  id: '/users/_layout',
-  path: '/users',
-  getParentRoute: () => rootRouteImport,
+  id: '/_layout',
+  getParentRoute: () => UsersRoute,
 } as any)
 const TestLoginDebugRoute = TestLoginDebugRouteImport.update({
   id: '/test/login-debug',
@@ -367,9 +391,8 @@ const OrderProductIdRoute = OrderProductIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OfficerLayoutRoute = OfficerLayoutRouteImport.update({
-  id: '/officer/_layout',
-  path: '/officer',
-  getParentRoute: () => rootRouteImport,
+  id: '/_layout',
+  getParentRoute: () => OfficerRoute,
 } as any)
 const MsLayoutRoute = MsLayoutRouteImport.update({
   id: '/_layout',
@@ -399,9 +422,8 @@ const ExploreAdmissionRoute = ExploreAdmissionRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvaluationLayoutRoute = EvaluationLayoutRouteImport.update({
-  id: '/evaluation/_layout',
-  path: '/evaluation',
-  getParentRoute: () => rootRouteImport,
+  id: '/_layout',
+  getParentRoute: () => EvaluationRoute,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/auth/reset-password',
@@ -522,6 +544,14 @@ const MsLayoutNonsulLazyRoute = MsLayoutNonsulLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/ms/_layout.nonsul.lazy').then((d) => d.Route),
 )
+const MsLayoutMaterialAnalysisLazyRoute =
+  MsLayoutMaterialAnalysisLazyRouteImport.update({
+    id: '/material-analysis',
+    path: '/material-analysis',
+    getParentRoute: () => MsLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/ms/_layout.material-analysis.lazy').then((d) => d.Route),
+  )
 const MsLayoutKyokwaLazyRoute = MsLayoutKyokwaLazyRouteImport.update({
   id: '/kyokwa',
   path: '/kyokwa',
@@ -551,6 +581,13 @@ const MsLayoutEvaluationListLazyRoute =
   } as any).lazy(() =>
     import('./routes/ms/_layout.evaluation-list.lazy').then((d) => d.Route),
   )
+const MsLayoutEvaluationLazyRoute = MsLayoutEvaluationLazyRouteImport.update({
+  id: '/evaluation',
+  path: '/evaluation',
+  getParentRoute: () => MsLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/ms/_layout.evaluation.lazy').then((d) => d.Route),
+)
 const MsLayoutCreativeActivityLazyRoute =
   MsLayoutCreativeActivityLazyRouteImport.update({
     id: '/creative-activity',
@@ -581,6 +618,13 @@ const MsLayoutCombinationLazyRoute = MsLayoutCombinationLazyRouteImport.update({
   getParentRoute: () => MsLayoutRoute,
 } as any).lazy(() =>
   import('./routes/ms/_layout.combination.lazy').then((d) => d.Route),
+)
+const MsLayoutBuildLazyRoute = MsLayoutBuildLazyRouteImport.update({
+  id: '/build',
+  path: '/build',
+  getParentRoute: () => MsLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/ms/_layout.build.lazy').then((d) => d.Route),
 )
 const MsLayoutAttendanceLazyRoute = MsLayoutAttendanceLazyRouteImport.update({
   id: '/attendance',
@@ -821,8 +865,8 @@ export interface FileRoutesByFullPath {
   '/ms/dashboard': typeof MsDashboardLazyRoute
   '/official/faq': typeof OfficialFaqLazyRoute
   '/official/guide': typeof OfficialGuideLazyRoute
-  '/products/': typeof ProductsIndexRoute
-  '/analysis/': typeof AnalysisIndexLazyRoute
+  '/products': typeof ProductsIndexRoute
+  '/analysis': typeof AnalysisIndexLazyRoute
   '/evaluation/': typeof EvaluationIndexLazyRoute
   '/grade-analysis/': typeof GradeAnalysisIndexLazyRoute
   '/ms/': typeof MsIndexLazyRoute
@@ -846,14 +890,17 @@ export interface FileRoutesByFullPath {
   '/mock-analysis/target-university': typeof MockAnalysisLayoutTargetUniversityLazyRoute
   '/mock-analysis/wrong-answers': typeof MockAnalysisLayoutWrongAnswersLazyRoute
   '/ms/attendance': typeof MsLayoutAttendanceLazyRoute
+  '/ms/build': typeof MsLayoutBuildLazyRoute
   '/ms/combination': typeof MsLayoutCombinationLazyRoute
   '/ms/compatibility': typeof MsLayoutCompatibilityLazyRoute
   '/ms/comprehensive': typeof MsLayoutComprehensiveLazyRoute
   '/ms/creative-activity': typeof MsLayoutCreativeActivityLazyRoute
+  '/ms/evaluation': typeof MsLayoutEvaluationLazyRoute
   '/ms/evaluation-list': typeof MsLayoutEvaluationListLazyRoute
   '/ms/interest': typeof MsLayoutInterestLazyRoute
   '/ms/jonghap': typeof MsLayoutJonghapLazyRoute
   '/ms/kyokwa': typeof MsLayoutKyokwaLazyRoute
+  '/ms/material-analysis': typeof MsLayoutMaterialAnalysisLazyRoute
   '/ms/nonsul': typeof MsLayoutNonsulLazyRoute
   '/ms/performance': typeof MsLayoutPerformanceLazyRoute
   '/ms/request': typeof MsLayoutRequestLazyRoute
@@ -867,12 +914,12 @@ export interface FileRoutesByFullPath {
   '/users/mock-exam': typeof UsersLayoutMockExamLazyRoute
   '/users/profile': typeof UsersLayoutProfileLazyRoute
   '/users/school-record': typeof UsersLayoutSchoolRecordLazyRoute
-  '/official/notice/': typeof OfficialNoticeIndexLazyRoute
+  '/official/notice': typeof OfficialNoticeIndexLazyRoute
   '/officer/apply/$evaluationId': typeof OfficerLayoutApplyEvaluationIdLazyRoute
   '/users/payment/$id': typeof UsersLayoutPaymentIdLazyRoute
-  '/evaluation/self/': typeof EvaluationLayoutSelfIndexLazyRoute
-  '/officer/apply/': typeof OfficerLayoutApplyIndexLazyRoute
-  '/users/payment/': typeof UsersLayoutPaymentIndexLazyRoute
+  '/evaluation/self': typeof EvaluationLayoutSelfIndexLazyRoute
+  '/officer/apply': typeof OfficerLayoutApplyIndexLazyRoute
+  '/users/payment': typeof UsersLayoutPaymentIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -928,14 +975,17 @@ export interface FileRoutesByTo {
   '/mock-analysis/target-university': typeof MockAnalysisLayoutTargetUniversityLazyRoute
   '/mock-analysis/wrong-answers': typeof MockAnalysisLayoutWrongAnswersLazyRoute
   '/ms/attendance': typeof MsLayoutAttendanceLazyRoute
+  '/ms/build': typeof MsLayoutBuildLazyRoute
   '/ms/combination': typeof MsLayoutCombinationLazyRoute
   '/ms/compatibility': typeof MsLayoutCompatibilityLazyRoute
   '/ms/comprehensive': typeof MsLayoutComprehensiveLazyRoute
   '/ms/creative-activity': typeof MsLayoutCreativeActivityLazyRoute
+  '/ms/evaluation': typeof MsLayoutEvaluationLazyRoute
   '/ms/evaluation-list': typeof MsLayoutEvaluationListLazyRoute
   '/ms/interest': typeof MsLayoutInterestLazyRoute
   '/ms/jonghap': typeof MsLayoutJonghapLazyRoute
   '/ms/kyokwa': typeof MsLayoutKyokwaLazyRoute
+  '/ms/material-analysis': typeof MsLayoutMaterialAnalysisLazyRoute
   '/ms/nonsul': typeof MsLayoutNonsulLazyRoute
   '/ms/performance': typeof MsLayoutPerformanceLazyRoute
   '/ms/request': typeof MsLayoutRequestLazyRoute
@@ -972,6 +1022,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/evaluation': typeof EvaluationRouteWithChildren
   '/evaluation/_layout': typeof EvaluationLayoutRouteWithChildren
   '/explore/admission': typeof ExploreAdmissionRoute
   '/explore/recruitment-unit': typeof ExploreRecruitmentUnitRoute
@@ -979,10 +1030,12 @@ export interface FileRoutesById {
   '/grade-analysis/_layout': typeof GradeAnalysisLayoutRouteWithChildren
   '/mock-analysis/_layout': typeof MockAnalysisLayoutRouteWithChildren
   '/ms/_layout': typeof MsLayoutRouteWithChildren
+  '/officer': typeof OfficerRouteWithChildren
   '/officer/_layout': typeof OfficerLayoutRouteWithChildren
   '/order/$productId': typeof OrderProductIdRoute
   '/test/auth-me': typeof TestAuthMeRoute
   '/test/login-debug': typeof TestLoginDebugRoute
+  '/users': typeof UsersRouteWithChildren
   '/users/_layout': typeof UsersLayoutRouteWithChildren
   '/(naver)/redirect': typeof naverRedirectLazyRoute
   '/analysis/performance': typeof AnalysisPerformanceLazyRoute
@@ -1019,14 +1072,17 @@ export interface FileRoutesById {
   '/mock-analysis/_layout/target-university': typeof MockAnalysisLayoutTargetUniversityLazyRoute
   '/mock-analysis/_layout/wrong-answers': typeof MockAnalysisLayoutWrongAnswersLazyRoute
   '/ms/_layout/attendance': typeof MsLayoutAttendanceLazyRoute
+  '/ms/_layout/build': typeof MsLayoutBuildLazyRoute
   '/ms/_layout/combination': typeof MsLayoutCombinationLazyRoute
   '/ms/_layout/compatibility': typeof MsLayoutCompatibilityLazyRoute
   '/ms/_layout/comprehensive': typeof MsLayoutComprehensiveLazyRoute
   '/ms/_layout/creative-activity': typeof MsLayoutCreativeActivityLazyRoute
+  '/ms/_layout/evaluation': typeof MsLayoutEvaluationLazyRoute
   '/ms/_layout/evaluation-list': typeof MsLayoutEvaluationListLazyRoute
   '/ms/_layout/interest': typeof MsLayoutInterestLazyRoute
   '/ms/_layout/jonghap': typeof MsLayoutJonghapLazyRoute
   '/ms/_layout/kyokwa': typeof MsLayoutKyokwaLazyRoute
+  '/ms/_layout/material-analysis': typeof MsLayoutMaterialAnalysisLazyRoute
   '/ms/_layout/nonsul': typeof MsLayoutNonsulLazyRoute
   '/ms/_layout/performance': typeof MsLayoutPerformanceLazyRoute
   '/ms/_layout/request': typeof MsLayoutRequestLazyRoute
@@ -1083,8 +1139,8 @@ export interface FileRouteTypes {
     | '/ms/dashboard'
     | '/official/faq'
     | '/official/guide'
-    | '/products/'
-    | '/analysis/'
+    | '/products'
+    | '/analysis'
     | '/evaluation/'
     | '/grade-analysis/'
     | '/ms/'
@@ -1108,14 +1164,17 @@ export interface FileRouteTypes {
     | '/mock-analysis/target-university'
     | '/mock-analysis/wrong-answers'
     | '/ms/attendance'
+    | '/ms/build'
     | '/ms/combination'
     | '/ms/compatibility'
     | '/ms/comprehensive'
     | '/ms/creative-activity'
+    | '/ms/evaluation'
     | '/ms/evaluation-list'
     | '/ms/interest'
     | '/ms/jonghap'
     | '/ms/kyokwa'
+    | '/ms/material-analysis'
     | '/ms/nonsul'
     | '/ms/performance'
     | '/ms/request'
@@ -1129,12 +1188,12 @@ export interface FileRouteTypes {
     | '/users/mock-exam'
     | '/users/profile'
     | '/users/school-record'
-    | '/official/notice/'
+    | '/official/notice'
     | '/officer/apply/$evaluationId'
     | '/users/payment/$id'
-    | '/evaluation/self/'
-    | '/officer/apply/'
-    | '/users/payment/'
+    | '/evaluation/self'
+    | '/officer/apply'
+    | '/users/payment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1190,14 +1249,17 @@ export interface FileRouteTypes {
     | '/mock-analysis/target-university'
     | '/mock-analysis/wrong-answers'
     | '/ms/attendance'
+    | '/ms/build'
     | '/ms/combination'
     | '/ms/compatibility'
     | '/ms/comprehensive'
     | '/ms/creative-activity'
+    | '/ms/evaluation'
     | '/ms/evaluation-list'
     | '/ms/interest'
     | '/ms/jonghap'
     | '/ms/kyokwa'
+    | '/ms/material-analysis'
     | '/ms/nonsul'
     | '/ms/performance'
     | '/ms/request'
@@ -1233,6 +1295,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+    | '/evaluation'
     | '/evaluation/_layout'
     | '/explore/admission'
     | '/explore/recruitment-unit'
@@ -1240,10 +1303,12 @@ export interface FileRouteTypes {
     | '/grade-analysis/_layout'
     | '/mock-analysis/_layout'
     | '/ms/_layout'
+    | '/officer'
     | '/officer/_layout'
     | '/order/$productId'
     | '/test/auth-me'
     | '/test/login-debug'
+    | '/users'
     | '/users/_layout'
     | '/(naver)/redirect'
     | '/analysis/performance'
@@ -1280,14 +1345,17 @@ export interface FileRouteTypes {
     | '/mock-analysis/_layout/target-university'
     | '/mock-analysis/_layout/wrong-answers'
     | '/ms/_layout/attendance'
+    | '/ms/_layout/build'
     | '/ms/_layout/combination'
     | '/ms/_layout/compatibility'
     | '/ms/_layout/comprehensive'
     | '/ms/_layout/creative-activity'
+    | '/ms/_layout/evaluation'
     | '/ms/_layout/evaluation-list'
     | '/ms/_layout/interest'
     | '/ms/_layout/jonghap'
     | '/ms/_layout/kyokwa'
+    | '/ms/_layout/material-analysis'
     | '/ms/_layout/nonsul'
     | '/ms/_layout/performance'
     | '/ms/_layout/request'
@@ -1324,15 +1392,15 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
-  EvaluationLayoutRoute: typeof EvaluationLayoutRouteWithChildren
+  EvaluationRoute: typeof EvaluationRouteWithChildren
   ExploreAdmissionRoute: typeof ExploreAdmissionRoute
   ExploreRecruitmentUnitRoute: typeof ExploreRecruitmentUnitRoute
   ExploreUniversityRoute: typeof ExploreUniversityRoute
-  OfficerLayoutRoute: typeof OfficerLayoutRouteWithChildren
+  OfficerRoute: typeof OfficerRouteWithChildren
   OrderProductIdRoute: typeof OrderProductIdRoute
   TestAuthMeRoute: typeof TestAuthMeRoute
   TestLoginDebugRoute: typeof TestLoginDebugRoute
-  UsersLayoutRoute: typeof UsersLayoutRouteWithChildren
+  UsersRoute: typeof UsersRouteWithChildren
   naverRedirectLazyRoute: typeof naverRedirectLazyRoute
   AnalysisPerformanceLazyRoute: typeof AnalysisPerformanceLazyRoute
   ExplainPrivacyLazyRoute: typeof ExplainPrivacyLazyRoute
@@ -1344,7 +1412,6 @@ export interface RootRouteChildren {
   OfficialGuideLazyRoute: typeof OfficialGuideLazyRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   AnalysisIndexLazyRoute: typeof AnalysisIndexLazyRoute
-  EvaluationIndexLazyRoute: typeof EvaluationIndexLazyRoute
   AuthOauthCallbackRoute: typeof AuthOauthCallbackRoute
   OfficialNoticePostIdLazyRoute: typeof OfficialNoticePostIdLazyRoute
   OfficialNoticeIndexLazyRoute: typeof OfficialNoticeIndexLazyRoute
@@ -1352,6 +1419,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer': {
+      id: '/officer'
+      path: '/officer'
+      fullPath: '/officer'
+      preLoaderRoute: typeof OfficerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evaluation': {
+      id: '/evaluation'
+      path: '/evaluation'
+      fullPath: '/evaluation'
+      preLoaderRoute: typeof EvaluationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -1459,22 +1547,22 @@ declare module '@tanstack/react-router' {
     }
     '/evaluation/': {
       id: '/evaluation/'
-      path: '/evaluation'
+      path: '/'
       fullPath: '/evaluation/'
       preLoaderRoute: typeof EvaluationIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof EvaluationRoute
     }
     '/analysis/': {
       id: '/analysis/'
       path: '/analysis'
-      fullPath: '/analysis/'
+      fullPath: '/analysis'
       preLoaderRoute: typeof AnalysisIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/': {
       id: '/products/'
       path: '/products'
-      fullPath: '/products/'
+      fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -1553,7 +1641,7 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersLayoutRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UsersRoute
     }
     '/test/login-debug': {
       id: '/test/login-debug'
@@ -1581,7 +1669,7 @@ declare module '@tanstack/react-router' {
       path: '/officer'
       fullPath: '/officer'
       preLoaderRoute: typeof OfficerLayoutRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof OfficerRoute
     }
     '/ms/_layout': {
       id: '/ms/_layout'
@@ -1630,7 +1718,7 @@ declare module '@tanstack/react-router' {
       path: '/evaluation'
       fullPath: '/evaluation'
       preLoaderRoute: typeof EvaluationLayoutRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof EvaluationRoute
     }
     '/auth/reset-password': {
       id: '/auth/reset-password'
@@ -1656,7 +1744,7 @@ declare module '@tanstack/react-router' {
     '/official/notice/': {
       id: '/official/notice/'
       path: '/official/notice'
-      fullPath: '/official/notice/'
+      fullPath: '/official/notice'
       preLoaderRoute: typeof OfficialNoticeIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -1751,6 +1839,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MsLayoutNonsulLazyRouteImport
       parentRoute: typeof MsLayoutRoute
     }
+    '/ms/_layout/material-analysis': {
+      id: '/ms/_layout/material-analysis'
+      path: '/material-analysis'
+      fullPath: '/ms/material-analysis'
+      preLoaderRoute: typeof MsLayoutMaterialAnalysisLazyRouteImport
+      parentRoute: typeof MsLayoutRoute
+    }
     '/ms/_layout/kyokwa': {
       id: '/ms/_layout/kyokwa'
       path: '/kyokwa'
@@ -1779,6 +1874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MsLayoutEvaluationListLazyRouteImport
       parentRoute: typeof MsLayoutRoute
     }
+    '/ms/_layout/evaluation': {
+      id: '/ms/_layout/evaluation'
+      path: '/evaluation'
+      fullPath: '/ms/evaluation'
+      preLoaderRoute: typeof MsLayoutEvaluationLazyRouteImport
+      parentRoute: typeof MsLayoutRoute
+    }
     '/ms/_layout/creative-activity': {
       id: '/ms/_layout/creative-activity'
       path: '/creative-activity'
@@ -1805,6 +1907,13 @@ declare module '@tanstack/react-router' {
       path: '/combination'
       fullPath: '/ms/combination'
       preLoaderRoute: typeof MsLayoutCombinationLazyRouteImport
+      parentRoute: typeof MsLayoutRoute
+    }
+    '/ms/_layout/build': {
+      id: '/ms/_layout/build'
+      path: '/build'
+      fullPath: '/ms/build'
+      preLoaderRoute: typeof MsLayoutBuildLazyRouteImport
       parentRoute: typeof MsLayoutRoute
     }
     '/ms/_layout/attendance': {
@@ -1936,21 +2045,21 @@ declare module '@tanstack/react-router' {
     '/users/_layout/payment/': {
       id: '/users/_layout/payment/'
       path: '/payment'
-      fullPath: '/users/payment/'
+      fullPath: '/users/payment'
       preLoaderRoute: typeof UsersLayoutPaymentIndexLazyRouteImport
       parentRoute: typeof UsersLayoutRoute
     }
     '/officer/_layout/apply/': {
       id: '/officer/_layout/apply/'
       path: '/apply'
-      fullPath: '/officer/apply/'
+      fullPath: '/officer/apply'
       preLoaderRoute: typeof OfficerLayoutApplyIndexLazyRouteImport
       parentRoute: typeof OfficerLayoutRoute
     }
     '/evaluation/_layout/self/': {
       id: '/evaluation/_layout/self/'
       path: '/self'
-      fullPath: '/evaluation/self/'
+      fullPath: '/evaluation/self'
       preLoaderRoute: typeof EvaluationLayoutSelfIndexLazyRouteImport
       parentRoute: typeof EvaluationLayoutRoute
     }
@@ -2048,14 +2157,17 @@ const MockAnalysisRouteRouteWithChildren =
 
 interface MsLayoutRouteChildren {
   MsLayoutAttendanceLazyRoute: typeof MsLayoutAttendanceLazyRoute
+  MsLayoutBuildLazyRoute: typeof MsLayoutBuildLazyRoute
   MsLayoutCombinationLazyRoute: typeof MsLayoutCombinationLazyRoute
   MsLayoutCompatibilityLazyRoute: typeof MsLayoutCompatibilityLazyRoute
   MsLayoutComprehensiveLazyRoute: typeof MsLayoutComprehensiveLazyRoute
   MsLayoutCreativeActivityLazyRoute: typeof MsLayoutCreativeActivityLazyRoute
+  MsLayoutEvaluationLazyRoute: typeof MsLayoutEvaluationLazyRoute
   MsLayoutEvaluationListLazyRoute: typeof MsLayoutEvaluationListLazyRoute
   MsLayoutInterestLazyRoute: typeof MsLayoutInterestLazyRoute
   MsLayoutJonghapLazyRoute: typeof MsLayoutJonghapLazyRoute
   MsLayoutKyokwaLazyRoute: typeof MsLayoutKyokwaLazyRoute
+  MsLayoutMaterialAnalysisLazyRoute: typeof MsLayoutMaterialAnalysisLazyRoute
   MsLayoutNonsulLazyRoute: typeof MsLayoutNonsulLazyRoute
   MsLayoutPerformanceLazyRoute: typeof MsLayoutPerformanceLazyRoute
   MsLayoutRequestLazyRoute: typeof MsLayoutRequestLazyRoute
@@ -2067,14 +2179,17 @@ interface MsLayoutRouteChildren {
 
 const MsLayoutRouteChildren: MsLayoutRouteChildren = {
   MsLayoutAttendanceLazyRoute: MsLayoutAttendanceLazyRoute,
+  MsLayoutBuildLazyRoute: MsLayoutBuildLazyRoute,
   MsLayoutCombinationLazyRoute: MsLayoutCombinationLazyRoute,
   MsLayoutCompatibilityLazyRoute: MsLayoutCompatibilityLazyRoute,
   MsLayoutComprehensiveLazyRoute: MsLayoutComprehensiveLazyRoute,
   MsLayoutCreativeActivityLazyRoute: MsLayoutCreativeActivityLazyRoute,
+  MsLayoutEvaluationLazyRoute: MsLayoutEvaluationLazyRoute,
   MsLayoutEvaluationListLazyRoute: MsLayoutEvaluationListLazyRoute,
   MsLayoutInterestLazyRoute: MsLayoutInterestLazyRoute,
   MsLayoutJonghapLazyRoute: MsLayoutJonghapLazyRoute,
   MsLayoutKyokwaLazyRoute: MsLayoutKyokwaLazyRoute,
+  MsLayoutMaterialAnalysisLazyRoute: MsLayoutMaterialAnalysisLazyRoute,
   MsLayoutNonsulLazyRoute: MsLayoutNonsulLazyRoute,
   MsLayoutPerformanceLazyRoute: MsLayoutPerformanceLazyRoute,
   MsLayoutRequestLazyRoute: MsLayoutRequestLazyRoute,
@@ -2144,6 +2259,20 @@ const EvaluationLayoutRouteChildren: EvaluationLayoutRouteChildren = {
 const EvaluationLayoutRouteWithChildren =
   EvaluationLayoutRoute._addFileChildren(EvaluationLayoutRouteChildren)
 
+interface EvaluationRouteChildren {
+  EvaluationLayoutRoute: typeof EvaluationLayoutRouteWithChildren
+  EvaluationIndexLazyRoute: typeof EvaluationIndexLazyRoute
+}
+
+const EvaluationRouteChildren: EvaluationRouteChildren = {
+  EvaluationLayoutRoute: EvaluationLayoutRouteWithChildren,
+  EvaluationIndexLazyRoute: EvaluationIndexLazyRoute,
+}
+
+const EvaluationRouteWithChildren = EvaluationRoute._addFileChildren(
+  EvaluationRouteChildren,
+)
+
 interface OfficerLayoutRouteChildren {
   OfficerLayoutProfileLazyRoute: typeof OfficerLayoutProfileLazyRoute
   OfficerLayoutApplyEvaluationIdLazyRoute: typeof OfficerLayoutApplyEvaluationIdLazyRoute
@@ -2160,6 +2289,17 @@ const OfficerLayoutRouteChildren: OfficerLayoutRouteChildren = {
 const OfficerLayoutRouteWithChildren = OfficerLayoutRoute._addFileChildren(
   OfficerLayoutRouteChildren,
 )
+
+interface OfficerRouteChildren {
+  OfficerLayoutRoute: typeof OfficerLayoutRouteWithChildren
+}
+
+const OfficerRouteChildren: OfficerRouteChildren = {
+  OfficerLayoutRoute: OfficerLayoutRouteWithChildren,
+}
+
+const OfficerRouteWithChildren =
+  OfficerRoute._addFileChildren(OfficerRouteChildren)
 
 interface UsersLayoutRouteChildren {
   UsersLayoutAdditionalFileLazyRoute: typeof UsersLayoutAdditionalFileLazyRoute
@@ -2183,6 +2323,16 @@ const UsersLayoutRouteWithChildren = UsersLayoutRoute._addFileChildren(
   UsersLayoutRouteChildren,
 )
 
+interface UsersRouteChildren {
+  UsersLayoutRoute: typeof UsersLayoutRouteWithChildren
+}
+
+const UsersRouteChildren: UsersRouteChildren = {
+  UsersLayoutRoute: UsersLayoutRouteWithChildren,
+}
+
+const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GradeAnalysisRouteRoute: GradeAnalysisRouteRouteWithChildren,
@@ -2198,15 +2348,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
-  EvaluationLayoutRoute: EvaluationLayoutRouteWithChildren,
+  EvaluationRoute: EvaluationRouteWithChildren,
   ExploreAdmissionRoute: ExploreAdmissionRoute,
   ExploreRecruitmentUnitRoute: ExploreRecruitmentUnitRoute,
   ExploreUniversityRoute: ExploreUniversityRoute,
-  OfficerLayoutRoute: OfficerLayoutRouteWithChildren,
+  OfficerRoute: OfficerRouteWithChildren,
   OrderProductIdRoute: OrderProductIdRoute,
   TestAuthMeRoute: TestAuthMeRoute,
   TestLoginDebugRoute: TestLoginDebugRoute,
-  UsersLayoutRoute: UsersLayoutRouteWithChildren,
+  UsersRoute: UsersRouteWithChildren,
   naverRedirectLazyRoute: naverRedirectLazyRoute,
   AnalysisPerformanceLazyRoute: AnalysisPerformanceLazyRoute,
   ExplainPrivacyLazyRoute: ExplainPrivacyLazyRoute,
@@ -2218,7 +2368,6 @@ const rootRouteChildren: RootRouteChildren = {
   OfficialGuideLazyRoute: OfficialGuideLazyRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   AnalysisIndexLazyRoute: AnalysisIndexLazyRoute,
-  EvaluationIndexLazyRoute: EvaluationIndexLazyRoute,
   AuthOauthCallbackRoute: AuthOauthCallbackRoute,
   OfficialNoticePostIdLazyRoute: OfficialNoticePostIdLazyRoute,
   OfficialNoticeIndexLazyRoute: OfficialNoticeIndexLazyRoute,

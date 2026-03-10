@@ -1,0 +1,85 @@
+.container {
+    margin: 16px 0px 32px 0px;
+}
+
+.container hr {
+    margin: 32px 0px;
+}
+
+.nonsul_container {
+    width: "100%";
+}
+
+.nonsul_title {
+    padding-bottom: 1em;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.nonsul_content {
+    box-shadow: 0 0px 5px 2px #e6e6e6;
+    padding: 1.8em 2em;
+    border: 1px black solid;
+}
+
+.nonsul_content table {
+    width: 100%;
+}
+
+.nonsul_content table tbody th {
+        padding: 1em 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transform: skew(-0.1deg);
+}
+
+.t_bg {
+    background-color: #f4f4f4;
+}
+.t_bt {
+    border-top: 1px solid #000000;
+}
+.t_br th {
+    border-right: 1px solid #c2c2c2;
+}
+.t_br td {
+    border-right: 1px solid #c2c2c2;
+    vertical-align: center;
+    padding: 1.5em 0.8em;
+}
+.t_br {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #9d9d9d;
+    text-align: center;
+    word-break: keep-all;
+}
+.t_bl th {
+    border-left: 1px solid #c2c2c2;
+}
+.t_bl td {
+    border-left: 1px solid #c2c2c2;
+}
+.t_bb {
+    border-bottom: 1px solid #c2c2c2;
+}
+.t_bs {
+    box-shadow: 0 0px 5px 2px #e6e6e6;
+}
+.t_box {
+    border: 1px solid #9a9a9a;
+}
+
+.empty_title {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 1em;
+}
+
+.empty_button {
+    color: #c86f4c;
+    border: 1px #c86f4c solid;
+    font-size: 12px;
+    font-family: initial;
+    font-weight: 500;
+    padding: 8px 16px;
+}

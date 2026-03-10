@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { setTokens } from "@/lib/api/token-manager";
 import { useGetCurrentUser } from "@/stores/server/features/me/queries";
+import { env } from "@/lib/config/env";
 
 interface Props {
   className?: string;
@@ -60,11 +61,12 @@ export function LoginWithEmailForm({ className }: Props) {
       const idToken = await userCredential.user.getIdToken();
 
       // 3. 백엔드 로그인
-      const response = await fetch('/api-hub/auth/firebase/login', {
+      const response = await fetch(`${env.apiUrlHub}/auth/firebase/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ idToken }),
       });
 
@@ -75,7 +77,7 @@ export function LoginWithEmailForm({ className }: Props) {
         toast.error("회원가입이 필요합니다. Hub 회원가입 페이지로 이동합니다.", {
           duration: 5000,
         });
-        window.location.href = "http://localhost:3000/auth/register";
+        window.location.href = `${env.hubUrl}/auth/register`;
         return;
       }
 
@@ -88,11 +90,11 @@ export function LoginWithEmailForm({ className }: Props) {
         const { accessToken, refreshToken } = loginData.data;
         setTokens(accessToken, refreshToken);
 
-        toast.success("환영합니다. 거북스쿨입니다. 😄");
+        toast.success("환영합니다. T Skool입니다. 😄");
         await user.refetch();
 
         // Hub 메인으로 이동
-        window.location.href = "http://localhost:3000";
+        window.location.href = env.hubUrl;
       } else {
         toast.error(loginData.error || "로그인에 실패했습니다.");
       }

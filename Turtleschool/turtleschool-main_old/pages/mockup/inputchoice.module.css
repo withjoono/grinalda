@@ -1,0 +1,83 @@
+.active {
+  color: white;
+  background-color: #de6b3d !important;
+}
+
+.gradebuttons {
+  display: flex;
+  width: calc(100% + 0.2em);
+}
+
+.gradebuttons > button {
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+  flex-basis: 0;
+  flex-grow: 1;
+  background-color: white;
+  margin-left: 0.2em;
+  margin-bottom: 0.3em;
+  min-height: 4em;
+}
+
+.listbuttons {
+  display: flex;
+  flex-direction: column;
+}
+.listbuttons > button {
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+  flex-basis: 0;
+  flex-grow: 1;
+  background-color: white;
+  margin-left: 0.2em;
+  margin-bottom: 0.3em;
+  min-height: 2em;
+}
+
+.select {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.select > button {
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+  flex-basis: 0;
+  flex-grow: 1;
+  background-color: white;
+  margin-left: 0.2em;
+  margin-bottom: 0.3em;
+  min-height: 4em;
+}
+.select p {
+  line-height: 2em;
+}
+
+.orange_txt {
+  color: #de6b3d !important;
+}
+.white_txt {
+  color: white !important;
+}
+.orange {
+  background-color: #de6b3d !important;
+}
+.orange_border {
+  border: 2px solid #de6b3d;
+}
+.bold {
+  -webkit-text-stroke: 1px;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

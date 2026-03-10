@@ -1,7 +1,7 @@
 {
   "name": "@geobuk/shared-types",
   "version": "1.0.0",
-  "description": "거북스쿨 공유 타입 정의",
+  "description": "G Skool 공유 타입 정의",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

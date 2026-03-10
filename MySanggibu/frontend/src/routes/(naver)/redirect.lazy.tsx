@@ -30,7 +30,7 @@ function Redirect() {
       });
 
       if (result.success) {
-        toast.success("환영합니다. 거북스쿨입니다. 😄");
+        toast.success("환영합니다. T Skool입니다. 😄");
         await user.refetch();
 
         // 사용자 정보를 가져와서 memberType에 따라 리다이렉트

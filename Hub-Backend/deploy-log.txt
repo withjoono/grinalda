@@ -1,0 +1,16 @@
+INFO: Reading [<googlecloudsdk.api_lib.storage.storage_util.ObjectReference object at 0x000002B9FB7DDD90>]
+Services to deploy:
+
+descriptor:                  [E:\Dev\github\Hub-Backend\app.yaml]
+source:                      [E:\Dev\github\Hub-Backend]
+target project:              [ts-back-nest-479305]
+target service:              [default]
+target version:              [20260222t142305]
+target url:                  [https://ts-back-nest-479305.du.r.appspot.com]
+target service account:      [ts-back-nest-479305@appspot.gserviceaccount.com]
+
+
+Do you want to continue (Y/n)?  
+Beginning deployment of service [default]...
+INFO: Using ignore file at [E:\Dev\github\Hub-Backend\.gcloudignore].
+ERROR: (gcloud.app.deploy) Required file is not uploaded: [app.yaml]. This file should not be added to an ignore list (https://cloud.google.com/sdk/gcloud/reference/topic/gcloudignore)

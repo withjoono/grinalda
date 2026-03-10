@@ -2,17 +2,16 @@ import {
   Entity,
   Column,
   ManyToOne,
-  OneToMany,
   JoinColumn,
   Index,
 } from 'typeorm';
 import { BaseEntity } from '../common/base.entity';
-import { MemberEntity } from '../member/member.entity';
+import { SpMemberEntity } from '../member/sp-member.entity';
 
 /**
  * 플래너 클래스 엔티티 (멘토링 클래스)
  */
-@Entity('planner_class_tb')
+@Entity('sp_class')
 @Index(['plannerId'])
 @Index(['classCode'], { unique: true })
 export class PlannerClassEntity extends BaseEntity {
@@ -35,9 +34,9 @@ export class PlannerClassEntity extends BaseEntity {
   useYn: 'Y' | 'N';
 
   // 관계
-  @ManyToOne(() => MemberEntity, { onDelete: 'CASCADE' })
+  @ManyToOne(() => SpMemberEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'planner_id' })
-  mentor: MemberEntity;
+  mentor: SpMemberEntity;
 
   /**
    * 클래스 활성화 여부

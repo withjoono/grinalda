@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <title>관리자 페이지 _선생님</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-family: "Noto Sans CJK KR";
+        }
+        
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        .contain{
+            width:1279.5px;
+            margin:auto;
+        }
+        .select{
+            width:100%;
+        }
+        .ga{
+            height:697px;
+        }
+        .aside{
+            width:300px;
+            height:559px;
+            border:1px #9D9D9D solid;
+            float:left;
+        }
+        .box{
+            width:950px;
+            height:482px;
+            background-color:#E8E8E8;
+            border:1px #9D9D9D solid;
+            border-radius: 20px;
+            float:right;
+        }
+        .ga h1{
+            height:98px;
+            line-height:120px;
+        }
+        .exam{
+            width:1280px;
+            height:391px;
+            border:1px #9D9D9D solid;
+            border-radius:20px;
+        }
+        .aside table{
+           
+            width:260px;
+            font-size:12px;
+            border-top:1px #000000 solid;
+            margin:19px auto;
+            text-align:center;
+             border-collapse: collapse;
+        }
+        .aside table tr td{
+            width:65px;
+        }
+        .aside table tr:nth-of-type(1){
+            height:40px;
+            background-color:#F5F5F5;
+            line-height:40px;
+            border-bottom:0.5px #9D9D9D solid;
+            
+        }
+    
+        .aside table tr{
+            height:52px;
+            line-height:52px;
+            border-bottom:0.5px #9D9D9D solid;
+        }
+       .aside table p{
+            width:28px;
+            height:28px;
+            color:#ffffff;
+            background-color:#FCBF77;
+            border-radius:8px;
+            font-size:14px;
+            text-align:center;
+            line-height:28px;
+            margin:auto;
+        }
+    
+        .aside table small{
+            font-size: 10px;
+            width:58px;
+            height:22px;
+            color:#DE6B3D;
+            border:1px #DE6B3D solid;
+            border-radius:4px;
+            font-size:14px;
+            text-align:center;
+            line-height:24px;
+            margin:auto;
+        }
+        
+        .box h1{
+           
+            font-size: 24px;
+            height:64px;
+            line-height: 64px;
+            margin-left:20px;
+            
+        }
+        .border{
+            width:580px;
+            height:124px;
+            float:left;
+            background-color: #ffffff;
+            border-radius: 20px;
+            margin-left:20px;
+        }
+        .border table{
+            width:540px;  
+            font-size:12px;
+            border-top:1px #000000 solid;
+            margin:19px auto;
+            text-align:center;
+             border-collapse: collapse;
+            
+        }
+        .border table tr{
+            height:42px;
+            line-height:42px;
+            border-bottom:0.5px #9D9D9D solid;
+        }
+        .border table tr:nth-of-type(1){
+            height:42px;
+            background-color:#F5F5F5;
+            line-height:42px;
+            border-bottom:0.5px #9D9D9D solid;
+            
+        }
+        .border2{
+            width:580px;
+            height:210px;
+            float:left;
+            background-color: #ffffff;
+            border-radius: 20px;
+            margin-left:20px;
+        }
+        .border2 table{
+            width:540px;  
+            font-size:12px;
+            border-top:1px #000000 solid;
+            margin:19px auto;
+            text-align:center;
+             border-collapse: collapse;
+            
+        }
+        .border2 table tr{
+            height:42px;
+            line-height:42px;
+            border-bottom:0.5px #9D9D9D solid;
+        }
+        .border2 table tr:nth-of-type(1){
+            height:42px;
+            background-color:#F5F5F5;
+            line-height:42px;
+            border-bottom:0.5px #9D9D9D solid;
+            
+        }
+        .right{
+            float:right;
+            width:320px;
+            height:394px;
+            border-radius: 20px;
+            border:1px #9D9D9D solid;   
+            margin-right:16px;
+            background-color: #ffffff;
+        }
+        .box h1:nth-of-type(1){
+            width:63%;
+            float:left;
+        }
+        .box h1:nth-of-type(3){
+            width:50%;
+            float:left;
+        }
+        </style>
+</head>
+<body>
+    <div classname="contain">
+        <div classname="ga">
+            <h1>다군</h1>
+            <div classname="select">
+                <div classname="aside">
+                    <table>
+                        <tr>
+                           <td></td>
+                           <td>대학</td>
+                           <td>학교</td>
+                           <td>검색</td>
+                  
+                        </tr>
+                        <tr>
+                           <td><p>1</p></td>
+                           <td>서울대</td>
+                           <td>수학과</td>
+                           <td><small>상세검색</small></td>
+                        </tr>
+                        <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                        </td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                    </table>
+                </div>
+                <div classname="box">
+                    <h1>지원자 분석</h1>
+                    <div classname="border">
+                        <table>
+                            <tr>
+                                <td>정원</td>
+                                <td>수시이월인원</td>
+                                <td>등수 예상</td>
+                                <td>명중 수</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                           
+                        </table>
+                    </div>
+                    <h1>지원자 분포도</h1>
+                    <div classname="right">
+
+                    </div>
+                    <h1>3개년 분석</h1>
+                    <div classname="border2">
+                   
+                        <table>
+                            <tr>
+                                <td>년도</td>
+                                <td>모집인원</td>
+                                <td>경쟁률</td>
+                                <td>수시이월인원</td>
+                                <td>실질경쟁률</td>
+                                <td>최종합격자 70%컷</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <div classname="ga">
+            <h1>나군</h1>
+            <div classname="select">
+                <div classname="aside">
+                    <table>
+                        <tr>
+                           <td></td>
+                           <td>대학</td>
+                           <td>학교</td>
+                           <td>검색</td>
+                  
+                        </tr>
+                        <tr>
+                           <td><p>1</p></td>
+                           <td>서울대</td>
+                           <td>수학과</td>
+                           <td><small>상세검색</small></td>
+                        </tr>
+                        <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                        </td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                    </table>
+                </div>
+                <div classname="box">
+                    <h1>지원자 분석</h1>
+                    <div classname="border">
+                        <table>
+                            <tr>
+                                <td>정원</td>
+                                <td>수시이월인원</td>
+                                <td>등수 예상</td>
+                                <td>명중 수</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                           
+                        </table>
+                    </div>
+                    <h1>지원자 분포도</h1>
+                    <div classname="right">
+
+                    </div>
+                    <h1>3개년 분석</h1>
+                    <div classname="border2">
+                   
+                        <table>
+                            <tr>
+                                <td>년도</td>
+                                <td>모집인원</td>
+                                <td>경쟁률</td>
+                                <td>수시이월인원</td>
+                                <td>실질경쟁률</td>
+                                <td>최종합격자 70%컷</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <div classname="ga">
+            <h1>다군</h1>
+            <div classname="select">
+                <div classname="aside">
+                    <table>
+                        <tr>
+                           <td></td>
+                           <td>대학</td>
+                           <td>학교</td>
+                           <td>검색</td>
+                  
+                        </tr>
+                        <tr>
+                           <td><p>1</p></td>
+                           <td>서울대</td>
+                           <td>수학과</td>
+                           <td><small>상세검색</small></td>
+                        </tr>
+                        <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                         <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                        </td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>   <tr>
+                            <td><p>1</p></td>
+                            <td>서울대</td>
+                            <td>수학과</td>
+                            <td><small>상세검색</small></td>
+                         </tr>
+                    </table>
+                </div>
+                <div classname="box">
+                    <h1>지원자 분석</h1>
+                    <div classname="border">
+                        <table>
+                            <tr>
+                                <td>정원</td>
+                                <td>수시이월인원</td>
+                                <td>등수 예상</td>
+                                <td>명중 수</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                           
+                        </table>
+                    </div>
+                    <h1>지원자 분포도</h1>
+                    <div classname="right">
+
+                    </div>
+                    <h1>3개년 분석</h1>
+                    <div classname="border2">
+                   
+                        <table>
+                            <tr>
+                                <td>년도</td>
+                                <td>모집인원</td>
+                                <td>경쟁률</td>
+                                <td>수시이월인원</td>
+                                <td>실질경쟁률</td>
+                                <td>최종합격자 70%컷</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2019년</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

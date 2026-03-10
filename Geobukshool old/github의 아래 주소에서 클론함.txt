@@ -1,0 +1,7 @@
+github의 아래 주소에서 클론함
+
+frontend - turtleschool_front
+https://github.com/turtledotcom/turtleschool_front.git
+
+backend - turtleschool-nest
+https://github.com/turtledotcom/turtleschool-nest.git

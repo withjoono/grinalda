@@ -332,7 +332,7 @@ export function ServiceCardsPage() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-600 text-sm font-medium mb-4">
             <Zap className="w-4 h-4" />
-            거북스쿨의 AI 앱 서비스
+            G Skool의 AI 앱 서비스
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             입시의 모든 것을 한 곳에서

@@ -1,0 +1,22 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "turtle-planner",
+          "appId": "1:123649812074:android:ccb16f8a4bd1f552534c13",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "turtle-planner",
+          "configurations": {
+            "android": "1:123649812074:android:ccb16f8a4bd1f552534c13",
+            "ios": "1:123649812074:ios:e251cb5e27860d6c534c13"
+          }
+        }
+      }
+    }
+  }
+}

@@ -43,6 +43,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { meQueryKeys } from "@/stores/server/features/me/queries";
 import { setTokens } from "@/lib/api/token-manager";
+import { env } from "@/lib/config/env";
 
 interface Props {
   className?: string;
@@ -163,11 +164,12 @@ export function RegisterWithSocialForm({ className }: Props) {
     const formattedPhone = values.phone.replace(/-/g, "");
 
     // Firebase 회원가입 API 호출
-    const response = await fetch('/api-hub/auth/firebase/register', {
+    const response = await fetch(`${env.apiUrlHub}/auth/firebase/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
         idToken: socialToken,
         nickname: values.name,
@@ -189,10 +191,10 @@ export function RegisterWithSocialForm({ className }: Props) {
       // 회원가입 성공 후 me 쿼리 캐시 무효화
       await queryClient.invalidateQueries({ queryKey: meQueryKeys.all });
       clearSocialData(); // 소셜 로그인 임시 데이터 삭제
-      toast.success("거북스쿨에 가입해주셔서 감사합니다! 😄");
+      toast.success("T Skool에 가입해주셔서 감사합니다! 😄");
       setIsLoading(false);
       // Hub 메인으로 이동
-      window.location.href = "http://localhost:3000";
+      window.location.href = env.hubUrl;
     } else {
       toast.error(result.message || result.error || "회원가입에 실패했습니다.");
       setIsLoading(false);
@@ -384,7 +386,7 @@ export function RegisterWithSocialForm({ className }: Props) {
                   className={cn(
                     "relative flex h-auto flex-col items-center gap-2",
                     memberType === "student" &&
-                      "text-primary hover:text-primary",
+                    "text-primary hover:text-primary",
                   )}
                 >
                   {memberType === "student" && (
@@ -400,7 +402,7 @@ export function RegisterWithSocialForm({ className }: Props) {
                   className={cn(
                     "relative flex h-auto flex-col items-center gap-2",
                     memberType === "teacher" &&
-                      "text-primary hover:text-primary",
+                    "text-primary hover:text-primary",
                   )}
                 >
                   {memberType === "teacher" && (
@@ -416,7 +418,7 @@ export function RegisterWithSocialForm({ className }: Props) {
                   className={cn(
                     "relative flex h-auto flex-col items-center gap-2",
                     memberType === "parent" &&
-                      "text-primary hover:text-primary",
+                    "text-primary hover:text-primary",
                   )}
                 >
                   {memberType === "parent" && (

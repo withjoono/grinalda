@@ -1,0 +1,21 @@
+.dialogtitle {
+	background-color: #6495ED;
+	padding-left: 6px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.dialog {
+	margin: 8px;
+	border: 1px solid #FFF5EE;
+	border-radius: 4px;
+	background-color: #FFFAFA;
+	padding: 4px;
+}
+
+.dialogcontainer {
+	width: 75%;
+	height: 50%;
+	max-width: 600px;
+	max-height: 1200px;
+}

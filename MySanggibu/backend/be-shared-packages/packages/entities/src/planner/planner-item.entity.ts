@@ -6,13 +6,13 @@ import {
   Index,
 } from 'typeorm';
 import { BaseEntity } from '../common/base.entity';
-import { MemberEntity } from '../member/member.entity';
+import { SpMemberEntity } from '../member/sp-member.entity';
 import { PlannerPrimaryType, TaskStatus } from '@geobuk/shared-types';
 
 /**
  * 플래너 일정 아이템 엔티티
  */
-@Entity('planner_item_tb')
+@Entity('sp_item')
 @Index(['memberId'])
 @Index(['memberId', 'startDate', 'endDate'])
 export class PlannerItemEntity extends BaseEntity {
@@ -119,7 +119,7 @@ export class PlannerItemEntity extends BaseEntity {
   planDate: Date;
 
   // 관계
-  @ManyToOne(() => MemberEntity, { onDelete: 'CASCADE' })
+  @ManyToOne(() => SpMemberEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'member_id' })
-  member: MemberEntity;
+  member: SpMemberEntity;
 }
