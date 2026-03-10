@@ -15,7 +15,18 @@ import * as fs from 'fs';
 
 @Injectable()
 export class CoreFieldsService {
-  constructor(    @InjectDataSource()  ) {}
+  // NOTE: This service was migrated from TypeORM but the repositories are no longer available.
+  // These are typed as `any` to allow compilation. Service needs full Prisma rewrite if used.
+  private majorFieldRepository: any;
+  private midFieldRepository: any;
+  private minorFieldRepository: any;
+  private generalFieldRepository: any;
+  private dataSource: any;
+
+  constructor(private readonly prisma: PrismaService) {
+    // Stub: TypeORM repositories are no longer injected.
+    // This service needs to be rewritten for Prisma if it is to be used.
+  }
 
   // MajorField CRUD
   async getAllMajorFields(): Promise<MajorFieldEntity[]> {
