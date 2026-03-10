@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "gcp-build": "prisma generate && nest build",
+    "gcp-build": "prisma generate",
     "build": "prisma generate && nest build",
     "clean": "rimraf dist tsconfig.build.tsbuildinfo tsconfig.tsbuildinfo",
     "clean:build": "npm run clean && npm run build",
