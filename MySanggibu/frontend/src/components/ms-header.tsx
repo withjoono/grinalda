@@ -248,6 +248,16 @@ export const MsHeader = () => {
                     >
                       🎨 창체 및 행특
                     </Link>
+                    <Link
+                      to="/ms/build"
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "w-full justify-start px-1 text-gray-700 hover:bg-gray-100",
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      🏗️ 빌드 (활동 추천)
+                    </Link>
                   </div>
 
                   <Separator className="my-2 bg-gray-200" />
@@ -531,6 +541,12 @@ export const MsHeader = () => {
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <span className="text-sm font-medium">🎨 창체 및 행특</span>
+                        </Link>
+                        <Link
+                          to="/ms/build"
+                          className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
+                        >
+                          <span className="text-sm font-medium">🏗️ 빌드 (활동 추천)</span>
                         </Link>
                       </div>
                     </div>
