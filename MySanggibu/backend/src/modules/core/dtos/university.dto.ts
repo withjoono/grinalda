@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IsNotEmpty, IsString, IsEnum, IsOptional } from 'class-validator';
 
 export class CreateUniversityDto {

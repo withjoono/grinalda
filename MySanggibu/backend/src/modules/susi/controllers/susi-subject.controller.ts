@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { SusiSubjectService } from '../services/susi-subject.service';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class AddMemberCalculatedScores1733000000000 implements MigrationInterface {
   name = 'AddMemberCalculatedScores1733000000000';

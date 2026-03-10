@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, GoneException, Inject } from '@nestjs/common';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';

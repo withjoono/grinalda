@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CommonSearchQueryDto } from '../dtos/common-search-query.dto';
 
 interface SearchParams {

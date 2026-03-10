@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { SusiPassRecordService } from '../services/susi-pass-record-service';

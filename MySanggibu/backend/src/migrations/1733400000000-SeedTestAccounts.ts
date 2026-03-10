@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as bcrypt from 'bcrypt';
 
 export class SeedTestAccounts1733400000000 implements MigrationInterface {

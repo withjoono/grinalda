@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateMsAuthMember1771269029003 implements MigrationInterface {

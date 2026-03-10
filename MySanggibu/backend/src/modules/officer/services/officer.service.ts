@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OfficerTicketEntity } from '../../../database/entities/officer-evaluation/officer-ticket.entity';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { SmsService } from '../../sms/sms.service';

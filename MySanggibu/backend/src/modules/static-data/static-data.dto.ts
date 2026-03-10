@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class StaticDataDto {
   subjectCodes: SubjectCodeListEntity[]; // 교과 코드

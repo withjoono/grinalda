@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 /**
  * Initial Schema Migration

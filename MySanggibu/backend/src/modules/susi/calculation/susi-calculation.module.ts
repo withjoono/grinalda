@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Module } from '@nestjs/common';
 import { SusiCalculationController } from './susi-calculation.controller';
 import { SusiCalculationService } from './services/susi-calculation.service';

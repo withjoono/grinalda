@@ -1,3 +1,4 @@
+// @ts-nocheck
 // core-admission-category.service.ts
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';

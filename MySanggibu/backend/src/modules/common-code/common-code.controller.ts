@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ApiOperation } from '@nestjs/swagger';

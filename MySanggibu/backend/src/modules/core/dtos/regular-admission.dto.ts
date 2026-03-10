@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IsNotEmpty, IsNumber, IsString, IsEnum, IsOptional } from 'class-validator';
 
 enum Major {

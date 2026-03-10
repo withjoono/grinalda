@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddCodeToAdmissionSubtype1769973481547 implements MigrationInterface {

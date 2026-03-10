@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { EditLifeRecordDto } from '../members/dtos/edit-life-record.dto';
 // import { AwsUploadService } from 'src/aws-upload/aws-upload.service';

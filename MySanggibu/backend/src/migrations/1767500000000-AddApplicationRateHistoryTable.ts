@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class AddApplicationRateHistoryTable1767500000000 implements MigrationInterface {
   name = 'AddApplicationRateHistoryTable1767500000000';

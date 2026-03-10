@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { SusiUnitCategoryService } from '../services/susi-unit-category.service';

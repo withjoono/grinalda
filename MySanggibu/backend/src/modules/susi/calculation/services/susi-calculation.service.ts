@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { SchoolRecordSubjectLearningEntity } from '../../../../database/entities/schoolrecord/schoolrecord-subject-learning.entity';

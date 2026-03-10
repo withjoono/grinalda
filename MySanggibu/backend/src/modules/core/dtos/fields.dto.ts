@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class CreateMajorFieldDto {

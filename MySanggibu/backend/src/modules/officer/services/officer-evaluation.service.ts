@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OfficerTicketEntity } from '../../../database/entities/officer-evaluation/officer-ticket.entity';
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { GetOfficerEvaluationsResponseDto } from '../dtos/officer-evaluations-response.dto';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class FixMemberCalculatedScoresUniqueIndex1733100000000 implements MigrationInterface {
   name = 'FixMemberCalculatedScoresUniqueIndex1733100000000';

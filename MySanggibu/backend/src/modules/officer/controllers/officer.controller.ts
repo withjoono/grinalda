@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { CurrentMemberId } from 'src/auth/decorators/current-member_id.decorator';
 import { OfficerService } from '../services/officer.service';

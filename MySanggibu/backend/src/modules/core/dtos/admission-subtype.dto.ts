@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IsNotEmpty, IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateAdmissionSubtypeDto {

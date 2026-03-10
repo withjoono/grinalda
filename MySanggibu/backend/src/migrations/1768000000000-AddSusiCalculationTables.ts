@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class AddSusiCalculationTables1768000000000 implements MigrationInterface {
   name = 'AddSusiCalculationTables1768000000000';

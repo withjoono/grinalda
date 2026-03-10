@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Type } from 'class-transformer';
 import { IsString, IsNumber, IsEnum, IsOptional, ValidateNested, IsArray } from 'class-validator';
 

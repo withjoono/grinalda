@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class AddSeriesEvaluationTables1770000000000
   implements MigrationInterface

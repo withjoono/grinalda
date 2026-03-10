@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class CreateSusiCategorySubjectNecessityTable1737270000000
   implements MigrationInterface

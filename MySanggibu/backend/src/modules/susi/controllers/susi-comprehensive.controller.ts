@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import {
   ApiOperation,

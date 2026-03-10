@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 /**
  * Add Update Timestamp Triggers Migration

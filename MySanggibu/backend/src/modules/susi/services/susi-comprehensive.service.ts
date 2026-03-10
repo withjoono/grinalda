@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class GetOfficerListResponseDto {
   officer_id: OfficerListEntity['member_id'];

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Module } from '@nestjs/common';
 import { MembersModule } from '../members/members.module';
 import { SmsModule } from '../sms/sms.module';

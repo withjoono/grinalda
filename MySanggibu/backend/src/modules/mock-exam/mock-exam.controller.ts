@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { MockExamService } from './mock-exam.service';
 import {

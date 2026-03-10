@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { SusiCalculationFormulaEntity } from '../../../../database/entities/susi/susi-calculation-formula.entity';

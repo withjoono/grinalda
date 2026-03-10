@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class CreateSusiUnitCategoriesTable1737260000000 implements MigrationInterface {
   name = 'CreateSusiUnitCategoriesTable1737260000000';

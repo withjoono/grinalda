@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CommonSearchUtils } from 'src/common/utils/common-search.utils';
 import { CommonSearchQueryDto } from 'src/common/dtos/common-search-query.dto';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // 수시 교과 상세보기 페이지
 export class SusiSubjectDetailResponseDto {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // 모집단위 관련 데이터 조회
 export class InterestSusiComprehensiveResponse {

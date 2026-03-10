@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Param } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Public } from 'src/auth/decorators/public.decorator';

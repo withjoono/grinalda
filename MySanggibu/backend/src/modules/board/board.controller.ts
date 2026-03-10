@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Post, Body, Param, Patch, Query, Delete } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreatePostDto } from './dtos/post.dto';

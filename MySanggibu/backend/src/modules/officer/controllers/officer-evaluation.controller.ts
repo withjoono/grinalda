@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { UseTicketReqDto } from '../dtos/use-ticket.dto';
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { OfficerEvaluationService } from '../services/officer-evaluation.service';

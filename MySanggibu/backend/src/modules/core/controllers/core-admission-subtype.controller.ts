@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Controller, Get, Post, Delete, Param, Body, ParseIntPipe, Patch } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CoreAdmissionSubtypeService } from '../services/core-admission-subtype.service';

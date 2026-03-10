@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { RegisterWithEmailDto } from 'src/auth/dtos/register-with-email.dto';

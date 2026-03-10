@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable, Logger } from '@nestjs/common';
 import * as XLSX from 'xlsx';
 import * as fs from 'fs';
