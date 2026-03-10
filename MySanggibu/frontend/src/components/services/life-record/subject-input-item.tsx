@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ISchoolRecordSubject } from "@/stores/server/features/me/interfaces";
 import { ITransformedSubjects } from "@/stores/server/features/static-data/queries";
+import { type ValidationError } from "@/hooks/use-life-record";
 
 export const SubjectInputItem = React.memo(
   ({
@@ -18,23 +19,23 @@ export const SubjectInputItem = React.memo(
     subjectItem,
     onChangeSubjectValue,
     subjects,
+    validationErrors = [],
   }: {
     index: number;
     subjectItem: Omit<ISchoolRecordSubject, "id">;
     onChangeSubjectValue: (index: number, type: string, value: string) => void;
     subjects: ITransformedSubjects;
+    validationErrors?: ValidationError[];
   }) => {
     const getMainSubjectByCode = (code: string) => subjects.MAIN_SUBJECTS[code];
     const getSubjectByCode = (code: string) => subjects.SUBJECTS[code];
 
-    // Debug logging
-    if (index === 0) {
-      console.log('[SubjectInputItem] subjectItem:', subjectItem);
-      console.log('[SubjectInputItem] mainSubjectCode:', subjectItem.mainSubjectCode);
-      console.log('[SubjectInputItem] subjectCode:', subjectItem.subjectCode);
-      console.log('[SubjectInputItem] MAIN_SUBJECTS has key?:', subjects.MAIN_SUBJECTS[subjectItem.mainSubjectCode || '']);
-      console.log('[SubjectInputItem] MAIN_SUBJECTS keys count:', Object.keys(subjects.MAIN_SUBJECTS).length);
-    }
+    const hasError = (field: string) =>
+      validationErrors.some(
+        (e) => e.index === index && e.field === field && !e.isSelectSubject,
+      );
+
+    const errorRingClass = "ring-2 ring-red-400 border-red-300";
 
     return (
       <div className="flex items-center gap-2">
@@ -70,9 +71,9 @@ export const SubjectInputItem = React.memo(
             }
           }}
         >
-          <SelectTrigger className="min-w-[120px] max-w-[120px]">
+          <SelectTrigger className={`min-w-[120px] max-w-[120px] ${hasError("mainSubjectCode") ? errorRingClass : ""}`}>
             <SelectValue placeholder="교과 선택">
-              {subjectItem.mainSubjectCode 
+              {subjectItem.mainSubjectCode
                 ? (getMainSubjectByCode(subjectItem.mainSubjectCode)?.name || subjectItem.mainSubjectName || subjectItem.mainSubjectCode)
                 : "교과 선택"}
             </SelectValue>
@@ -101,7 +102,7 @@ export const SubjectInputItem = React.memo(
         >
           <SelectTrigger className="min-w-[120px] max-w-[120px]">
             <SelectValue placeholder="과목 선택">
-              {subjectItem.subjectCode 
+              {subjectItem.subjectCode
                 ? (getSubjectByCode(subjectItem.subjectCode)?.name || subjectItem.subjectName || subjectItem.subjectCode)
                 : "과목 선택"}
             </SelectValue>
@@ -164,7 +165,7 @@ export const SubjectInputItem = React.memo(
             onChangeSubjectValue(index, "achievement", value);
           }}
         >
-          <SelectTrigger className="min-w-[60px] max-w-[60px]">
+          <SelectTrigger className={`min-w-[60px] max-w-[60px] ${hasError("achievement") ? errorRingClass : ""}`}>
             <SelectValue placeholder="성취도" />
           </SelectTrigger>
           <SelectContent>

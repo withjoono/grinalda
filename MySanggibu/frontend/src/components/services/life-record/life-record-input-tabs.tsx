@@ -19,6 +19,8 @@ export const LifeRecordInputTabs: React.FC = () => {
     onChangeAttendanceValue,
     onClickAddOrDelLine,
     onClickSaveGrade,
+    validationErrors,
+    errorCountByGrade,
   } = useLifeRecord();
 
   const { data: staticData, isLoading: isStaticDataLoading } = useGetStaticData();
@@ -27,12 +29,6 @@ export const LifeRecordInputTabs: React.FC = () => {
     () => staticData?.subjects || { MAIN_SUBJECTS: {}, SUBJECTS: {} },
     [staticData],
   );
-
-  // Debug logging to identify the issue
-  console.log('[LifeRecordInputTabs] staticData:', staticData);
-  console.log('[LifeRecordInputTabs] MAIN_SUBJECTS keys:', Object.keys(subjects.MAIN_SUBJECTS));
-  console.log('[LifeRecordInputTabs] schoolrecordSubjectLearningList:', schoolrecordSubjectLearningList);
-  console.log('[LifeRecordInputTabs] isStaticDataLoading:', isStaticDataLoading);
 
   const renderGradeButtons = useMemo(
     () => (
@@ -43,13 +39,19 @@ export const LifeRecordInputTabs: React.FC = () => {
             type="button"
             onClick={() => setCurrentGrade(grade)}
             variant={currentGrade === grade ? "default" : "outline"}
+            className="relative"
           >
             {grade}학년
+            {(errorCountByGrade[grade] || 0) > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-sm">
+                {errorCountByGrade[grade]}
+              </span>
+            )}
           </Button>
         ))}
       </div>
     ),
-    [currentGrade, setCurrentGrade],
+    [currentGrade, setCurrentGrade, errorCountByGrade],
   );
 
   const renderAttendanceSection = useMemo(
@@ -158,6 +160,7 @@ export const LifeRecordInputTabs: React.FC = () => {
                   onChangeSubjectValue={onChangeSubjectValue}
                   subjectItem={item}
                   subjects={subjects}
+                  validationErrors={validationErrors}
                 />
               ))
             ) : (
@@ -174,6 +177,7 @@ export const LifeRecordInputTabs: React.FC = () => {
       onChangeSubjectValue,
       onClickAddOrDelLine,
       subjects,
+      validationErrors,
     ],
   );
 
@@ -220,6 +224,7 @@ export const LifeRecordInputTabs: React.FC = () => {
                   selectSubjectItem={item}
                   onChangeSelectSubjectValue={onChangeSelectSubjectValue}
                   subjects={subjects}
+                  validationErrors={validationErrors}
                 />
               ))
             ) : (
@@ -236,6 +241,7 @@ export const LifeRecordInputTabs: React.FC = () => {
       onChangeSelectSubjectValue,
       onClickAddOrDelLine,
       subjects,
+      validationErrors,
     ],
   );
 

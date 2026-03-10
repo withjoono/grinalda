@@ -9,6 +9,16 @@ import {
 import { useGetSchoolRecords } from "@/stores/server/features/me/queries";
 import { useEditLifeRecord } from "@/stores/server/features/me/mutations";
 
+// 검증 에러 타입
+export interface ValidationError {
+  grade: string;
+  index: number;
+  field: string; // 'mainSubjectCode' | 'achievement'
+  fieldLabel: string;
+  subjectName: string;
+  isSelectSubject: boolean;
+}
+
 const makeInitialNormalGyogwaItem = (
   grade: string,
 ): Omit<ISchoolRecordSubject, "id"> => ({
@@ -25,6 +35,7 @@ const makeInitialNormalGyogwaItem = (
   achievement: "",
   studentsNum: "",
   ranking: "",
+  detailAndSpecialty: "",
   etc: "",
 });
 
@@ -45,6 +56,7 @@ const makeInitialCourseGyogwaItem = (
   achievementb: "",
   achievementc: "",
   studentsNum: "",
+  detailAndSpecialty: "",
   etc: "",
 });
 
@@ -75,6 +87,7 @@ export const useLifeRecord = () => {
 
   const [currentGrade, setCurrentGrade] = useState("1");
   const [isDirty, setIsDirty] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [schoolrecordSubjectLearningList, setSchoolrecordSubjectLearningList] =
     useState<{
       [key: string]: Omit<ISchoolRecordSubject, "id">[];
@@ -172,6 +185,15 @@ export const useLifeRecord = () => {
         ),
       }));
       setIsDirty(true);
+      // 해당 필드 에러 클리어
+      if (type === "mainSubjectCode" || type === "achievement") {
+        setValidationErrors((prev) =>
+          prev.filter(
+            (e) =>
+              !(e.grade === currentGrade && e.index === index && e.field === type && !e.isSelectSubject),
+          ),
+        );
+      }
     },
     [currentGrade],
   );
@@ -185,6 +207,15 @@ export const useLifeRecord = () => {
         ),
       }));
       setIsDirty(true);
+      // 해당 필드 에러 클리어
+      if (type === "mainSubjectCode" || type === "achievement") {
+        setValidationErrors((prev) =>
+          prev.filter(
+            (e) =>
+              !(e.grade === currentGrade && e.index === index && e.field === type && e.isSelectSubject),
+          ),
+        );
+      }
     },
     [currentGrade],
   );
@@ -223,36 +254,104 @@ export const useLifeRecord = () => {
     [currentGrade],
   );
 
+  const clearValidationErrors = useCallback(() => {
+    setValidationErrors([]);
+  }, []);
+
   const onClickSaveGrade = useCallback(async () => {
     if (!isDirty) {
       toast.info("변경된 내용이 없습니다.");
       return;
     }
 
-    // Validation logic...
-    let isValidate = true;
-    Object.values(schoolrecordSubjectLearningList)
-      .flat()
-      .forEach((item) => {
-        if (item.mainSubjectCode === "" || item.achievement === "") {
-          isValidate = false;
+    // 구체적 에러 수집
+    const errors: ValidationError[] = [];
+
+    Object.entries(schoolrecordSubjectLearningList).forEach(([grade, items]) => {
+      items.forEach((item, index) => {
+        if (item.mainSubjectCode === "") {
+          errors.push({
+            grade,
+            index,
+            field: "mainSubjectCode",
+            fieldLabel: "교과",
+            subjectName: item.subjectName || item.mainSubjectName || `${index + 1}번째 과목`,
+            isSelectSubject: false,
+          });
+        }
+        if (item.achievement === "") {
+          errors.push({
+            grade,
+            index,
+            field: "achievement",
+            fieldLabel: "성취도",
+            subjectName: item.subjectName || item.mainSubjectName || `${index + 1}번째 과목`,
+            isSelectSubject: false,
+          });
         }
       });
-    Object.values(schoolrecordSelectSubjectList)
-      .flat()
-      .forEach((item) => {
-        if (item.mainSubjectCode === "" || item.achievement === "") {
-          isValidate = false;
+    });
+
+    Object.entries(schoolrecordSelectSubjectList).forEach(([grade, items]) => {
+      items.forEach((item, index) => {
+        if (item.mainSubjectCode === "") {
+          errors.push({
+            grade,
+            index,
+            field: "mainSubjectCode",
+            fieldLabel: "교과",
+            subjectName: item.subjectName || item.mainSubjectName || `${index + 1}번째 선택과목`,
+            isSelectSubject: true,
+          });
         }
+        if (item.achievement === "") {
+          errors.push({
+            grade,
+            index,
+            field: "achievement",
+            fieldLabel: "성취도",
+            subjectName: item.subjectName || item.mainSubjectName || `${index + 1}번째 선택과목`,
+            isSelectSubject: true,
+          });
+        }
+      });
+    });
+
+    setValidationErrors(errors);
+
+    if (errors.length > 0) {
+      // 첫 번째 에러가 있는 학년으로 자동 이동
+      const firstErrorGrade = errors[0].grade;
+      if (firstErrorGrade !== currentGrade) {
+        setCurrentGrade(firstErrorGrade);
+      }
+
+      // 학년별 에러 요약 메시지
+      const errorsByGrade: Record<string, number> = {};
+      errors.forEach((e) => {
+        errorsByGrade[e.grade] = (errorsByGrade[e.grade] || 0) + 1;
       });
 
-    if (!isValidate) {
+      const gradeSummary = Object.entries(errorsByGrade)
+        .map(([g, count]) => `${g}학년: ${count}개`)
+        .join(", ");
+
+      // 첫 번째 에러에 대한 구체적 메시지
+      const firstErr = errors[0];
+      const specificMsg = `${firstErr.grade}학년 "${firstErr.subjectName}"의 ${firstErr.fieldLabel}이(가) 비어있습니다.`;
+
       toast.error(
-        "필드 입력이 잘못되었습니다. 교과와 성취도는 반드시 입력되어야합니다.",
+        `입력이 필요한 항목이 있습니다 (${gradeSummary})`,
+        {
+          description: `${specificMsg}${errors.length > 1 ? ` 외 ${errors.length - 1}건` : ""}`,
+          duration: 6000,
+        },
       );
       return;
     }
 
+    // 출결 검증
+    let isValidate = true;
     const validatedAttendances = Object.values(
       schoolrecordAttendanceDetailList,
     ).map((attendance) => {
@@ -296,6 +395,7 @@ export const useLifeRecord = () => {
         toast.success("성적이 성공적으로 저장되었습니다.");
         await refetchSchoolRecord();
         setIsDirty(false);
+        setValidationErrors([]);
       } else {
         throw new Error("저장 실패");
       }
@@ -304,6 +404,7 @@ export const useLifeRecord = () => {
     }
   }, [
     isDirty,
+    currentGrade,
     schoolrecordAttendanceDetailList,
     schoolrecordSelectSubjectList,
     schoolrecordSubjectLearningList,
@@ -324,6 +425,21 @@ export const useLifeRecord = () => {
     [schoolrecordAttendanceDetailList, currentGrade],
   );
 
+  // 현재 학년의 에러만 필터링
+  const currentGradeErrors = useMemo(
+    () => validationErrors.filter((e) => e.grade === currentGrade),
+    [validationErrors, currentGrade],
+  );
+
+  // 학년별 에러 수
+  const errorCountByGrade = useMemo(() => {
+    const counts: Record<string, number> = { "1": 0, "2": 0, "3": 0 };
+    validationErrors.forEach((e) => {
+      counts[e.grade] = (counts[e.grade] || 0) + 1;
+    });
+    return counts;
+  }, [validationErrors]);
+
   return {
     currentGrade,
     setCurrentGrade,
@@ -335,5 +451,8 @@ export const useLifeRecord = () => {
     onChangeSubjectValue,
     onClickAddOrDelLine,
     onClickSaveGrade,
+    validationErrors: currentGradeErrors,
+    errorCountByGrade,
+    clearValidationErrors,
   };
 };
