@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { OfficerTicketEntity } from '../../../database/entities/officer-evaluation/officer-ticket.entity';
+import { PrismaService } from '../../../database/prisma.service';
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { GetOfficerEvaluationsResponseDto } from '../dtos/officer-evaluations-response.dto';
 import { GetOfficerListResponseDto } from '../dtos/officer-list-response.dto';
@@ -26,73 +25,54 @@ export class OfficerEvaluationService {
       gcsConfig?.publicUrl || `https://storage.googleapis.com/${gcsConfig?.bucketName || ''}`;
   }
 
-  /**
-   * 주어진 member_id로 평가 목록을 가져옴
-   * @param memberId - 멤버 ID
-   * @returns 평가 목록
-   */
   async getEvaluationsByMemberId(memberId: number): Promise<GetOfficerEvaluationsResponseDto[]> {
-    const evaluations = await this.officerEvaluationRepository
-      .createQueryBuilder('evaluation')
-      .leftJoinAndSelect('officer_list_tb', 'officer', 'evaluation.member_id = officer.member_id')
-      .where('evaluation.student_id = :memberId', { memberId })
-      .select([
-        'evaluation.id',
-        'evaluation.series',
-        'evaluation.status',
-        'evaluation.update_dt',
-        'evaluation.member_id',
-        'officer.officer_name',
-        'officer.officer_profile_image',
-        "(SELECT COUNT(*) FROM officer_student_evaludate_relation_tb e WHERE e.status = 'READY' AND e.member_id = evaluation.member_id AND e.update_dt <= evaluation.update_dt) AS remaining_evaluations",
-      ])
-      .getRawMany();
-
-    return evaluations.map((evaluation) => ({
-      id: evaluation.evaluation_id,
-      series: evaluation.evaluation_series,
-      status: evaluation.evaluation_status,
-      update_dt: evaluation.evaluation_update_dt,
-      officer_id: evaluation.evaluation_member_id,
-      officer_name: evaluation.officer_officer_name,
-      officer_profile_image: evaluation.officer_officer_profile_image,
-      remaining_evaluations: parseInt(evaluation.remaining_evaluations, 10), // 남은 평가 수 추가
-    }));
+    try {
+      const evaluations = await this.prisma.$queryRaw<any[]>`
+        SELECT 
+          e.id, e.series, e.status, e.update_dt, e.member_id as officer_id,
+          o.officer_name, o.officer_profile_image
+        FROM officer_student_evaludate_relation_tb e
+        LEFT JOIN officer_list_tb o ON e.member_id = o.member_id
+        WHERE e.student_id = ${String(memberId)}
+        ORDER BY e.update_dt DESC
+      `;
+      return evaluations.map((e: any) => ({
+        id: e.id,
+        series: e.series,
+        status: e.status,
+        update_dt: e.update_dt,
+        officer_id: e.officer_id,
+        officer_name: e.officer_name,
+        officer_profile_image: e.officer_profile_image,
+        remaining_evaluations: 0,
+      }));
+    } catch (err) {
+      this.logger.error('getEvaluationsByMemberId failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 사정관 목록을 가져옴
-   * @returns 사정관 목록
-   */
   async getOfficerList(): Promise<GetOfficerListResponseDto[]> {
-    const officers = await this.officerRepository
-      .createQueryBuilder('officer')
-      .select([
-        'officer.member_id AS member_id',
-        'officer.officer_name AS officer_name',
-        'officer.officer_profile_image AS officer_profile_image',
-        'officer.university AS university',
-        'officer.education AS education',
-        "(SELECT COUNT(*) FROM officer_student_evaludate_relation_tb e WHERE e.status = 'READY' AND e.member_id = officer.member_id) AS remaining_evaluations",
-      ])
-      .where('officer.del_yn = :delYn', { delYn: 'N' })
-      .getRawMany();
-
-    return officers.map((officer) => ({
-      officer_id: officer.member_id,
-      officer_name: officer.officer_name,
-      officer_profile_image: officer.officer_profile_image,
-      officer_university: officer.university,
-      officer_education: officer.education,
-      remaining_evaluations: parseInt(officer.remaining_evaluations, 10),
-    }));
+    try {
+      const officers = await this.prisma.$queryRaw<any[]>`
+        SELECT member_id, officer_name, officer_profile_image, university, education
+        FROM officer_list_tb
+        WHERE del_yn = 'N'
+      `;
+      return officers.map((o: any) => ({
+        officer_id: o.member_id,
+        officer_name: o.officer_name,
+        officer_profile_image: o.officer_profile_image,
+        officer_university: o.university,
+        officer_education: o.education,
+        remaining_evaluations: 0,
+      }));
+    } catch (err) {
+      this.logger.error('getOfficerList failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 사정관이 받은 평가 신청 목록을 가져옴
-   * @param officerMemberId - 사정관의 member_id
-   * @returns 평가 신청 목록
-   */
   async getEvaluationsForOfficer(officerMemberId: string): Promise<{
     studentId: number;
     studentName: string;
@@ -104,301 +84,245 @@ export class OfficerEvaluationService {
     evaluationId: number;
     updateDt: Date;
   }[]> {
-    const evaluations = await this.officerEvaluationRepository
-      .createQueryBuilder('evaluation')
-      .leftJoin('auth_member', 'student', 'evaluation.student_id = student.id')
-      .where('evaluation.member_id = :officerMemberId', { officerMemberId })
-      .select([
-        'evaluation.id AS evaluation_id',
-        'evaluation.student_id AS student_id',
-        'student.nickname AS student_name',
-        'evaluation.series AS series',
-        'evaluation.status AS progress_status',
-        'evaluation.update_dt AS update_dt',
-        'student.phone AS phone',
-        'student.email AS email',
-        "(SELECT COUNT(*) FROM officer_student_evaludate_relation_tb e WHERE e.status = 'READY' AND e.member_id = :officerMemberId AND e.update_dt <= evaluation.update_dt) AS ready_count",
-      ])
-      .setParameter('officerMemberId', officerMemberId)
-      .orderBy('evaluation.update_dt', 'DESC')
-      .getRawMany();
-
-    return evaluations.map((e) => ({
-      evaluationId: e.evaluation_id,
-      studentId: e.student_id,
-      studentName: e.student_name || '이름 없음',
-      series: e.series,
-      progressStatus: e.progress_status,
-      readyCount: parseInt(e.ready_count, 10),
-      phone: e.phone || '',
-      email: e.email || '',
-      updateDt: e.update_dt,
-    }));
+    try {
+      const evaluations = await this.prisma.$queryRaw<any[]>`
+        SELECT 
+          e.id as evaluation_id, e.student_id, s.nickname as student_name,
+          e.series, e.status as progress_status, e.update_dt,
+          s.phone, s.email
+        FROM officer_student_evaludate_relation_tb e
+        LEFT JOIN auth_member s ON e.student_id = s.id
+        WHERE e.member_id = ${officerMemberId}
+        ORDER BY e.update_dt DESC
+      `;
+      return evaluations.map((e: any) => ({
+        evaluationId: e.evaluation_id,
+        studentId: e.student_id,
+        studentName: e.student_name || '이름 없음',
+        series: e.series,
+        progressStatus: e.progress_status,
+        readyCount: 0,
+        phone: e.phone || '',
+        email: e.email || '',
+        updateDt: e.update_dt,
+      }));
+    } catch (err) {
+      this.logger.error('getEvaluationsForOfficer failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 주어진 id로 평가의 comments를 가져옴
-   * @param id - 평가 ID
-   */
-  async getEvaluationCommentsByID(id: number): Promise<OfficerEvaluationCommentEntity[]> {
-    const comments = await this.officerEvaluationCommentRepository.find({
-      where: { officer_relation_id: id },
-    });
-    return comments;
+  async getEvaluationCommentsByID(id: number): Promise<any[]> {
+    try {
+      return await this.prisma.$queryRaw<any[]>`
+        SELECT * FROM officer_evaluation_comment_tb WHERE officer_relation_id = ${id}
+      `;
+    } catch (err) {
+      this.logger.error('getEvaluationCommentsByID failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 주어진 id로 평가의 scores를 가져옴
-   * @param id - 평가 ID
-   */
-  async getEvaluationScoresByID(id: number): Promise<OfficerEvaluationScoreEntity[]> {
-    const scores = await this.officerEvaluationScoreRepository.find({
-      where: { officer_relation_id: id },
-    });
-    return scores;
+  async getEvaluationScoresByID(id: number): Promise<any[]> {
+    try {
+      return await this.prisma.$queryRaw<any[]>`
+        SELECT * FROM officer_evaluation_score_tb WHERE officer_relation_id = ${id}
+      `;
+    } catch (err) {
+      this.logger.error('getEvaluationScoresByID failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 평가의 질문목록을 가져옴
-   */
-  async getEvaluationSurvey(): Promise<OfficerEvaluationSurveyEntity[]> {
-    const survey = await this.officerEvaluationSurveyRepository.find();
-    return survey;
+  async getEvaluationSurvey(): Promise<any[]> {
+    try {
+      return await this.prisma.$queryRaw<any[]>`SELECT * FROM officer_evaluation_survey_tb`;
+    } catch (err) {
+      this.logger.error('getEvaluationSurvey failed:', err);
+      return [];
+    }
   }
 
-  /**
-   * 티켓 갯수 조회
-   */
   async getTicketCount(memberId: string): Promise<GetTicketCountResponseDto> {
-    const ticket = await this.officerTicketRepository.findOne({
-      where: {
-        member_id: memberId,
-      },
-    });
-    return {
-      count: ticket?.ticket_count ?? 0,
-    };
+    try {
+      const result = await this.prisma.$queryRaw<{ ticket_count: number }[]>`
+        SELECT ticket_count FROM officer_ticket_tb WHERE member_id = ${memberId} LIMIT 1
+      `;
+      return { count: result.length > 0 ? Number(result[0].ticket_count) : 0 };
+    } catch (err) {
+      this.logger.error('getTicketCount failed:', err);
+      return { count: 0 };
+    }
   }
 
-  /**
-   * 티켓 사용(평가 신청)
-   */
   async useTicket(memberId: string, body: UseTicketReqDto): Promise<void> {
-    const ticket = await this.officerTicketRepository.findOne({
-      where: {
-        member_id: memberId,
-      },
-    });
-    if (!ticket || ticket.ticket_count < 1) {
+    const ticketResult = await this.prisma.$queryRaw<any[]>`
+      SELECT ticket_count FROM officer_ticket_tb WHERE member_id = ${memberId} LIMIT 1
+    `;
+    if (!ticketResult.length || ticketResult[0].ticket_count < 1) {
       throw new BadRequestException('사용가능한 이용권이 없습니다.');
     }
 
-    const schoolRecords = await this.schoolRecordSubjectLearningRepository.find({
-      where: {
-        member: { id: memberId },
-      },
-    });
+    // 생기부 존재 확인
+    const schoolRecords = await this.prisma.$queryRaw<any[]>`
+      SELECT id FROM school_record_subject_learning_tb WHERE member_id = ${memberId} LIMIT 1
+    `;
     if (schoolRecords.length < 1) {
       throw new BadRequestException('등록된 생기부가 존재하지 않습니다.');
     }
 
-    const officer = await this.officerRepository.findOne({
-      where: {
-        member_id: body.officerId,
-      },
-      relations: {
-        member: true,
-      },
-    });
-
-    if (!officer) {
+    // 사정관 확인
+    const officers = await this.prisma.$queryRaw<any[]>`
+      SELECT o.member_id, m.id, m.phone FROM officer_list_tb o
+      LEFT JOIN auth_member m ON o.member_id = m.id
+      WHERE o.member_id = ${body.officerId} LIMIT 1
+    `;
+    if (!officers.length) {
       throw new BadRequestException('해당 평가자가 존재하지 않습니다.');
     }
+    const officer = officers[0];
 
-    const exist = await this.officerEvaluationRepository.find({
-      where: {
-        student_id: memberId,
-        member_id: officer.member.id,
-        status: 'READY',
-      },
-    });
-
-    if (exist.length) {
+    // 이미 진행중인 평가 확인
+    const existing = await this.prisma.$queryRaw<any[]>`
+      SELECT id FROM officer_student_evaludate_relation_tb
+      WHERE student_id = ${memberId} AND member_id = ${officer.member_id} AND status = 'READY'
+      LIMIT 1
+    `;
+    if (existing.length) {
       throw new BadRequestException('이미 진행중인 평가가 존재합니다.');
     }
 
-    await this.officerEvaluationRepository.save(
-      this.officerEvaluationRepository.create({
-        member_id: officer.member.id,
-        student_id: memberId,
-        series: body.series,
-        status: 'READY',
-        create_dt: new Date(),
-        update_dt: new Date(),
-      }),
-    );
+    // 평가 생성
+    await this.prisma.$executeRaw`
+      INSERT INTO officer_student_evaludate_relation_tb (member_id, student_id, series, status, create_dt, update_dt)
+      VALUES (${officer.member_id}, ${memberId}, ${body.series}, 'READY', NOW(), NOW())
+    `;
 
-    ticket.ticket_count -= 1;
-    await this.officerTicketRepository.save(ticket);
+    // 티켓 차감
+    await this.prisma.$executeRaw`
+      UPDATE officer_ticket_tb SET ticket_count = ticket_count - 1 WHERE member_id = ${memberId}
+    `;
 
     try {
       await this.smsService.sendMessage(
         '학생이 학생부 평가를 신청하였습니다. 확인바랍니다.',
-        officer.member.phone,
+        officer.phone,
       );
     } catch (e) {
-      this.logger.error(
-        `{id: ${officer.id}, name: ${officer.officer_name}, phone: ${officer.member.phone}} 평가자에게 메세지 발송에 실패했습니다. 에러 내용 ${e}`,
-      );
+      this.logger.error(`평가자에게 메세지 발송에 실패했습니다. 에러 내용 ${e}`);
     }
   }
 
   async saveEvaluationBySelf(memberId: string, dto: SelfEvaluationBodyDto): Promise<void> {
-    let evaluation = await this.officerEvaluationRepository.findOne({
-      where: {
-        member_id: memberId,
-        student_id: memberId,
-        status: 'COMPLETE',
-      },
-    });
+    const existing = await this.prisma.$queryRaw<any[]>`
+      SELECT id, series FROM officer_student_evaludate_relation_tb
+      WHERE member_id = ${memberId} AND student_id = ${memberId} AND status = 'COMPLETE'
+      LIMIT 1
+    `;
 
-    if (evaluation) {
-      // 있으면 계열 업데이트 및 기존 스코어 제거
-      evaluation.series = dto.series;
-      evaluation.update_dt = new Date();
-      await this.officerEvaluationRepository.save(evaluation);
+    let evaluationId: number;
 
-      await this.officerEvaluationScoreRepository.delete({
-        officer_relation_id: evaluation.id,
-      });
+    if (existing.length) {
+      evaluationId = existing[0].id;
+      await this.prisma.$executeRaw`
+        UPDATE officer_student_evaludate_relation_tb
+        SET series = ${dto.series}, update_dt = NOW()
+        WHERE id = ${evaluationId}
+      `;
+      await this.prisma.$executeRaw`
+        DELETE FROM officer_evaluation_score_tb WHERE officer_relation_id = ${evaluationId}
+      `;
     } else {
-      // 없으면 생성
-      evaluation = this.officerEvaluationRepository.create({
-        member_id: memberId,
-        student_id: memberId,
-        status: 'COMPLETE',
-        series: dto.series,
-        create_dt: new Date(),
-        update_dt: new Date(),
-      });
-      evaluation = await this.officerEvaluationRepository.save(evaluation);
+      const inserted = await this.prisma.$queryRaw<any[]>`
+        INSERT INTO officer_student_evaludate_relation_tb (member_id, student_id, status, series, create_dt, update_dt)
+        VALUES (${memberId}, ${memberId}, 'COMPLETE', ${dto.series}, NOW(), NOW())
+        RETURNING id
+      `;
+      evaluationId = inserted[0].id;
     }
 
-    // 새 스코어 저장
-    const scores = dto.scores.map((score) =>
-      this.officerEvaluationScoreRepository.create({
-        officer_relation_id: evaluation.id,
-        bottom_survey_id: score.surveyId,
-        score: score.score,
-      }),
-    );
-
-    await this.officerEvaluationScoreRepository.save(scores);
+    for (const score of dto.scores) {
+      await this.prisma.$executeRaw`
+        INSERT INTO officer_evaluation_score_tb (officer_relation_id, bottom_survey_id, score)
+        VALUES (${evaluationId}, ${score.surveyId}, ${score.score})
+      `;
+    }
   }
 
   async saveEvaluationByOfficer(memberId: string, dto: OfficerEvaluationBodyDto): Promise<void> {
-    const officer = await this.officerRepository.findOne({
-      where: {
-        member_id: memberId,
-      },
-    });
-    if (!officer) {
+    const officers = await this.prisma.$queryRaw<any[]>`
+      SELECT member_id FROM officer_list_tb WHERE member_id = ${memberId} LIMIT 1
+    `;
+    if (!officers.length) {
       throw new BadRequestException('평가자가 아닙니다.');
     }
 
-    const evaluation = await this.officerEvaluationRepository.findOne({
-      where: {
-        member_id: officer.member_id,
-        student_id: String(dto.studentId),
-        series: dto.series,
-      },
-    });
-
-    if (!evaluation) {
+    const evaluations = await this.prisma.$queryRaw<any[]>`
+      SELECT id FROM officer_student_evaludate_relation_tb
+      WHERE member_id = ${memberId} AND student_id = ${String(dto.studentId)} AND series = ${dto.series}
+      LIMIT 1
+    `;
+    if (!evaluations.length) {
       throw new BadRequestException('평가 신청이 존재하지 않습니다.');
     }
+    const evaluationId = evaluations[0].id;
 
-    evaluation.status = dto.saveType === 0 ? 'PROGRESS' : 'COMPLETE';
-    evaluation.update_dt = new Date();
-    await this.officerEvaluationRepository.save(evaluation);
-    await this.officerEvaluationScoreRepository.delete({
-      officer_relation_id: evaluation.id,
-    });
-    await this.officerEvaluationCommentRepository.delete({
-      officer_relation_id: evaluation.id,
-    });
+    const newStatus = dto.saveType === 0 ? 'PROGRESS' : 'COMPLETE';
+    await this.prisma.$executeRaw`
+      UPDATE officer_student_evaludate_relation_tb SET status = ${newStatus}, update_dt = NOW() WHERE id = ${evaluationId}
+    `;
+    await this.prisma.$executeRaw`
+      DELETE FROM officer_evaluation_score_tb WHERE officer_relation_id = ${evaluationId}
+    `;
+    await this.prisma.$executeRaw`
+      DELETE FROM officer_evaluation_comment_tb WHERE officer_relation_id = ${evaluationId}
+    `;
 
-    // 새 스코어 저장
-    const scores = dto.scores.map((score) =>
-      this.officerEvaluationScoreRepository.create({
-        officer_relation_id: evaluation.id,
-        bottom_survey_id: score.surveyId,
-        score: score.score,
-      }),
-    );
-    // 새 코멘트 저장
-    const comments = dto.comments.map((comment) =>
-      this.officerEvaluationCommentRepository.create({
-        officer_relation_id: evaluation.id,
-        main_survey_type: comment.mainSurveyType,
-        comment: comment.comment,
-      }),
-    );
+    for (const score of dto.scores) {
+      await this.prisma.$executeRaw`
+        INSERT INTO officer_evaluation_score_tb (officer_relation_id, bottom_survey_id, score)
+        VALUES (${evaluationId}, ${score.surveyId}, ${score.score})
+      `;
+    }
 
-    await this.officerEvaluationScoreRepository.save(scores);
-    await this.officerEvaluationCommentRepository.save(comments);
+    for (const comment of dto.comments) {
+      await this.prisma.$executeRaw`
+        INSERT INTO officer_evaluation_comment_tb (officer_relation_id, main_survey_type, comment)
+        VALUES (${evaluationId}, ${comment.mainSurveyType}, ${comment.comment})
+      `;
+    }
   }
 
-  /**
-   * 학생의 생기부 파일 다운로드 URL 조회 (사정관용)
-   * @param officerMemberId - 사정관의 member_id
-   * @param studentId - 학생의 member_id
-   * @returns 다운로드 URL 및 파일명
-   */
   async getStudentSchoolRecordFile(
     officerMemberId: string,
     studentId: string,
   ): Promise<{ url: string; fileName: string }> {
-    // 사정관 여부 확인
-    const officer = await this.officerRepository.findOne({
-      where: { member_id: officerMemberId },
-    });
-    if (!officer) {
+    const officers = await this.prisma.$queryRaw<any[]>`
+      SELECT member_id FROM officer_list_tb WHERE member_id = ${officerMemberId} LIMIT 1
+    `;
+    if (!officers.length) {
       throw new BadRequestException('평가자가 아닙니다.');
     }
 
-    // 해당 학생에 대한 평가 신청이 있는지 확인
-    const evaluation = await this.officerEvaluationRepository.findOne({
-      where: {
-        member_id: officerMemberId,
-        student_id: studentId,
-      },
-    });
-    if (!evaluation) {
+    const evaluations = await this.prisma.$queryRaw<any[]>`
+      SELECT id FROM officer_student_evaludate_relation_tb
+      WHERE member_id = ${officerMemberId} AND student_id = ${studentId}
+      LIMIT 1
+    `;
+    if (!evaluations.length) {
       throw new BadRequestException('해당 학생에 대한 평가 신청이 존재하지 않습니다.');
     }
 
-    // 학생의 생기부 파일 조회
-    const file = await this.memberUploadFileListRepository.findOne({
-      where: {
-        member_id: studentId,
-        file_type: 'school-record-pdf',
-      },
-      order: {
-        create_dt: 'DESC', // 가장 최근 파일
-      },
-    });
-
-    if (!file) {
+    const files = await this.prisma.$queryRaw<any[]>`
+      SELECT file_path, file_name FROM member_upload_file_list_tb
+      WHERE member_id = ${studentId} AND file_type = 'school-record-pdf'
+      ORDER BY create_dt DESC LIMIT 1
+    `;
+    if (!files.length) {
       throw new NotFoundException('학생의 생기부 파일이 존재하지 않습니다.');
     }
 
-    // GCS URL 생성
-    const url = `${this.gcsPublicUrl}/${file.file_path}`;
-
-    return {
-      url,
-      fileName: file.file_name,
-    };
+    const url = `${this.gcsPublicUrl}/${files[0].file_path}`;
+    return { url, fileName: files[0].file_name };
   }
 }

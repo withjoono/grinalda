@@ -308,7 +308,7 @@ function SusiRequest() {
 
                   {/* 역량별 점수 + 총점 */}
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-                    {(Object.entries(evalResult.scores) as [CompetencyCategory, number][]).map(
+                    {(Object.entries(evalResult.scores || {}) as [CompetencyCategory, number][]).map(
                       ([cat, score]) => (
                         <div key={cat} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
                           <div className="flex items-center gap-2">
