@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/custom/button";
 import { MinusIcon, PlusIcon, AlertTriangle } from "lucide-react";
 import { SubjectInputItem } from "./subject-input-item";
@@ -35,6 +35,18 @@ export const LifeRecordInputTabs: React.FC = () => {
     () => Object.values(emptyFieldCountByGrade).reduce((a, b) => a + b, 0),
     [emptyFieldCountByGrade],
   );
+
+  const [showEmptyWarning, setShowEmptyWarning] = useState(false);
+
+  const handleSave = useCallback(() => {
+    if (totalEmptyFields > 0) {
+      setShowEmptyWarning(true);
+      setTimeout(() => setShowEmptyWarning(false), 3000);
+      return;
+    }
+    setShowEmptyWarning(false);
+    onClickSaveGrade();
+  }, [totalEmptyFields, onClickSaveGrade]);
 
   const renderGradeButtons = useMemo(
     () => (
@@ -277,8 +289,16 @@ export const LifeRecordInputTabs: React.FC = () => {
               </div>
             </div>
           )}
+          {showEmptyWarning && (
+            <div className="flex items-center gap-2 rounded-lg border border-red-300 bg-red-50 p-3 animate-[shake_0.5s_ease-in-out] dark:border-red-700 dark:bg-red-950/40">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0 text-red-600 dark:text-red-400" />
+              <p className="text-sm font-medium text-red-700 dark:text-red-300">
+                빈칸에 수동 입력이 완료되어야 저장됩니다.
+              </p>
+            </div>
+          )}
           <div className="flex justify-end">
-            <Button onClick={onClickSaveGrade}>저장하기</Button>
+            <Button onClick={handleSave}>저장하기</Button>
           </div>
         </div>
       </div>
