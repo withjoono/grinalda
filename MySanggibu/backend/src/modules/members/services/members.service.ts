@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { RegisterWithEmailDto } from 'src/auth/dtos/register-with-email.dto';
@@ -11,214 +10,165 @@ import { EditProfileDto } from '../dtos/edit-profile.dto';
 export class MembersService {
   private readonly logger = new Logger(MembersService.name);
 
-  constructor(    private bcryptService: BcryptService,
+  constructor(
+    private readonly prisma: PrismaService,
+    private bcryptService: BcryptService,
   ) { }
 
-  findOneByEmail(email: string): Promise<MemberEntity | null> {
-    return this.membersRepository.findOneBy({
-      email,
-    });
+  async findOneByEmail(email: string): Promise<any | null> {
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE email = ${email} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  findOneByEmailAndProviderType(
+  async findOneByEmailAndProviderType(
     email: string,
     providerType: 'local' | 'google' | 'naver',
-  ): Promise<MemberEntity | null> {
-    return this.membersRepository.findOneBy({
-      email,
-      provider_type: providerType,
-    });
+  ): Promise<any | null> {
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE email = ${email} AND provider_type = ${providerType} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  findOneById(id: string | number): Promise<MemberEntity | null> {
-    return this.membersRepository.findOneBy({
-      id: String(id),
-    });
+  async findOneById(id: string | number): Promise<any | null> {
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE id = ${String(id)} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  findMeById(id: string | number): Promise<MemberEntity | null> {
-    return this.membersRepository.findOne({
-      where: { id: String(id) },
-      select: {
-        id: true,
-        email: true,
-        role_type: true,
-        phone: true,
-        ck_sms_agree: true,
-        nickname: true,
-        s_type_id: true,
-        hst_type_id: true,
-        g_type_id: true,
-        graduate_year: true,
-        major: true,
-        member_type: true,
-      },
-    });
+  async findMeById(id: string | number): Promise<any | null> {
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT id, email, role_type, phone, ck_sms_agree, nickname, s_type_id, hst_type_id, g_type_id, graduate_year, major, member_type
+      FROM auth_member WHERE id = ${String(id)} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
   async findActiveServicesById(memberId: string | number): Promise<string[]> {
     // 테스트 계정은 모든 서비스 이용 가능
     const testAccountEmails = ['test@test.com', 'admin@test.com', 'test2@test.com', 'test3@test.com'];
-    const member = await this.membersRepository.findOne({
-      where: { id: String(memberId) },
-      select: ['email'],
-    });
+    const members = await this.prisma.$queryRaw<any[]>`
+      SELECT email FROM auth_member WHERE id = ${String(memberId)} LIMIT 1
+    `;
 
-    if (member && testAccountEmails.includes(member.email)) {
-      return ['S', 'J', 'T']; // 수시, 정시, 티켓 모두 활성화
+    if (members.length > 0 && testAccountEmails.includes(members[0].email)) {
+      return ['S', 'J', 'T'];
     }
 
     try {
-      const query = `
+      const results = await this.prisma.$queryRaw<any[]>`
         SELECT ps.service_range_code
         FROM pay_contract_tb pc
         JOIN pay_order_tb po ON pc.order_id = po.id
         JOIN pay_service_tb ps ON po.pay_service_id = ps.id
-        WHERE pc.member_id = $1
+        WHERE pc.member_id = ${String(memberId)}
           AND pc.contract_period_end_dt > NOW()
           AND pc.contract_use = 1
       `;
-      const results = await this.dataSource.query(query, [memberId]);
-
       return results.map((result) => result.service_range_code);
     } catch (error) {
-      // pay_contract_tb 테이블이 없는 경우 (수시앱 DB) 또는 에러 발생 시
-      // 모든 서비스 접근 허용 (개발/테스트 환경)
       this.logger.warn(`findActiveServicesById failed for member ${memberId}: ${error.message}`);
-      return ['S', 'J', 'T']; // 수시, 정시, 티켓 모두 활성화
+      return ['S', 'J', 'T'];
     }
   }
 
-  findOneByOAuthId(oauthId: string): Promise<MemberEntity | null> {
-    return this.membersRepository.findOneBy({
-      oauth_id: oauthId,
-    });
+  async findOneByOAuthId(oauthId: string): Promise<any | null> {
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE oauth_id = ${oauthId} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  findOneByPhone(phone: string): Promise<MemberEntity | null> {
-    return this.membersRepository.findOneBy({
-      phone: phone.replaceAll('-', ''),
-    });
+  async findOneByPhone(phone: string): Promise<any | null> {
+    const cleanPhone = phone.replaceAll('-', '');
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE phone = ${cleanPhone} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  async saveMemberByEmail(data: RegisterWithEmailDto): Promise<MemberEntity | null> {
+  async saveMemberByEmail(data: RegisterWithEmailDto): Promise<any | null> {
     const hashedPassword = await this.bcryptService.hashPassword(data.password);
-    const member = this.membersRepository.create({
-      nickname: data.nickname,
-      email: data.email,
-      password: hashedPassword,
-      role_type: 'ROLE_USER',
-      phone: data.phone?.replaceAll('-', '') || '', // [임시] phone 선택적 처리
-      ck_sms: true,
-      ck_sms_agree: data.ckSmsAgree,
-      graduate_year: data.graduateYear,
-      hst_type_id: data.hstTypeId,
-      major: data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences',
-      account_stop_yn: 'N',
-      provider_type: 'local',
-      member_type: data.memberType || 'student',
-      create_dt: new Date(),
-      update_dt: new Date(),
-    });
+    const phoneClean = data.phone?.replaceAll('-', '') || '';
+    const majorVal = data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences';
+    const memberType = data.memberType || 'student';
 
-    return this.membersRepository.save(member);
+    const results = await this.prisma.$queryRaw<any[]>`
+      INSERT INTO auth_member (nickname, email, password, role_type, phone, ck_sms, ck_sms_agree, graduate_year, hst_type_id, major, account_stop_yn, provider_type, member_type, create_dt, update_dt)
+      VALUES (${data.nickname}, ${data.email}, ${hashedPassword}, 'ROLE_USER', ${phoneClean}, true, ${data.ckSmsAgree}, ${data.graduateYear}, ${data.hstTypeId}, ${majorVal}, 'N', 'local', ${memberType}, NOW(), NOW())
+      RETURNING *
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
   async saveMemberBySocial(
     data: RegisterWithSocialDto,
     socialUser: SocialUser,
-  ): Promise<MemberEntity | null> {
-    const member = this.membersRepository.create({
-      nickname: data.nickname,
-      email: socialUser.email,
-      profile_image_url: socialUser.profile_image,
-      oauth_id: socialUser.id,
-      role_type: 'ROLE_USER',
-      phone: data.phone?.replaceAll('-', '') || '', // [임시] phone 선택적 처리
-      ck_sms: true,
-      ck_sms_agree: data.ckSmsAgree,
-      graduate_year: data.graduateYear,
-      hst_type_id: data.hstTypeId,
-      major: data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences',
-      account_stop_yn: 'N',
-      member_type: data.memberType || 'student',
-      provider_type: data.socialType,
-      create_dt: new Date(),
-      update_dt: new Date(),
-    });
+  ): Promise<any | null> {
+    const phoneClean = data.phone?.replaceAll('-', '') || '';
+    const majorVal = data.isMajor === '0' ? 'LiberalArts' : 'NaturalSciences';
+    const memberType = data.memberType || 'student';
 
-    return this.membersRepository.save(member);
+    const results = await this.prisma.$queryRaw<any[]>`
+      INSERT INTO auth_member (nickname, email, profile_image_url, oauth_id, role_type, phone, ck_sms, ck_sms_agree, graduate_year, hst_type_id, major, account_stop_yn, member_type, provider_type, create_dt, update_dt)
+      VALUES (${data.nickname}, ${socialUser.email}, ${socialUser.profile_image || ''}, ${socialUser.id}, 'ROLE_USER', ${phoneClean}, true, ${data.ckSmsAgree}, ${data.graduateYear}, ${data.hstTypeId}, ${majorVal}, 'N', ${memberType}, ${data.socialType}, NOW(), NOW())
+      RETURNING *
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
-  async editProfile(memberId: string, updateData: EditProfileDto): Promise<MemberEntity> {
+  async editProfile(memberId: string, updateData: EditProfileDto): Promise<any> {
     const member = await this.findOneById(memberId);
     if (!member) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
-    if (updateData.major !== undefined) {
-      if (updateData.major === 0) {
-        member.major = 'LiberalArts';
-      } else {
-        member.major = 'NaturalSciences';
-      }
-    }
 
-    if (updateData.ck_sms_agree !== undefined) {
-      member.ck_sms_agree = updateData.ck_sms_agree;
-    }
+    const majorVal = updateData.major !== undefined
+      ? (updateData.major === 0 ? 'LiberalArts' : 'NaturalSciences')
+      : member.major;
 
-    if (updateData.graduate_year !== undefined) {
-      member.graduate_year = updateData.graduate_year;
-    }
+    const ckSmsAgree = updateData.ck_sms_agree !== undefined ? updateData.ck_sms_agree : member.ck_sms_agree;
+    const graduateYear = updateData.graduate_year !== undefined ? updateData.graduate_year : member.graduate_year;
+    const hstTypeId = updateData.hst_type_id !== undefined ? updateData.hst_type_id : member.hst_type_id;
 
-    if (updateData.hst_type_id !== undefined) {
-      member.hst_type_id = updateData.hst_type_id;
-    }
-
-    member.update_dt = new Date();
-
-    return this.membersRepository.save(member);
+    const results = await this.prisma.$queryRaw<any[]>`
+      UPDATE auth_member
+      SET major = ${majorVal}, ck_sms_agree = ${ckSmsAgree}, graduate_year = ${graduateYear}, hst_type_id = ${hstTypeId}, update_dt = NOW()
+      WHERE id = ${memberId}
+      RETURNING *
+    `;
+    return results.length > 0 ? results[0] : member;
   }
 
-  findOneByEmailAndPhone(email: string, phone: string): Promise<MemberEntity | null> {
-    return this.membersRepository.findOne({
-      where: { email, phone: phone.replaceAll('-', '') },
-    });
+  async findOneByEmailAndPhone(email: string, phone: string): Promise<any | null> {
+    const cleanPhone = phone.replaceAll('-', '');
+    const results = await this.prisma.$queryRaw<any[]>`
+      SELECT * FROM auth_member WHERE email = ${email} AND phone = ${cleanPhone} LIMIT 1
+    `;
+    return results.length > 0 ? results[0] : null;
   }
 
   async updatePassword(memberId: string | number, newPassword: string): Promise<void> {
-    await this.membersRepository.update(memberId, {
-      password: newPassword,
-      provider_type: 'local',
-    });
+    await this.prisma.$executeRaw`
+      UPDATE auth_member SET password = ${newPassword}, provider_type = 'local' WHERE id = ${String(memberId)}
+    `;
   }
 
-  /**
-   * Hub OAuth로부터 받은 정보로 사용자 생성
-   * @param data Hub에서 받은 사용자 정보
-   * @returns 생성된 MemberEntity
-   */
   async createMemberFromOAuth(data: {
     email: string;
     nickname: string;
     phone: string;
     hubMemberId: string;
-  }): Promise<MemberEntity> {
-    const member = this.membersRepository.create({
-      email: data.email,
-      nickname: data.nickname,
-      phone: data.phone?.replaceAll('-', '') || '',
-      oauth_id: data.hubMemberId, // Hub의 memberId 저장
-      provider_type: 'hub', // Hub OAuth 연동임을 표시
-      role_type: 'ROLE_USER',
-      ck_sms: true,
-      ck_sms_agree: true,
-      account_stop_yn: 'N',
-      member_type: 'student', // 기본값
-      create_dt: new Date(),
-      update_dt: new Date(),
-    });
-
-    return this.membersRepository.save(member);
+  }): Promise<any> {
+    const phoneClean = data.phone?.replaceAll('-', '') || '';
+    const results = await this.prisma.$queryRaw<any[]>`
+      INSERT INTO auth_member (email, nickname, phone, oauth_id, provider_type, role_type, ck_sms, ck_sms_agree, account_stop_yn, member_type, create_dt, update_dt)
+      VALUES (${data.email}, ${data.nickname}, ${phoneClean}, ${data.hubMemberId}, 'hub', 'ROLE_USER', true, true, 'N', 'student', NOW(), NOW())
+      RETURNING *
+    `;
+    return results[0];
   }
 }
