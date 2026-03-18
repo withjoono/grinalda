@@ -97,6 +97,7 @@ export interface SemesterEvalRequestDto {
 
 export interface ComprehensiveEvalRequestDto {
     grade: string;
+    targetSeries?: string; // 목표 계열 (예: "자연과학>물리>물리학")
     subjectTexts: Array<{ semester: string; subjectName: string; text: string }>;
     creativeTexts: Array<{ activityType: string; text: string }>;
     behaviorTexts: Array<{ text: string }>;
