@@ -2,6 +2,7 @@
 import './instrumentation';
 
 import { NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from './config/config.type';
@@ -14,7 +15,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: {
       origin: [
         // 프로덕션 도메인
@@ -32,6 +33,10 @@ async function bootstrap() {
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
     },
   });
+
+  // Body parser limit 설정 (생기부 전체 텍스트 전송 시 기본 100KB 초과 방지)
+  app.useBodyParser('json', { limit: '5mb' });
+  app.useBodyParser('urlencoded', { limit: '5mb', extended: true });
 
   // Helmet - HTTP 보안 헤더 설정 (XSS, Clickjacking, MIME 스니핑 방지)
   app.use(
@@ -187,7 +192,7 @@ async function bootstrap() {
   // CORS는 NestFactory.create()에서 설정됨 (Helmet보다 먼저 적용되어야 함)
 
   const appPort = process.env.PORT || configService.getOrThrow('app', { infer: true }).port;
-  await app.listen(appPort, '127.0.0.1');
+  await app.listen(appPort, '0.0.0.0');
 
   console.log(`Application is running on: http://localhost:${appPort}`);
   console.log(`Swagger documentation: http://localhost:${appPort}/swagger`);
