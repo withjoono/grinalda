@@ -35,7 +35,11 @@ export const SubjectInputItem = React.memo(
         (e) => e.index === index && e.field === field && !e.isSelectSubject,
       );
 
+    const isEmpty = (field: string) =>
+      subjectItem.mainSubjectCode && !((subjectItem as any)[field]);
+
     const errorRingClass = "ring-2 ring-red-400 border-red-300";
+    const emptyHighlightClass = "ring-2 ring-amber-300 border-amber-200 bg-amber-50 dark:bg-amber-950/30";
 
     return (
       <div className="flex items-center gap-2">
@@ -125,14 +129,14 @@ export const SubjectInputItem = React.memo(
         </Select>
 
         <Input
-          className="min-w-[60px] max-w-[60px]"
+          className={`min-w-[60px] max-w-[60px] ${isEmpty("unit") ? emptyHighlightClass : ""}`}
           placeholder="단위수"
           type="text"
           value={subjectItem.unit || ""}
           onChange={(e) => onChangeSubjectValue(index, "unit", e.target.value)}
         />
         <Input
-          className="min-w-[60px] max-w-[60px]"
+          className={`min-w-[60px] max-w-[60px] ${isEmpty("rawScore") ? emptyHighlightClass : ""}`}
           placeholder="원점수"
           type="text"
           value={subjectItem.rawScore || ""}
@@ -141,7 +145,7 @@ export const SubjectInputItem = React.memo(
           }
         />
         <Input
-          className="min-w-[60px] max-w-[60px]"
+          className={`min-w-[60px] max-w-[60px] ${isEmpty("subSubjectAverage") ? emptyHighlightClass : ""}`}
           placeholder="과목평균"
           type="text"
           value={subjectItem.subSubjectAverage || ""}
@@ -150,7 +154,7 @@ export const SubjectInputItem = React.memo(
           }
         />
         <Input
-          className="min-w-[60px] max-w-[60px]"
+          className={`min-w-[60px] max-w-[60px] ${isEmpty("standardDeviation") ? emptyHighlightClass : ""}`}
           placeholder="표준편차"
           type="text"
           value={subjectItem.standardDeviation || ""}
@@ -180,7 +184,7 @@ export const SubjectInputItem = React.memo(
           </SelectContent>
         </Select>
         <Input
-          className="min-w-[60px] max-w-[60px]"
+          className={`min-w-[60px] max-w-[60px] ${isEmpty("studentsNum") ? emptyHighlightClass : ""}`}
           placeholder="수강자수"
           type="text"
           value={subjectItem.studentsNum || ""}

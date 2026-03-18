@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Button } from "@/components/custom/button";
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { MinusIcon, PlusIcon, AlertTriangle } from "lucide-react";
 import { SubjectInputItem } from "./subject-input-item";
 import { SelectSubjectInputItem } from "./select-subject-input-item";
 import { AttendanceInputItem } from "./attendance-input-item";
@@ -21,6 +21,7 @@ export const LifeRecordInputTabs: React.FC = () => {
     onClickSaveGrade,
     validationErrors,
     errorCountByGrade,
+    emptyFieldCountByGrade,
   } = useLifeRecord();
 
   const { data: staticData, isLoading: isStaticDataLoading } = useGetStaticData();
@@ -28,6 +29,11 @@ export const LifeRecordInputTabs: React.FC = () => {
   const subjects = useMemo(
     () => staticData?.subjects || { MAIN_SUBJECTS: {}, SUBJECTS: {} },
     [staticData],
+  );
+
+  const totalEmptyFields = useMemo(
+    () => Object.values(emptyFieldCountByGrade).reduce((a, b) => a + b, 0),
+    [emptyFieldCountByGrade],
   );
 
   const renderGradeButtons = useMemo(
@@ -47,11 +53,16 @@ export const LifeRecordInputTabs: React.FC = () => {
                 {errorCountByGrade[grade]}
               </span>
             )}
+            {(errorCountByGrade[grade] || 0) === 0 && (emptyFieldCountByGrade[grade] || 0) > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white shadow-sm">
+                {emptyFieldCountByGrade[grade]}
+              </span>
+            )}
           </Button>
         ))}
       </div>
     ),
-    [currentGrade, setCurrentGrade, errorCountByGrade],
+    [currentGrade, setCurrentGrade, errorCountByGrade, emptyFieldCountByGrade],
   );
 
   const renderAttendanceSection = useMemo(
@@ -253,6 +264,19 @@ export const LifeRecordInputTabs: React.FC = () => {
           {renderAttendanceSection}
           {renderSubjectSection}
           {renderSelectSubjectSection}
+          {totalEmptyFields > 0 && (
+            <div className="flex items-start gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/40">
+              <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">
+                  노란색으로 표시된 {totalEmptyFields}개 항목이 비어있습니다
+                </p>
+                <p className="text-xs text-amber-700 dark:text-amber-300">
+                  생기부 파싱 시 인식되지 않은 필드입니다. 수동으로 입력 후 저장해주세요!
+                </p>
+              </div>
+            </div>
+          )}
           <div className="flex justify-end">
             <Button onClick={onClickSaveGrade}>저장하기</Button>
           </div>

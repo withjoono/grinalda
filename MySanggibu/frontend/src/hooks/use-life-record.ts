@@ -440,6 +440,33 @@ export const useLifeRecord = () => {
     return counts;
   }, [validationErrors]);
 
+  // 학년별 빈 필드 수 (교과/과목이 선택된 행에서 비어있는 숫자 필드 카운트)
+  const emptyFieldCountByGrade = useMemo(() => {
+    const counts: Record<string, number> = { "1": 0, "2": 0, "3": 0 };
+    const normalFields = ["unit", "rawScore", "subSubjectAverage", "standardDeviation", "studentsNum"];
+    const selectFields = ["unit", "rawScore", "subSubjectAverage", "studentsNum"];
+
+    Object.entries(schoolrecordSubjectLearningList).forEach(([grade, items]) => {
+      items.forEach((item) => {
+        if (item.mainSubjectCode) {
+          normalFields.forEach((field) => {
+            if (!((item as any)[field])) counts[grade]++;
+          });
+        }
+      });
+    });
+    Object.entries(schoolrecordSelectSubjectList).forEach(([grade, items]) => {
+      items.forEach((item) => {
+        if (item.mainSubjectCode) {
+          selectFields.forEach((field) => {
+            if (!((item as any)[field])) counts[grade]++;
+          });
+        }
+      });
+    });
+    return counts;
+  }, [schoolrecordSubjectLearningList, schoolrecordSelectSubjectList]);
+
   return {
     currentGrade,
     setCurrentGrade,
@@ -453,6 +480,7 @@ export const useLifeRecord = () => {
     onClickSaveGrade,
     validationErrors: currentGradeErrors,
     errorCountByGrade,
+    emptyFieldCountByGrade,
     clearValidationErrors,
   };
 };
