@@ -54,7 +54,7 @@ export class MemberCombinationController {
     @CurrentMemberId() memberId: string,
     @Body()
     createMemberCombinationDto: CreateMemberRecruitmentUnitCombinationDto,
-  ): Promise<MemberRecruitmentUnitCombinationResponseDto> {
+  ): Promise<any> {
     return this.memberCombinationService.create(memberId, createMemberCombinationDto);
   }
 
@@ -81,7 +81,7 @@ export class MemberCombinationController {
   @UseGuards(MemberPermissionGuard)
   async findAll(
     @CurrentMemberId() memberId: string,
-  ): Promise<MemberRecruitmentUnitCombinationResponseDto[]> {
+  ): Promise<any[]> {
     return this.memberCombinationService.findAll(memberId);
   }
 
@@ -114,7 +114,7 @@ export class MemberCombinationController {
   async findOne(
     @CurrentMemberId() memberId: string,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<MemberRecruitmentUnitCombinationResponseDto> {
+  ): Promise<any> {
     return this.memberCombinationService.findOne(id, memberId);
   }
 
@@ -153,7 +153,7 @@ export class MemberCombinationController {
     @Param('id', ParseIntPipe) id: number,
     @Body()
     updateMemberCombinationDto: UpdateMemberRecruitmentUnitCombinationDto,
-  ): Promise<MemberRecruitmentUnitCombinationResponseDto> {
+  ): Promise<any> {
     return this.memberCombinationService.update(memberId, id, updateMemberCombinationDto);
   }
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { PrismaService } from 'src/database/prisma.service';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import {
@@ -8,51 +7,77 @@ import {
 
 @Injectable()
 export class MemberRecruitmentUnitCombinationService {
-  constructor(  ) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     memberId: string,
     createDto: CreateMemberRecruitmentUnitCombinationDto,
-  ): Promise<MemberRecruitmentUnitCombinationEntity> {
-    const combination = new MemberRecruitmentUnitCombinationEntity();
-    combination.name = createDto.name;
-    combination.member = { id: memberId } as any;
-
-    const recruitmentUnits = await this.recruitmentUnitRepository.find({
-      where: {
-        id: In(createDto.recruitment_unit_ids),
-      },
+  ) {
+    // 모집단위 ID 유효성 검사
+    const recruitmentUnits = await this.prisma.ss_recruitment_unit.findMany({
+      where: { id: { in: createDto.recruitment_unit_ids } },
     });
     if (recruitmentUnits.length !== createDto.recruitment_unit_ids.length) {
       throw new BadRequestException('Some recruitment units were not found');
     }
 
-    combination.recruitment_units = recruitmentUnits;
-
-    return this.combinationRepository.save(combination);
-  }
-
-  async findAll(memberId: string): Promise<MemberRecruitmentUnitCombinationEntity[]> {
-    return this.combinationRepository.find({
-      where: { member: { id: memberId } },
-      relations: [
-        'recruitment_units',
-        'recruitment_units.admission',
-        'recruitment_units.admission.university',
-        'recruitment_units.admission.category',
-        'recruitment_units.general_field',
-        'recruitment_units.interview',
-      ],
-      order: {
-        created_at: 'desc',
+    // 조합 생성 + 항목 연결
+    const combination = await this.prisma.ss_user_application_combination.create({
+      data: {
+        name: createDto.name,
+        member_id: memberId,
+        ss_user_recruitment_unit_combination_items: {
+          create: createDto.recruitment_unit_ids.map((ruId) => ({
+            recruitment_unit_id: ruId,
+          })),
+        },
+      },
+      include: {
+        ss_user_recruitment_unit_combination_items: {
+          include: {
+            ss_recruitment_unit: true,
+          },
+        },
       },
     });
+
+    return combination;
   }
 
-  async findOne(id: number, memberId: string): Promise<MemberRecruitmentUnitCombinationEntity> {
-    const combination = await this.combinationRepository.findOne({
-      where: { id, member: { id: memberId } },
-      relations: ['recruitment_units'],
+  async findAll(memberId: string) {
+    const combinations = await this.prisma.ss_user_application_combination.findMany({
+      where: { member_id: memberId },
+      include: {
+        ss_user_recruitment_unit_combination_items: {
+          include: {
+            ss_recruitment_unit: {
+              include: {
+                ss_admission: {
+                  include: {
+                    ss_university: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: { created_at: 'desc' },
+    });
+
+    return combinations;
+  }
+
+  async findOne(id: number, memberId: string) {
+    const combination = await this.prisma.ss_user_application_combination.findFirst({
+      where: { id, member_id: memberId },
+      include: {
+        ss_user_recruitment_unit_combination_items: {
+          include: {
+            ss_recruitment_unit: true,
+          },
+        },
+      },
     });
 
     if (!combination) {
@@ -66,22 +91,31 @@ export class MemberRecruitmentUnitCombinationService {
     memberId: string,
     id: number,
     updateDto: UpdateMemberRecruitmentUnitCombinationDto,
-  ): Promise<MemberRecruitmentUnitCombinationEntity> {
-    const combination = await this.findOne(id, memberId);
+  ) {
+    // 존재 확인
+    await this.findOne(id, memberId);
 
-    combination.name = updateDto.name;
+    const updated = await this.prisma.ss_user_application_combination.update({
+      where: { id },
+      data: { name: updateDto.name },
+      include: {
+        ss_user_recruitment_unit_combination_items: {
+          include: {
+            ss_recruitment_unit: true,
+          },
+        },
+      },
+    });
 
-    return this.combinationRepository.save(combination);
+    return updated;
   }
 
   async remove(memberId: string, id: number): Promise<void> {
-    const result = await this.combinationRepository.delete({
-      id,
-      member: { id: memberId },
-    });
+    // 존재 확인
+    await this.findOne(id, memberId);
 
-    if (result.affected === 0) {
-      throw new NotFoundException(`Combination with ID "${id}" not found`);
-    }
+    await this.prisma.ss_user_application_combination.delete({
+      where: { id },
+    });
   }
 }
