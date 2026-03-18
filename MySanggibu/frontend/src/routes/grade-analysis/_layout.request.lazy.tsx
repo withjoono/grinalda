@@ -156,7 +156,7 @@ function GradeAnalysisRequest() {
   }, [buildEvalRequest]);
 
   const selectedMaterial: EvalMaterialItem | null =
-    evalResult && selectedMaterialIdx !== null ? evalResult.materials[selectedMaterialIdx] : null;
+    evalResult && selectedMaterialIdx !== null ? evalResult.materials?.[selectedMaterialIdx] ?? null : null;
 
   const evalRequestData = buildEvalRequest();
 
@@ -400,7 +400,7 @@ function GradeAnalysisRequest() {
                   <div className="space-y-3">
                     <h4 className="text-lg font-bold text-gray-900">7등급 소재 평가</h4>
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                      {evalResult.materials.map((mat, idx) => (
+                      {(evalResult.materials || []).map((mat, idx) => (
                         <button
                           key={idx}
                           onClick={() => setSelectedMaterialIdx(idx)}
