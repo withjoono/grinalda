@@ -396,11 +396,13 @@ export const useLifeRecord = () => {
         await refetchSchoolRecord();
         setIsDirty(false);
         setValidationErrors([]);
+        return true;
       } else {
         throw new Error("저장 실패");
       }
     } catch (error) {
       toast.error("성적을 저장하는데 실패했습니다. 잠시 후 다시 시도해주세요.");
+      return false;
     }
   }, [
     isDirty,

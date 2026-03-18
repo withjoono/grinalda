@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/custom/button";
-import { MinusIcon, PlusIcon, AlertTriangle } from "lucide-react";
+import { MinusIcon, PlusIcon, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { SubjectInputItem } from "./subject-input-item";
 import { SelectSubjectInputItem } from "./select-subject-input-item";
 import { AttendanceInputItem } from "./attendance-input-item";
@@ -37,15 +38,19 @@ export const LifeRecordInputTabs: React.FC = () => {
   );
 
   const [showEmptyWarning, setShowEmptyWarning] = useState(false);
+  const [saveCompleted, setSaveCompleted] = useState(false);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     if (totalEmptyFields > 0) {
       setShowEmptyWarning(true);
       setTimeout(() => setShowEmptyWarning(false), 3000);
       return;
     }
     setShowEmptyWarning(false);
-    onClickSaveGrade();
+    const success = await onClickSaveGrade();
+    if (success) {
+      setSaveCompleted(true);
+    }
   }, [totalEmptyFields, onClickSaveGrade]);
 
   const renderGradeButtons = useMemo(
@@ -297,9 +302,34 @@ export const LifeRecordInputTabs: React.FC = () => {
               </p>
             </div>
           )}
-          <div className="flex justify-end">
-            <Button onClick={handleSave}>저장하기</Button>
-          </div>
+          {saveCompleted ? (
+            <div className="flex flex-col items-center gap-3 rounded-lg border border-green-300 bg-green-50 p-5 dark:border-green-700 dark:bg-green-950/40">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <p className="text-sm font-semibold text-green-800 dark:text-green-200">
+                  저장이 완료되었습니다!
+                </p>
+              </div>
+              <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
+                <Link to="/grade-analysis/performance">
+                  <Button variant="outline" className="w-full gap-2 border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/30">
+                    📊 교과성적 분석
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/grade-analysis/request">
+                  <Button variant="outline" className="w-full gap-2 border-purple-300 text-purple-700 hover:bg-purple-50 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-950/30">
+                    🤖 AI 사정관 평가
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <Button onClick={handleSave}>저장하기</Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
