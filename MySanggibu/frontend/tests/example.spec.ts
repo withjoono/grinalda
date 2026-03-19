@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('메인 페이지 로드', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/거북스쿨|GeobukSchool/i);
+  await expect(page).toHaveTitle(/생기뷰|SaenggiView/i);
 });
 
 test('페이지가 정상적으로 렌더링됨', async ({ page }) => {

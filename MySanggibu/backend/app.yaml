@@ -1,4 +1,4 @@
-service: mysanggibu-backend
+service: saenggiview-backend
 runtime: nodejs22
 instance_class: F2
 entrypoint: node dist/main.js
@@ -6,6 +6,7 @@ entrypoint: node dist/main.js
 env_variables:
   NODE_ENV: "production"
   PORT: "8080"
+  DATABASE_URL: "postgresql://tsuser:tsuser1234@localhost/geobukschool_prod?host=/cloudsql/ts-back-nest-479305:asia-northeast3:geobuk-db"
   DB_TYPE: "postgres"
   DB_HOST: "/cloudsql/ts-back-nest-479305:asia-northeast3:geobuk-db"
   DB_PORT: "5432"
@@ -13,7 +14,7 @@ env_variables:
   DB_PASSWORD: "tsuser1234"
   DB_NAME: "geobukschool_prod"
   DB_SYNCHRONIZE: "false"
-  DB_SCHEMA: "mysanggibu,hub,susi,jungsi"
+  DB_SCHEMA: "saenggiview,hub,susi,jungsi"
   AUTH_JWT_SECRET: "04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1"
   AUTH_JWT_TOKEN_EXPIRES_IN: "7200000"
   AUTH_REFRESH_SECRET: "178235718923571923571925sda9sd90f821309sdfa0s9df802139458sdfasd09f78adsf785a9cvads"
@@ -31,6 +32,7 @@ env_variables:
   GCS_BUCKET_NAME: "ts-back-nest-bk"
   GCS_PUBLIC_URL: "https://storage.googleapis.com/ts-back-nest-bk"
   HUB_API_URL: "https://ts-back-nest-479305.du.r.appspot.com"
+  # OPENAI_API_KEY: set via gcloud deploy --set-env-vars
 
 beta_settings:
   cloud_sql_instances: "ts-back-nest-479305:asia-northeast3:geobuk-db"

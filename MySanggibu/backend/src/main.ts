@@ -19,7 +19,7 @@ async function bootstrap() {
     cors: {
       origin: [
         // 프로덕션 도메인
-        'https://ms-front.web.app', // MySanggibu 프론트엔드
+        'https://ms-front.web.app', // 생기뷰 프론트엔드
         'https://ms-front.firebaseapp.com',
         'https://ts-front-479305.web.app', // Hub 프론트엔드
         'https://www.geobukschool.kr',
@@ -116,7 +116,7 @@ async function bootstrap() {
 
   if (!isProduction || swaggerEnabled) {
     const config = new DocumentBuilder()
-      .setTitle('거북스쿨 (TurtleSchool) API')
+      .setTitle('생기뷰 (SaenggiView) API')
       .setDescription(
         '대학 입시 컨설팅 서비스를 위한 교육 플랫폼 REST API\n\n' +
         '## 주요 기능\n' +
@@ -173,7 +173,7 @@ async function bootstrap() {
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document, {
-      customSiteTitle: '거북스쿨 API 문서',
+      customSiteTitle: '생기뷰 API 문서',
       customfavIcon: 'https://nestjs.com/img/logo-small.svg',
       customJs: [
         'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui-bundle.min.js',

@@ -93,7 +93,7 @@ function MsLandingPage() {
               수시 대입을 위한 생기부 분석 플랫폼
             </div>
             <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              <span className="text-olive-600">My 생기부</span>로
+              <span className="text-olive-600">생기뷰</span>로
               <br className="sm:hidden" />{" "}
               시작하는 대입 전략
             </h1>
@@ -183,7 +183,7 @@ function MsLandingPage() {
           <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
             <div className="flex-1 text-center lg:text-left">
               <h2 className="mb-4 text-3xl font-bold text-white">
-                왜 My 생기부인가요?
+                왜 생기뷰인가요?
               </h2>
               <p className="text-lg text-olive-100">
                 복잡한 생기부 데이터를 간편하게 관리하고,

@@ -7,12 +7,12 @@ export const Route = createFileRoute("/auth/login")({
 });
 
 /**
- * 마이생기부는 자체 로그인 페이지를 사용하지 않습니다.
+ * 생기뷰는 자체 로그인 페이지를 사용하지 않습니다.
  * Hub의 중앙 인증 시스템으로 리디렉트합니다.
  */
 function LoginRedirect() {
   useEffect(() => {
-    // Hub 로그인 페이지로 리디렉트 (로그인 후 MySanggibu로 돌아옴)
+    // Hub 로그인 페이지로 리디렉트 (로그인 후 생기뷰로 돌아옴)
     redirectToHubLogin('/');
   }, []);
 

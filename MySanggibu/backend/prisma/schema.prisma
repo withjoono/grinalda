@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["hub", "jungsi", "mysanggibu", "public", "susi"]
+  schemas  = ["hub", "jungsi", "saenggiview", "public", "susi"]
 }
 
 model app_subscriptions {
@@ -860,7 +860,7 @@ model ms_auth_member {
   create_dt       DateTime? @db.Timestamp(6)
   update_dt       DateTime? @db.Timestamp(6)
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 model sgb_attendance {
@@ -882,7 +882,7 @@ model sgb_attendance {
   result_unrecognized      Int?
   member_id                String? @db.VarChar(30)
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 model sgb_select_subject {
@@ -905,7 +905,7 @@ model sgb_select_subject {
   member_id           String?      @db.VarChar(30)
   auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_select_subject_member_id")
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -921,7 +921,7 @@ model sgb_sport_art {
   member_id   String?      @db.VarChar(30)
   auth_member auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_sport_art_member_id")
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 model sgb_subject_learning {
@@ -943,7 +943,7 @@ model sgb_subject_learning {
   member_id           String?      @db.VarChar(30)
   auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_subject_learning_member_id")
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 model sgb_volunteer {
@@ -957,16 +957,16 @@ model sgb_volunteer {
   member_id        String?      @db.VarChar(30)
   auth_member      auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_volunteer_member_id")
 
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
-model mysanggibu_typeorm_migrations {
+model saenggiview_typeorm_migrations {
   id        Int    @id(map: "PK_bb2f075707dd300ba86d0208923") @default(autoincrement())
   timestamp BigInt
   name      String @db.VarChar
 
   @@map("typeorm_migrations")
-  @@schema("mysanggibu")
+  @@schema("saenggiview")
 }
 
 model public_typeorm_migrations {

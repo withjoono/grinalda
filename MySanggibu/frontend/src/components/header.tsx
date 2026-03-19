@@ -118,7 +118,7 @@ export const Header = () => {
         <div className="container flex h-14 w-screen items-center justify-between">
           <Link to="/" className="flex shrink-0 items-center gap-2" style={{ textDecoration: 'none' }}>
             <img src="/logo.png" alt="logo" className="h-auto w-8" />
-            <span className="text-[15px] font-bold tracking-tight" style={{ color: 'var(--color-primary)' }}>My 생기부</span>
+            <span className="text-[15px] font-bold tracking-tight" style={{ color: 'var(--color-primary)' }}>생기뷰</span>
           </Link>
 
           <span className="flex lg:hidden">

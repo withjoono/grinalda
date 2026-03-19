@@ -65,7 +65,7 @@ module.exports = {
           800: "#5a0303",
           900: "#450202",
         },
-        // 생기부관리 - Deep Ocean (#007c77)
+        // 생기뷰 - Deep Ocean (#007c77)
         ocean: {
           50: "#effefe",
           100: "#c8fdfb",
