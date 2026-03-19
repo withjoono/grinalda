@@ -16,7 +16,7 @@ export class MockexamController {
     summary: '현재 로그인한 유저의 모의고사 원점수 목록을 가져오기',
   })
   @Get('raw')
-  async getMockExamRawScores(@Request() req): Promise<MockexamRawScoreEntity[]> {
+  async getMockExamRawScores(@Request() req): Promise<any[]> {
     return this.mockExamService.getMockexamRawScoresByMemberId(req.memberId);
   }
 

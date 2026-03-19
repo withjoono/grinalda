@@ -56,7 +56,7 @@ export interface CalculationFormula {
 // ========== 사용자 내신 데이터 타입 ==========
 
 /**
- * 학생부 과목 성적 (sgb_subject_learning에서 조회)
+ * 학생부 과목 성적 (sv_subject_learning에서 조회)
  */
 export interface SubjectGrade {
   id: number;

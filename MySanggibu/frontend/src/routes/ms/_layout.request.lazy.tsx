@@ -145,8 +145,16 @@ function SusiRequest() {
 
     try {
       const res = await nestApiClient.post("/schoolrecord/eval/comprehensive", dto);
-      const result = res.data?.data as ComprehensiveEvalResult;
-      setEvalResult(result);
+      console.log("[AI 평가] 원본 응답:", JSON.stringify(res.data, null, 2));
+      // 백엔드가 { success, data: result }로 감싸는데, nestApiClient 인터셉터가 camelizeKeys 적용
+      const raw = res.data;
+      const result = (raw?.data || raw) as ComprehensiveEvalResult;
+      console.log("[AI 평가] 추출된 result:", JSON.stringify(result, null, 2));
+      if (result && (result.scores || result.materials)) {
+        setEvalResult(result);
+      } else {
+        setEvalError("AI 평가 결과가 올바르지 않습니다. 콘솔을 확인해주세요.");
+      }
     } catch (err: any) {
       console.error("AI 평가 실패:", err);
       setEvalError(err?.response?.data?.message || err?.message || "AI 평가에 실패했습니다.");

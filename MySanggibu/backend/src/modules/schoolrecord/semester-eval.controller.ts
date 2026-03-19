@@ -5,12 +5,10 @@
  * - POST /schoolrecord/eval/comprehensive — 종합 평가 (세특+창체+행특)
  */
 
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { SemesterEvalService, SemesterEvalRequestDto, ComprehensiveEvalRequestDto } from './semester-eval.service';
-import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 @Controller('schoolrecord')
-@UseGuards(JwtAuthGuard)
 export class SemesterEvalController {
     constructor(private readonly semesterEvalService: SemesterEvalService) { }
 

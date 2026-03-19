@@ -49,11 +49,10 @@ export class CoreFieldsController {
   @ApiResponse({
     status: 200,
     description: '대계열 목록 조회 성공',
-    type: [MajorFieldEntity],
   })
   @ApiBearerAuth('access-token')
   @Get('major')
-  getAllMajorFields(): Promise<MajorFieldEntity[]> {
+  getAllMajorFields(): Promise<any[]> {
     return this.coreFieldsService.getAllMajorFields();
   }
 
@@ -65,11 +64,10 @@ export class CoreFieldsController {
   @ApiResponse({
     status: 200,
     description: '대계열 조회 성공',
-    type: MajorFieldEntity,
   })
   @ApiBearerAuth('access-token')
   @Get('major/:id')
-  getMajorFieldById(@Param('id', ParseIntPipe) id: number): Promise<MajorFieldEntity> {
+  getMajorFieldById(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.coreFieldsService.getMajorFieldById(id);
   }
 
@@ -81,7 +79,7 @@ export class CoreFieldsController {
   @ApiBearerAuth('access-token')
   @Post('major')
   @Roles(['ROLE_ADMIN'])
-  createMajorField(@Body() createMajorFieldDto: CreateMajorFieldDto): Promise<MajorFieldEntity> {
+  createMajorField(@Body() createMajorFieldDto: CreateMajorFieldDto): Promise<any> {
     return this.coreFieldsService.createMajorField(createMajorFieldDto);
   }
 
@@ -97,7 +95,7 @@ export class CoreFieldsController {
   updateMajorField(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateMajorFieldDto: UpdateMajorFieldDto,
-  ): Promise<MajorFieldEntity> {
+  ): Promise<any> {
     return this.coreFieldsService.updateMajorField(id, updateMajorFieldDto);
   }
 
@@ -122,7 +120,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '중계열 목록 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('mid')
-  getAllMidFields(): Promise<MidFieldEntity[]> {
+  getAllMidFields(): Promise<any[]> {
     return this.coreFieldsService.getAllMidFields();
   }
 
@@ -133,7 +131,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '중계열 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('mid/:id')
-  getMidFieldById(@Param('id', ParseIntPipe) id: number): Promise<MidFieldEntity> {
+  getMidFieldById(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.coreFieldsService.getMidFieldById(id);
   }
 
@@ -145,7 +143,7 @@ export class CoreFieldsController {
   @ApiBearerAuth('access-token')
   @Post('mid')
   @Roles(['ROLE_ADMIN'])
-  createMidField(@Body() createMidFieldDto: CreateMidFieldDto): Promise<MidFieldEntity> {
+  createMidField(@Body() createMidFieldDto: CreateMidFieldDto): Promise<any> {
     return this.coreFieldsService.createMidField(createMidFieldDto);
   }
 
@@ -161,7 +159,7 @@ export class CoreFieldsController {
   updateMidField(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateMidFieldDto: UpdateMidFieldDto,
-  ): Promise<MidFieldEntity> {
+  ): Promise<any> {
     return this.coreFieldsService.updateMidField(id, updateMidFieldDto);
   }
 
@@ -186,7 +184,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '소계열 목록 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('minor')
-  getAllMinorFields(): Promise<MinorFieldEntity[]> {
+  getAllMinorFields(): Promise<any[]> {
     return this.coreFieldsService.getAllMinorFields();
   }
 
@@ -197,7 +195,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '소계열 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('minor/:id')
-  getMinorFieldById(@Param('id', ParseIntPipe) id: number): Promise<MinorFieldEntity> {
+  getMinorFieldById(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.coreFieldsService.getMinorFieldById(id);
   }
 
@@ -209,7 +207,7 @@ export class CoreFieldsController {
   @ApiBearerAuth('access-token')
   @Post('minor')
   @Roles(['ROLE_ADMIN'])
-  createMinorField(@Body() createMinorFieldDto: CreateMinorFieldDto): Promise<MinorFieldEntity> {
+  createMinorField(@Body() createMinorFieldDto: CreateMinorFieldDto): Promise<any> {
     return this.coreFieldsService.createMinorField(createMinorFieldDto);
   }
 
@@ -225,7 +223,7 @@ export class CoreFieldsController {
   updateMinorField(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateMinorFieldDto: UpdateMinorFieldDto,
-  ): Promise<MinorFieldEntity> {
+  ): Promise<any> {
     return this.coreFieldsService.updateMinorField(id, updateMinorFieldDto);
   }
 
@@ -250,7 +248,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '일반계열 목록 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('general')
-  getAllGeneralFields(): Promise<GeneralFieldEntity[]> {
+  getAllGeneralFields(): Promise<any[]> {
     return this.coreFieldsService.getAllGeneralFields();
   }
 
@@ -261,7 +259,7 @@ export class CoreFieldsController {
   @ApiResponse({ status: 200, description: '일반계열 조회 성공' })
   @ApiBearerAuth('access-token')
   @Get('general/:id')
-  getGeneralFieldById(@Param('id', ParseIntPipe) id: number): Promise<GeneralFieldEntity> {
+  getGeneralFieldById(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.coreFieldsService.getGeneralFieldById(id);
   }
 
@@ -275,7 +273,7 @@ export class CoreFieldsController {
   @Roles(['ROLE_ADMIN'])
   createGeneralField(
     @Body() createGeneralFieldDto: CreateGeneralFieldDto,
-  ): Promise<GeneralFieldEntity> {
+  ): Promise<any> {
     return this.coreFieldsService.createGeneralField(createGeneralFieldDto);
   }
 
@@ -291,7 +289,7 @@ export class CoreFieldsController {
   updateGeneralField(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateGeneralFieldDto: UpdateGeneralFieldDto,
-  ): Promise<GeneralFieldEntity> {
+  ): Promise<any> {
     return this.coreFieldsService.updateGeneralField(id, updateGeneralFieldDto);
   }
 

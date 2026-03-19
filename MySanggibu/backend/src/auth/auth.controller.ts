@@ -48,7 +48,6 @@ export class AuthController implements OnModuleInit {
   private memoryStore: Map<string, { value: string; expiry: number }> = new Map();
 
   constructor(
-    private readonly prisma: PrismaService,
     private readonly service: AuthService,
     private readonly smsService: SmsService,
     private readonly membersService: MembersService,
@@ -137,7 +136,6 @@ export class AuthController implements OnModuleInit {
   @ApiResponse({
     status: 200,
     description: '사용자 정보 조회 성공',
-    type: MemberEntity,
   })
   @ApiResponse({
     status: 401,
@@ -148,7 +146,7 @@ export class AuthController implements OnModuleInit {
     groups: ['me'],
   })
   @Get('me')
-  public getCurrentMember(@CurrentMemberId() memberId: string): Promise<MemberEntity> {
+  public getCurrentMember(@CurrentMemberId() memberId: string): Promise<any> {
     return this.membersService.findMeById(memberId);
   }
 

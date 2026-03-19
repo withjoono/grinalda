@@ -71,7 +71,6 @@ export class CoreUniversityController {
   @ApiResponse({
     status: 200,
     description: '대학 상세 조회 성공',
-    type: UniversityEntity,
   })
   @ApiResponse({
     status: 404,
@@ -79,7 +78,7 @@ export class CoreUniversityController {
   })
   @ApiBearerAuth('access-token')
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<UniversityEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.universityService.findOne(id);
   }
 
@@ -90,7 +89,6 @@ export class CoreUniversityController {
   @ApiResponse({
     status: 201,
     description: '대학 추가 성공',
-    type: UniversityEntity,
   })
   @ApiResponse({
     status: 400,
@@ -103,7 +101,7 @@ export class CoreUniversityController {
   @ApiBearerAuth('access-token')
   @Post()
   @Roles(['ROLE_ADMIN'])
-  async create(@Body() dto: CreateUniversityDto): Promise<UniversityEntity> {
+  async create(@Body() dto: CreateUniversityDto): Promise<any> {
     return this.universityService.create(dto);
   }
 
@@ -115,7 +113,6 @@ export class CoreUniversityController {
   @ApiResponse({
     status: 200,
     description: '대학 수정 성공',
-    type: UniversityEntity,
   })
   @ApiResponse({
     status: 403,
@@ -131,7 +128,7 @@ export class CoreUniversityController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUniversityDto,
-  ): Promise<UniversityEntity> {
+  ): Promise<any> {
     return this.universityService.update(id, dto);
   }
 

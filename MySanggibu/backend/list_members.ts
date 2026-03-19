@@ -21,10 +21,10 @@ async function listMembers() {
             const resSchema = await client.query("SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'mysanggibu'");
             console.log('Skipping standard migration check due to history mismatch.');
 
-            console.log('Attempting manual creation of ms_auth_member table (in mysanggibu schema default)...');
+            console.log('Attempting manual creation of sv_auth_member table (in mysanggibu schema default)...');
             try {
                 await client.query(`
-                    CREATE TABLE IF NOT EXISTS mysanggibu.ms_auth_member (
+                    CREATE TABLE IF NOT EXISTS mysanggibu.sv_auth_member (
                         "id" BIGSERIAL NOT NULL, 
                         "hub_member_id" bigint NOT NULL, 
                         "nickname" character varying(255), 
@@ -44,7 +44,7 @@ async function listMembers() {
 
                 // Create index if not exists (Postgres doesn't support IF NOT EXISTS for INDEX easily in one line, but we can try catch)
                 try {
-                    await client.query(`CREATE UNIQUE INDEX "IDX_c1308731e66268fa4e2bd3b260" ON mysanggibu.ms_auth_member ("hub_member_id")`);
+                    await client.query(`CREATE UNIQUE INDEX "IDX_c1308731e66268fa4e2bd3b260" ON mysanggibu.sv_auth_member ("hub_member_id")`);
                     console.log('Index created.');
                 } catch (idxErr) {
                     console.log('Index creation skipped (likely exists):', idxErr.message);
@@ -53,19 +53,19 @@ async function listMembers() {
                 console.log('Error creating table manualy:', err.message);
             }
 
-            console.log('Searching for ms_auth_member table after manual creation:');
+            console.log('Searching for sv_auth_member table after manual creation:');
             const resFind = await client.query(`
                 SELECT table_schema, table_name 
                 FROM information_schema.tables 
-                WHERE table_name = 'ms_auth_member'
+                WHERE table_name = 'sv_auth_member'
             `);
             console.table(resFind.rows);
 
             if (resFind.rows.length > 0) {
                 const schema = resFind.rows[0].table_schema;
-                console.log(`Found ms_auth_member in schema: ${schema}`);
+                console.log(`Found sv_auth_member in schema: ${schema}`);
             } else {
-                console.log('ms_auth_member table NOT found even after manual creation.');
+                console.log('sv_auth_member table NOT found even after manual creation.');
             }
         } catch (e) {
             console.log('Error checking/creating schema:', e.message);

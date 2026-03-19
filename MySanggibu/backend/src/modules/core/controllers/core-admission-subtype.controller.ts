@@ -19,7 +19,6 @@ export class CoreAdmissionSubtypeController {
   @ApiResponse({
     status: 200,
     description: '전형 서브타입 목록 조회 성공',
-    type: [AdmissionSubtypeEntity],
   })
   @ApiResponse({
     status: 401,
@@ -27,7 +26,7 @@ export class CoreAdmissionSubtypeController {
   })
   @ApiBearerAuth('access-token')
   @Get()
-  async findAll(): Promise<AdmissionSubtypeEntity[]> {
+  async findAll(): Promise<any[]> {
     return this.admissionSubtypeService.findAll();
   }
 
@@ -39,7 +38,6 @@ export class CoreAdmissionSubtypeController {
   @ApiResponse({
     status: 200,
     description: '전형 서브타입 조회 성공',
-    type: AdmissionSubtypeEntity,
   })
   @ApiResponse({
     status: 404,
@@ -47,7 +45,7 @@ export class CoreAdmissionSubtypeController {
   })
   @ApiBearerAuth('access-token')
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<AdmissionSubtypeEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.admissionSubtypeService.findOne(id);
   }
 
@@ -58,7 +56,6 @@ export class CoreAdmissionSubtypeController {
   @ApiResponse({
     status: 201,
     description: '전형 서브타입 추가 성공',
-    type: AdmissionSubtypeEntity,
   })
   @ApiResponse({
     status: 400,
@@ -68,7 +65,7 @@ export class CoreAdmissionSubtypeController {
   @Post()
   async create(
     @Body() createAdmissionSubtypeDto: CreateAdmissionSubtypeDto,
-  ): Promise<AdmissionSubtypeEntity> {
+  ): Promise<any> {
     return this.admissionSubtypeService.create(createAdmissionSubtypeDto);
   }
 
@@ -80,7 +77,6 @@ export class CoreAdmissionSubtypeController {
   @ApiResponse({
     status: 200,
     description: '전형 서브타입 수정 성공',
-    type: AdmissionSubtypeEntity,
   })
   @ApiResponse({
     status: 404,
@@ -91,7 +87,7 @@ export class CoreAdmissionSubtypeController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateAdmissionSubtypeDto: UpdateAdmissionSubtypeDto,
-  ): Promise<AdmissionSubtypeEntity> {
+  ): Promise<any> {
     return this.admissionSubtypeService.update(id, updateAdmissionSubtypeDto);
   }
 

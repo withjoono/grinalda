@@ -63,7 +63,7 @@ export class OfficerEvaluationController {
   @Get(':id/comments')
   async getEvaluationCommentsByID(
     @Param('id') id: number,
-  ): Promise<OfficerEvaluationCommentEntity[]> {
+  ): Promise<any[]> {
     return this.officerEvaluationService.getEvaluationCommentsByID(id);
   }
 
@@ -72,7 +72,7 @@ export class OfficerEvaluationController {
    * @param id - 평가 ID
    */
   @Get(':id/scores')
-  async getEvaluationScoresByID(@Param('id') id: number): Promise<OfficerEvaluationScoreEntity[]> {
+  async getEvaluationScoresByID(@Param('id') id: number): Promise<any[]> {
     return this.officerEvaluationService.getEvaluationScoresByID(id);
   }
 
@@ -81,7 +81,7 @@ export class OfficerEvaluationController {
    */
   @Public()
   @Get('survey')
-  async getEvaluationSurvey(): Promise<OfficerEvaluationSurveyEntity[]> {
+  async getEvaluationSurvey(): Promise<any[]> {
     return this.officerEvaluationService.getEvaluationSurvey();
   }
 

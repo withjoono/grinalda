@@ -19,7 +19,6 @@ export class CoreAdmissionCategoryController {
   @ApiResponse({
     status: 200,
     description: '전형 카테고리 목록 조회 성공',
-    type: [AdmissionCategoryEntity],
   })
   @ApiResponse({
     status: 401,
@@ -27,7 +26,7 @@ export class CoreAdmissionCategoryController {
   })
   @ApiBearerAuth('access-token')
   @Get()
-  async findAll(): Promise<AdmissionCategoryEntity[]> {
+  async findAll(): Promise<any[]> {
     return this.admissionCategoryService.findAll();
   }
 
@@ -39,7 +38,6 @@ export class CoreAdmissionCategoryController {
   @ApiResponse({
     status: 200,
     description: '전형 카테고리 조회 성공',
-    type: AdmissionCategoryEntity,
   })
   @ApiResponse({
     status: 404,
@@ -47,7 +45,7 @@ export class CoreAdmissionCategoryController {
   })
   @ApiBearerAuth('access-token')
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<AdmissionCategoryEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.admissionCategoryService.findOne(id);
   }
 
@@ -58,7 +56,6 @@ export class CoreAdmissionCategoryController {
   @ApiResponse({
     status: 201,
     description: '전형 카테고리 추가 성공',
-    type: AdmissionCategoryEntity,
   })
   @ApiResponse({
     status: 400,
@@ -68,7 +65,7 @@ export class CoreAdmissionCategoryController {
   @Post()
   async create(
     @Body() createAdmissionCategoryDto: CreateAdmissionCategoryDto,
-  ): Promise<AdmissionCategoryEntity> {
+  ): Promise<any> {
     return this.admissionCategoryService.create(createAdmissionCategoryDto);
   }
 
@@ -80,7 +77,6 @@ export class CoreAdmissionCategoryController {
   @ApiResponse({
     status: 200,
     description: '전형 카테고리 수정 성공',
-    type: AdmissionCategoryEntity,
   })
   @ApiResponse({
     status: 404,
@@ -91,7 +87,7 @@ export class CoreAdmissionCategoryController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateAdmissionCategoryDto: UpdateAdmissionCategoryDto,
-  ): Promise<AdmissionCategoryEntity> {
+  ): Promise<any> {
     return this.admissionCategoryService.update(id, updateAdmissionCategoryDto);
   }
 

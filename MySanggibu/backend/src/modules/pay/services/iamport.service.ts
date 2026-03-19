@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { PrismaService } from '../../../database/prisma.service';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, catchError } from 'rxjs';

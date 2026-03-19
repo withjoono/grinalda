@@ -81,6 +81,7 @@ export interface SemesterEvalRequestDto {
 
 export interface ComprehensiveEvalRequestDto {
     grade: string;
+    targetSeries?: string; // 목표 계열 (예: "자연과학>물리>물리학")
     subjectTexts: Array<{ semester: string; subjectName: string; text: string }>;
     creativeTexts: Array<{ activityType: string; text: string }>;
     behaviorTexts: Array<{ text: string }>;
@@ -244,12 +245,16 @@ ${inputData}
             }
         }
 
+        const seriesContext = dto.targetSeries
+            ? `\n\n## 목표 계열\n학생의 목표 계열은 「${dto.targetSeries}」입니다. 이 계열의 관점에서 전공 적합성을 중점 평가해주세요. 해당 계열에서 요구하는 역량과 소재가 생기부에 어떻게 드러나는지를 분석하고, 계열 적합성에 대한 조언도 포함해주세요.`
+            : '';
+
         return `당신은 대한민국 대학 입학 사정관 관점에서 학생의 생기부를 종합 평가하는 전문가입니다.
 
 아래의 ${dto.grade}학년 전체(세특 + 창체 + 행특) 데이터를 종합 분석하여:
 1. 핵심 소재를 7등급으로 평가
 2. 4대 역량별 점수와 주석(코멘트)
-3. 강점/약점/다음 학기 조언을 제공해주세요.
+3. 강점/약점/다음 학기 조언을 제공해주세요.${seriesContext}
 
 ## 7등급 평가 기준
 - 1등급(7점): 독보적·차별화된 핵심 소재, 심층적 탐구와 성과

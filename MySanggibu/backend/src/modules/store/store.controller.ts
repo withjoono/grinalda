@@ -10,14 +10,14 @@ export class StoreController {
   // 판매중인 상품 하나 조회
   @Get('available/:id')
   @Public()
-  async findOneAvailable(@Param('id') id: number): Promise<PayServiceEntity> {
+  async findOneAvailable(@Param('id') id: number): Promise<any> {
     return await this.storeService.findOneAvailable(id);
   }
 
   // 판매중인 상품목록 조회
   @Get('available')
   @Public()
-  async findAvailable(): Promise<PayServiceEntity[]> {
+  async findAvailable(): Promise<any[]> {
     return await this.storeService.findAvailable();
   }
 }

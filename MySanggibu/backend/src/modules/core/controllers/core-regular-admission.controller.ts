@@ -43,13 +43,12 @@ export class CoreRegularAdmissionController {
   @ApiResponse({
     status: 200,
     description: '정시 전형 목록 조회 성공',
-    type: [RegularAdmissionEntity],
   })
   @ApiResponse({ status: 403, description: '권한 없음' })
   @ApiBearerAuth('access-token')
   @Get()
   @Roles(['ROLE_ADMIN'])
-  async findAll(): Promise<RegularAdmissionEntity[]> {
+  async findAll(): Promise<any[]> {
     return this.regularAdmissionService.findAll();
   }
 
@@ -61,14 +60,13 @@ export class CoreRegularAdmissionController {
   @ApiResponse({
     status: 200,
     description: '정시 전형 조회 성공',
-    type: RegularAdmissionEntity,
   })
   @ApiResponse({ status: 403, description: '권한 없음' })
   @ApiResponse({ status: 404, description: '정시 전형을 찾을 수 없음' })
   @ApiBearerAuth('access-token')
   @Get(':id')
   @Roles(['ROLE_ADMIN'])
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<RegularAdmissionEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.regularAdmissionService.findOne(id);
   }
 
@@ -79,7 +77,6 @@ export class CoreRegularAdmissionController {
   @ApiResponse({
     status: 201,
     description: '정시 전형 추가 성공',
-    type: RegularAdmissionEntity,
   })
   @ApiResponse({ status: 400, description: '잘못된 요청' })
   @ApiResponse({ status: 403, description: '권한 없음' })
@@ -88,7 +85,7 @@ export class CoreRegularAdmissionController {
   @Roles(['ROLE_ADMIN'])
   async create(
     @Body() createRegularAdmissionDto: CreateRegularAdmissionDto,
-  ): Promise<RegularAdmissionEntity> {
+  ): Promise<any> {
     return this.regularAdmissionService.create(createRegularAdmissionDto);
   }
 
@@ -100,7 +97,6 @@ export class CoreRegularAdmissionController {
   @ApiResponse({
     status: 200,
     description: '정시 전형 수정 성공',
-    type: RegularAdmissionEntity,
   })
   @ApiResponse({ status: 403, description: '권한 없음' })
   @ApiResponse({ status: 404, description: '정시 전형을 찾을 수 없음' })
@@ -110,7 +106,7 @@ export class CoreRegularAdmissionController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRegularAdmissionDto: UpdateRegularAdmissionDto,
-  ): Promise<RegularAdmissionEntity> {
+  ): Promise<any> {
     return this.regularAdmissionService.update(id, updateRegularAdmissionDto);
   }
 

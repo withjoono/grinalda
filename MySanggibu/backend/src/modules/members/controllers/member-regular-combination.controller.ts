@@ -33,7 +33,6 @@ export class MemberRegularCombinationController {
   @ApiResponse({
     status: 201,
     description: '정시 조합 생성 성공',
-    type: MemberRegularCombinationEntity,
   })
   @ApiResponse({
     status: 400,
@@ -54,7 +53,7 @@ export class MemberRegularCombinationController {
     @CurrentMemberId() memberId: string,
     @Body()
     createMemberCombinationDto: CreateMemberRegularCombinationDto,
-  ): Promise<MemberRegularCombinationEntity> {
+  ): Promise<any> {
     return this.memberCombinationService.create(memberId, createMemberCombinationDto);
   }
 
@@ -66,7 +65,6 @@ export class MemberRegularCombinationController {
   @ApiResponse({
     status: 200,
     description: '정시 조합 목록 조회 성공',
-    type: [MemberRegularCombinationEntity],
   })
   @ApiResponse({
     status: 401,
@@ -79,7 +77,7 @@ export class MemberRegularCombinationController {
   @ApiBearerAuth('access-token')
   @Get()
   @UseGuards(MemberPermissionGuard)
-  async findAll(@CurrentMemberId() memberId: string): Promise<MemberRegularCombinationEntity[]> {
+  async findAll(@CurrentMemberId() memberId: string): Promise<any[]> {
     return this.memberCombinationService.findAll(memberId);
   }
 
@@ -92,7 +90,6 @@ export class MemberRegularCombinationController {
   @ApiResponse({
     status: 200,
     description: '정시 조합 조회 성공',
-    type: MemberRegularCombinationEntity,
   })
   @ApiResponse({
     status: 401,
@@ -112,7 +109,7 @@ export class MemberRegularCombinationController {
   async findOne(
     @CurrentMemberId() memberId: string,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<MemberRegularCombinationEntity> {
+  ): Promise<any> {
     return this.memberCombinationService.findOne(id, memberId);
   }
 
@@ -125,7 +122,6 @@ export class MemberRegularCombinationController {
   @ApiResponse({
     status: 200,
     description: '정시 조합 수정 성공',
-    type: MemberRegularCombinationEntity,
   })
   @ApiResponse({
     status: 400,
@@ -151,7 +147,7 @@ export class MemberRegularCombinationController {
     @Param('id', ParseIntPipe) id: number,
     @Body()
     updateMemberCombinationDto: UpdateMemberRegularCombinationDto,
-  ): Promise<MemberRegularCombinationEntity> {
+  ): Promise<any> {
     return this.memberCombinationService.update(memberId, id, updateMemberCombinationDto);
   }
 

@@ -20,12 +20,12 @@ async function check() {
     const r2 = await client.query("SELECT * FROM member_tb WHERE oauth_id = $1", ['S26H302092']);
     console.log('By oauth_id S26H302092:', r2.rows);
 
-    // Check ms_auth_member
+    // Check sv_auth_member
     try {
-        const r3 = await client.query('SELECT * FROM ms_auth_member LIMIT 5');
-        console.log('ms_auth_member:', JSON.stringify(r3.rows, null, 2));
+        const r3 = await client.query('SELECT * FROM sv_auth_member LIMIT 5');
+        console.log('sv_auth_member:', JSON.stringify(r3.rows, null, 2));
     } catch (e: any) {
-        console.log('ms_auth_member error:', e.message);
+        console.log('sv_auth_member error:', e.message);
     }
 
     // Check auth_member (Hub table)

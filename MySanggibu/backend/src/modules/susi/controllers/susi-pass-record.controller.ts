@@ -14,7 +14,7 @@ export class SusiPassRecordController {
   })
   async getSusiPassRecordPassRecord(
     @Param('recruitmentUnitId', ParseIntPipe) recruitmentUnitId: number,
-  ): Promise<RecruitmentUnitPassFailRecordsEntity[]> {
+  ): Promise<any[]> {
     const data = await this.passRecordService.getPassRecordsByRecruitmentUnitId(recruitmentUnitId);
     return data;
   }

@@ -15,11 +15,11 @@ async function checkTables() {
         console.log('Connected to database geobukschool_dev');
 
         const tableNames = [
-            'sgb_attendance',
-            'sgb_select_subject',
-            'sgb_subject_learning',
-            'sgb_volunteer',
-            'sgb_sport_art'
+            'sv_attendance',
+            'sv_select_subject',
+            'sv_subject_learning',
+            'sv_volunteer',
+            'sv_sport_art'
         ];
 
         const query = `

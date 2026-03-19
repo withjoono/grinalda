@@ -46,7 +46,6 @@ export class CoreAdmissionController {
   @ApiResponse({
     status: 200,
     description: '전형 목록 조회 성공',
-    type: [AdmissionEntity],
   })
   @ApiResponse({
     status: 401,
@@ -56,7 +55,7 @@ export class CoreAdmissionController {
   @Get()
   async findAllByUniversity(
     @Query('university_id', ParseIntPipe) universityId: number,
-  ): Promise<AdmissionEntity[]> {
+  ): Promise<any[]> {
     return this.admissionService.findAllByUniversity(universityId);
   }
 
@@ -68,7 +67,6 @@ export class CoreAdmissionController {
   @ApiResponse({
     status: 200,
     description: '전형 조회 성공',
-    type: AdmissionEntity,
   })
   @ApiResponse({
     status: 404,
@@ -76,7 +74,7 @@ export class CoreAdmissionController {
   })
   @ApiBearerAuth('access-token')
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<AdmissionEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.admissionService.findOne(id);
   }
 
@@ -87,7 +85,6 @@ export class CoreAdmissionController {
   @ApiResponse({
     status: 201,
     description: '전형 추가 성공',
-    type: AdmissionEntity,
   })
   @ApiResponse({
     status: 400,
@@ -100,7 +97,7 @@ export class CoreAdmissionController {
   @ApiBearerAuth('access-token')
   @Post()
   @Roles(['ROLE_ADMIN'])
-  async create(@Body() createAdmissionDto: CreateAdmissionDto): Promise<AdmissionEntity> {
+  async create(@Body() createAdmissionDto: CreateAdmissionDto): Promise<any> {
     return this.admissionService.create(createAdmissionDto);
   }
 
@@ -112,7 +109,6 @@ export class CoreAdmissionController {
   @ApiResponse({
     status: 200,
     description: '전형 수정 성공',
-    type: AdmissionEntity,
   })
   @ApiResponse({
     status: 403,
@@ -128,7 +124,7 @@ export class CoreAdmissionController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateAdmissionDto: UpdateAdmissionDto,
-  ): Promise<AdmissionEntity> {
+  ): Promise<any> {
     return this.admissionService.update(id, updateAdmissionDto);
   }
 

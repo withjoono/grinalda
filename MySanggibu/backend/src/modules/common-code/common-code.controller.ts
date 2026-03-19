@@ -12,7 +12,7 @@ export class CommonCodeController {
   constructor(private readonly subjectCodeService: SubjectCodesService) {}
 
   @Get('subject-code')
-  async findAll(): Promise<SubjectCodeListEntity[]> {
+  async findAll(): Promise<any[]> {
     return this.subjectCodeService.findAll();
   }
 

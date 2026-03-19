@@ -112,7 +112,7 @@ export class SusiSubjectController {
   })
   async getSusiSubjectPassRecord(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<SusiPassRecordEntity[]> {
+  ): Promise<any[]> {
     const data = await this.susiSubjectService.getSusiSubjectPassRecords(id);
     return data;
   }

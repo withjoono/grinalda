@@ -9,6 +9,14 @@
           "ms-front"
         ]
       }
+    },
+    "ts-back-nest-479305": {
+      "hosting": {
+        "ms": [
+          "ms-front"
+        ]
+      }
     }
-  }
+  },
+  "etags": {}
 }

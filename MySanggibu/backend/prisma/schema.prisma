@@ -53,10 +53,10 @@ model auth_member {
   auth_member_s               auth_member_s?
   auth_member_t               auth_member_t?
   oauth_authorization_codes   oauth_authorization_codes[]
-  sgb_select_subject          sgb_select_subject[]
-  sgb_sport_art               sgb_sport_art[]
-  sgb_subject_learning        sgb_subject_learning[]
-  sgb_volunteer               sgb_volunteer[]
+  sv_select_subject          sv_select_subject[]
+  sv_sport_art               sv_sport_art[]
+  sv_subject_learning        sv_subject_learning[]
+  sv_volunteer               sv_volunteer[]
   ss_user_university_interest ss_user_university_interest[]
 
   @@unique([email, phone, oauth_id], map: "UQ_f866ea79fb061e5b53c8e04af7f")
@@ -847,7 +847,7 @@ model user_notification_types {
   @@schema("jungsi")
 }
 
-model ms_auth_member {
+model sv_auth_member {
   id              BigInt    @id(map: "PK_7a579f0f64ef1d3d020d6251af7") @default(autoincrement())
   hub_member_id   BigInt    @unique(map: "IDX_c1308731e66268fa4e2bd3b260")
   nickname        String?   @db.VarChar(255)
@@ -863,7 +863,7 @@ model ms_auth_member {
   @@schema("saenggiview")
 }
 
-model sgb_attendance {
+model sv_attendance {
   id                       Int     @id(map: "PK_2c8f4ea9d3c3d10d9c7d7fc1fb1") @default(autoincrement())
   absent_disease           Int?
   absent_etc               Int?
@@ -885,7 +885,7 @@ model sgb_attendance {
   @@schema("saenggiview")
 }
 
-model sgb_select_subject {
+model sv_select_subject {
   id                  Int          @id(map: "PK_7e9dc526a5e4f0243808ae90553") @default(autoincrement())
   achievement         String?
   achievementa        String?
@@ -903,13 +903,13 @@ model sgb_select_subject {
   subject_name        String
   unit                String?
   member_id           String?      @db.VarChar(30)
-  auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_select_subject_member_id")
+  auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sv_select_subject_member_id")
 
   @@schema("saenggiview")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sgb_sport_art {
+model sv_sport_art {
   id          BigInt       @id(map: "PK_cf46327c53d1c9d93194dab0c6c") @default(autoincrement())
   achievement String?
   etc         String?
@@ -919,12 +919,12 @@ model sgb_sport_art {
   subject     String?
   unit        String?
   member_id   String?      @db.VarChar(30)
-  auth_member auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_sport_art_member_id")
+  auth_member auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sv_sport_art_member_id")
 
   @@schema("saenggiview")
 }
 
-model sgb_subject_learning {
+model sv_subject_learning {
   id                  Int          @id(map: "PK_48746da203c15ea037d8c0c8708") @default(autoincrement())
   achievement         String?      @db.VarChar(1000)
   etc                 String?      @db.VarChar(1000)
@@ -941,12 +941,12 @@ model sgb_subject_learning {
   subject_name        String?      @db.VarChar(1000)
   unit                String?      @db.VarChar(1000)
   member_id           String?      @db.VarChar(30)
-  auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_subject_learning_member_id")
+  auth_member         auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sv_subject_learning_member_id")
 
   @@schema("saenggiview")
 }
 
-model sgb_volunteer {
+model sv_volunteer {
   id               Int          @id(map: "PK_bb72218124466217305f09498f2") @default(autoincrement())
   accumulate_time  String?      @db.VarChar(1000)
   activity_content String?      @db.VarChar(1000)
@@ -955,7 +955,7 @@ model sgb_volunteer {
   grade            String?      @db.VarChar(1000)
   place            String?      @db.VarChar(1000)
   member_id        String?      @db.VarChar(30)
-  auth_member      auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sgb_volunteer_member_id")
+  auth_member      auth_member? @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_sv_volunteer_member_id")
 
   @@schema("saenggiview")
 }

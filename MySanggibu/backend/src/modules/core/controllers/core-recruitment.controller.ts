@@ -46,7 +46,6 @@ export class CoreRecruitmentController {
   @ApiResponse({
     status: 200,
     description: '모집단위 목록 조회 성공',
-    type: [RecruitmentUnitEntity],
   })
   @ApiResponse({
     status: 401,
@@ -56,7 +55,7 @@ export class CoreRecruitmentController {
   @Get()
   async findAllByAdmission(
     @Query('admission_id', ParseIntPipe) admissionId: number,
-  ): Promise<RecruitmentUnitEntity[]> {
+  ): Promise<any[]> {
     return this.recruitmentService.findAllByAdmission(admissionId);
   }
 
@@ -68,7 +67,6 @@ export class CoreRecruitmentController {
   @ApiResponse({
     status: 200,
     description: '모집단위 조회 성공',
-    type: RecruitmentUnitEntity,
   })
   @ApiResponse({
     status: 404,
@@ -76,7 +74,7 @@ export class CoreRecruitmentController {
   })
   @ApiBearerAuth('access-token')
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<RecruitmentUnitEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.recruitmentService.findOne(id);
   }
 
@@ -87,7 +85,6 @@ export class CoreRecruitmentController {
   @ApiResponse({
     status: 201,
     description: '모집단위 추가 성공',
-    type: RecruitmentUnitEntity,
   })
   @ApiResponse({
     status: 400,
@@ -102,7 +99,7 @@ export class CoreRecruitmentController {
   @Roles(['ROLE_ADMIN'])
   async create(
     @Body() createRecruitmentUnitDto: CreateRecruitmentUnitDto,
-  ): Promise<RecruitmentUnitEntity> {
+  ): Promise<any> {
     return this.recruitmentService.create(createRecruitmentUnitDto);
   }
 
@@ -114,7 +111,6 @@ export class CoreRecruitmentController {
   @ApiResponse({
     status: 200,
     description: '모집단위 수정 성공',
-    type: RecruitmentUnitEntity,
   })
   @ApiResponse({
     status: 403,
@@ -130,7 +126,7 @@ export class CoreRecruitmentController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRecruitmentUnitDto: UpdateRecruitmentUnitDto,
-  ): Promise<RecruitmentUnitEntity> {
+  ): Promise<any> {
     return this.recruitmentService.update(id, updateRecruitmentUnitDto);
   }
 

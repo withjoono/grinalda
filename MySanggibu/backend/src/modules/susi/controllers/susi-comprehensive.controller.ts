@@ -157,7 +157,6 @@ export class SusiComprehensiveController {
   @ApiResponse({
     status: 200,
     description: '상세 정보 조회 성공',
-    type: SusiComprehensiveEntity,
   })
   @ApiResponse({ status: 401, description: '인증 실패' })
   @ApiResponse({ status: 404, description: '해당 전형을 찾을 수 없음' })
@@ -165,7 +164,7 @@ export class SusiComprehensiveController {
   @Get('detail/:id')
   async getSusiSubjectDetail(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<SusiComprehensiveEntity> {
+  ): Promise<any> {
     const data = await this.susiComprehensiveService.getSusiComprehensiveDetail(id);
     return data;
   }
@@ -183,7 +182,6 @@ export class SusiComprehensiveController {
   @ApiResponse({
     status: 200,
     description: '합불 사례 조회 성공',
-    type: [SusiPassRecordEntity],
   })
   @ApiResponse({ status: 401, description: '인증 실패' })
   @ApiResponse({ status: 404, description: '해당 전형을 찾을 수 없음' })
@@ -191,7 +189,7 @@ export class SusiComprehensiveController {
   @Get('pass-record/:id')
   async getSusiSubjectPassRecord(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<SusiPassRecordEntity[]> {
+  ): Promise<any[]> {
     const data = await this.susiComprehensiveService.getSusiSubjectPassRecords(id);
     return data;
   }

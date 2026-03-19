@@ -21,7 +21,7 @@ export class OfficerController {
     summary: '내 사정관 프로필 조회',
   })
   @Get('profile')
-  async getOfficerProfile(@CurrentMemberId() memberId: string): Promise<OfficerListEntity> {
+  async getOfficerProfile(@CurrentMemberId() memberId: string): Promise<any> {
     return this.officerService.getOfficerProfile(memberId);
   }
 
@@ -32,7 +32,7 @@ export class OfficerController {
   async updateOfficerProfile(
     @CurrentMemberId() memberId: string,
     @Body() body: UpdateOfficerProfileResponseDto,
-  ): Promise<OfficerListEntity> {
+  ): Promise<any> {
     return this.officerService.updateOfficerProfile(memberId, body);
   }
 }

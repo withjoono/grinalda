@@ -90,9 +90,9 @@ export class SusiUnitCategoryController {
     description: '모집단위 ID로 계열 분류 정보를 조회합니다.',
   })
   @ApiParam({ name: 'id', description: '모집단위 ID (예: 26-U001211)', example: '26-U001211' })
-  @ApiResponse({ status: 200, description: '성공', type: SusiUnitCategoryEntity })
+  @ApiResponse({ status: 200, description: '성공' })
   @ApiResponse({ status: 404, description: '계열 정보를 찾을 수 없음' })
-  async getCategoryById(@Param('id') id: string): Promise<SusiUnitCategoryEntity> {
+  async getCategoryById(@Param('id') id: string): Promise<any> {
     return await this.unitCategoryService.getCategoryById(id);
   }
 }
