@@ -969,6 +969,33 @@ model saenggiview_typeorm_migrations {
   @@schema("saenggiview")
 }
 
+/// AI 사정관 평가 결과 저장 테이블
+model sv_ai_evaluation {
+  id              BigInt   @id @default(autoincrement())
+  member_id       String   @db.VarChar(30)
+  eval_type       String   @db.VarChar(20) // 'semester' | 'comprehensive'
+  grade           String   @db.VarChar(10)
+  semester        String?  @db.VarChar(10)
+  target_series   String?  @db.VarChar(200)
+  total_score     Int?
+  score_academic  Int      @default(0)
+  score_career    Int      @default(0)
+  score_community Int      @default(0)
+  score_other     Int      @default(0)
+  summary         String   @default("")
+  strengths       Json?
+  weaknesses      Json?
+  advice          Json?
+  annotations     Json?
+  materials       Json?
+  question_scores Json?
+  created_at      DateTime @default(now()) @db.Timestamp(6)
+
+  @@index([member_id], map: "IDX_sv_ai_evaluation_member_id")
+  @@index([member_id, eval_type], map: "IDX_sv_ai_evaluation_member_type")
+  @@schema("saenggiview")
+}
+
 model public_typeorm_migrations {
   id        Int    @id(map: "PK_bb2f075707dd300ba86d0208923") @default(autoincrement())
   timestamp BigInt

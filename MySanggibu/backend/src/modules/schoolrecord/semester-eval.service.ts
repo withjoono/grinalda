@@ -9,6 +9,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { PrismaService } from 'src/database/prisma.service';
 
 // ==================== Types ====================
 
@@ -102,7 +103,10 @@ export class SemesterEvalService {
     private readonly logger = new Logger(SemesterEvalService.name);
     private geminiModel: GenerativeModel | null = null;
 
-    constructor(private readonly configService: ConfigService) {
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly prisma: PrismaService,
+    ) {
         const apiKey = this.configService.get<string>('GEMINI_API_KEY');
         if (apiKey) {
             const genAI = new GoogleGenerativeAI(apiKey);
@@ -455,5 +459,72 @@ ${inputData}
             })),
             analysisDate: new Date().toISOString(),
         };
+    }
+
+    // ── DB 저장 / 조회 ──
+
+    /**
+     * 평가 결과를 DB에 저장
+     */
+    async saveEvaluation(
+        memberId: string,
+        evalType: 'semester' | 'comprehensive',
+        dto: SemesterEvalRequestDto | ComprehensiveEvalRequestDto,
+        result: SemesterEvalResult | ComprehensiveEvalResult,
+    ): Promise<void> {
+        try {
+            // materials에서 originalText 제거 (DB 용량 절약)
+            const materialsForDb = (result.materials || []).map(m => ({
+                title: m.title,
+                summary: m.summary,
+                category: m.category,
+                gradeLevel: m.gradeLevel,
+                score: m.score,
+                relatedKeywords: m.relatedKeywords,
+                sourceTypes: m.sources.map(s => s.type),
+            }));
+
+            const comprehensiveResult = result as ComprehensiveEvalResult;
+            const semesterDto = dto as SemesterEvalRequestDto;
+            const comprehensiveDto = dto as ComprehensiveEvalRequestDto;
+
+            await this.prisma.sv_ai_evaluation.create({
+                data: {
+                    member_id: memberId,
+                    eval_type: evalType,
+                    grade: result.grade,
+                    semester: evalType === 'semester' ? semesterDto.semester : null,
+                    target_series: evalType === 'comprehensive' ? comprehensiveDto.targetSeries || null : null,
+                    total_score: comprehensiveResult.totalScore ?? null,
+                    score_academic: result.scores.academic,
+                    score_career: result.scores.career,
+                    score_community: result.scores.community,
+                    score_other: result.scores.other,
+                    summary: result.summary || '',
+                    strengths: comprehensiveResult.strengths ?? null,
+                    weaknesses: comprehensiveResult.weaknesses ?? null,
+                    advice: comprehensiveResult.advice ?? null,
+                    annotations: comprehensiveResult.annotations ?? null,
+                    materials: materialsForDb,
+                    question_scores: comprehensiveResult.questionScores ?? null,
+                },
+            });
+
+            this.logger.log(`[SaveEval] ${evalType} 평가 저장 완료 (member: ${memberId}, grade: ${result.grade})`);
+        } catch (error) {
+            this.logger.error(`[SaveEval] DB 저장 실패: ${error.message}`, error.stack);
+            throw error;
+        }
+    }
+
+    /**
+     * 회원의 평가 내역 조회 (최신순 20개)
+     */
+    async getEvalHistory(memberId: string) {
+        return this.prisma.sv_ai_evaluation.findMany({
+            where: { member_id: memberId },
+            orderBy: { created_at: 'desc' },
+            take: 20,
+        });
     }
 }
