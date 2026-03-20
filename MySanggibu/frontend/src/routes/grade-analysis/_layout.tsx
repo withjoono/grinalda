@@ -15,7 +15,7 @@ const sidebarNavItems = [
     href: "/grade-analysis/performance",
   },
   {
-    title: "평가 신청(AI/사정관)",
+    title: "AI 사정관 평가",
     href: "/grade-analysis/request",
   },
   {

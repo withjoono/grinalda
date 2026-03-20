@@ -83,6 +83,14 @@ export interface ComprehensiveEvalResult {
     annotations: Array<{
         category: CompetencyCategory;
         comment: string;
+        strengths?: string[];
+        weaknesses?: string[];
+        advice?: string[];
+    }>;
+    questionScores: Array<{
+        questionId: number;
+        score: number;
+        reason: string;
     }>;
     analysisDate: string;
 }

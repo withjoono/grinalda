@@ -8,7 +8,7 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
 // ==================== Types ====================
 
@@ -67,6 +67,14 @@ export interface ComprehensiveEvalResult {
     annotations: Array<{      // 주석
         category: CompetencyCategory;
         comment: string;
+        strengths: string[];
+        weaknesses: string[];
+        advice: string[];
+    }>;
+    questionScores: Array<{
+        questionId: number;
+        score: number;
+        reason: string;
     }>;
     analysisDate: string;
 }
@@ -92,12 +100,16 @@ export interface ComprehensiveEvalRequestDto {
 @Injectable()
 export class SemesterEvalService {
     private readonly logger = new Logger(SemesterEvalService.name);
-    private openai: OpenAI | null = null;
+    private geminiModel: GenerativeModel | null = null;
 
     constructor(private readonly configService: ConfigService) {
-        const apiKey = this.configService.get<string>('OPENAI_API_KEY');
+        const apiKey = this.configService.get<string>('GEMINI_API_KEY');
         if (apiKey) {
-            this.openai = new OpenAI({ apiKey });
+            const genAI = new GoogleGenerativeAI(apiKey);
+            this.geminiModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+            this.logger.log('Gemini client initialized for SemesterEvalService');
+        } else {
+            this.logger.warn('GEMINI_API_KEY not configured - evaluation disabled');
         }
     }
 
@@ -154,8 +166,8 @@ ${inputData}
     }
 
     async evaluateSemester(dto: SemesterEvalRequestDto): Promise<SemesterEvalResult> {
-        if (!this.openai) {
-            throw new Error('OpenAI API key not configured');
+        if (!this.geminiModel) {
+            throw new Error('Gemini API key not configured');
         }
 
         if (dto.subjectTexts.length === 0) {
@@ -166,14 +178,15 @@ ${inputData}
 
         const prompt = this.buildSemesterPrompt(dto);
 
-        const response = await this.openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.3,
+        const response = await this.geminiModel.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: {
+                responseMimeType: 'application/json',
+                temperature: 0.3,
+            },
         });
 
-        const content = response.choices[0]?.message?.content;
+        const content = response.response.text();
         if (!content) throw new Error('AI 응답이 비어있습니다.');
 
         const parsed = JSON.parse(content);
@@ -253,23 +266,73 @@ ${inputData}
 
 아래의 ${dto.grade}학년 전체(세특 + 창체 + 행특) 데이터를 종합 분석하여:
 1. 핵심 소재를 7등급으로 평가
-2. 4대 역량별 점수와 주석(코멘트)
-3. 강점/약점/다음 학기 조언을 제공해주세요.${seriesContext}
+2. 40개 세부 평가항목에 대해 각각 1~7점 채점
+3. 4대 역량별 점수와 주석(코멘트)
+4. 강점/약점/개선 조언을 제공해주세요.${seriesContext}
 
 ## 7등급 평가 기준
-- 1등급(7점): 독보적·차별화된 핵심 소재, 심층적 탐구와 성과
-- 2등급(6점): 매우 강한 어필 포인트, 전공 적합성 높음
-- 3등급(5점): 강한 어필 포인트, 꾸준한 노력 드러남
-- 4등급(4점): 평균 이상, 의미 있는 활동
-- 5등급(3점): 보통 수준, 일반적 활동
-- 6등급(2점): 약한 소재, 구체성 부족
-- 7등급(1점): 형식적·일반적 기술
+- 1점: 형식적·일반적 기술
+- 2점: 약한 소재, 구체성 부족
+- 3점: 보통 수준, 일반적 활동
+- 4점: 평균 이상, 의미 있는 활동
+- 5점: 강한 어필 포인트, 꾸준한 노력 드러남
+- 6점: 매우 강한 어필 포인트, 전공 적합성 높음
+- 7점: 독보적·차별화된 핵심 소재, 심층적 탐구와 성과
+
+## 40개 세부 평가 질문
+[진로역량]
+Q1: 전공(계열)과 관련된 과목을 적절하게 선택하고, 이수한 과목은 얼마나 되는가?
+Q2: 전공(계열)과 관련된 과목을 이수하기 위하여 추가적인 노력을 하였는가?
+Q3: 전공(계열)과 관련된 교과의 성취수준은 적절한가?
+Q4: 진로와학(반)지도/선택과목 교육 학습단계(위계)에 따른 이수현황은?
+Q5: 전공(계열)관련 과목에서 전공에 대한 관심과 이해가 드러나 있는가?
+Q6: 전공 분야에 대한 궁금증이나 학업 관련 관심이 있는가?
+Q7: 전공 분야나 관련 과목에서 적극적이고 구체적인 노력과 활동을 하였는가?
+
+[학업역량]
+Q8: 대학 수학에 필요한 기본 교과목의 교과성적은 적절한가?
+Q9: 학기별/학년별 성적의 추이는 어떠한가?
+Q10: 성취동기와 목표의식을 가지고 자발적으로 학습하려는 의지가 있는가?
+Q11: 새로운 지식을 회득하기 위해 자기주도적으로 노력하고 있는가?
+Q12: 교과 수업에 적극적으로 참여해 수업 내용을 이해하려는 태도와 열정이 있는가?
+Q13: 교과와 각종 탐구활동 등을 통해 지식을 확장하려고 노력하고 있는가?
+Q14: 교과와 각종 탐구활동에서 구체적인 성과를 보이고 있는가?
+Q15: 교내 활동에서 학문에 대한 열의와 지적 관심이 드러나고 있는가?
+
+[공동체역량]
+Q16: 단체 활동 과정에서 서로 돕고 함께 행동하는 모습이 보이는가?
+Q17: 구성원들과 협력을 통하여 공동의 과제를 수행하고 완성한 경험이 있는가?
+Q18: 타인의 의견에 공감하고 수용하는 태도를 보이며, 자신의 정보와 생각을 잘 전달하는가?
+Q19: 학교생활 속에서 나눔을 생활화한 경험이 있는가?
+Q20: 타인을 위하여 양보하거나 배려를 실천한 구체적 경험이 있는가?
+Q21: 상대를 이해하고 존중하는 노력을 기울이고 있는가?
+Q22: 교내 활동에서 자신이 맡은 역할에 최선을 다하려고 노력한 경험이 있는가?
+Q23: 자신이 속한 공동체가 정한 규칙과 규정을 준수하고 있는가?
+Q24: 공동체의 목표를 달성하기 위해 계획하고 실행을 주도한 경험이 있는가?
+Q25: 구성원들의 인정과 신뢰를 바탕으로 참여를 이끌어내고 조율한 경험이 있는가?
+
+[기타역량]
+Q26: 교내 다양한 활동에서 주도적, 적극적으로 활동을 수행하는가?
+Q27: 새로운 과제를 주도적으로 만들고 성과를 내었는가?
+Q28: 기존에 경험한 내용을 바탕으로 스스로 외연을 확장하려고 노력하였는가?
+Q29: 자율, 동아리, 봉사, 진로활동 등 체험활동을 통해 다양한 경험을 쌓았는가?
+Q30: 독서활동을 통해 다양한 영역에서 지식과 문화적 소양을 쌓았는가?
+Q31: 예체능 영역에서 적극적이고 성실하게 참여하였는가?
+Q32: 자신의 목표를 위해 도전한 경험을 통해 성취한 적이 있는가?
+Q33: 교내 행동 과정에서 창의적인 발상을 통해 일을 진행한 경험이 있는가?
+Q34: 교내 활동 과정에서 나타나는 문제점을 적극적으로 해결하기 위해 노력하였는가?
+Q35: 주어진 교육환경을 극복하거나 충분히 활용한 경험이 있는가?
+Q36: 교직에 대한 흥미와 관심이 드러나는가?
+Q37: 교직 수행을 위한 다양한 경험이 있는가?
+Q38: 교직 활동을 위한 리더십 및 자기주도성이 있는가?
+Q39: 다문화 역량, 글로벌 역량이 드러나는가?
+Q40: 범지구적 공동체 문제에 관심을 가지고 문제 해결에 참여하고자 하는가?
 
 ## 4대 역량 카테고리
-- academic: 학업역량 (교과 학습, 탐구, 연구, 실험)
-- career: 진로역량 (진로 탐색, 전공 적합성)
-- community: 공동체역량 (리더십, 협업, 봉사, 소통)
-- other: 기타역량 (창의성, 자기주도성, 독서, 도전)
+- academic: 학업역량 (Q8~Q15)
+- career: 진로역량 (Q1~Q7)
+- community: 공동체역량 (Q16~Q25)
+- other: 기타역량 (Q26~Q40)
 
 ## 분석 대상 데이터
 ${inputData}
@@ -287,15 +350,19 @@ ${inputData}
       "sourceType": "subject|creative|behavior"
     }
   ],
+  "questionScores": [
+    { "questionId": 1, "score": 5, "reason": "생기부에서 드러나는 근거를 한줄로" },
+    { "questionId": 2, "score": 3, "reason": "..." }
+  ],
   "summary": "종합 생기부 한줄 평가",
   "strengths": ["강점1", "강점2"],
   "weaknesses": ["약점1", "약점2"],
   "advice": ["다음 학기 조언1", "조언2", "조언3"],
   "annotations": [
-    { "category": "academic", "comment": "학업역량에 대한 종합 평가 코멘트" },
-    { "category": "career", "comment": "진로역량에 대한 종합 평가 코멘트" },
-    { "category": "community", "comment": "공동체역량에 대한 종합 평가 코멘트" },
-    { "category": "other", "comment": "기타역량에 대한 종합 평가 코멘트" }
+    { "category": "academic", "comment": "학업역량 코멘트", "strengths": ["강점"], "weaknesses": ["약점"], "advice": ["조언"] },
+    { "category": "career", "comment": "진로역량 코멘트", "strengths": ["강점"], "weaknesses": ["약점"], "advice": ["조언"] },
+    { "category": "community", "comment": "공동체역량 코멘트", "strengths": ["강점"], "weaknesses": ["약점"], "advice": ["조언"] },
+    { "category": "other", "comment": "기타역량 코멘트", "strengths": ["강점"], "weaknesses": ["약점"], "advice": ["조언"] }
   ]
 }
 
@@ -303,14 +370,17 @@ ${inputData}
 1. 소재는 5~15개 추출 (세특, 창체, 행특을 모두 포함)
 2. sourceIndices는 위 데이터의 [번호]
 3. 각 카테고리 최소 1개 소재
-4. annotations는 4대 역량 각각에 대한 종합 평가 주석
-5. advice는 학생이 다음 학기에 어떤 활동/노력을 해야하는지 구체적 조언
-6. relatedKeywords는 학기 간 연결에 사용됨`;
+4. questionScores 배열은 반드시 Q1~Q40 총 40개 항목이어야 합니다
+5. 각 질문에 대해 생기부에서 근거를 찾아 1~7점 채점하고, 근거가 없으면 1점 부여
+6. reason은 생기부에서 해당 점수를 부여한 근거를 간결하게 작성
+7. annotations는 4대 역량 각각에 대한 종합 주석 (역량별 강점/약점/조언 포함)
+8. 상위 strengths/weaknesses/advice는 전체 종합, annotations 안의 것은 해당 역량에 한정
+9. advice에는 점수가 낮은 항목을 개선하기 위한 구체적 생기부 작성 전략을 포함`;
     }
 
     async evaluateComprehensive(dto: ComprehensiveEvalRequestDto): Promise<ComprehensiveEvalResult> {
-        if (!this.openai) {
-            throw new Error('OpenAI API key not configured');
+        if (!this.geminiModel) {
+            throw new Error('Gemini API key not configured');
         }
 
         const totalTexts = dto.subjectTexts.length + dto.creativeTexts.length + dto.behaviorTexts.length;
@@ -322,14 +392,15 @@ ${inputData}
 
         const prompt = this.buildComprehensivePrompt(dto);
 
-        const response = await this.openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.3,
+        const response = await this.geminiModel.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: {
+                responseMimeType: 'application/json',
+                temperature: 0.3,
+            },
         });
 
-        const content = response.choices[0]?.message?.content;
+        const content = response.response.text();
         if (!content) throw new Error('AI 응답이 비어있습니다.');
 
         const parsed = JSON.parse(content);
@@ -373,6 +444,14 @@ ${inputData}
             annotations: (parsed.annotations || []).map((a: any) => ({
                 category: a.category as CompetencyCategory,
                 comment: a.comment,
+                strengths: a.strengths || [],
+                weaknesses: a.weaknesses || [],
+                advice: a.advice || [],
+            })),
+            questionScores: (parsed.questionScores || parsed.question_scores || []).map((q: any) => ({
+                questionId: q.questionId ?? q.question_id,
+                score: Math.max(1, Math.min(7, q.score || 1)),
+                reason: q.reason || '',
             })),
             analysisDate: new Date().toISOString(),
         };

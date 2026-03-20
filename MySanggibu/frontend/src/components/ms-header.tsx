@@ -155,7 +155,7 @@ export const MsHeader = () => {
                     )}
                     onClick={() => setIsOpen(false)}
                   >
-                    🏠 홈
+                    홈
                   </Link>
 
                   <div className="w-full space-y-1">
@@ -170,7 +170,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📝 생기부 입력
+                      생기부 입력
                     </Link>
                     <Link
                       to="/ms/request"
@@ -180,7 +180,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📋 평가 신청(AI/사정관)
+                      AI 사정관 평가
                     </Link>
                     <Link
                       to="/ms/evaluation-list"
@@ -190,7 +190,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📑 생기부 평가 내역
+                      생기부 평가 내역
                     </Link>
                   </div>
 
@@ -208,7 +208,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📊 성적 분석
+                      성적 분석
                     </Link>
                   </div>
 
@@ -226,7 +226,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📋 출결
+                      출결
                     </Link>
                     <Link
                       to="/ms/setuk"
@@ -236,7 +236,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📄 세특
+                      세특
                     </Link>
                     <Link
                       to="/ms/creative-activity"
@@ -246,7 +246,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎨 창체 및 행특
+                      창체 및 행특
                     </Link>
                     <Link
                       to="/ms/build"
@@ -256,7 +256,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🏗️ 빌드 (활동 추천)
+                      빌드 (활동 추천)
                     </Link>
                     <Link
                       to="/ms/evaluation"
@@ -266,7 +266,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📊 학기 평가
+                      학기 평가
                     </Link>
                   </div>
 
@@ -284,7 +284,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎯 계열 적합성 진단
+                      계열 적합성 진단
                     </Link>
                     <Link
                       to="/ms/target-university"
@@ -294,7 +294,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎯 목표 대학 설정
+                      목표 대학 설정
                     </Link>
                     <Link
                       to="/ms/subject"
@@ -304,7 +304,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📚 교과 전형 탐색
+                      교과 전형 탐색
                     </Link>
                     <Link
                       to="/ms/comprehensive"
@@ -314,7 +314,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎓 학종 전형 탐색
+                      학종 전형 탐색
                     </Link>
                     <Link
                       to="/ms/nonsul"
@@ -324,7 +324,7 @@ export const MsHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      ✍️ 논술 전형 탐색
+                      논술 전형 탐색
                     </Link>
                   </div>
 
@@ -471,7 +471,7 @@ export const MsHeader = () => {
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <div>
-                            <div className="text-sm font-medium">📝 생기부 입력</div>
+                            <div className="text-sm font-medium">생기부 입력</div>
                             <div className="text-xs text-muted-foreground">
                               생기부 데이터를 입력합니다
                             </div>
@@ -481,13 +481,13 @@ export const MsHeader = () => {
                           to="/ms/request"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📋 평가 신청(AI/사정관)</span>
+                          <span className="text-sm font-medium">AI 사정관 평가</span>
                         </Link>
                         <Link
                           to="/ms/evaluation-list"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📑 생기부 평가 내역</span>
+                          <span className="text-sm font-medium">생기부 평가 내역</span>
                         </Link>
                       </div>
                     </div>
@@ -511,7 +511,7 @@ export const MsHeader = () => {
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <div>
-                            <div className="text-sm font-medium">📊 성적 분석</div>
+                            <div className="text-sm font-medium">성적 분석</div>
                             <div className="text-xs text-muted-foreground">
                               입력된 성적을 분석합니다
                             </div>
@@ -538,31 +538,31 @@ export const MsHeader = () => {
                           to="/ms/attendance"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📋 출결</span>
+                          <span className="text-sm font-medium">출결</span>
                         </Link>
                         <Link
                           to="/ms/setuk"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📄 세특</span>
+                          <span className="text-sm font-medium">세특</span>
                         </Link>
                         <Link
                           to="/ms/creative-activity"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🎨 창체 및 행특</span>
+                          <span className="text-sm font-medium">창체 및 행특</span>
                         </Link>
                         <Link
                           to="/ms/build"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🏗️ 빌드 (활동 추천)</span>
+                          <span className="text-sm font-medium">빌드 (활동 추천)</span>
                         </Link>
                         <Link
                           to="/ms/evaluation"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📊 학기 평가</span>
+                          <span className="text-sm font-medium">학기 평가</span>
                         </Link>
                       </div>
                     </div>
@@ -586,7 +586,7 @@ export const MsHeader = () => {
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <div>
-                            <div className="text-sm font-medium">🎯 계열 적합성 진단</div>
+                            <div className="text-sm font-medium">계열 적합성 진단</div>
                             <div className="text-xs text-muted-foreground">
                               나에게 맞는 계열을 진단합니다
                             </div>
@@ -596,25 +596,25 @@ export const MsHeader = () => {
                           to="/ms/target-university"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🎯 목표 대학 설정</span>
+                          <span className="text-sm font-medium">목표 대학 설정</span>
                         </Link>
                         <Link
                           to="/ms/subject"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📚 교과 전형 탐색</span>
+                          <span className="text-sm font-medium">교과 전형 탐색</span>
                         </Link>
                         <Link
                           to="/ms/comprehensive"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🎓 학종 전형 탐색</span>
+                          <span className="text-sm font-medium">학종 전형 탐색</span>
                         </Link>
                         <Link
                           to="/ms/nonsul"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">✍️ 논술 전형 탐색</span>
+                          <span className="text-sm font-medium">논술 전형 탐색</span>
                         </Link>
                       </div>
                     </div>

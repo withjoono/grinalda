@@ -166,7 +166,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📝 생기부 입력
+                      생기부 입력
                     </Link>
                     <Link
                       to="/grade-analysis/performance"
@@ -176,7 +176,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📊 성적 분석
+                      성적 분석
                     </Link>
                   </div>
 
@@ -194,7 +194,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📋 평가 신청(AI/사정관)
+                      AI 사정관 평가
                     </Link>
                     <Link
                       to="/grade-analysis/evaluation-list"
@@ -204,7 +204,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📑 생기부 평가 내역
+                      생기부 평가 내역
                     </Link>
                   </div>
 
@@ -222,7 +222,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      📚 교과 전형 탐색
+                      교과 전형 탐색
                     </Link>
                     <Link
                       to="/grade-analysis/comprehensive"
@@ -232,7 +232,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      🎓 학종 전형 탐색
+                      학종 전형 탐색
                     </Link>
                     <Link
                       to="/grade-analysis/nonsul"
@@ -242,7 +242,7 @@ export const GradeAnalysisHeader = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      ✍️ 논술 전형 탐색
+                      논술 전형 탐색
                     </Link>
                   </div>
 
@@ -390,7 +390,7 @@ export const GradeAnalysisHeader = () => {
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <div>
-                            <div className="text-sm font-medium">📝 생기부 입력</div>
+                            <div className="text-sm font-medium">생기부 입력</div>
                             <div className="text-xs text-muted-foreground">
                               생기부 데이터를 입력합니다
                             </div>
@@ -401,7 +401,7 @@ export const GradeAnalysisHeader = () => {
                           className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-accent"
                         >
                           <div>
-                            <div className="text-sm font-medium">📊 성적 분석</div>
+                            <div className="text-sm font-medium">성적 분석</div>
                             <div className="text-xs text-muted-foreground">
                               입력된 성적을 분석합니다
                             </div>
@@ -428,13 +428,13 @@ export const GradeAnalysisHeader = () => {
                           to="/grade-analysis/request"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📋 평가 신청(AI/사정관)</span>
+                          <span className="text-sm font-medium">AI 사정관 평가</span>
                         </Link>
                         <Link
                           to="/grade-analysis/evaluation-list"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📑 생기부 평가 내역</span>
+                          <span className="text-sm font-medium">생기부 평가 내역</span>
                         </Link>
                       </div>
                     </div>
@@ -457,19 +457,19 @@ export const GradeAnalysisHeader = () => {
                           to="/grade-analysis/subject"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">📚 교과 전형 탐색</span>
+                          <span className="text-sm font-medium">교과 전형 탐색</span>
                         </Link>
                         <Link
                           to="/grade-analysis/comprehensive"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">🎓 학종 전형 탐색</span>
+                          <span className="text-sm font-medium">학종 전형 탐색</span>
                         </Link>
                         <Link
                           to="/grade-analysis/nonsul"
                           className="flex items-center gap-2 rounded-lg px-3 py-3 hover:bg-accent"
                         >
-                          <span className="text-sm font-medium">✍️ 논술 전형 탐색</span>
+                          <span className="text-sm font-medium">논술 전형 탐색</span>
                         </Link>
                       </div>
                     </div>
