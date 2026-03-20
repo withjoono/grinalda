@@ -32,7 +32,7 @@ env_variables:
   GCS_BUCKET_NAME: "ts-back-nest-bk"
   GCS_PUBLIC_URL: "https://storage.googleapis.com/ts-back-nest-bk"
   HUB_API_URL: "https://ts-back-nest-479305.du.r.appspot.com"
-  GEMINI_API_KEY: "AIzaSyBRVQULU6y-YN8Vi2tvI_L6UKIkoXfXkhM"
+  GEMINI_API_KEY: "AIzaSyCCMB_qll1mbSbhP9Uz16g1IhgdpniedtQ"
 
 beta_settings:
   cloud_sql_instances: "ts-back-nest-479305:asia-northeast3:geobuk-db"
