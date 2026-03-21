@@ -1,49 +1,49 @@
-import { Button } from "@/components/custom/button";
-import { EvaluationResult } from "@/components/reports/evaluation-report";
-import { RequireEvaluationMessage } from "@/components/require-evaluation-message";
+import { AiEvaluationDetail } from "@/components/reports/ai-evaluation-detail";
 import { RequireLoginMessage } from "@/components/require-login-message";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { formatDateYYYYMMDD } from "@/lib/utils/common/date";
 import { useGetCurrentUser } from "@/stores/server/features/me/queries";
-import { useGetOfficerEvaluationList } from "@/stores/server/features/susi/evaluation/queries";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { useGetAiEvaluationHistory } from "@/stores/server/features/ai-evaluation/queries";
+import type { IAiEvaluation } from "@/stores/server/features/ai-evaluation/interfaces";
+import { IconSparkles } from "@tabler/icons-react";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { cn } from "@/lib/utils";
 
-export const Route = createLazyFileRoute("/grade-analysis/_layout/evaluation-list")({
-  component: GradeAnalysisEvaluationList,
+export const Route = createLazyFileRoute(
+  "/grade-analysis/_layout/evaluation-list",
+)({
+  component: AiEvaluationList,
 });
 
-function GradeAnalysisEvaluationList() {
-  // Queries
+function AiEvaluationList() {
   const { data: currentUser } = useGetCurrentUser();
-  const { data: evaluationList } = useGetOfficerEvaluationList();
+  const { data: evaluationList, isLoading } = useGetAiEvaluationHistory();
 
-  const filteredEvaluationList = useMemo(() => {
-    if (!currentUser || !evaluationList) return [];
-    return evaluationList.filter((n) => n.officer_id !== currentUser.id);
-  }, [evaluationList, currentUser]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const handleCardClick = (evaluationId: number) => {
-    setSelectedId(evaluationId);
-  };
+  // 데이터 로드 시 최신 평가를 자동 선택
+  useEffect(() => {
+    if (evaluationList?.length && selectedId === null) {
+      setSelectedId(evaluationList[0].id);
+    }
+  }, [evaluationList, selectedId]);
 
   const selectedItem = useMemo(() => {
-    const item = evaluationList?.filter((n) => n.id === selectedId);
-    return item?.length ? item[0] : null;
+    return evaluationList?.find((n) => n.id === selectedId) ?? null;
   }, [evaluationList, selectedId]);
 
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">생기부 평가 내역</h3>
+        <h3 className="text-lg font-medium">AI 생기부 평가 내역</h3>
         <p className="text-sm text-muted-foreground">
-          진행중이거나 완료된 평가 목록입니다.
+          AI 사정관이 분석한 생기부 평가 결과 목록입니다.
         </p>
         <p className="text-sm text-muted-foreground">
-          완료된 평가를 가지고{" "}
+          평가 결과를 참고하여{" "}
           <Link className="text-blue-500" to="/grade-analysis/comprehensive">
             학종
           </Link>{" "}
@@ -53,65 +53,97 @@ function GradeAnalysisEvaluationList() {
       <Separator />
       {!currentUser ? (
         <RequireLoginMessage />
-      ) : !filteredEvaluationList.length ? (
-        <RequireEvaluationMessage />
-      ) : selectedItem === null ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredEvaluationList.map((evaluation) => {
-            const isCompleted = evaluation.status === "COMPLETE";
-            return (
-              <Card
-                key={evaluation.id}
-                className="flex w-full flex-col items-center justify-center gap-4 rounded-md bg-white px-4 py-6"
-              >
-                <div className="flex flex-col items-center justify-center gap-y-6">
-                  <div className="space-y-1">
-                    <p className="text-center text-xl font-medium text-neutral-900">
-                      {evaluation.officer_name}
-                    </p>
-                    <p className="h-14 text-center text-base text-neutral-900">
-                      {evaluation.series.replace(/>/g, " - ")}
-                    </p>
-                    <p className="text-center text-sm text-foreground/60">
-                      {formatDateYYYYMMDD(
-                        evaluation.update_dt?.toString() ||
-                          new Date().toString(),
-                      )}{" "}
-                      {!isCompleted ? "신청" : "완료"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex w-full flex-col gap-y-2">
-                  <p className="h-4 text-center text-sm text-primary">
-                    {!isCompleted
-                      ? `대기 순위: ${evaluation.remaining_evaluations}`
-                      : ""}
-                  </p>
-                  <Button
-                    onClick={() => handleCardClick(evaluation.id)}
-                    variant={"default"}
-                    disabled={!isCompleted}
-                  >
-                    {!isCompleted ? "진행중" : "확인하기"}
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="w-full space-y-8">
-          <div>
-            <Button onClick={() => setSelectedId(null)} variant={"outline"}>
-              <IconChevronLeft className="mr-2 size-4" /> 뒤로가기
-            </Button>
+      ) : isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <span>평가 내역을 불러오는 중...</span>
           </div>
-          <EvaluationResult
-            evaluationId={selectedItem.id}
-            series={selectedItem?.series || ""}
-          />
+        </div>
+      ) : !evaluationList?.length ? (
+        <Card className="flex flex-col items-center gap-4 p-8 text-center">
+          <IconSparkles className="size-12 text-muted-foreground/40" />
+          <div className="space-y-1">
+            <p className="font-medium">아직 평가 내역이 없습니다</p>
+            <p className="text-sm text-muted-foreground">
+              생기부를 업로드하고 AI 평가를 받아보세요!
+            </p>
+          </div>
+        </Card>
+      ) : (
+        <div className="space-y-6">
+          {/* 평가 목록 (가로 스크롤) */}
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {evaluationList.map((evaluation) => (
+              <EvaluationTab
+                key={evaluation.id}
+                evaluation={evaluation}
+                isSelected={evaluation.id === selectedId}
+                onClick={() => setSelectedId(evaluation.id)}
+              />
+            ))}
+          </div>
+
+          {/* 선택된 평가 상세 */}
+          {selectedItem && <AiEvaluationDetail evaluation={selectedItem} />}
         </div>
       )}
     </div>
+  );
+}
+
+function EvaluationTab({
+  evaluation,
+  isSelected,
+  onClick,
+}: {
+  evaluation: IAiEvaluation;
+  isSelected: boolean;
+  onClick: () => void;
+}) {
+  const totalScore =
+    evaluation.totalScore ??
+    evaluation.scoreAcademic +
+      evaluation.scoreCareer +
+      evaluation.scoreCommunity +
+      evaluation.scoreOther;
+
+  const evalTypeLabel =
+    evaluation.evalType === "comprehensive" ? "종합" : "학기별";
+
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex shrink-0 flex-col items-center gap-1 rounded-lg border px-4 py-3 text-center transition-all hover:border-primary/50 hover:bg-primary/5",
+        isSelected
+          ? "border-primary bg-primary/10 shadow-sm"
+          : "border-gray-200 bg-white",
+      )}
+    >
+      <Badge
+        variant="outline"
+        className={cn(
+          "text-[10px]",
+          evaluation.evalType === "comprehensive"
+            ? "border-primary text-primary"
+            : "border-blue-500 text-blue-500",
+        )}
+      >
+        {evalTypeLabel}
+      </Badge>
+      <p className="text-sm font-medium">
+        {evaluation.grade}학년
+        {evaluation.evalType === "semester" && evaluation.semester
+          ? ` ${evaluation.semester}학기`
+          : ""}
+      </p>
+      <p className={cn("text-lg font-bold", isSelected ? "text-primary" : "text-neutral-700")}>
+        {totalScore}점
+      </p>
+      <p className="text-[10px] text-muted-foreground">
+        {formatDateYYYYMMDD(evaluation.createdAt)}
+      </p>
+    </button>
   );
 }
