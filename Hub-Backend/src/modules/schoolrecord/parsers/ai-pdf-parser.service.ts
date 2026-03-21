@@ -434,11 +434,18 @@ export class AiPdfParserService {
                     }
                 }
             } else {
-                // 활동유형이 없으면 전체를 하나로
+                // 활동유형이 없으면 전체를 하나로 — 단, 성적 데이터가 아닌지 검증
                 const content = blockText.trim();
                 if (content) {
-                    results.push({ grade, activityType: '자치활동', content });
-                    this.logger.log(`[CHANGCHE] grade=${grade} fallback: ${content.substring(0, 60)}... (${content.length} chars)`);
+                    // 교과학습발달상황(성적 테이블) 패턴이 감지되면 스킵
+                    const gradePatterns = ['단위수', '원점수', '석차등급', '수강자수', '과목평균', '표준편차', '성취도'];
+                    const matchCount = gradePatterns.filter(p => content.includes(p)).length;
+                    if (matchCount >= 3 || content.length > 3000) {
+                        this.logger.warn(`[CHANGCHE] grade=${grade} fallback SKIPPED: looks like academic grades (${matchCount} patterns matched, ${content.length} chars)`);
+                    } else {
+                        results.push({ grade, activityType: '자치활동', content });
+                        this.logger.log(`[CHANGCHE] grade=${grade} fallback: ${content.substring(0, 60)}... (${content.length} chars)`);
+                    }
                 }
             }
         };
