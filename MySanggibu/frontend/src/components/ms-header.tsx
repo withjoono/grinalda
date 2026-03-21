@@ -43,8 +43,8 @@ import { logoutFetch } from "@/stores/server/features/auth/apis";
 import { env } from "@/lib/config/env";
 
 /**
- * 생기뷰 서비스 전용 헤더
- * - 생기뷰 관련 메뉴만 표시
+ * 생기북 서비스 전용 헤더
+ * - 생기북 관련 메뉴만 표시
  * - "전체 서비스로 돌아가기" 버튼 제공
  */
 export const MsHeader = () => {
@@ -99,7 +99,7 @@ export const MsHeader = () => {
           <Link to={user ? "/ms/dashboard" : "/ms"} className="flex shrink-0 items-center gap-3">
             <img src="/logo.png" alt="logo" className="h-auto w-10 lg:w-12" />
             <span className="text-base font-bold text-gray-900 lg:text-lg">
-              생기뷰
+              생기북
             </span>
           </Link>
 
@@ -126,7 +126,7 @@ export const MsHeader = () => {
                       alt="logo"
                       className="h-auto w-10 lg:w-12"
                     />
-                    <span className="text-base font-bold">생기뷰</span>
+                    <span className="text-base font-bold">생기북</span>
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 flex flex-col items-start justify-center gap-2">
@@ -146,7 +146,7 @@ export const MsHeader = () => {
 
                   <Separator className="mb-2 bg-gray-200" />
 
-                  {/* 생기뷰 서비스 메뉴 */}
+                  {/* 생기북 서비스 메뉴 */}
                   <Link
                     to={user ? "/ms/dashboard" : "/ms"}
                     className={cn(

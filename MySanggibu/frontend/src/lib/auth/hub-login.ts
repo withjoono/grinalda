@@ -1,8 +1,8 @@
 /**
  * Hub 로그인 연동 유틸리티
- * 생기뷰에서 Hub(T Skool) 로그인 페이지로 리디렉트
+ * 생기북에서 Hub(T Skool) 로그인 페이지로 리디렉트
  * 
- * 생기뷰는 자체 로그인 페이지를 사용하지 않고,
+ * 생기북은 자체 로그인 페이지를 사용하지 않고,
  * Hub의 중앙 인증 시스템을 통해 로그인합니다.
  */
 
@@ -11,12 +11,12 @@ import { env } from '@/lib/config/env';
 // Hub Frontend URL
 const HUB_URL = env.hubUrl;
 
-// 생기뷰 Frontend URL
+// 생기북 Frontend URL
 const FRONT_URL = env.frontUrl;
 
 /**
  * Hub 로그인 URL 생성
- * 로그인 후 생기뷰로 SSO 토큰과 함께 돌아옴
+ * 로그인 후 생기북으로 SSO 토큰과 함께 돌아옴
  * @param returnPath - 로그인 후 돌아올 경로 (기본: /)
  */
 export function getHubLoginUrl(returnPath: string = '/'): string {
